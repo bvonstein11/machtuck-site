@@ -203,6 +203,12 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 .hero__vigil { position: absolute; left: 64.71%; top: 9.61%; width: 27.76%; height: 75.99%; object-fit: contain; }
 .hero__copy { position: absolute; left: 24.39%; top: 55%; width: 40.46%; }
 .hero__title img { width: 100%; filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.6)); }
+/* The trademark sign sits at the top-right of REACH, whose letters end 95% across the title image and start 6% down. */
+.hero__title { position: relative; }
+.hero__title::after {
+  content: "\2122"; position: absolute; left: 95.6%; top: 4%;
+  font-size: clamp(0.7rem, 1.1vw, 1.15rem); line-height: 1; color: var(--ink); text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
 .hero__line {
   margin: 1.2em 0 1.4em;
   font-size: clamp(0.85rem, 1.15vw, 1.05rem); font-style: italic; letter-spacing: 0.04em;
@@ -233,7 +239,7 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
   .hero__vigil { left: auto; right: -8%; top: auto; bottom: 7%; width: auto; height: 50%; }
   .hero__shadow { left: auto; right: -30%; top: auto; bottom: 2%; width: 120%; height: 12%; }
   .hero__copy { left: var(--gutter); right: var(--gutter); top: calc(var(--top-height) + 5svh); width: auto; }
-  .hero__title img { width: min(100%, 560px); }
+  .hero__title { max-width: 560px; }
   .hero__line { font-size: 1rem; }
 }
 
@@ -491,6 +497,9 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 @media (min-width: 900px) { .studio__grid { grid-template-columns: 0.8fr 1.2fr; gap: 80px; } }
 .studio__mark { justify-self: center; width: min(62%, 300px); }
 .studio__mark img { width: 100%; filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.7)); }
+/* The shield's ink ends 95% across the image and 7% down. */
+.studio__mark { position: relative; }
+.studio__mark::after { content: "\2122"; position: absolute; left: 96%; top: 5%; font-size: 1rem; line-height: 1; color: var(--ink-dim); }
 .studio__text p:not(.eyebrow):not(.lead) { color: var(--ink-dim); max-width: 560px; }
 .studio__text .lead { margin-top: 28px; max-width: 600px; }
 .values {
@@ -520,6 +529,7 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 .foot__brand { display: flex; align-items: center; gap: 18px; text-decoration: none; }
 .foot__brand img:first-child { width: 34px; }
 .foot__wordmark { width: 200px; opacity: 0.9; }
+.foot__brand::after { content: "\2122"; align-self: flex-start; margin-left: -14px; font-size: 0.625rem; line-height: 1; color: var(--ink-faint); }
 .foot__small { color: var(--ink-faint); font-size: 0.75rem; text-align: right; }
 .foot__small p { margin: 0; }
 @media (max-width: 640px) { .foot__small { text-align: left; } }
