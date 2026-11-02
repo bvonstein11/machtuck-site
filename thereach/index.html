@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>The Reach: Unknown · Mach Tuck Games</title>
+  <meta name="description" content="A persistent mech war. Join one of five factions, or fly alone as a Torrath mercenary, and fight for ground on a contested world. Every match feeds a war that never ends.">
+  <link rel="canonical" href="https://machtuck.com/thereach/">
+  <meta name="theme-color" content="#07090d">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Mach Tuck Games">
+  <meta property="og:title" content="The Reach: Unknown">
+  <meta property="og:description" content="A persistent mech war. Five factions, one world, and a war that never ends.">
+  <meta property="og:url" content="https://machtuck.com/thereach/">
+  <meta property="og:image" content="https://machtuck.com/assets/img/share-card.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <link rel="preload" href="/assets/fonts/B612/B612-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/assets/img/sky-2560.webp" as="image" media="(min-width: 1281px)">
+  <link rel="preload" href="/assets/img/sky-1280.webp" as="image" media="(max-width: 1280px)">
+  <link rel="stylesheet" href="/assets/site.css">
+  <script src="/assets/ship.js" defer></script>
+  <script src="/assets/site.js" defer></script>
+  <script src="/assets/voyage.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#game">Skip to content</a>
+
+  <!-- The ship's status strip: the site is aboard the Archive during the crossing. Its clock is set in assets/ship.js. -->
+  <div class="ship" aria-label="The Archive, in transit">
+    <span class="ship__state"><i aria-hidden="true"></i><span class="ship__long">Archive · </span>In transit</span>
+    <span class="ship__item"><b>Earth date</b> <span data-ship-date>07 MAY 3341 · 21:47</span></span>
+    <span class="ship__item ship__item--wide"><b>Speed</b> <span data-ship-speed>0.130 c</span></span>
+    <span class="ship__item ship__item--wide"><b>Voyage year</b> <span data-ship-year>31.17</span></span>
+  </div>
+
+  <!-- The bar: the studio mark on the left, the sections, and the one door. -->
+  <header class="bar" data-bar>
+    <a class="bar__brand" href="/thereach/" aria-label="Mach Tuck Games, The Reach: Unknown">
+      <img src="/assets/img/mt-monogram.svg" alt="" width="26" height="30">
+      <span>Mach Tuck <b>Games</b></span>
+    </a>
+    <nav class="bar__nav" id="site-nav" aria-label="Sections">
+      <a href="#game">The Game</a>
+      <a href="#world">The World</a>
+      <a href="#factions">Factions</a>
+      <a href="#studio">Studio</a>
+      <a class="btn btn--small" data-discord href="#join">Join the community</a>
+    </nav>
+    <button class="bar__menu" type="button" aria-expanded="false" aria-controls="site-nav" data-menu>
+      <span class="bar__menu-lines" aria-hidden="true"></span>
+      <span class="sr">Menu</span>
+    </button>
+  </header>
+
+  <!-- The rail: where you are on the page, as the reference sites keep it on the right. -->
+  <nav class="rail" aria-label="Page position" data-rail>
+    <a href="#top" data-rail-for="top"><span>Home</span></a>
+    <a href="#game" data-rail-for="game"><span>The Game</span></a>
+    <a href="#world" data-rail-for="world"><span>The World</span></a>
+    <a href="#crossing" data-rail-for="crossing"><span>The Crossing</span></a>
+    <a href="#factions" data-rail-for="factions"><span>Factions</span></a>
+    <a href="#studio" data-rail-for="studio"><span>Studio</span></a>
+    <a href="#join" data-rail-for="join"><span>Join</span></a>
+  </nav>
+
+  <main>
+    <!-- HERO: the boot screen's night title shot, layer for layer. -->
+    <section class="hero" id="top" data-section aria-label="The Reach: Unknown">
+      <div class="hero__stage" data-parallax-root>
+        <picture class="hero__sky" data-depth="0.35">
+          <source media="(min-width: 1281px)" srcset="/assets/img/sky-2560.webp">
+          <img src="/assets/img/sky-1280.webp" alt="" width="1280" height="720" fetchpriority="high">
+        </picture>
+        <img class="hero__shadow" src="/assets/img/vigil-shadow.webp" alt="" width="1300" height="331" data-depth="0.18">
+        <img class="hero__vigil" src="/assets/img/vigil.webp" alt="The VX-21 VIGIL, a battle-worn grey mech, standing on a ridge at night" width="974" height="1500" data-depth="0.18">
+        <div class="hero__copy" data-depth="0.5" data-fade>
+          <h1 class="hero__title">
+            <img src="/assets/img/title.webp" alt="The Reach: Unknown" width="1600" height="455">
+          </h1>
+          <p class="hero__line">Every faction has a theory. None has proof.</p>
+          <div class="hero__actions">
+            <a class="btn" data-discord href="#join">Join the community</a>
+            <a class="btn btn--ghost" href="#game">The game</a>
+          </div>
+        </div>
+      </div>
+      <a class="hero__cue" href="#game" aria-label="Scroll to the game"><span></span></a>
+    </section>
+
+    <!-- THE GAME: what you are, and the five pillars. -->
+    <section class="section game" id="game" data-section>
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>The Game</p>
+        <h2 data-reveal>Your victories matter beyond the match.</h2>
+        <div class="game__lead" data-reveal>
+          <p class="lead">You are a mech pilot. You have a faction. You have a rank. You have people who depend on you. Your reputation outlasts any single session.</p>
+          <p>The Reach: Unknown is a persistent mech war. Join one of five factions, or fly alone as a Torrath mercenary, and fight for ground on a contested world. Every match feeds a war that never ends. The community is the story.</p>
+        </div>
+
+        <ol class="pillars">
+          <li data-reveal>
+            <span class="pillars__num">01</span>
+            <h3>The clan is the game</h3>
+            <p>Up to fifty pilots under one name. You fly for them, and they remember who showed up.</p>
+          </li>
+          <li data-reveal>
+            <span class="pillars__num">02</span>
+            <h3>Consequence matters</h3>
+            <p>Wins and losses move the line on the map. The war keeps the score.</p>
+          </li>
+          <li data-reveal>
+            <span class="pillars__num">03</span>
+            <h3>Honor is mechanical</h3>
+            <p>How you fight counts, not only whether you win.</p>
+          </li>
+          <li data-reveal>
+            <span class="pillars__num">04</span>
+            <h3>Weight and permanence</h3>
+            <p>Mechs have mass, loadouts have a price, and the map never resets.</p>
+          </li>
+          <li data-reveal>
+            <span class="pillars__num">05</span>
+            <h3>The universe never finishes</h3>
+            <p>Most of The Reach is unmapped. Every season the front pushes into new ground.</p>
+          </li>
+        </ol>
+
+        <ul class="facts" data-reveal>
+          <li>Free to play</li>
+          <li>Closed beta on Windows &amp; Mac</li>
+          <li>iOS and Android to follow</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- THE WORLD: The Reach, in its own numbers. -->
+    <section class="section world" id="world" data-section>
+      <div class="world__sky" aria-hidden="true">
+        <img src="/assets/img/sky-1280.webp" alt="" width="1280" height="720" loading="lazy" data-depth="0.12">
+      </div>
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>Archive record · The Reach</p>
+        <h2 data-reveal>The Reach</h2>
+        <div class="world__body">
+          <div class="world__text" data-reveal>
+            <p class="lead">The nearest star to Earth, and an Earth-like world in its light.</p>
+            <p>The Archive is bound for it on a 32.63-year voyage: the first home humanity has found since Earth failed. Every faction aboard wants to claim it. Nobody has agreed on who has the right.</p>
+          </div>
+          <dl class="stats">
+            <div data-reveal><dt>Light-years from Earth</dt><dd>4.34</dd></div>
+            <div data-reveal><dt>Years in transit</dt><dd>32.63</dd></div>
+            <div data-reveal><dt>Factions</dt><dd>5</dd></div>
+            <div data-reveal><dt>World</dt><dd>1</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE CROSSING: the probe's flight and the Archive's voyage, to scrub or play. -->
+    <section class="section voyage" id="crossing" data-section data-voyage>
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>Navigation · The crossing</p>
+        <h2 data-reveal>32.63 years. Awake.</h2>
+        <p class="lead voyage__intro" data-reveal>There was no cryosleep. People lived, worked, aged, had children and died on the way, and every faction was born in those years.</p>
+      </div>
+      <div class="voyage__frame" data-reveal>
+        <div class="voyage__chart" data-voyage-chart></div>
+        <dl class="voyage__readouts">
+          <div><dt>Earth date</dt><dd data-readout="date">—</dd></div>
+          <div><dt>Voyage</dt><dd data-readout="underway">—</dd></div>
+          <div><dt>Speed</dt><dd data-readout="speed">—</dd></div>
+          <div><dt>Crossed</dt><dd data-readout="crossed">0%</dd></div>
+        </dl>
+        <div class="voyage__caption" aria-live="polite">
+          <p class="voyage__when" data-caption="when"></p>
+          <h3 class="voyage__title" data-caption="title"></h3>
+          <p class="voyage__text" data-caption="text"></p>
+        </div>
+      </div>
+      <div class="wrap voyage__controls">
+        <button class="btn btn--ghost voyage__play" type="button" aria-pressed="false" data-voyage-play><span>Play the crossing</span></button>
+        <div class="voyage__track">
+          <input class="voyage__scrubber" type="range" value="0" aria-label="Time, from the probe's launch to the war" data-voyage-scrubber>
+          <ol class="voyage__beats" data-voyage-beats></ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- FACTIONS: the five faction-picker portraits. -->
+    <section class="section factions" id="factions" data-section>
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>Aboard · Five factions</p>
+        <h2 data-reveal>Nobody was born into a faction. Every member chose.</h2>
+      </div>
+      <ul class="houses" data-reveal>
+        <li class="house" style="--house:#C8323C" tabindex="0">
+          <img src="/assets/img/faction-ksh.webp" alt="A black Kashiro mech with crimson trim on a snowfield" width="720" height="1279" loading="lazy">
+          <div class="house__text">
+            <p class="house__word">Honor</p>
+            <h3 class="house__name">Kashiro</h3>
+            <blockquote>“We failed because we let small things go. Precision is honor.”</blockquote>
+          </div>
+        </li>
+        <li class="house" style="--house:#D4A23C" tabindex="0">
+          <img src="/assets/img/faction-vld.webp" alt="A bronze Valdron mech in a flooded ruined city" width="720" height="1279" loading="lazy">
+          <div class="house__text">
+            <p class="house__word">Dominion</p>
+            <h3 class="house__name">Valdron</h3>
+            <blockquote>“We failed because we were divided. Unity is survival.”</blockquote>
+          </div>
+        </li>
+        <li class="house" style="--house:#4A90C2" tabindex="0">
+          <img src="/assets/img/faction-drv.webp" alt="A dark grey Darvyn mech on black volcanic ground under a storm" width="720" height="1279" loading="lazy">
+          <div class="house__text">
+            <p class="house__word">Shadow</p>
+            <h3 class="house__name">Darvyn</h3>
+            <blockquote>“We failed because we believed what we were told. Information is the only honest currency.”</blockquote>
+          </div>
+        </li>
+        <li class="house" style="--house:#8FA83C" tabindex="0">
+          <img src="/assets/img/faction-grv.webp" alt="A moss-covered Gorvik mech in a jungle" width="720" height="1279" loading="lazy">
+          <div class="house__text">
+            <p class="house__word">Pack</p>
+            <h3 class="house__name">Gorvik</h3>
+            <blockquote>“We failed because we each looked after our own. The pack eats first.”</blockquote>
+          </div>
+        </li>
+        <li class="house" style="--house:#8E5BC2" tabindex="0">
+          <img src="/assets/img/faction-shv.webp" alt="A sand-coloured Shenvong mech with violet lights in a desert" width="720" height="1279" loading="lazy">
+          <div class="house__text">
+            <p class="house__word">Foundation</p>
+            <h3 class="house__name">Shenvong</h3>
+            <blockquote>“We failed because we never built anything that could hold. What holds, saves.”</blockquote>
+          </div>
+        </li>
+      </ul>
+      <div class="wrap">
+        <p class="factions__free" data-reveal>Or join none of them. Decline all five and you fly <b>Torrath</b>: a mercenary, and free.</p>
+      </div>
+    </section>
+
+    <!-- STUDIO -->
+    <section class="section studio" id="studio" data-section>
+      <div class="wrap studio__grid">
+        <div class="studio__mark" data-reveal>
+          <img src="/assets/img/mt-mark.webp" alt="The Mach Tuck Games shield" width="418" height="477" loading="lazy">
+        </div>
+        <div class="studio__text">
+          <p class="eyebrow" data-reveal>The Studio</p>
+          <h2 data-reveal>Mach Tuck Games</h2>
+          <p class="lead" data-reveal>Mach tuck is what a jet does near the speed of sound: the nose wants to drop, and the pilot has to feel it coming and catch it.</p>
+          <p data-reveal>We are an independent studio, and The Reach: Unknown is our first game.</p>
+        </div>
+      </div>
+      <div class="wrap">
+        <ul class="values">
+          <li data-reveal><h3>Belonging first</h3><p>We build for the people you fly with.</p></li>
+          <li data-reveal><h3>A war that remembers</h3><p>What happens tonight is still on the map tomorrow.</p></li>
+          <li data-reveal><h3>All of it ours</h3><p>Every world, faction and machine is original.</p></li>
+          <li data-reveal><h3>The community writes it</h3><p>The story of the war is the one its pilots make.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- JOIN: the one door. -->
+    <section class="section join" id="join" data-section>
+      <div class="join__art" aria-hidden="true">
+        <img src="/assets/img/vigil.webp" alt="" width="974" height="1500" loading="lazy">
+      </div>
+      <div class="wrap join__inner">
+        <p class="eyebrow" data-reveal>Join</p>
+        <h2 data-reveal>When we reach orbit, the war begins.</h2>
+        <p class="lead" data-reveal>The Archive reaches orbit on the day the closed beta opens. Until then, the community gathers on Discord.</p>
+        <div data-reveal>
+          <a class="btn btn--large" data-discord href="#join">Join the community</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot__inner">
+      <a class="foot__brand" href="/thereach/" aria-label="Back to the top">
+        <img src="/assets/img/mt-monogram.svg" alt="" width="34" height="40">
+        <img class="foot__wordmark" src="/assets/img/the-reach-wordmark.svg" alt="The Reach: Unknown" width="220" height="58">
+      </a>
+      <div class="foot__small">
+        <p>© <span data-year>2026</span> Mach Tuck Games. All rights reserved.</p>
+        <p>This site sets no cookies and collects nothing.</p>
+        <p>Some artwork on this site was made with AI image tools.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

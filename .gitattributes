@@ -1,0 +1,5 @@
+# Pictures are plain git files: GitHub Pages cannot serve a picture kept in Git LFS.
+*.png !filter binary
+*.PNG !filter binary
+*.jpg !filter binary
+*.jpeg !filter binary
