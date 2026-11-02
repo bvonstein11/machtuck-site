@@ -455,6 +455,32 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 .foot__small p { margin: 0; }
 @media (max-width: 640px) { .foot__small { text-align: left; } }
 
+.foot__links { display: flex; flex-wrap: wrap; gap: 8px 22px; justify-content: flex-end; margin-bottom: 8px; }
+.foot__links a {
+  color: var(--ink-dim); text-decoration: none;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+}
+.foot__links a:hover { color: var(--ink); }
+@media (max-width: 640px) { .foot__links { justify-content: flex-start; } }
+
+/* ---------- the plain pages: privacy, terms, art & AI ---------- */
+.doc-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  height: var(--bar-height); padding: 0 var(--gutter); border-bottom: 1px solid var(--line);
+}
+.doc-bar__back {
+  color: var(--ink-dim); text-decoration: none;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+}
+.doc-bar__back:hover { color: var(--ink); }
+.doc { max-width: 780px; padding-top: clamp(48px, 8vw, 96px); padding-bottom: clamp(64px, 10vw, 120px); }
+.doc h1 { font-size: clamp(1.8rem, 4.2vw, 2.8rem); line-height: 1.1; text-transform: uppercase; margin-bottom: 12px; }
+.doc h2 { max-width: none; margin: 40px 0 10px; font-size: 0.9rem; letter-spacing: 0.14em; }
+.doc p { color: var(--ink-dim); }
+.doc .lead { margin: 26px 0 8px; color: var(--ink); }
+.doc a { color: var(--accent); }
+.doc__date { color: var(--ink-faint); font-size: 0.8rem; }
+
 /* ---------- motion: off when the visitor asks for less ---------- */
 [data-reveal] { opacity: 0; transform: translateY(22px); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1); }
 [data-reveal].is-in { opacity: 1; transform: none; }
