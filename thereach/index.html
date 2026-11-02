@@ -25,10 +25,10 @@
   <link rel="preload" href="/assets/fonts/B612/B612-Bold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/assets/img/sky-2560.webp" as="image" media="(min-width: 1281px)">
   <link rel="preload" href="/assets/img/sky-1280.webp" as="image" media="(max-width: 1280px)">
-  <link rel="stylesheet" href="/assets/site.css?v=1a59f785">
-  <script src="/assets/ship.js?v=1a59f785" defer></script>
-  <script src="/assets/site.js?v=1a59f785" defer></script>
-  <script src="/assets/voyage.js?v=1a59f785" defer></script>
+  <link rel="stylesheet" href="/assets/site.css?v=828a5845">
+  <script src="/assets/ship.js?v=828a5845" defer></script>
+  <script src="/assets/site.js?v=828a5845" defer></script>
+  <script src="/assets/voyage.js?v=828a5845" defer></script>
 </head>
 <body>
   <a class="skip" href="#game">Skip to content</a>
@@ -192,32 +192,55 @@
       </div>
     </section>
 
-    <!-- THE CROSSING: the probe's flight and the Archive's voyage, to scrub or play. -->
+    <!-- THE CROSSING: the Archive's voyage as a navigation chart, opening where the ship's clock stands today. -->
     <section class="section voyage" id="crossing" data-section data-voyage>
       <div class="wrap">
         <p class="eyebrow" data-reveal>Navigation · The crossing</p>
-        <h2 data-reveal>32.63 years. Awake.</h2>
+        <h2 data-reveal>32.63 years. <span class="voyage__awake">Awake.</span></h2>
         <p class="lead voyage__intro" data-reveal>There was no cryosleep. People lived, worked, aged, had children and died on the way, and every faction was born in those years.</p>
       </div>
-      <div class="voyage__frame" data-reveal>
-        <div class="voyage__chart" data-voyage-chart></div>
-        <dl class="voyage__readouts">
-          <div><dt>Earth date</dt><dd data-readout="date">—</dd></div>
-          <div><dt>Voyage</dt><dd data-readout="underway">—</dd></div>
-          <div><dt>Speed</dt><dd data-readout="speed">—</dd></div>
-          <div><dt>Crossed</dt><dd data-readout="crossed">0%</dd></div>
-        </dl>
-        <div class="voyage__caption" aria-live="polite">
-          <p class="voyage__when" data-caption="when"></p>
-          <h3 class="voyage__title" data-caption="title"></h3>
-          <p class="voyage__text" data-caption="text"></p>
-        </div>
-      </div>
-      <div class="wrap voyage__controls">
-        <button class="btn btn--ghost voyage__play" type="button" aria-pressed="false" data-voyage-play><span>Play the crossing</span></button>
-        <div class="voyage__track">
-          <input class="voyage__scrubber" type="range" value="0" aria-label="Time, from the probe's launch to the war" data-voyage-scrubber>
-          <ol class="voyage__beats" data-voyage-beats></ol>
+      <div class="wrap">
+        <div class="voyage__panel" data-reveal>
+          <div class="voyage__head">
+            <div class="voyage__heading">
+              <p>The Archive · Earth → The Reach</p>
+              <p class="voyage__view-title" data-view-title>Interstellar cruise</p>
+            </div>
+            <div class="voyage__views" role="group" aria-label="Chart view">
+              <button type="button" data-view="interstellar" aria-selected="true">Interstellar</button>
+              <button type="button" data-view="departure" aria-selected="false">Departure</button>
+              <button type="button" data-view="arrival" aria-selected="false">Arrival</button>
+            </div>
+          </div>
+          <div class="voyage__chart" data-voyage-chart></div>
+          <div class="voyage__notes">
+            <p data-view-note></p>
+            <p>The Archive never lands · orbit 22 Oct 3342</p>
+          </div>
+          <div class="voyage__timeline">
+            <div class="voyage__timeline-head">
+              <p>Mission elapsed</p>
+              <p>Drag the timeline, pick a milestone, or play the crossing</p>
+            </div>
+            <div class="voyage__controls">
+              <button class="btn btn--small voyage__play" type="button" aria-pressed="false" data-voyage-play><span>Play</span></button>
+              <input class="voyage__scrubber" type="range" aria-label="Earth date on the voyage, from launch to orbit" data-voyage-scrubber>
+              <button class="btn btn--small btn--ghost" type="button" data-voyage-now>Now</button>
+              <button class="btn btn--small btn--ghost" type="button" data-voyage-latest-log hidden>Latest log</button>
+            </div>
+            <ol class="voyage__milestones" data-voyage-milestones></ol>
+          </div>
+          <dl class="voyage__readouts">
+            <div><dt>Earth date</dt><dd data-readout="date">—</dd><p>The Earth calendar, as the Archive keeps it</p></div>
+            <div><dt>Voyage elapsed</dt><dd data-readout="elapsed">—</dd><p>Since the cruise began, 07 Mar 3310</p></div>
+            <div><dt>Velocity</dt><dd data-readout="speed">—</dd><p data-readout="kms"></p></div>
+            <div><dt>Distance crossed</dt><dd data-readout="crossed">—</dd><p>Of the way to The Reach</p></div>
+          </dl>
+          <div class="voyage__phase" aria-live="polite">
+            <p class="voyage__phase-label">Flight phase</p>
+            <p><b data-phase="name"></b> <span data-phase="text"></span></p>
+            <p class="voyage__phase-note" data-phase="note" hidden></p>
+          </div>
         </div>
       </div>
     </section>

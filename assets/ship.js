@@ -8,6 +8,13 @@
  */
 const ORBIT_ON = "2027-10-22";
 
+/**
+ * The Voyage Logs published so far, oldest first, each with the Earth date and time stamped on it. Add one line when a
+ * log goes out, for example { log: "01", stamp: "3341-05-07 21:47" }: it joins The Crossing's milestones and its
+ * "Latest log" button. Empty until the first log is published.
+ */
+const PUBLISHED_LOGS = [];
+
 const Voyage = (() => {
   /** 19 January 3310 is Y+20.39, so Y+0 falls in late August 3289. */
   const yearAtLaunch = 3310 + 18 / 365.25 - 20.39;
@@ -18,11 +25,25 @@ const Voyage = (() => {
   /** The day the Archive reaches orbit, in the story's calendar. */
   const orbitInStory = Date.UTC(3342, 9, 22);
 
-  /** A 46-day burn at one gravity, a coast at 0.130 of light speed, a 46-day braking burn, a week's approach, then orbit
-   *  on the calendar's day (the timeline's Y+53.15, rounded). The 32.63-year voyage is counted from the start of the
-   *  coast, as the story counts it. */
-  const archive = { depart: 20.39, coast: 20.52, brake: 53.0, approach: 53.13, cruise: 0.13, voyageYears: 32.63 };
-  archive.arrive = fractionalYear(new Date(orbitInStory)) - yearAtLaunch;
+  /** A point on the voyage's scale from a date in the story's calendar. */
+  const on = (year, month, day) => fractionalYear(new Date(Date.UTC(year, month - 1, day))) - yearAtLaunch;
+
+  /** The phases, each starting on its day in the story's calendar: leaving Earth and a burn at one gravity of about 46
+   *  days, a coast at 0.130 of light speed, a braking burn of about 46 days, a week's approach, then orbit. The
+   *  32.63-year voyage is counted from the start of the coast, as the story counts it. */
+  const archive = {
+    depart: on(3310, 1, 19), coast: on(3310, 3, 7), brake: on(3342, 8, 30), approach: on(3342, 10, 15),
+    arrive: fractionalYear(new Date(orbitInStory)) - yearAtLaunch, cruise: 0.13, voyageYears: 32.63,
+  };
+
+  /** The crossing's length in the voyage's own century (the stars have drawn closer since today's 4.34). Used only to
+   *  place the light-year marks on the chart; the site never prints it. */
+  archive.lightYears = 4.25;
+
+  /** One gravity, in metres per second squared, and the units the departure view measures in. */
+  const gravity = 9.80665;
+  const secondsPerYear = 365.25 * 86400;
+  const metresPerAU = 1.495978707e11;
 
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -50,6 +71,43 @@ const Voyage = (() => {
   /** Where the ship's clock stood when the page opened. */
   const now = voyageTime(shipNow());
 
+  /** The calendar moment for a point on the voyage's scale. */
+  function dateAt(y) {
+    const calendar = yearAtLaunch + y;
+    const whole = Math.floor(calendar);
+    const start = Date.UTC(whole, 0, 1);
+    // To the nearest minute, so a phase that starts at midnight is not read as the minute before it.
+    const at = start + (calendar - whole) * (Date.UTC(whole + 1, 0, 1) - start);
+    return new Date(Math.round(at / 60000) * 60000);
+  }
+
+  /** "02 NOV 3341". */
+  function dayStamp(date) {
+    return `${String(date.getUTCDate()).padStart(2, "0")} ${months[date.getUTCMonth()].toUpperCase()} ${date.getUTCFullYear()}`;
+  }
+
+  /** The flight phase at a moment: departure burn, cruise, braking burn, final approach, or orbit. */
+  function phaseAt(y) {
+    if (y < archive.coast) return "departure";
+    if (y < archive.brake) return "cruise";
+    if (y < archive.approach) return "braking";
+    if (y < archive.arrive) return "approach";
+    return "orbit";
+  }
+
+  /** How far from the Sun the Archive is during its departure burn, in astronomical units (one gravity from rest). */
+  function departureDistanceAU(y) {
+    const seconds = Math.max(0, Math.min(y, archive.coast) - archive.depart) * secondsPerYear;
+    return 0.5 * gravity * seconds * seconds / metresPerAU;
+  }
+
+  /** The published logs, as points on the voyage's scale. */
+  const logs = PUBLISHED_LOGS.map(({ log, stamp: text }) => {
+    const [, ly, lm, ld, lh, lmin] = text.match(/^(\d+)-(\d+)-(\d+) (\d+):(\d+)$/).map(Number);
+    const date = new Date(Date.UTC(ly, lm - 1, ld, lh, lmin));
+    return { log, date, y: voyageTime(date) };
+  });
+
   /** "May 3341" for any moment on the voyage's scale. */
   function monthYear(y) {
     const calendar = yearAtLaunch + y;
@@ -64,10 +122,15 @@ const Voyage = (() => {
     return `${two(date.getUTCDate())} ${months[date.getUTCMonth()].toUpperCase()} ${date.getUTCFullYear()} · ${time}`;
   }
 
-  /** Speed as a share of light: up through the first burn, level through the coast, down through the second. */
+  /** The final week's approach speed, about 5 km/s, as a share of light. */
+  const approachSpeed = 5 / 299792.458;
+
+  /** Speed as a share of light: up through the first burn, level through the coast, down through the second, then the
+   *  slow final approach, and zero once in orbit. */
   function speedAt(y) {
-    const { depart, coast, brake, approach, cruise } = archive;
-    if (y <= depart || y >= approach) return 0;
+    const { depart, coast, brake, approach, arrive, cruise } = archive;
+    if (y <= depart || y >= arrive) return 0;
+    if (y >= approach) return approachSpeed;
     if (y < coast) return cruise * (y - depart) / (coast - depart);
     if (y < brake) return cruise;
     return cruise * (approach - y) / (approach - brake);
@@ -91,5 +154,6 @@ const Voyage = (() => {
     return Math.min(archive.voyageYears, Math.max(0, y - archive.coast));
   }
 
-  return { probe, archive, now, shipNow, voyageTime, monthYear, stamp, speedAt, progressAt, voyageYearAt };
+  return { probe, archive, logs, now, shipNow, voyageTime, dateAt, dayStamp, monthYear, stamp, phaseAt, departureDistanceAU,
+    speedAt, progressAt, voyageYearAt };
 })();
