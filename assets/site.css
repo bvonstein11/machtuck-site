@@ -285,6 +285,40 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 .stats dd { margin: 0 0 6px; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; line-height: 1; letter-spacing: -0.01em; }
 .stats div { display: flex; flex-direction: column-reverse; }
 
+/* the map of The Reach: labels on the picture on wide screens, numbered pins and a legend on phones */
+.reach-map { margin: clamp(56px, 8vw, 96px) 0 0; }
+.reach-map__frame { position: relative; overflow: hidden; box-shadow: 0 0 0 1px var(--line), 0 30px 80px rgba(0, 0, 0, 0.5); }
+.reach-map__frame img { width: 100%; height: auto; }
+.reach-map__pins { list-style: none; margin: 0; padding: 0; }
+.reach-map__pins li {
+  position: absolute; left: var(--x); top: var(--y); transform: translate(-50%, -50%);
+  display: flex; align-items: center; gap: 8px;
+}
+.reach-map__pins b {
+  display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%;
+  background: rgba(7, 9, 13, 0.82); box-shadow: 0 0 0 1.5px var(--ink);
+  font: 700 0.7rem/1 var(--font-mono); color: var(--ink);
+}
+.reach-map__pins span {
+  padding: 5px 9px; background: rgba(7, 9, 13, 0.78);
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; white-space: nowrap;
+}
+.reach-map__pins .is-heart b { box-shadow: 0 0 0 1.5px var(--accent), 0 0 18px var(--accent); color: var(--accent); }
+.reach-map__pins .is-heart span { color: var(--accent); }
+.reach-map figcaption { display: grid; gap: 6px 40px; margin-top: 22px; color: var(--ink-dim); }
+.reach-map figcaption p { margin: 0; }
+.reach-map__title { color: var(--accent); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; }
+.reach-map__legend { display: none; }
+@media (min-width: 900px) { .reach-map figcaption { grid-template-columns: auto 1fr; align-items: baseline; } }
+@media (max-width: 760px) {
+  .reach-map__pins span { display: none; }
+  .reach-map__pins b { width: 20px; height: 20px; font-size: 0.66rem; }
+  .reach-map__legend {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px; margin: 10px 0 0; padding-left: 1.4em;
+    font-size: 0.82rem; color: var(--ink);
+  }
+}
+
 /* the crossing: a chart drawn by assets/voyage.js at the container's own pixel size */
 .voyage { padding-bottom: clamp(64px, 9vw, 120px); }
 .voyage__intro { max-width: 680px; margin-top: 28px; color: var(--ink-dim); }
