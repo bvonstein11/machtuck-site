@@ -98,15 +98,21 @@ if (!reducedMotion && layers.length) {
 
 for (const year of document.querySelectorAll("[data-year]")) year.textContent = String(new Date().getFullYear());
 
-// The ship's status strip. The clock starts at the newest log's stamp (assets/ship.js) when the page opens and runs at
-// real speed while it is open; the speed and voyage year are the ship's at that stamp.
+// The ship's status strip, live: the clock is today's date and time on the ship's calendar (assets/ship.js), and the
+// speed, the voyage year and the state follow it, down through the braking burn to orbit.
 const shipDate = document.querySelector("[data-ship-date]");
 if (shipDate && typeof Voyage !== "undefined") {
-  const opened = Date.now();
-  const start = Voyage.shipDate.getTime();
-  const tick = () => { shipDate.textContent = Voyage.stamp(new Date(start + Date.now() - opened), true); };
+  const shipSpeed = document.querySelector("[data-ship-speed]");
+  const shipYear = document.querySelector("[data-ship-year]");
+  const shipState = document.querySelector("[data-ship-state]");
+  const tick = () => {
+    const date = Voyage.shipNow();
+    const y = Voyage.voyageTime(date);
+    shipDate.textContent = Voyage.stamp(date, true);
+    shipSpeed.textContent = `${Voyage.speedAt(y).toFixed(3)} c`;
+    shipYear.textContent = Voyage.voyageYearAt(y).toFixed(2);
+    shipState.textContent = y >= Voyage.archive.arrive ? "In orbit" : "In transit";
+  };
   tick();
   setInterval(tick, 1000);
-  document.querySelector("[data-ship-speed]").textContent = `${Voyage.speedAt(Voyage.now).toFixed(3)} c`;
-  document.querySelector("[data-ship-year]").textContent = Voyage.voyageYearAt(Voyage.now).toFixed(2);
 }

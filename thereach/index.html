@@ -33,12 +33,12 @@
 <body>
   <a class="skip" href="#game">Skip to content</a>
 
-  <!-- The ship's status strip: the site is aboard the Archive during the crossing. Its clock is set in assets/ship.js. -->
+  <!-- The ship's status strip: the site is aboard the Archive during the crossing. Its clock runs in assets/ship.js. -->
   <div class="ship" aria-label="The Archive, in transit">
-    <span class="ship__state"><i aria-hidden="true"></i><span class="ship__long">Archive · </span>In transit</span>
-    <span class="ship__item"><b>Earth date</b> <span data-ship-date>07 MAY 3341 · 21:47</span></span>
+    <span class="ship__state"><i aria-hidden="true"></i><span class="ship__long">Archive · </span><span data-ship-state>In transit</span></span>
+    <span class="ship__item"><b>Earth date</b> <span data-ship-date>—</span></span>
     <span class="ship__item ship__item--wide"><b>Speed</b> <span data-ship-speed>0.130 c</span></span>
-    <span class="ship__item ship__item--wide"><b>Voyage year</b> <span data-ship-year>31.17</span></span>
+    <span class="ship__item ship__item--wide"><b>Voyage year</b> <span data-ship-year>—</span></span>
   </div>
 
   <!-- The bar: the studio mark on the left, the sections, and the one door. -->
@@ -85,7 +85,6 @@
           <h1 class="hero__title">
             <img src="/assets/img/title.webp" alt="The Reach: Unknown" width="1600" height="455">
           </h1>
-          <p class="hero__line">Every faction has a theory. None has proof.</p>
           <div class="hero__actions">
             <a class="btn" data-discord href="#join">Join the community</a>
             <a class="btn btn--ghost" href="#game">The game</a>
@@ -277,7 +276,7 @@
       <div class="wrap join__inner">
         <p class="eyebrow" data-reveal>Join</p>
         <h2 data-reveal>When we reach orbit, the war begins.</h2>
-        <p class="lead" data-reveal>The Archive reaches orbit on the day the closed beta opens. Until then, the community gathers on Discord.</p>
+        <p class="lead" data-reveal>The Archive reaches orbit on the day the open beta opens. Until then, the community gathers on Discord.</p>
         <div data-reveal>
           <a class="btn btn--large" data-discord href="#join">Join the community</a>
         </div>

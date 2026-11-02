@@ -1,5 +1,5 @@
 // The Crossing: an interactive chart of the survey probe's flight and the Archive's voyage to The Reach, seen from
-// aboard. It opens where the ship's clock stands (assets/ship.js); what lies ahead of that is drawn as planned.
+// aboard. It opens where the ship's clock stands today (assets/ship.js); what lies ahead of that is drawn as planned.
 
 const { probe: PROBE, archive: ARCHIVE } = Voyage;
 const NOW = Voyage.now;
@@ -96,7 +96,7 @@ function mountVoyage(root) {
   const clockButton = document.createElement("button");
   clockButton.type = "button";
   clockButton.textContent = "Now";
-  clockButton.setAttribute("aria-label", `Now: ${Voyage.stamp(Voyage.shipDate)}`);
+  clockButton.setAttribute("aria-label", `Now: ${Voyage.stamp(Voyage.shipNow())}`);
   clockButton.addEventListener("click", () => { stop(); setTime(NOW); });
   clockTick.appendChild(clockButton);
   beatList.appendChild(clockTick);
@@ -217,7 +217,7 @@ function mountVoyage(root) {
     const beat = BEATS[current];
     const beatIsPlanned = beat.at > NOW + EPSILON;
     const showing = atNow ? NOW_BEAT : (y > NOW && !beatIsPlanned) ? PLANNED_COAST : beat;
-    caption.when.textContent = atNow ? `Now · ${Voyage.stamp(Voyage.shipDate)}`
+    caption.when.textContent = atNow ? `Now · ${Voyage.stamp(Voyage.shipNow())}`
       : y > NOW ? `Planned · ${beatIsPlanned ? (beat.date || beat.year) : Voyage.monthYear(y)}`
       : (beat.date || beat.year);
     caption.title.textContent = showing.title;

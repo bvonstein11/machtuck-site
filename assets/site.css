@@ -207,7 +207,7 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
   font-size: clamp(0.85rem, 1.15vw, 1.05rem); font-style: italic; letter-spacing: 0.04em;
   color: var(--ink); text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
 }
-.hero__actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(20px, 2.4vw, 34px); }
 .hero::after {
   content: ""; position: absolute; inset: auto 0 0; height: 22%;
   background: linear-gradient(to bottom, transparent, var(--bg));

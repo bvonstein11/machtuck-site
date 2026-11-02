@@ -3,10 +3,10 @@
 // timeline counts.
 
 /**
- * The ship's clock: the Earth date and time stamped on the newest published Voyage Log, 24-hour. Each new log moves
- * the ship forward: change this one line when one publishes, and the strip and the chart follow.
+ * The ship's clock runs on today's date and time, shifted so that the Archive reaches orbit (22 October 3342 in the
+ * story's calendar) on this real date. Change this one line and the strip and the chart follow.
  */
-const SHIP_CLOCK = "3341-05-07 21:47";
+const ORBIT_ON = "2027-10-22";
 
 const Voyage = (() => {
   /** 19 January 3310 is Y+20.39, so Y+0 falls in late August 3289. */
@@ -15,15 +15,25 @@ const Voyage = (() => {
   /** The survey probe flies at half the speed of light; its report comes home at the speed of light. */
   const probe = { launch: 0, arrive: 8.68, transmit: 10.18, received: 14.52 };
 
-  /** A 46-day burn at one gravity, a coast at 0.130 of light speed, a 46-day braking burn, a week's approach.
-   *  The 32.63-year voyage is counted from the start of the coast, as the story counts it. */
-  const archive = { depart: 20.39, coast: 20.52, brake: 53.0, approach: 53.13, arrive: 53.15, cruise: 0.13, voyageYears: 32.63 };
+  /** The day the Archive reaches orbit, in the story's calendar. */
+  const orbitInStory = Date.UTC(3342, 9, 22);
+
+  /** A 46-day burn at one gravity, a coast at 0.130 of light speed, a 46-day braking burn, a week's approach, then orbit
+   *  on the calendar's day (the timeline's Y+53.15, rounded). The 32.63-year voyage is counted from the start of the
+   *  coast, as the story counts it. */
+  const archive = { depart: 20.39, coast: 20.52, brake: 53.0, approach: 53.13, cruise: 0.13, voyageYears: 32.63 };
+  archive.arrive = fractionalYear(new Date(orbitInStory)) - yearAtLaunch;
 
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-  /** The clock as a moment in time (the calendar is far future; Date handles it). */
-  const [, year, month, day, hour, minute] = SHIP_CLOCK.match(/^(\d+)-(\d+)-(\d+) (\d+):(\d+)$/).map(Number);
-  const shipDate = new Date(Date.UTC(year, month - 1, day, hour, minute));
+  /** How far the ship's calendar runs ahead of ours: the story's arrival minus the real date it falls on. */
+  const [orbitYear, orbitMonth, orbitDay] = ORBIT_ON.split("-").map(Number);
+  const aheadBy = orbitInStory - Date.UTC(orbitYear, orbitMonth - 1, orbitDay);
+
+  /** The ship's clock at this moment. */
+  function shipNow() {
+    return new Date(Date.now() + aheadBy);
+  }
 
   /** A calendar moment as a fractional year. */
   function fractionalYear(date) {
@@ -32,8 +42,13 @@ const Voyage = (() => {
     return date.getUTCFullYear() + (date.getTime() - start) / (end - start);
   }
 
-  /** Where the ship's clock stands on the voyage's own scale. */
-  const now = fractionalYear(shipDate) - yearAtLaunch;
+  /** Where a moment on the ship's clock stands on the voyage's own scale. */
+  function voyageTime(date) {
+    return fractionalYear(date) - yearAtLaunch;
+  }
+
+  /** Where the ship's clock stood when the page opened. */
+  const now = voyageTime(shipNow());
 
   /** "May 3341" for any moment on the voyage's scale. */
   function monthYear(y) {
@@ -76,5 +91,5 @@ const Voyage = (() => {
     return Math.min(archive.voyageYears, Math.max(0, y - archive.coast));
   }
 
-  return { probe, archive, now, shipDate, monthYear, stamp, speedAt, progressAt, voyageYearAt };
+  return { probe, archive, now, shipNow, voyageTime, monthYear, stamp, speedAt, progressAt, voyageYearAt };
 })();
