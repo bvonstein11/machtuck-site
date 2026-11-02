@@ -6,7 +6,7 @@
  * so instead of leading nowhere. Paste the invite here (for example "https://discord.gg/abc123") and every button
  * on every page follows.
  */
-const DISCORD_INVITE = "";
+const DISCORD_INVITE = "https://discord.gg/akCxskKStX";
 
 document.documentElement.classList.remove("no-js");
 
