@@ -7,13 +7,41 @@
 
 /* Five screens of scroll for the whole drop: about fifteen frames a screen. */
 .drop { position: relative; height: 500vh; height: 500svh; background: #000; }
-.drop__screen { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+.drop__screen { position: sticky; top: 0; height: 100vh; height: 100dvh; overflow: hidden; }
 .drop__canvas { display: block; width: 100%; height: 100%; }
 /* Soft dark edges, so the labels read over a bright frame and the track meets the page around it. */
 .drop__screen::before, .drop__screen::after { content: ""; position: absolute; left: 0; right: 0; height: 24%; z-index: 0; pointer-events: none; }
 .drop__screen::before { top: 0; background: linear-gradient(to bottom, rgba(7, 9, 13, 0.85), transparent); }
 .drop__screen::after { bottom: 0; background: linear-gradient(to top, rgba(7, 9, 13, 0.85), transparent); }
 .drop__tag, .drop__phases, .drop__loading, .drop__progress { z-index: 1; }
+/* "Dropping in": the drop's title card, a HUD word over the dark first frames that fades as the scroll falls. */
+.drop__title {
+  position: absolute; inset: 0; z-index: 1; display: grid; place-content: center; justify-items: center; gap: 16px;
+  padding: 0 var(--gutter); text-align: center; pointer-events: none; will-change: opacity, transform;
+}
+.drop__title-kicker {
+  display: flex; align-items: center; gap: 10px; margin: 0;
+  font: 400 0.72rem/1 var(--font-mono); letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent);
+}
+.drop__title-kicker i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); animation: drop-blink 1.2s steps(2) infinite; }
+.drop__title-word {
+  position: relative; margin: 0; padding: 0.16em 0.5em;
+  font: 600 clamp(3rem, 10vw, 8.5rem)/0.95 var(--font-display); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink);
+  text-shadow: 0 0 40px rgba(224, 137, 62, 0.35), 0 4px 30px rgba(0, 0, 0, 0.8);
+}
+.drop__title-word::before, .drop__title-word::after { content: ""; position: absolute; width: 0.42em; height: 0.42em; border: 2px solid var(--accent); }
+.drop__title-word::before { left: 0; top: 0; border-right: 0; border-bottom: 0; }
+.drop__title-word::after { right: 0; bottom: 0; border-left: 0; border-top: 0; }
+.drop__title-sub { margin: 0; font: 400 0.66rem/1 var(--font-mono); letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-dim); }
+@keyframes drop-blink { 50% { opacity: 0.2; } }
+/* A phone has no room for the tag and the loading line side by side: the loading line goes under the tag. */
+@media (max-width: 600px) { .drop__loading { right: auto; left: var(--gutter); top: calc(var(--top-height) + 42px); } }
+/* Held upright, the frame sits whole in the middle of the screen: the title card rides above it, and the track is
+   shorter, since the frame is smaller. */
+@media (orientation: portrait) {
+  .drop--home { height: 260vh; height: 260svh; }
+  .drop__title { place-content: start center; padding-top: calc(var(--top-height) + 12vh); }
+}
 /* On the game page the track is shorter, and a tag says what the frames are. */
 .drop--home { height: 360vh; height: 360svh; }
 .drop__tag {
@@ -38,5 +66,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .drop { height: 100vh; height: 100svh; }
+  .drop__title { display: none; }
   .drop__phases li { transition: none; }
 }

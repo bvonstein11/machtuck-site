@@ -8,9 +8,9 @@
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#07090d">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/assets/site.css?v=301beded">
-  <link rel="stylesheet" href="/drop/drop.css?v=301beded">
-  <script src="/drop/drop.js?v=301beded" defer></script>
+  <link rel="stylesheet" href="/assets/site.css?v=522416d2">
+  <link rel="stylesheet" href="/drop/drop.css?v=522416d2">
+  <script src="/drop/drop.js?v=522416d2" defer></script>
 </head>
 <body>
   <main>
@@ -24,9 +24,14 @@
 
     <!-- The drop: a tall track whose scroll position picks the frame. The frames are the game's opening (FirstDropOpening),
          captured from a player build every sixth frame at 30 per second; they load only as the track comes near. -->
-    <section class="drop" data-drop data-frames="74" data-src="/drop/frames/drop-{n}.webp" aria-label="The opening drop">
+    <section class="drop" data-drop data-frames="74" data-src="/drop/frames/drop-{n}.webp?v=1920" aria-label="The opening drop">
       <div class="drop__screen">
         <canvas class="drop__canvas" data-drop-canvas role="img" aria-label="The VIGIL's drop, from re-entry to the cockpit"></canvas>
+        <div class="drop__title" data-drop-title aria-hidden="true">
+          <p class="drop__title-kicker"><i></i>VX-21 VIGIL · Drop in progress</p>
+          <p class="drop__title-word">Dropping in</p>
+          <p class="drop__title-sub">Scroll to drop</p>
+        </div>
         <ol class="drop__phases" aria-hidden="true">
           <li data-from="0" data-to="44">Entry</li>
           <li data-from="45" data-to="66">Touchdown</li>

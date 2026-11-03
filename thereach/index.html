@@ -25,8 +25,8 @@
   <link rel="preload" href="/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/assets/img/sky-2560.webp" as="image" media="(min-width: 1281px)">
   <link rel="preload" href="/assets/img/sky-1280.webp" as="image" media="(max-width: 1280px)">
-  <link rel="stylesheet" href="/assets/site.css?v=301beded">
-  <link rel="stylesheet" href="/drop/drop.css?v=301beded">
+  <link rel="stylesheet" href="/assets/site.css?v=522416d2">
+  <link rel="stylesheet" href="/drop/drop.css?v=522416d2">
   <script>
     // Boarding: arriving from another site opens on the shipboard network, which assets/site.js draws. Nothing is
     // stored in the browser (the privacy page promises that): a reload, Back, or a link from this site skips it. This
@@ -41,9 +41,9 @@
       }
     } catch (error) { /* no boarding screen */ }
   </script>
-  <script src="/assets/ship.js?v=301beded" defer></script>
-  <script src="/assets/site.js?v=301beded" defer></script>
-  <script src="/drop/drop.js?v=301beded" defer></script>
+  <script src="/assets/ship.js?v=522416d2" defer></script>
+  <script src="/assets/site.js?v=522416d2" defer></script>
+  <script src="/drop/drop.js?v=522416d2" defer></script>
 </head>
 <body>
   <a class="skip" href="#game">Skip to content</a>
@@ -129,9 +129,14 @@
 
     <!-- THE DROP: the game's own opening, played by the scroll: the burn, the touchdown, the cockpit coming up
          (/drop/drop.js; frames from a pre-alpha player build). It loads only as the visitor scrolls toward it. -->
-    <section class="drop drop--home" id="drop" data-section data-drop data-frames="74" data-src="/drop/frames/drop-{n}.webp" aria-label="The drop">
+    <section class="drop drop--home" id="drop" data-section data-drop data-frames="74" data-src="/drop/frames/drop-{n}.webp?v=1920" aria-label="The drop">
       <div class="drop__screen">
         <canvas class="drop__canvas" data-drop-canvas role="img" aria-label="The VIGIL's drop, from re-entry to the cockpit"></canvas>
+        <div class="drop__title" data-drop-title aria-hidden="true">
+          <p class="drop__title-kicker"><i></i>VX-21 VIGIL · Drop in progress</p>
+          <p class="drop__title-word">Dropping in</p>
+          <p class="drop__title-sub">Scroll to drop</p>
+        </div>
         <p class="drop__tag">Pre-alpha · the game's own opening</p>
         <ol class="drop__phases" aria-hidden="true">
           <li data-from="0" data-to="44">Entry</li>

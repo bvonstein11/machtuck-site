@@ -14,6 +14,7 @@
   const loading = drop.querySelector("[data-drop-loading]");
   const progress = drop.querySelector("[data-drop-progress]");
   const phases = [...drop.querySelectorAll("[data-from]")];
+  const title = drop.querySelector("[data-drop-title]");
   const frames = new Array(count).fill(null);
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let loaded = 0;
@@ -49,14 +50,26 @@
     const index = wanted();
     const frame = nearestLoaded(index);
     progress.style.transform = `scaleX(${index / (count - 1)})`;
+    // "Dropping in" holds over the dark first frames and is gone by the time the burn fills the glass.
+    if (title) {
+      const share = index / (count - 1);
+      const fade = Math.min(1, Math.max(0, (share - 0.03) / 0.12));
+      title.style.opacity = String(1 - fade);
+      title.style.transform = `scale(${1 + fade * 0.12})`;
+    }
     for (const phase of phases) phase.classList.toggle("is-on", index >= Number(phase.dataset.from) && index <= Number(phase.dataset.to));
     if (frame < 0 || frame === shown) return;
     shown = frame;
-    // Cover the canvas the way object-fit: cover would, centred.
+    // A wide screen is covered edge to edge. A tall one (a phone held upright) shows the whole frame across its width,
+    // centred, so the cockpit and its HUD stay whole instead of being cut to their middle third.
     const image = frames[frame];
-    const scale = Math.max(canvas.width / image.naturalWidth, canvas.height / image.naturalHeight);
+    const tall = canvas.width < canvas.height;
+    const scale = tall ? canvas.width / image.naturalWidth
+                       : Math.max(canvas.width / image.naturalWidth, canvas.height / image.naturalHeight);
     const width = image.naturalWidth * scale;
     const height = image.naturalHeight * scale;
+    context.fillStyle = "#000";
+    context.fillRect(0, 0, canvas.width, canvas.height);
     context.drawImage(image, (canvas.width - width) / 2, (canvas.height - height) / 2, width, height);
   }
 
