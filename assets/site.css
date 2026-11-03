@@ -270,8 +270,28 @@ h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
 .game__lead { max-width: 640px; margin-top: 40px; color: var(--ink-dim); }
 .game__lead p:last-child { margin-bottom: 0; }
 .game__medals { margin: 0; max-width: 400px; }
-.game__medals img { width: 100%; box-shadow: 0 0 0 1px var(--line), 0 30px 80px rgba(0, 0, 0, 0.55); }
-.game__medals figcaption { margin-top: 14px; color: var(--ink-dim); font-size: 0.82rem; line-height: 1.5; }
+/* No frame: the edges fade into the page, so the medals come out of the dark and the white shirt falls away. */
+.game__medals img {
+  --feather:
+    linear-gradient(to right, transparent, #000 16%, #000 93%, transparent),
+    linear-gradient(to bottom, transparent, #000 10%, #000 86%, transparent),
+    radial-gradient(ellipse 40% 36% at 0 0, transparent 40%, #000 100%);
+  width: 100%;
+  -webkit-mask-image: var(--feather); mask-image: var(--feather);
+  -webkit-mask-composite: source-in; mask-composite: intersect;
+}
+/* On a phone, a tighter frame on the wings and medals, so the five points are not a screen away. */
+@media (max-width: 899px) {
+  .game__medals img {
+    --feather:
+      linear-gradient(to right, transparent, #000 16%, #000 93%, transparent),
+      linear-gradient(to bottom, transparent, #000 7%, #000 91%, transparent),
+      radial-gradient(ellipse 40% 36% at 0 0, transparent 40%, #000 100%);
+    aspect-ratio: 5 / 6; object-fit: cover; object-position: 50% 40%;
+  }
+}
+.game__medals figcaption { margin-top: 6px; color: var(--ink-dim); font-size: 0.82rem; line-height: 1.5; }
+.game__medals figcaption p { margin: 0; }
 
 .pillars {
   list-style: none; margin: 72px 0 0; padding: 0;
@@ -336,7 +356,7 @@ h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
 }
 .reach-map figcaption { display: grid; gap: 6px 40px; margin-top: 22px; color: var(--ink-dim); }
 .reach-map figcaption p { margin: 0; }
-.reach-map__title { color: var(--accent); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; }
+.reach-map__title, .game__medals-label { color: var(--accent); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; }
 .reach-map__legend { display: none; }
 @media (min-width: 900px) { .reach-map figcaption { grid-template-columns: auto 1fr; align-items: baseline; } }
 @media (max-width: 760px) {
