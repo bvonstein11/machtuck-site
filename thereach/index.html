@@ -25,7 +25,7 @@
   <link rel="preload" href="/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/assets/img/sky-2560.webp" as="image" media="(min-width: 1281px)">
   <link rel="preload" href="/assets/img/sky-1280.webp" as="image" media="(max-width: 1280px)">
-  <link rel="stylesheet" href="/assets/site.css?v=2ccb7ce3">
+  <link rel="stylesheet" href="/assets/site.css?v=3a8e5f1d">
   <script>
     // Boarding: arriving from another site opens on the shipboard network, which assets/site.js draws. Nothing is
     // stored in the browser (the privacy page promises that): a reload, Back, or a link from this site skips it. This
@@ -40,9 +40,9 @@
       }
     } catch (error) { /* no boarding screen */ }
   </script>
-  <script src="/assets/ship.js?v=2ccb7ce3" defer></script>
-  <script src="/assets/site.js?v=2ccb7ce3" defer></script>
-  <script src="/assets/voyage.js?v=2ccb7ce3" defer></script>
+  <script src="/assets/ship.js?v=3a8e5f1d" defer></script>
+  <script src="/assets/site.js?v=3a8e5f1d" defer></script>
+  <script src="/assets/voyage.js?v=3a8e5f1d" defer></script>
 </head>
 <body>
   <a class="skip" href="#game">Skip to content</a>
@@ -84,7 +84,7 @@
     <a href="#game" data-rail-for="game"><span>The Game</span></a>
     <a href="#world" data-rail-for="world"><span>The World</span></a>
     <a href="#archive" data-rail-for="archive"><span>The Archive</span></a>
-    <a href="#record" data-rail-for="record"><span>The Record</span></a>
+    <a href="#story" data-rail-for="story"><span>The Story</span></a>
     <a href="#crossing" data-rail-for="crossing"><span>The Crossing</span></a>
     <a href="#factions" data-rail-for="factions"><span>Factions</span></a>
     <a href="#studio" data-rail-for="studio"><span>Studio</span></a>
@@ -242,64 +242,20 @@
       </div>
     </section>
 
-    <!-- THE RECORD: why anyone is aboard, as the Archive knows it today. Dates are the story's Earth calendar; a month without
-         a day is the voyage timeline's year read to the month. What canon
-         spends later stays off: the settlement's fate, what the signal is, every name, and what the first log holds. -->
-    <section class="section record" id="record" data-section>
+    <!-- THE STORY: how we got here, as the Archive knows it today, told in order. What canon spends later stays off:
+         the settlement's fate, what the signal is, every name, and what the first log holds. -->
+    <section class="section story" id="story" data-section>
       <div class="wrap">
-        <p class="eyebrow" data-reveal>How we got here</p>
-        <h2 data-reveal>Nobody aboard chose this star.</h2>
-        <p class="lead record__intro" data-reveal>Earth was failing. The plan was an evacuation, on a schedule: probes sent out to find somewhere, a small crew to go ahead, then everyone else. The heading was chosen on Earth, by people who were dead before the Archive left. We inherited it.</p>
-        <ol class="record__log" data-record>
-          <li data-reveal>
-            <time>Aug 3289</time>
-            <div><h3>The probe leaves</h3><p>No one aboard. Half the speed of light, toward the nearest star.</p></div>
-          </li>
-          <li data-reveal>
-            <time>Mar 3304</time>
-            <div><h3>Earth hears back</h3><p>A habitable world, with water. The report is more than four years old when it lands. Nobody chose this star: it answered first because it was nearest.</p></div>
-          </li>
-          <li data-reveal>
-            <time>Mar 3308</time>
-            <div><h3>A crew goes ahead</h3><p>Several hundred people, on a ship small enough to run at a quarter of light speed. They are to land first and build.</p></div>
-          </li>
-          <li class="is-archive" data-reveal>
-            <time>19 Jan 3310</time>
-            <div><h3>The Archive leaves Earth</h3><p>About twenty thousand people, and everything worth saving. A moving city: the slowest ship in the plan, and the last to leave.</p></div>
-          </li>
-          <li data-reveal>
-            <time>Jul 3325</time>
-            <div><h3>The crew lands</h3><p>Fifteen years into our crossing, the crew sent ahead is down on The Reach.</p></div>
-          </li>
-          <li data-reveal>
-            <time>Mar 3330</time>
-            <div><h3>Their signal reaches us</h3><p>Three years after landing, the crew's signal reaches the Archive. They are down, and they have built a settlement. We are twenty years into the crossing.</p></div>
-          </li>
-          <li data-reveal>
-            <time>Oct 3330</time>
-            <div><h3>A supply ship goes ahead</h3><p>Faster than the Archive, it leaves us carrying supplies and people for the settlement.</p></div>
-          </li>
-          <li data-reveal>
-            <time>Mar 3337</time>
-            <div><h3>The supply ship lands</h3><p>It reaches The Reach after more than six years on its own.</p></div>
-          </li>
-          <li class="is-signal" data-reveal>
-            <time>Jun 3340</time>
-            <div>
-              <h3>The last routine log</h3>
-              <p>For years the settlement's logs have arrived on schedule. This is the last one. Then the signal stops.</p>
-              <svg class="record__trace" viewBox="0 0 320 40" aria-hidden="true" focusable="false"><path d="M0 20 H40 l6 -14 l8 28 l6 -14 H110 l6 -14 l8 28 l6 -14 H180 l6 -9 l8 18 l6 -9 H320" /></svg>
-            </div>
-          </li>
-          <li class="is-sealed" data-reveal>
-            <time>07 May 3341 · 21:47</time>
-            <div><h3>Voyage Log 01</h3><p>A recording made aboard that night. <span class="record__redact" aria-hidden="true"></span> Not yet released.</p></div>
-          </li>
-          <li class="is-now" data-reveal>
-            <time><span data-ship-date>Now</span></time>
-            <div><h3>The Archive is still coming</h3><p>Nobody aboard agrees on what the silence means. When we reach orbit, we will find out.</p></div>
-          </li>
-        </ol>
+        <p class="eyebrow" data-reveal>The story so far</p>
+        <h2 data-reveal>How we got here.</h2>
+        <div class="story__text">
+          <p class="lead" data-reveal>Earth was failing, and there was a plan. Probes went out to find somewhere new, and the first to answer came from the nearest star: a habitable world, with water. Earth could not wait for a second answer.</p>
+          <p data-reveal>A small crew went ahead, several hundred people on a fast ship, to land first and build. Then, on 19 January 3310, the Archive left Earth with about twenty thousand people and everything worth saving: the slowest ship in the plan, and the last to leave.</p>
+          <p data-reveal>Fifteen years into our crossing, the crew landed on The Reach. In 3330 their signal reached us: they were down, and they had built a settlement. We sent a faster ship ahead with supplies and more people, and in 3337 it landed.</p>
+          <p data-reveal>For years after that, the settlement's logs came home on schedule. The last one arrived in June 3340. Then the signal stopped.</p>
+          <svg class="story__trace" data-reveal viewBox="0 0 320 40" aria-hidden="true" focusable="false"><path d="M0 20 H40 l6 -14 l8 28 l6 -14 H110 l6 -14 l8 28 l6 -14 H180 l6 -9 l8 18 l6 -9 H320" /></svg>
+          <p class="story__now" data-reveal><span><i aria-hidden="true"></i><span data-ship-date>Now</span></span> The Archive is still coming. Nobody aboard agrees on what the silence means, and when we reach orbit, we will find out.</p>
+        </div>
       </div>
     </section>
 

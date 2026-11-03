@@ -137,29 +137,6 @@ if (typeof Voyage !== "undefined" && document.querySelector("[data-ship-date]"))
   setInterval(tick, 1000);
 }
 
-// THE RECORD: the line down the record fills as the reader moves through it, and each entry's mark lights once read.
-const record = document.querySelector("[data-record]");
-if (record) {
-  const entries = [...record.children];
-  const fillRecord = () => {
-    const reading = window.innerHeight * 0.6;
-    const box = record.getBoundingClientRect();
-    record.style.setProperty("--filled", Math.min(1, Math.max(0, (reading - box.top) / box.height)).toFixed(3));
-    for (const entry of entries) entry.classList.toggle("is-passed", entry.getBoundingClientRect().top < reading);
-  };
-  if (reducedMotion) {
-    record.style.setProperty("--filled", "1");
-    for (const entry of entries) entry.classList.add("is-passed");
-  } else {
-    let pending = false;
-    window.addEventListener("scroll", () => {
-      if (!pending) { pending = true; requestAnimationFrame(() => { pending = false; fillRecord(); }); }
-    }, { passive: true });
-    window.addEventListener("resize", fillRecord);
-    fillRecord();
-  }
-}
-
 // Boarding: arriving from another site opens on the shipboard network for about two seconds. It says "Welcome back",
 // never "Welcome aboard": mid-crossing nobody comes aboard, and most people on the Archive grew up there. The inline
 // script in the page's head decides whether it shows (not on a reload, Back, or a link from this site; never to a
