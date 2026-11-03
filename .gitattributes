@@ -1,5 +1,6 @@
-# Pictures are plain git files: GitHub Pages cannot serve a picture kept in Git LFS.
+# Pictures and video are plain git files: GitHub Pages cannot serve a file kept in Git LFS.
 *.png !filter binary
 *.PNG !filter binary
 *.jpg !filter binary
 *.jpeg !filter binary
+*.mp4 !filter binary

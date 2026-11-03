@@ -264,8 +264,14 @@ h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
 /* ---------- sections ---------- */
 .section { position: relative; padding: clamp(80px, 10vw, 136px) 0; }
 
-.game__lead { display: grid; gap: 8px 48px; margin-top: 40px; max-width: 980px; color: var(--ink-dim); }
-@media (min-width: 900px) { .game__lead { grid-template-columns: 1.1fr 1fr; } }
+/* The opening words beside the medal picture on a wide screen; on a phone the picture sits under them. */
+.game__intro { display: grid; gap: 48px; }
+@media (min-width: 900px) { .game__intro { grid-template-columns: minmax(0, 1fr) minmax(0, 400px); gap: 72px; align-items: center; } }
+.game__lead { max-width: 640px; margin-top: 40px; color: var(--ink-dim); }
+.game__lead p:last-child { margin-bottom: 0; }
+.game__medals { margin: 0; max-width: 400px; }
+.game__medals img { width: 100%; box-shadow: 0 0 0 1px var(--line), 0 30px 80px rgba(0, 0, 0, 0.55); }
+.game__medals figcaption { margin-top: 14px; color: var(--ink-dim); font-size: 0.82rem; line-height: 1.5; }
 
 .pillars {
   list-style: none; margin: 72px 0 0; padding: 0;
@@ -389,7 +395,7 @@ h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
 }
 
 /* the story: how we got here, told in order, ending on the live clock */
-.story__text { max-width: 720px; margin-top: 32px; color: var(--ink-dim); }
+.story__text { max-width: 720px; margin-top: 40px; color: var(--ink-dim); }
 .story__text p { margin-bottom: 1.2em; }
 .story__text .lead { color: var(--ink); }
 .story__trace { display: block; width: min(320px, 100%); height: 40px; margin: 4px 0 28px; overflow: visible; }
