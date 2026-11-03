@@ -10,8 +10,10 @@ const ORBIT_ON = "2027-10-22";
 
 /**
  * The Voyage Logs published so far, oldest first, each with the Earth date and time stamped on it. Add one line when a
- * log goes out, for example { log: "01", stamp: "3341-05-07 21:47" }: it joins The Crossing's milestones and its
- * "Latest log" button. Empty until the first log is published.
+ * log goes out, for example { log: "01", stamp: "3341-05-07 21:47", title: "…", url: "https://…", poster: "/assets/img/log-01.webp" }:
+ * it joins The Crossing's milestones and its "Latest log" button, and gets a card in VOYAGE LOGS, which stays hidden
+ * until this has its first line. The title, url (where the log plays) and poster are optional. Empty until the first
+ * log is published.
  */
 const PUBLISHED_LOGS = [];
 
@@ -50,6 +52,10 @@ const Voyage = (() => {
   /** How far the ship's calendar runs ahead of ours: the story's arrival minus the real date it falls on. */
   const [orbitYear, orbitMonth, orbitDay] = ORBIT_ON.split("-").map(Number);
   const aheadBy = orbitInStory - Date.UTC(orbitYear, orbitMonth - 1, orbitDay);
+
+  /** The real moment the ship's clock reads orbit, which the hero's countdown runs to: midnight UTC on ORBIT_ON, since
+   *  the ship's clock keeps UTC. */
+  const arrivesAt = orbitInStory - aheadBy;
 
   /** The ship's clock at this moment. */
   function shipNow() {
@@ -154,6 +160,6 @@ const Voyage = (() => {
     return Math.min(archive.voyageYears, Math.max(0, y - archive.coast));
   }
 
-  return { probe, archive, logs, now, shipNow, voyageTime, dateAt, dayStamp, monthYear, stamp, phaseAt, departureDistanceAU,
+  return { probe, archive, arrivesAt, logs, now, shipNow, voyageTime, dateAt, dayStamp, monthYear, stamp, phaseAt, departureDistanceAU,
     speedAt, progressAt, voyageYearAt };
 })();

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>The Hangar · The Reach: Unknown</title>
+  <meta name="description" content="Spin the VX-21 VIGIL and load it out. Swap its weapons and watch its weight, speed, cooling and jump jets change, with every number taken from the game.">
+  <!-- Linked from nothing yet: kept out of search until the page is announced. -->
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#07090d">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preload" href="/hangar/spin/vigil-000.webp" as="image">
+  <link rel="stylesheet" href="/assets/site.css?v=301beded">
+  <link rel="stylesheet" href="/hangar/hangar.css?v=301beded">
+  <script src="/assets/ship.js?v=301beded" defer></script>
+  <script src="/assets/site.js?v=301beded" defer></script>
+  <script src="/hangar/hangar.js?v=301beded" defer></script>
+</head>
+<body>
+  <a class="skip" href="#hangar">Skip to content</a>
+
+  <div class="ship" aria-label="The Archive, in transit">
+    <span class="ship__state"><i aria-hidden="true"></i><span class="ship__long">Archive · </span><span data-ship-state>In transit</span></span>
+    <span class="ship__item"><b>Earth date</b> <span data-ship-date>—</span></span>
+    <span class="ship__item ship__item--wide"><b>Speed</b> <span data-ship-speed>0.130 c</span></span>
+    <span class="ship__item ship__item--wide"><b>Voyage year</b> <span data-ship-year>—</span></span>
+  </div>
+
+  <header class="bar is-solid" data-bar>
+    <a class="bar__brand" href="/thereach/" aria-label="Mach Tuck Games, The Reach: Unknown">
+      <img src="/assets/img/mt-monogram.svg" alt="" width="26" height="30">
+      <span>Mach Tuck <b>Games</b></span>
+    </a>
+    <nav class="bar__nav" id="site-nav" aria-label="Sections">
+      <a href="/thereach/#game">The Game</a>
+      <a href="/thereach/#world">The World</a>
+      <a href="/thereach/#factions">Factions</a>
+      <a href="#hangar" aria-current="page">The Hangar</a>
+      <a class="btn btn--small" data-discord href="/thereach/#join">Join the Discord</a>
+    </nav>
+    <button class="bar__menu" type="button" aria-expanded="false" aria-controls="site-nav" data-menu>
+      <span class="bar__menu-lines" aria-hidden="true"></span>
+      <span class="sr">Menu</span>
+    </button>
+  </header>
+
+  <main class="hangar" id="hangar">
+    <div class="wrap">
+      <header class="hangar__head">
+        <p class="eyebrow">The Hangar · Pre-alpha</p>
+        <h1>VX-21 VIGIL</h1>
+        <p class="lead">Spin it, then load it. You can fit anything that is yours. Whether you can fly it well is the weight's call.</p>
+      </header>
+
+      <div class="hangar__grid">
+        <!-- The turntable: 72 rendered frames, one every 5 degrees. Pictures only, never the 3D model. -->
+        <figure class="spin" data-spin>
+          <div class="spin__stage" data-spin-stage tabindex="0" role="img" aria-label="The VX-21 VIGIL on a turntable. Drag, or use the arrow keys, to turn it.">
+            <img src="/hangar/spin/vigil-000.webp" alt="" width="640" height="640" data-spin-frame draggable="false">
+            <p class="spin__hint" aria-hidden="true">Drag to turn</p>
+          </div>
+          <input class="spin__dial" type="range" min="0" max="71" step="1" value="0" aria-label="Turn the VIGIL" data-spin-dial>
+          <figcaption>Placeholder render: the game's VIGIL mesh in plain grey, until the finished render replaces it.</figcaption>
+        </figure>
+
+        <!-- The loadout: every slot and every number comes from hangar-data.json, which Vigil ▸ Website ▸ Export Hangar
+             Data writes from the game. This page only looks a loadout up; it computes nothing. -->
+        <section class="fit" aria-labelledby="fit-title" data-fit>
+          <h2 class="fit__title" id="fit-title">Loadout</h2>
+          <ol class="fit__slots" data-fit-slots></ol>
+          <p class="fit__noscript">The loadout needs JavaScript to run.</p>
+        </section>
+      </div>
+
+      <section class="gauges" aria-labelledby="gauges-title" data-gauges hidden>
+        <h2 class="sr" id="gauges-title">Weight and performance</h2>
+        <div class="gauge gauge--weight">
+          <p class="gauge__label">Operating weight</p>
+          <p class="gauge__value"><b data-g="operating">—</b> <span>of <span data-g="mow">—</span> max operating weight</span></p>
+          <div class="gauge__bar" aria-hidden="true">
+            <span class="gauge__fill" data-g="weight-fill"></span>
+            <span class="gauge__mow" data-g="mow-mark"></span>
+          </div>
+          <p class="gauge__note" data-g="load">—</p>
+        </div>
+        <dl class="gauges__list">
+          <div class="gauge">
+            <dt class="gauge__label">Top speed</dt>
+            <dd class="gauge__value"><b data-g="speed">—</b> <span data-g="speed-tax"></span></dd>
+          </div>
+          <div class="gauge">
+            <dt class="gauge__label">Cooling</dt>
+            <dd class="gauge__value"><b data-g="cooling">—</b> <span>of nominal</span></dd>
+          </div>
+          <div class="gauge">
+            <dt class="gauge__label">Jump jets</dt>
+            <dd class="gauge__value"><b data-g="jets">—</b> <span data-g="jets-more"></span></dd>
+          </div>
+        </dl>
+        <p class="gauges__note" data-g="source"></p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot__inner">
+      <a class="foot__brand" href="/thereach/" aria-label="Back to The Reach: Unknown">
+        <img src="/assets/img/mt-monogram.svg" alt="" width="34" height="40">
+        <img class="foot__wordmark" src="/assets/img/the-reach-wordmark.svg" alt="The Reach: Unknown" width="220" height="58">
+      </a>
+      <div class="foot__small">
+        <nav class="foot__links" aria-label="Legal">
+          <a href="/presskit/">Press kit</a>
+          <a href="/privacy/">Privacy</a>
+          <a href="/terms/">Terms</a>
+          <a href="/art/">Art &amp; AI</a>
+        </nav>
+        <p>© <span data-year>2026</span> Mach Tuck Games LLC</p>
+        <p>The Reach: Unknown™ and the MT shield are trademarks of Mach Tuck Games LLC.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,1604 @@
+{
+  "source": "Vigil ▸ Website ▸ Export Hangar Data",
+  "build": "net-s299.113",
+  "note": "Pre-alpha. Stock levels, outside Ranked. Weights in pounds (tonnes × 2,000, as the game shows them).",
+  "mech": {
+    "id": "VX21_VIGIL",
+    "name": "VX-21 VIGIL",
+    "weightClass": "Medium",
+    "emptyLb": 76000,
+    "maxOperatingLb": 106240,
+    "topSpeedEmptyMph": 45,
+    "climbCeilingEmptyFt": 150
+  },
+  "slots": [
+    {
+      "id": "RA_Upper",
+      "label": "Right arm",
+      "accepts": "arm",
+      "default": "PULSE-50"
+    },
+    {
+      "id": "LA_Upper",
+      "label": "Left arm, upper",
+      "accepts": "arm",
+      "default": "CHAIN-30"
+    },
+    {
+      "id": "LA_Lower",
+      "label": "Left arm, lower",
+      "accepts": "arm",
+      "default": "SLUG-250"
+    },
+    {
+      "id": "Shoulder",
+      "label": "Shoulder",
+      "accepts": "shoulder",
+      "default": "VOLLEY-6"
+    },
+    {
+      "id": "CT",
+      "label": "Centre torso",
+      "accepts": "module",
+      "default": ""
+    }
+  ],
+  "weapons": [
+    {
+      "id": "PULSE-50",
+      "slot": "arm",
+      "weightLb": 5000,
+      "earnedWithMarks": false
+    },
+    {
+      "id": "CHAIN-30",
+      "slot": "arm",
+      "weightLb": 7600,
+      "earnedWithMarks": false
+    },
+    {
+      "id": "SLUG-250",
+      "slot": "arm",
+      "weightLb": 8400,
+      "earnedWithMarks": false
+    },
+    {
+      "id": "DART-20",
+      "slot": "arm",
+      "weightLb": 5600,
+      "earnedWithMarks": true
+    },
+    {
+      "id": "THUMP-82",
+      "slot": "arm",
+      "weightLb": 5200,
+      "earnedWithMarks": true
+    },
+    {
+      "id": "SPIKE-90",
+      "slot": "arm",
+      "weightLb": 9000,
+      "earnedWithMarks": true
+    },
+    {
+      "id": "VOLLEY-6",
+      "slot": "shoulder",
+      "weightLb": 4200,
+      "earnedWithMarks": false
+    },
+    {
+      "id": "BREACH-275",
+      "slot": "shoulder",
+      "weightLb": 7800,
+      "earnedWithMarks": true
+    }
+  ],
+  "modules": [
+    {
+      "id": "JumpJets",
+      "name": "JUMP JETS",
+      "weightLb": 6000,
+      "earnedWithMarks": true
+    },
+    {
+      "id": "HeatSinks",
+      "name": "REACTOR COOLING",
+      "weightLb": 4000,
+      "earnedWithMarks": true
+    },
+    {
+      "id": "ArmorModule",
+      "name": "CT ARMOR",
+      "weightLb": 8000,
+      "earnedWithMarks": true
+    },
+    {
+      "id": "SpeedBoost",
+      "name": "OVERBOOST",
+      "weightLb": 3000,
+      "earnedWithMarks": true
+    }
+  ],
+  "loadouts": [
+    {
+      "key": "PULSE-50+CHAIN-30+SLUG-250|VOLLEY-6|",
+      "operatingLb": 101200,
+      "loadPct": 83.3,
+      "topSpeedMph": 40,
+      "coolingPct": 70
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+SLUG-250|VOLLEY-6|JumpJets",
+      "operatingLb": 107200,
+      "loadPct": 103.2,
+      "topSpeedMph": 38.1,
+      "coolingPct": 56.2,
+      "flightSeconds": 9.7,
+      "climbCeilingFt": 102
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+SLUG-250|VOLLEY-6|HeatSinks",
+      "operatingLb": 105200,
+      "loadPct": 96.6,
+      "topSpeedMph": 39.2,
+      "coolingPct": 65.7
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+SLUG-250|VOLLEY-6|ArmorModule",
+      "operatingLb": 109200,
+      "loadPct": 109.8,
+      "topSpeedMph": 36.3,
+      "coolingPct": 54.8
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+SLUG-250|VOLLEY-6|SpeedBoost",
+      "operatingLb": 104200,
+      "loadPct": 93.3,
+      "topSpeedMph": 43.3,
+      "coolingPct": 62.4
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+SLUG-250|BREACH-275|",
+      "operatingLb": 104800,
+      "loadPct": 95.2,
+      "topSpeedMph": 39.3,
+      "coolingPct": 60.8
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+SLUG-250|BREACH-275|JumpJets",
+      "operatingLb": 110800,
+      "loadPct": 115.1,
+      "topSpeedMph": 34.8,
+      "coolingPct": 53.8,
+      "flightSeconds": 8,
+      "climbCeilingFt": 84
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+SLUG-250|BREACH-275|HeatSinks",
+      "operatingLb": 108800,
+      "loadPct": 108.5,
+      "topSpeedMph": 36.6,
+      "coolingPct": 60.6
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+SLUG-250|BREACH-275|ArmorModule",
+      "operatingLb": 112800,
+      "loadPct": 121.7,
+      "topSpeedMph": 32.9,
+      "coolingPct": 52.5
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+SLUG-250|BREACH-275|SpeedBoost",
+      "operatingLb": 107800,
+      "loadPct": 105.2,
+      "topSpeedMph": 41.3,
+      "coolingPct": 55.8
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+DART-20|VOLLEY-6|",
+      "operatingLb": 98400,
+      "loadPct": 74.1,
+      "topSpeedMph": 40.6,
+      "coolingPct": 76.3
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+DART-20|VOLLEY-6|JumpJets",
+      "operatingLb": 104400,
+      "loadPct": 93.9,
+      "topSpeedMph": 39.4,
+      "coolingPct": 61.9,
+      "flightSeconds": 10.4,
+      "climbCeilingFt": 109
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+DART-20|VOLLEY-6|HeatSinks",
+      "operatingLb": 102400,
+      "loadPct": 87.3,
+      "topSpeedMph": 39.8,
+      "coolingPct": 73.8
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+DART-20|VOLLEY-6|ArmorModule",
+      "operatingLb": 106400,
+      "loadPct": 100.5,
+      "topSpeedMph": 38.9,
+      "coolingPct": 56.7
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+DART-20|VOLLEY-6|SpeedBoost",
+      "operatingLb": 101400,
+      "loadPct": 84,
+      "topSpeedMph": 44,
+      "coolingPct": 69.5
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+DART-20|BREACH-275|",
+      "operatingLb": 102000,
+      "loadPct": 86,
+      "topSpeedMph": 39.8,
+      "coolingPct": 68.1
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+DART-20|BREACH-275|JumpJets",
+      "operatingLb": 108000,
+      "loadPct": 105.8,
+      "topSpeedMph": 37.4,
+      "coolingPct": 55.6,
+      "flightSeconds": 9.2,
+      "climbCeilingFt": 97
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+DART-20|BREACH-275|HeatSinks",
+      "operatingLb": 106000,
+      "loadPct": 99.2,
+      "topSpeedMph": 39,
+      "coolingPct": 63.2
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+DART-20|BREACH-275|ArmorModule",
+      "operatingLb": 110000,
+      "loadPct": 112.4,
+      "topSpeedMph": 35.5,
+      "coolingPct": 54.3
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+DART-20|BREACH-275|SpeedBoost",
+      "operatingLb": 105000,
+      "loadPct": 95.9,
+      "topSpeedMph": 43.2,
+      "coolingPct": 60.3
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+THUMP-82|VOLLEY-6|",
+      "operatingLb": 98000,
+      "loadPct": 72.8,
+      "topSpeedMph": 40.6,
+      "coolingPct": 77.1
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+THUMP-82|VOLLEY-6|JumpJets",
+      "operatingLb": 104000,
+      "loadPct": 92.6,
+      "topSpeedMph": 39.4,
+      "coolingPct": 63,
+      "flightSeconds": 10.4,
+      "climbCeilingFt": 110
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+THUMP-82|VOLLEY-6|HeatSinks",
+      "operatingLb": 102000,
+      "loadPct": 86,
+      "topSpeedMph": 39.8,
+      "coolingPct": 74.9
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+THUMP-82|VOLLEY-6|ArmorModule",
+      "operatingLb": 106000,
+      "loadPct": 99.2,
+      "topSpeedMph": 39,
+      "coolingPct": 57.5
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+THUMP-82|VOLLEY-6|SpeedBoost",
+      "operatingLb": 101000,
+      "loadPct": 82.7,
+      "topSpeedMph": 44,
+      "coolingPct": 70.5
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+THUMP-82|BREACH-275|",
+      "operatingLb": 101600,
+      "loadPct": 84.7,
+      "topSpeedMph": 39.9,
+      "coolingPct": 69
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+THUMP-82|BREACH-275|JumpJets",
+      "operatingLb": 107600,
+      "loadPct": 104.5,
+      "topSpeedMph": 37.7,
+      "coolingPct": 55.9,
+      "flightSeconds": 9.5,
+      "climbCeilingFt": 99
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+THUMP-82|BREACH-275|HeatSinks",
+      "operatingLb": 105600,
+      "loadPct": 97.9,
+      "topSpeedMph": 39.1,
+      "coolingPct": 64.5
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+THUMP-82|BREACH-275|ArmorModule",
+      "operatingLb": 109600,
+      "loadPct": 111.1,
+      "topSpeedMph": 35.9,
+      "coolingPct": 54.6
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+THUMP-82|BREACH-275|SpeedBoost",
+      "operatingLb": 104600,
+      "loadPct": 94.6,
+      "topSpeedMph": 43.3,
+      "coolingPct": 61.4
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+SPIKE-90|VOLLEY-6|",
+      "operatingLb": 101800,
+      "loadPct": 85.3,
+      "topSpeedMph": 39.9,
+      "coolingPct": 68.6
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+SPIKE-90|VOLLEY-6|JumpJets",
+      "operatingLb": 107800,
+      "loadPct": 105.2,
+      "topSpeedMph": 37.6,
+      "coolingPct": 55.8,
+      "flightSeconds": 9.3,
+      "climbCeilingFt": 98
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+SPIKE-90|VOLLEY-6|HeatSinks",
+      "operatingLb": 105800,
+      "loadPct": 98.5,
+      "topSpeedMph": 39.1,
+      "coolingPct": 63.9
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+SPIKE-90|VOLLEY-6|ArmorModule",
+      "operatingLb": 109800,
+      "loadPct": 111.8,
+      "topSpeedMph": 35.7,
+      "coolingPct": 54.4
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+SPIKE-90|VOLLEY-6|SpeedBoost",
+      "operatingLb": 104800,
+      "loadPct": 95.2,
+      "topSpeedMph": 43.2,
+      "coolingPct": 60.8
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+SPIKE-90|BREACH-275|",
+      "operatingLb": 105400,
+      "loadPct": 97.2,
+      "topSpeedMph": 39.2,
+      "coolingPct": 59.2
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+SPIKE-90|BREACH-275|JumpJets",
+      "operatingLb": 111400,
+      "loadPct": 117.1,
+      "topSpeedMph": 34.2,
+      "coolingPct": 53.4,
+      "flightSeconds": 7.8,
+      "climbCeilingFt": 81
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+SPIKE-90|BREACH-275|HeatSinks",
+      "operatingLb": 109400,
+      "loadPct": 110.4,
+      "topSpeedMph": 36.1,
+      "coolingPct": 60.2
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+SPIKE-90|BREACH-275|ArmorModule",
+      "operatingLb": 113400,
+      "loadPct": 123.7,
+      "topSpeedMph": 32.4,
+      "coolingPct": 52.1
+    },
+    {
+      "key": "PULSE-50+CHAIN-30+SPIKE-90|BREACH-275|SpeedBoost",
+      "operatingLb": 108400,
+      "loadPct": 107.1,
+      "topSpeedMph": 40.7,
+      "coolingPct": 55.4
+    },
+    {
+      "key": "PULSE-50+SLUG-250+DART-20|VOLLEY-6|",
+      "operatingLb": 99200,
+      "loadPct": 76.7,
+      "topSpeedMph": 40.4,
+      "coolingPct": 74.6
+    },
+    {
+      "key": "PULSE-50+SLUG-250+DART-20|VOLLEY-6|JumpJets",
+      "operatingLb": 105200,
+      "loadPct": 96.6,
+      "topSpeedMph": 39.2,
+      "coolingPct": 59.7,
+      "flightSeconds": 10.3,
+      "climbCeilingFt": 108
+    },
+    {
+      "key": "PULSE-50+SLUG-250+DART-20|VOLLEY-6|HeatSinks",
+      "operatingLb": 103200,
+      "loadPct": 89.9,
+      "topSpeedMph": 39.6,
+      "coolingPct": 71.6
+    },
+    {
+      "key": "PULSE-50+SLUG-250+DART-20|VOLLEY-6|ArmorModule",
+      "operatingLb": 107200,
+      "loadPct": 103.2,
+      "topSpeedMph": 38.1,
+      "coolingPct": 56.2
+    },
+    {
+      "key": "PULSE-50+SLUG-250+DART-20|VOLLEY-6|SpeedBoost",
+      "operatingLb": 102200,
+      "loadPct": 86.6,
+      "topSpeedMph": 43.8,
+      "coolingPct": 67.6
+    },
+    {
+      "key": "PULSE-50+SLUG-250+DART-20|BREACH-275|",
+      "operatingLb": 102800,
+      "loadPct": 88.6,
+      "topSpeedMph": 39.7,
+      "coolingPct": 66.1
+    },
+    {
+      "key": "PULSE-50+SLUG-250+DART-20|BREACH-275|JumpJets",
+      "operatingLb": 108800,
+      "loadPct": 108.5,
+      "topSpeedMph": 36.6,
+      "coolingPct": 55.1,
+      "flightSeconds": 8.9,
+      "climbCeilingFt": 93
+    },
+    {
+      "key": "PULSE-50+SLUG-250+DART-20|BREACH-275|HeatSinks",
+      "operatingLb": 106800,
+      "loadPct": 101.9,
+      "topSpeedMph": 38.5,
+      "coolingPct": 62.1
+    },
+    {
+      "key": "PULSE-50+SLUG-250+DART-20|BREACH-275|ArmorModule",
+      "operatingLb": 110800,
+      "loadPct": 115.1,
+      "topSpeedMph": 34.8,
+      "coolingPct": 53.8
+    },
+    {
+      "key": "PULSE-50+SLUG-250+DART-20|BREACH-275|SpeedBoost",
+      "operatingLb": 105800,
+      "loadPct": 98.5,
+      "topSpeedMph": 43,
+      "coolingPct": 58
+    },
+    {
+      "key": "PULSE-50+SLUG-250+THUMP-82|VOLLEY-6|",
+      "operatingLb": 98800,
+      "loadPct": 75.4,
+      "topSpeedMph": 40.5,
+      "coolingPct": 75.4
+    },
+    {
+      "key": "PULSE-50+SLUG-250+THUMP-82|VOLLEY-6|JumpJets",
+      "operatingLb": 104800,
+      "loadPct": 95.2,
+      "topSpeedMph": 39.3,
+      "coolingPct": 60.8,
+      "flightSeconds": 10.4,
+      "climbCeilingFt": 109
+    },
+    {
+      "key": "PULSE-50+SLUG-250+THUMP-82|VOLLEY-6|HeatSinks",
+      "operatingLb": 102800,
+      "loadPct": 88.6,
+      "topSpeedMph": 39.7,
+      "coolingPct": 72.7
+    },
+    {
+      "key": "PULSE-50+SLUG-250+THUMP-82|VOLLEY-6|ArmorModule",
+      "operatingLb": 106800,
+      "loadPct": 101.9,
+      "topSpeedMph": 38.5,
+      "coolingPct": 56.4
+    },
+    {
+      "key": "PULSE-50+SLUG-250+THUMP-82|VOLLEY-6|SpeedBoost",
+      "operatingLb": 101800,
+      "loadPct": 85.3,
+      "topSpeedMph": 43.9,
+      "coolingPct": 68.6
+    },
+    {
+      "key": "PULSE-50+SLUG-250+THUMP-82|BREACH-275|",
+      "operatingLb": 102400,
+      "loadPct": 87.3,
+      "topSpeedMph": 39.8,
+      "coolingPct": 67.1
+    },
+    {
+      "key": "PULSE-50+SLUG-250+THUMP-82|BREACH-275|JumpJets",
+      "operatingLb": 108400,
+      "loadPct": 107.1,
+      "topSpeedMph": 37,
+      "coolingPct": 55.4,
+      "flightSeconds": 9,
+      "climbCeilingFt": 95
+    },
+    {
+      "key": "PULSE-50+SLUG-250+THUMP-82|BREACH-275|HeatSinks",
+      "operatingLb": 106400,
+      "loadPct": 100.5,
+      "topSpeedMph": 38.9,
+      "coolingPct": 62.4
+    },
+    {
+      "key": "PULSE-50+SLUG-250+THUMP-82|BREACH-275|ArmorModule",
+      "operatingLb": 110400,
+      "loadPct": 113.8,
+      "topSpeedMph": 35.1,
+      "coolingPct": 54
+    },
+    {
+      "key": "PULSE-50+SLUG-250+THUMP-82|BREACH-275|SpeedBoost",
+      "operatingLb": 105400,
+      "loadPct": 97.2,
+      "topSpeedMph": 43.1,
+      "coolingPct": 59.2
+    },
+    {
+      "key": "PULSE-50+SLUG-250+SPIKE-90|VOLLEY-6|",
+      "operatingLb": 102600,
+      "loadPct": 88,
+      "topSpeedMph": 39.7,
+      "coolingPct": 66.6
+    },
+    {
+      "key": "PULSE-50+SLUG-250+SPIKE-90|VOLLEY-6|JumpJets",
+      "operatingLb": 108600,
+      "loadPct": 107.8,
+      "topSpeedMph": 36.8,
+      "coolingPct": 55.2,
+      "flightSeconds": 8.9,
+      "climbCeilingFt": 94
+    },
+    {
+      "key": "PULSE-50+SLUG-250+SPIKE-90|VOLLEY-6|HeatSinks",
+      "operatingLb": 106600,
+      "loadPct": 101.2,
+      "topSpeedMph": 38.7,
+      "coolingPct": 62.2
+    },
+    {
+      "key": "PULSE-50+SLUG-250+SPIKE-90|VOLLEY-6|ArmorModule",
+      "operatingLb": 110600,
+      "loadPct": 114.4,
+      "topSpeedMph": 35,
+      "coolingPct": 53.9
+    },
+    {
+      "key": "PULSE-50+SLUG-250+SPIKE-90|VOLLEY-6|SpeedBoost",
+      "operatingLb": 105600,
+      "loadPct": 97.9,
+      "topSpeedMph": 43,
+      "coolingPct": 58.6
+    },
+    {
+      "key": "PULSE-50+SLUG-250+SPIKE-90|BREACH-275|",
+      "operatingLb": 106200,
+      "loadPct": 99.9,
+      "topSpeedMph": 39,
+      "coolingPct": 56.9
+    },
+    {
+      "key": "PULSE-50+SLUG-250+SPIKE-90|BREACH-275|JumpJets",
+      "operatingLb": 112200,
+      "loadPct": 119.7,
+      "topSpeedMph": 33.5,
+      "coolingPct": 52.9,
+      "flightSeconds": 7.5,
+      "climbCeilingFt": 78
+    },
+    {
+      "key": "PULSE-50+SLUG-250+SPIKE-90|BREACH-275|HeatSinks",
+      "operatingLb": 110200,
+      "loadPct": 113.1,
+      "topSpeedMph": 35.3,
+      "coolingPct": 59.6
+    },
+    {
+      "key": "PULSE-50+SLUG-250+SPIKE-90|BREACH-275|ArmorModule",
+      "operatingLb": 114200,
+      "loadPct": 126.3,
+      "topSpeedMph": 31.6,
+      "coolingPct": 51.5
+    },
+    {
+      "key": "PULSE-50+SLUG-250+SPIKE-90|BREACH-275|SpeedBoost",
+      "operatingLb": 109200,
+      "loadPct": 109.8,
+      "topSpeedMph": 39.9,
+      "coolingPct": 54.8
+    },
+    {
+      "key": "PULSE-50+DART-20+THUMP-82|VOLLEY-6|",
+      "operatingLb": 96000,
+      "loadPct": 66.1,
+      "topSpeedMph": 41,
+      "coolingPct": 81.1
+    },
+    {
+      "key": "PULSE-50+DART-20+THUMP-82|VOLLEY-6|JumpJets",
+      "operatingLb": 102000,
+      "loadPct": 86,
+      "topSpeedMph": 39.8,
+      "coolingPct": 68.1,
+      "flightSeconds": 10.6,
+      "climbCeilingFt": 112
+    },
+    {
+      "key": "PULSE-50+DART-20+THUMP-82|VOLLEY-6|HeatSinks",
+      "operatingLb": 100000,
+      "loadPct": 79.4,
+      "topSpeedMph": 40.2,
+      "coolingPct": 80.1
+    },
+    {
+      "key": "PULSE-50+DART-20+THUMP-82|VOLLEY-6|ArmorModule",
+      "operatingLb": 104000,
+      "loadPct": 92.6,
+      "topSpeedMph": 39.4,
+      "coolingPct": 63
+    },
+    {
+      "key": "PULSE-50+DART-20+THUMP-82|VOLLEY-6|SpeedBoost",
+      "operatingLb": 99000,
+      "loadPct": 76.1,
+      "topSpeedMph": 44.5,
+      "coolingPct": 75
+    },
+    {
+      "key": "PULSE-50+DART-20+THUMP-82|BREACH-275|",
+      "operatingLb": 99600,
+      "loadPct": 78,
+      "topSpeedMph": 40.3,
+      "coolingPct": 73.7
+    },
+    {
+      "key": "PULSE-50+DART-20+THUMP-82|BREACH-275|JumpJets",
+      "operatingLb": 105600,
+      "loadPct": 97.9,
+      "topSpeedMph": 39.1,
+      "coolingPct": 58.6,
+      "flightSeconds": 10.3,
+      "climbCeilingFt": 108
+    },
+    {
+      "key": "PULSE-50+DART-20+THUMP-82|BREACH-275|HeatSinks",
+      "operatingLb": 103600,
+      "loadPct": 91.3,
+      "topSpeedMph": 39.5,
+      "coolingPct": 70.4
+    },
+    {
+      "key": "PULSE-50+DART-20+THUMP-82|BREACH-275|ArmorModule",
+      "operatingLb": 107600,
+      "loadPct": 104.5,
+      "topSpeedMph": 37.7,
+      "coolingPct": 55.9
+    },
+    {
+      "key": "PULSE-50+DART-20+THUMP-82|BREACH-275|SpeedBoost",
+      "operatingLb": 102600,
+      "loadPct": 88,
+      "topSpeedMph": 43.7,
+      "coolingPct": 66.6
+    },
+    {
+      "key": "PULSE-50+DART-20+SPIKE-90|VOLLEY-6|",
+      "operatingLb": 99800,
+      "loadPct": 78.7,
+      "topSpeedMph": 40.3,
+      "coolingPct": 73.2
+    },
+    {
+      "key": "PULSE-50+DART-20+SPIKE-90|VOLLEY-6|JumpJets",
+      "operatingLb": 105800,
+      "loadPct": 98.5,
+      "topSpeedMph": 39.1,
+      "coolingPct": 58,
+      "flightSeconds": 10.3,
+      "climbCeilingFt": 108
+    },
+    {
+      "key": "PULSE-50+DART-20+SPIKE-90|VOLLEY-6|HeatSinks",
+      "operatingLb": 103800,
+      "loadPct": 91.9,
+      "topSpeedMph": 39.5,
+      "coolingPct": 69.8
+    },
+    {
+      "key": "PULSE-50+DART-20+SPIKE-90|VOLLEY-6|ArmorModule",
+      "operatingLb": 107800,
+      "loadPct": 105.2,
+      "topSpeedMph": 37.6,
+      "coolingPct": 55.8
+    },
+    {
+      "key": "PULSE-50+DART-20+SPIKE-90|VOLLEY-6|SpeedBoost",
+      "operatingLb": 102800,
+      "loadPct": 88.6,
+      "topSpeedMph": 43.7,
+      "coolingPct": 66.1
+    },
+    {
+      "key": "PULSE-50+DART-20+SPIKE-90|BREACH-275|",
+      "operatingLb": 103400,
+      "loadPct": 90.6,
+      "topSpeedMph": 39.6,
+      "coolingPct": 64.5
+    },
+    {
+      "key": "PULSE-50+DART-20+SPIKE-90|BREACH-275|JumpJets",
+      "operatingLb": 109400,
+      "loadPct": 110.4,
+      "topSpeedMph": 36.1,
+      "coolingPct": 54.7,
+      "flightSeconds": 8.6,
+      "climbCeilingFt": 90
+    },
+    {
+      "key": "PULSE-50+DART-20+SPIKE-90|BREACH-275|HeatSinks",
+      "operatingLb": 107400,
+      "loadPct": 103.8,
+      "topSpeedMph": 37.9,
+      "coolingPct": 61.6
+    },
+    {
+      "key": "PULSE-50+DART-20+SPIKE-90|BREACH-275|ArmorModule",
+      "operatingLb": 111400,
+      "loadPct": 117.1,
+      "topSpeedMph": 34.2,
+      "coolingPct": 53.4
+    },
+    {
+      "key": "PULSE-50+DART-20+SPIKE-90|BREACH-275|SpeedBoost",
+      "operatingLb": 106400,
+      "loadPct": 100.5,
+      "topSpeedMph": 42.7,
+      "coolingPct": 56.7
+    },
+    {
+      "key": "PULSE-50+THUMP-82+SPIKE-90|VOLLEY-6|",
+      "operatingLb": 99400,
+      "loadPct": 77.4,
+      "topSpeedMph": 40.4,
+      "coolingPct": 74.1
+    },
+    {
+      "key": "PULSE-50+THUMP-82+SPIKE-90|VOLLEY-6|JumpJets",
+      "operatingLb": 105400,
+      "loadPct": 97.2,
+      "topSpeedMph": 39.2,
+      "coolingPct": 59.2,
+      "flightSeconds": 10.3,
+      "climbCeilingFt": 108
+    },
+    {
+      "key": "PULSE-50+THUMP-82+SPIKE-90|VOLLEY-6|HeatSinks",
+      "operatingLb": 103400,
+      "loadPct": 90.6,
+      "topSpeedMph": 39.6,
+      "coolingPct": 71
+    },
+    {
+      "key": "PULSE-50+THUMP-82+SPIKE-90|VOLLEY-6|ArmorModule",
+      "operatingLb": 107400,
+      "loadPct": 103.8,
+      "topSpeedMph": 37.9,
+      "coolingPct": 56
+    },
+    {
+      "key": "PULSE-50+THUMP-82+SPIKE-90|VOLLEY-6|SpeedBoost",
+      "operatingLb": 102400,
+      "loadPct": 87.3,
+      "topSpeedMph": 43.7,
+      "coolingPct": 67.1
+    },
+    {
+      "key": "PULSE-50+THUMP-82+SPIKE-90|BREACH-275|",
+      "operatingLb": 103000,
+      "loadPct": 89.3,
+      "topSpeedMph": 39.6,
+      "coolingPct": 65.6
+    },
+    {
+      "key": "PULSE-50+THUMP-82+SPIKE-90|BREACH-275|JumpJets",
+      "operatingLb": 109000,
+      "loadPct": 109.1,
+      "topSpeedMph": 36.4,
+      "coolingPct": 55,
+      "flightSeconds": 8.8,
+      "climbCeilingFt": 92
+    },
+    {
+      "key": "PULSE-50+THUMP-82+SPIKE-90|BREACH-275|HeatSinks",
+      "operatingLb": 107000,
+      "loadPct": 102.5,
+      "topSpeedMph": 38.3,
+      "coolingPct": 61.9
+    },
+    {
+      "key": "PULSE-50+THUMP-82+SPIKE-90|BREACH-275|ArmorModule",
+      "operatingLb": 111000,
+      "loadPct": 115.7,
+      "topSpeedMph": 34.6,
+      "coolingPct": 53.7
+    },
+    {
+      "key": "PULSE-50+THUMP-82+SPIKE-90|BREACH-275|SpeedBoost",
+      "operatingLb": 106000,
+      "loadPct": 99.2,
+      "topSpeedMph": 43,
+      "coolingPct": 57.5
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+DART-20|VOLLEY-6|",
+      "operatingLb": 101800,
+      "loadPct": 85.3,
+      "topSpeedMph": 39.9,
+      "coolingPct": 68.6
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+DART-20|VOLLEY-6|JumpJets",
+      "operatingLb": 107800,
+      "loadPct": 105.2,
+      "topSpeedMph": 37.6,
+      "coolingPct": 55.8,
+      "flightSeconds": 9.3,
+      "climbCeilingFt": 98
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+DART-20|VOLLEY-6|HeatSinks",
+      "operatingLb": 105800,
+      "loadPct": 98.5,
+      "topSpeedMph": 39.1,
+      "coolingPct": 63.9
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+DART-20|VOLLEY-6|ArmorModule",
+      "operatingLb": 109800,
+      "loadPct": 111.8,
+      "topSpeedMph": 35.7,
+      "coolingPct": 54.4
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+DART-20|VOLLEY-6|SpeedBoost",
+      "operatingLb": 104800,
+      "loadPct": 95.2,
+      "topSpeedMph": 43.2,
+      "coolingPct": 60.8
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+DART-20|BREACH-275|",
+      "operatingLb": 105400,
+      "loadPct": 97.2,
+      "topSpeedMph": 39.2,
+      "coolingPct": 59.2
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+DART-20|BREACH-275|JumpJets",
+      "operatingLb": 111400,
+      "loadPct": 117.1,
+      "topSpeedMph": 34.2,
+      "coolingPct": 53.4,
+      "flightSeconds": 7.8,
+      "climbCeilingFt": 81
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+DART-20|BREACH-275|HeatSinks",
+      "operatingLb": 109400,
+      "loadPct": 110.4,
+      "topSpeedMph": 36.1,
+      "coolingPct": 60.2
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+DART-20|BREACH-275|ArmorModule",
+      "operatingLb": 113400,
+      "loadPct": 123.7,
+      "topSpeedMph": 32.4,
+      "coolingPct": 52.1
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+DART-20|BREACH-275|SpeedBoost",
+      "operatingLb": 108400,
+      "loadPct": 107.1,
+      "topSpeedMph": 40.7,
+      "coolingPct": 55.4
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+THUMP-82|VOLLEY-6|",
+      "operatingLb": 101400,
+      "loadPct": 84,
+      "topSpeedMph": 40,
+      "coolingPct": 69.5
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+THUMP-82|VOLLEY-6|JumpJets",
+      "operatingLb": 107400,
+      "loadPct": 103.8,
+      "topSpeedMph": 37.9,
+      "coolingPct": 56,
+      "flightSeconds": 9.6,
+      "climbCeilingFt": 100
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+THUMP-82|VOLLEY-6|HeatSinks",
+      "operatingLb": 105400,
+      "loadPct": 97.2,
+      "topSpeedMph": 39.2,
+      "coolingPct": 65.1
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+THUMP-82|VOLLEY-6|ArmorModule",
+      "operatingLb": 109400,
+      "loadPct": 110.4,
+      "topSpeedMph": 36.1,
+      "coolingPct": 54.7
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+THUMP-82|VOLLEY-6|SpeedBoost",
+      "operatingLb": 104400,
+      "loadPct": 93.9,
+      "topSpeedMph": 43.3,
+      "coolingPct": 61.9
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+THUMP-82|BREACH-275|",
+      "operatingLb": 105000,
+      "loadPct": 95.9,
+      "topSpeedMph": 39.2,
+      "coolingPct": 60.3
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+THUMP-82|BREACH-275|JumpJets",
+      "operatingLb": 111000,
+      "loadPct": 115.7,
+      "topSpeedMph": 34.6,
+      "coolingPct": 53.7,
+      "flightSeconds": 7.9,
+      "climbCeilingFt": 83
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+THUMP-82|BREACH-275|HeatSinks",
+      "operatingLb": 109000,
+      "loadPct": 109.1,
+      "topSpeedMph": 36.4,
+      "coolingPct": 60.5
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+THUMP-82|BREACH-275|ArmorModule",
+      "operatingLb": 113000,
+      "loadPct": 122.4,
+      "topSpeedMph": 32.7,
+      "coolingPct": 52.3
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+THUMP-82|BREACH-275|SpeedBoost",
+      "operatingLb": 108000,
+      "loadPct": 105.8,
+      "topSpeedMph": 41.1,
+      "coolingPct": 55.6
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+SPIKE-90|VOLLEY-6|",
+      "operatingLb": 105200,
+      "loadPct": 96.6,
+      "topSpeedMph": 39.2,
+      "coolingPct": 59.7
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+SPIKE-90|VOLLEY-6|JumpJets",
+      "operatingLb": 111200,
+      "loadPct": 116.4,
+      "topSpeedMph": 34.4,
+      "coolingPct": 53.5,
+      "flightSeconds": 7.8,
+      "climbCeilingFt": 82
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+SPIKE-90|VOLLEY-6|HeatSinks",
+      "operatingLb": 109200,
+      "loadPct": 109.8,
+      "topSpeedMph": 36.3,
+      "coolingPct": 60.3
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+SPIKE-90|VOLLEY-6|ArmorModule",
+      "operatingLb": 113200,
+      "loadPct": 123,
+      "topSpeedMph": 32.6,
+      "coolingPct": 52.2
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+SPIKE-90|VOLLEY-6|SpeedBoost",
+      "operatingLb": 108200,
+      "loadPct": 106.5,
+      "topSpeedMph": 40.9,
+      "coolingPct": 55.5
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+SPIKE-90|BREACH-275|",
+      "operatingLb": 108800,
+      "loadPct": 108.5,
+      "topSpeedMph": 36.6,
+      "coolingPct": 55.1
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+SPIKE-90|BREACH-275|JumpJets",
+      "operatingLb": 114800,
+      "loadPct": 128.3,
+      "topSpeedMph": 31.1,
+      "coolingPct": 51.1,
+      "flightSeconds": 6.6,
+      "climbCeilingFt": 70
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+SPIKE-90|BREACH-275|HeatSinks",
+      "operatingLb": 112800,
+      "loadPct": 121.7,
+      "topSpeedMph": 32.9,
+      "coolingPct": 57.7
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+SPIKE-90|BREACH-275|ArmorModule",
+      "operatingLb": 116800,
+      "loadPct": 134.9,
+      "topSpeedMph": 29.2,
+      "coolingPct": 49.8
+    },
+    {
+      "key": "CHAIN-30+SLUG-250+SPIKE-90|BREACH-275|SpeedBoost",
+      "operatingLb": 111800,
+      "loadPct": 118.4,
+      "topSpeedMph": 37.2,
+      "coolingPct": 53.1
+    },
+    {
+      "key": "CHAIN-30+DART-20+THUMP-82|VOLLEY-6|",
+      "operatingLb": 98600,
+      "loadPct": 74.7,
+      "topSpeedMph": 40.5,
+      "coolingPct": 75.9
+    },
+    {
+      "key": "CHAIN-30+DART-20+THUMP-82|VOLLEY-6|JumpJets",
+      "operatingLb": 104600,
+      "loadPct": 94.6,
+      "topSpeedMph": 39.3,
+      "coolingPct": 61.4,
+      "flightSeconds": 10.4,
+      "climbCeilingFt": 109
+    },
+    {
+      "key": "CHAIN-30+DART-20+THUMP-82|VOLLEY-6|HeatSinks",
+      "operatingLb": 102600,
+      "loadPct": 88,
+      "topSpeedMph": 39.7,
+      "coolingPct": 73.2
+    },
+    {
+      "key": "CHAIN-30+DART-20+THUMP-82|VOLLEY-6|ArmorModule",
+      "operatingLb": 106600,
+      "loadPct": 101.2,
+      "topSpeedMph": 38.7,
+      "coolingPct": 56.6
+    },
+    {
+      "key": "CHAIN-30+DART-20+THUMP-82|VOLLEY-6|SpeedBoost",
+      "operatingLb": 101600,
+      "loadPct": 84.7,
+      "topSpeedMph": 43.9,
+      "coolingPct": 69
+    },
+    {
+      "key": "CHAIN-30+DART-20+THUMP-82|BREACH-275|",
+      "operatingLb": 102200,
+      "loadPct": 86.6,
+      "topSpeedMph": 39.8,
+      "coolingPct": 67.6
+    },
+    {
+      "key": "CHAIN-30+DART-20+THUMP-82|BREACH-275|JumpJets",
+      "operatingLb": 108200,
+      "loadPct": 106.5,
+      "topSpeedMph": 37.2,
+      "coolingPct": 55.5,
+      "flightSeconds": 9.1,
+      "climbCeilingFt": 96
+    },
+    {
+      "key": "CHAIN-30+DART-20+THUMP-82|BREACH-275|HeatSinks",
+      "operatingLb": 106200,
+      "loadPct": 99.9,
+      "topSpeedMph": 39,
+      "coolingPct": 62.6
+    },
+    {
+      "key": "CHAIN-30+DART-20+THUMP-82|BREACH-275|ArmorModule",
+      "operatingLb": 110200,
+      "loadPct": 113.1,
+      "topSpeedMph": 35.3,
+      "coolingPct": 54.2
+    },
+    {
+      "key": "CHAIN-30+DART-20+THUMP-82|BREACH-275|SpeedBoost",
+      "operatingLb": 105200,
+      "loadPct": 96.6,
+      "topSpeedMph": 43.1,
+      "coolingPct": 59.7
+    },
+    {
+      "key": "CHAIN-30+DART-20+SPIKE-90|VOLLEY-6|",
+      "operatingLb": 102400,
+      "loadPct": 87.3,
+      "topSpeedMph": 39.8,
+      "coolingPct": 67.1
+    },
+    {
+      "key": "CHAIN-30+DART-20+SPIKE-90|VOLLEY-6|JumpJets",
+      "operatingLb": 108400,
+      "loadPct": 107.1,
+      "topSpeedMph": 37,
+      "coolingPct": 55.4,
+      "flightSeconds": 9,
+      "climbCeilingFt": 95
+    },
+    {
+      "key": "CHAIN-30+DART-20+SPIKE-90|VOLLEY-6|HeatSinks",
+      "operatingLb": 106400,
+      "loadPct": 100.5,
+      "topSpeedMph": 38.9,
+      "coolingPct": 62.4
+    },
+    {
+      "key": "CHAIN-30+DART-20+SPIKE-90|VOLLEY-6|ArmorModule",
+      "operatingLb": 110400,
+      "loadPct": 113.8,
+      "topSpeedMph": 35.1,
+      "coolingPct": 54
+    },
+    {
+      "key": "CHAIN-30+DART-20+SPIKE-90|VOLLEY-6|SpeedBoost",
+      "operatingLb": 105400,
+      "loadPct": 97.2,
+      "topSpeedMph": 43.1,
+      "coolingPct": 59.2
+    },
+    {
+      "key": "CHAIN-30+DART-20+SPIKE-90|BREACH-275|",
+      "operatingLb": 106000,
+      "loadPct": 99.2,
+      "topSpeedMph": 39,
+      "coolingPct": 57.5
+    },
+    {
+      "key": "CHAIN-30+DART-20+SPIKE-90|BREACH-275|JumpJets",
+      "operatingLb": 112000,
+      "loadPct": 119,
+      "topSpeedMph": 33.7,
+      "coolingPct": 53,
+      "flightSeconds": 7.5,
+      "climbCeilingFt": 79
+    },
+    {
+      "key": "CHAIN-30+DART-20+SPIKE-90|BREACH-275|HeatSinks",
+      "operatingLb": 110000,
+      "loadPct": 112.4,
+      "topSpeedMph": 35.5,
+      "coolingPct": 59.7
+    },
+    {
+      "key": "CHAIN-30+DART-20+SPIKE-90|BREACH-275|ArmorModule",
+      "operatingLb": 114000,
+      "loadPct": 125.7,
+      "topSpeedMph": 31.8,
+      "coolingPct": 51.7
+    },
+    {
+      "key": "CHAIN-30+DART-20+SPIKE-90|BREACH-275|SpeedBoost",
+      "operatingLb": 109000,
+      "loadPct": 109.1,
+      "topSpeedMph": 40.1,
+      "coolingPct": 55
+    },
+    {
+      "key": "CHAIN-30+THUMP-82+SPIKE-90|VOLLEY-6|",
+      "operatingLb": 102000,
+      "loadPct": 86,
+      "topSpeedMph": 39.8,
+      "coolingPct": 68.1
+    },
+    {
+      "key": "CHAIN-30+THUMP-82+SPIKE-90|VOLLEY-6|JumpJets",
+      "operatingLb": 108000,
+      "loadPct": 105.8,
+      "topSpeedMph": 37.4,
+      "coolingPct": 55.6,
+      "flightSeconds": 9.2,
+      "climbCeilingFt": 97
+    },
+    {
+      "key": "CHAIN-30+THUMP-82+SPIKE-90|VOLLEY-6|HeatSinks",
+      "operatingLb": 106000,
+      "loadPct": 99.2,
+      "topSpeedMph": 39,
+      "coolingPct": 63.2
+    },
+    {
+      "key": "CHAIN-30+THUMP-82+SPIKE-90|VOLLEY-6|ArmorModule",
+      "operatingLb": 110000,
+      "loadPct": 112.4,
+      "topSpeedMph": 35.5,
+      "coolingPct": 54.3
+    },
+    {
+      "key": "CHAIN-30+THUMP-82+SPIKE-90|VOLLEY-6|SpeedBoost",
+      "operatingLb": 105000,
+      "loadPct": 95.9,
+      "topSpeedMph": 43.2,
+      "coolingPct": 60.3
+    },
+    {
+      "key": "CHAIN-30+THUMP-82+SPIKE-90|BREACH-275|",
+      "operatingLb": 105600,
+      "loadPct": 97.9,
+      "topSpeedMph": 39.1,
+      "coolingPct": 58.6
+    },
+    {
+      "key": "CHAIN-30+THUMP-82+SPIKE-90|BREACH-275|JumpJets",
+      "operatingLb": 111600,
+      "loadPct": 117.7,
+      "topSpeedMph": 34,
+      "coolingPct": 53.3,
+      "flightSeconds": 7.7,
+      "climbCeilingFt": 81
+    },
+    {
+      "key": "CHAIN-30+THUMP-82+SPIKE-90|BREACH-275|HeatSinks",
+      "operatingLb": 109600,
+      "loadPct": 111.1,
+      "topSpeedMph": 35.9,
+      "coolingPct": 60
+    },
+    {
+      "key": "CHAIN-30+THUMP-82+SPIKE-90|BREACH-275|ArmorModule",
+      "operatingLb": 113600,
+      "loadPct": 124.3,
+      "topSpeedMph": 32.2,
+      "coolingPct": 51.9
+    },
+    {
+      "key": "CHAIN-30+THUMP-82+SPIKE-90|BREACH-275|SpeedBoost",
+      "operatingLb": 108600,
+      "loadPct": 107.8,
+      "topSpeedMph": 40.5,
+      "coolingPct": 55.2
+    },
+    {
+      "key": "SLUG-250+DART-20+THUMP-82|VOLLEY-6|",
+      "operatingLb": 99400,
+      "loadPct": 77.4,
+      "topSpeedMph": 40.4,
+      "coolingPct": 74.1
+    },
+    {
+      "key": "SLUG-250+DART-20+THUMP-82|VOLLEY-6|JumpJets",
+      "operatingLb": 105400,
+      "loadPct": 97.2,
+      "topSpeedMph": 39.2,
+      "coolingPct": 59.2,
+      "flightSeconds": 10.3,
+      "climbCeilingFt": 108
+    },
+    {
+      "key": "SLUG-250+DART-20+THUMP-82|VOLLEY-6|HeatSinks",
+      "operatingLb": 103400,
+      "loadPct": 90.6,
+      "topSpeedMph": 39.6,
+      "coolingPct": 71
+    },
+    {
+      "key": "SLUG-250+DART-20+THUMP-82|VOLLEY-6|ArmorModule",
+      "operatingLb": 107400,
+      "loadPct": 103.8,
+      "topSpeedMph": 37.9,
+      "coolingPct": 56
+    },
+    {
+      "key": "SLUG-250+DART-20+THUMP-82|VOLLEY-6|SpeedBoost",
+      "operatingLb": 102400,
+      "loadPct": 87.3,
+      "topSpeedMph": 43.7,
+      "coolingPct": 67.1
+    },
+    {
+      "key": "SLUG-250+DART-20+THUMP-82|BREACH-275|",
+      "operatingLb": 103000,
+      "loadPct": 89.3,
+      "topSpeedMph": 39.6,
+      "coolingPct": 65.6
+    },
+    {
+      "key": "SLUG-250+DART-20+THUMP-82|BREACH-275|JumpJets",
+      "operatingLb": 109000,
+      "loadPct": 109.1,
+      "topSpeedMph": 36.4,
+      "coolingPct": 55,
+      "flightSeconds": 8.8,
+      "climbCeilingFt": 92
+    },
+    {
+      "key": "SLUG-250+DART-20+THUMP-82|BREACH-275|HeatSinks",
+      "operatingLb": 107000,
+      "loadPct": 102.5,
+      "topSpeedMph": 38.3,
+      "coolingPct": 61.9
+    },
+    {
+      "key": "SLUG-250+DART-20+THUMP-82|BREACH-275|ArmorModule",
+      "operatingLb": 111000,
+      "loadPct": 115.7,
+      "topSpeedMph": 34.6,
+      "coolingPct": 53.7
+    },
+    {
+      "key": "SLUG-250+DART-20+THUMP-82|BREACH-275|SpeedBoost",
+      "operatingLb": 106000,
+      "loadPct": 99.2,
+      "topSpeedMph": 43,
+      "coolingPct": 57.5
+    },
+    {
+      "key": "SLUG-250+DART-20+SPIKE-90|VOLLEY-6|",
+      "operatingLb": 103200,
+      "loadPct": 89.9,
+      "topSpeedMph": 39.6,
+      "coolingPct": 65
+    },
+    {
+      "key": "SLUG-250+DART-20+SPIKE-90|VOLLEY-6|JumpJets",
+      "operatingLb": 109200,
+      "loadPct": 109.8,
+      "topSpeedMph": 36.3,
+      "coolingPct": 54.8,
+      "flightSeconds": 8.7,
+      "climbCeilingFt": 91
+    },
+    {
+      "key": "SLUG-250+DART-20+SPIKE-90|VOLLEY-6|HeatSinks",
+      "operatingLb": 107200,
+      "loadPct": 103.2,
+      "topSpeedMph": 38.1,
+      "coolingPct": 61.8
+    },
+    {
+      "key": "SLUG-250+DART-20+SPIKE-90|VOLLEY-6|ArmorModule",
+      "operatingLb": 111200,
+      "loadPct": 116.4,
+      "topSpeedMph": 34.4,
+      "coolingPct": 53.5
+    },
+    {
+      "key": "SLUG-250+DART-20+SPIKE-90|VOLLEY-6|SpeedBoost",
+      "operatingLb": 106200,
+      "loadPct": 99.9,
+      "topSpeedMph": 42.9,
+      "coolingPct": 56.9
+    },
+    {
+      "key": "SLUG-250+DART-20+SPIKE-90|BREACH-275|",
+      "operatingLb": 106800,
+      "loadPct": 101.9,
+      "topSpeedMph": 38.5,
+      "coolingPct": 56.4
+    },
+    {
+      "key": "SLUG-250+DART-20+SPIKE-90|BREACH-275|JumpJets",
+      "operatingLb": 112800,
+      "loadPct": 121.7,
+      "topSpeedMph": 32.9,
+      "coolingPct": 52.5,
+      "flightSeconds": 7.3,
+      "climbCeilingFt": 76
+    },
+    {
+      "key": "SLUG-250+DART-20+SPIKE-90|BREACH-275|HeatSinks",
+      "operatingLb": 110800,
+      "loadPct": 115.1,
+      "topSpeedMph": 34.8,
+      "coolingPct": 59.2
+    },
+    {
+      "key": "SLUG-250+DART-20+SPIKE-90|BREACH-275|ArmorModule",
+      "operatingLb": 114800,
+      "loadPct": 128.3,
+      "topSpeedMph": 31.1,
+      "coolingPct": 51.1
+    },
+    {
+      "key": "SLUG-250+DART-20+SPIKE-90|BREACH-275|SpeedBoost",
+      "operatingLb": 109800,
+      "loadPct": 111.8,
+      "topSpeedMph": 39.3,
+      "coolingPct": 54.4
+    },
+    {
+      "key": "SLUG-250+THUMP-82+SPIKE-90|VOLLEY-6|",
+      "operatingLb": 102800,
+      "loadPct": 88.6,
+      "topSpeedMph": 39.7,
+      "coolingPct": 66.1
+    },
+    {
+      "key": "SLUG-250+THUMP-82+SPIKE-90|VOLLEY-6|JumpJets",
+      "operatingLb": 108800,
+      "loadPct": 108.5,
+      "topSpeedMph": 36.6,
+      "coolingPct": 55.1,
+      "flightSeconds": 8.9,
+      "climbCeilingFt": 93
+    },
+    {
+      "key": "SLUG-250+THUMP-82+SPIKE-90|VOLLEY-6|HeatSinks",
+      "operatingLb": 106800,
+      "loadPct": 101.9,
+      "topSpeedMph": 38.5,
+      "coolingPct": 62.1
+    },
+    {
+      "key": "SLUG-250+THUMP-82+SPIKE-90|VOLLEY-6|ArmorModule",
+      "operatingLb": 110800,
+      "loadPct": 115.1,
+      "topSpeedMph": 34.8,
+      "coolingPct": 53.8
+    },
+    {
+      "key": "SLUG-250+THUMP-82+SPIKE-90|VOLLEY-6|SpeedBoost",
+      "operatingLb": 105800,
+      "loadPct": 98.5,
+      "topSpeedMph": 43,
+      "coolingPct": 58
+    },
+    {
+      "key": "SLUG-250+THUMP-82+SPIKE-90|BREACH-275|",
+      "operatingLb": 106400,
+      "loadPct": 100.5,
+      "topSpeedMph": 38.9,
+      "coolingPct": 56.7
+    },
+    {
+      "key": "SLUG-250+THUMP-82+SPIKE-90|BREACH-275|JumpJets",
+      "operatingLb": 112400,
+      "loadPct": 120.4,
+      "topSpeedMph": 33.3,
+      "coolingPct": 52.7,
+      "flightSeconds": 7.4,
+      "climbCeilingFt": 78
+    },
+    {
+      "key": "SLUG-250+THUMP-82+SPIKE-90|BREACH-275|HeatSinks",
+      "operatingLb": 110400,
+      "loadPct": 113.8,
+      "topSpeedMph": 35.1,
+      "coolingPct": 59.5
+    },
+    {
+      "key": "SLUG-250+THUMP-82+SPIKE-90|BREACH-275|ArmorModule",
+      "operatingLb": 114400,
+      "loadPct": 127,
+      "topSpeedMph": 31.4,
+      "coolingPct": 51.4
+    },
+    {
+      "key": "SLUG-250+THUMP-82+SPIKE-90|BREACH-275|SpeedBoost",
+      "operatingLb": 109400,
+      "loadPct": 110.4,
+      "topSpeedMph": 39.7,
+      "coolingPct": 54.7
+    },
+    {
+      "key": "DART-20+THUMP-82+SPIKE-90|VOLLEY-6|",
+      "operatingLb": 100000,
+      "loadPct": 79.4,
+      "topSpeedMph": 40.2,
+      "coolingPct": 72.8
+    },
+    {
+      "key": "DART-20+THUMP-82+SPIKE-90|VOLLEY-6|JumpJets",
+      "operatingLb": 106000,
+      "loadPct": 99.2,
+      "topSpeedMph": 39,
+      "coolingPct": 57.5,
+      "flightSeconds": 10.2,
+      "climbCeilingFt": 108
+    },
+    {
+      "key": "DART-20+THUMP-82+SPIKE-90|VOLLEY-6|HeatSinks",
+      "operatingLb": 104000,
+      "loadPct": 92.6,
+      "topSpeedMph": 39.4,
+      "coolingPct": 69.3
+    },
+    {
+      "key": "DART-20+THUMP-82+SPIKE-90|VOLLEY-6|ArmorModule",
+      "operatingLb": 108000,
+      "loadPct": 105.8,
+      "topSpeedMph": 37.4,
+      "coolingPct": 55.6
+    },
+    {
+      "key": "DART-20+THUMP-82+SPIKE-90|VOLLEY-6|SpeedBoost",
+      "operatingLb": 103000,
+      "loadPct": 89.3,
+      "topSpeedMph": 43.6,
+      "coolingPct": 65.6
+    },
+    {
+      "key": "DART-20+THUMP-82+SPIKE-90|BREACH-275|",
+      "operatingLb": 103600,
+      "loadPct": 91.3,
+      "topSpeedMph": 39.5,
+      "coolingPct": 64
+    },
+    {
+      "key": "DART-20+THUMP-82+SPIKE-90|BREACH-275|JumpJets",
+      "operatingLb": 109600,
+      "loadPct": 111.1,
+      "topSpeedMph": 35.9,
+      "coolingPct": 54.6,
+      "flightSeconds": 8.5,
+      "climbCeilingFt": 89
+    },
+    {
+      "key": "DART-20+THUMP-82+SPIKE-90|BREACH-275|HeatSinks",
+      "operatingLb": 107600,
+      "loadPct": 104.5,
+      "topSpeedMph": 37.7,
+      "coolingPct": 61.5
+    },
+    {
+      "key": "DART-20+THUMP-82+SPIKE-90|BREACH-275|ArmorModule",
+      "operatingLb": 111600,
+      "loadPct": 117.7,
+      "topSpeedMph": 34,
+      "coolingPct": 53.3
+    },
+    {
+      "key": "DART-20+THUMP-82+SPIKE-90|BREACH-275|SpeedBoost",
+      "operatingLb": 106600,
+      "loadPct": 101.2,
+      "topSpeedMph": 42.5,
+      "coolingPct": 56.6
+    }
+  ]
+}

@@ -25,7 +25,8 @@
   <link rel="preload" href="/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/assets/img/sky-2560.webp" as="image" media="(min-width: 1281px)">
   <link rel="preload" href="/assets/img/sky-1280.webp" as="image" media="(max-width: 1280px)">
-  <link rel="stylesheet" href="/assets/site.css?v=63b3bab9">
+  <link rel="stylesheet" href="/assets/site.css?v=301beded">
+  <link rel="stylesheet" href="/drop/drop.css?v=301beded">
   <script>
     // Boarding: arriving from another site opens on the shipboard network, which assets/site.js draws. Nothing is
     // stored in the browser (the privacy page promises that): a reload, Back, or a link from this site skips it. This
@@ -40,9 +41,9 @@
       }
     } catch (error) { /* no boarding screen */ }
   </script>
-  <script src="/assets/ship.js?v=63b3bab9" defer></script>
-  <script src="/assets/site.js?v=63b3bab9" defer></script>
-  <script src="/assets/voyage.js?v=63b3bab9" defer></script>
+  <script src="/assets/ship.js?v=301beded" defer></script>
+  <script src="/assets/site.js?v=301beded" defer></script>
+  <script src="/drop/drop.js?v=301beded" defer></script>
 </head>
 <body>
   <a class="skip" href="#game">Skip to content</a>
@@ -81,11 +82,12 @@
   <!-- The rail: where you are on the page, as the reference sites keep it on the right. -->
   <nav class="rail" aria-label="Page position" data-rail>
     <a href="#top" data-rail-for="top"><span>Home</span></a>
+    <a href="#drop" data-rail-for="drop"><span>The Drop</span></a>
     <a href="#game" data-rail-for="game"><span>The Game</span></a>
     <a href="#world" data-rail-for="world"><span>The World</span></a>
     <a href="#archive" data-rail-for="archive"><span>The Archive</span></a>
     <a href="#story" data-rail-for="story"><span>The Story</span></a>
-    <a href="#crossing" data-rail-for="crossing"><span>The Crossing</span></a>
+    <a href="#logs" data-rail-for="logs" data-logs-rail hidden><span>Voyage Logs</span></a>
     <a href="#factions" data-rail-for="factions"><span>Factions</span></a>
     <a href="#studio" data-rail-for="studio"><span>Studio</span></a>
     <a href="#join" data-rail-for="join"><span>Join</span></a>
@@ -105,13 +107,40 @@
           <h1 class="hero__title">
             <img src="/assets/img/title.webp" alt="The Reach: Unknown" width="1600" height="455">
           </h1>
+          <!-- The countdown to the Archive's arrival at The Reach, on the ship's clock (assets/ship.js). It counts down to the
+               ship's arrival, never to a release date. Hidden until the script fills it. -->
+          <div class="eta" role="timer" aria-label="Time left until the Archive arrives at The Reach" data-eta hidden>
+            <p class="eta__label"><i aria-hidden="true"></i><span><span data-eta-label>Archive · ETA</span><span data-eta-place>The Reach</span></span></p>
+            <p class="eta__time">
+              <span><b data-eta-part="days">0</b><small>Days</small></span>
+              <span><b data-eta-part="hours">00</b><small>Hrs</small></span>
+              <span><b data-eta-part="minutes">00</b><small>Min</small></span>
+              <span><b data-eta-part="seconds">00</b><small>Sec</small></span>
+            </p>
+          </div>
           <div class="hero__actions">
             <a class="btn" data-discord href="#join">Join the Discord</a>
             <a class="btn btn--ghost" href="#game">Explore the game</a>
           </div>
         </div>
       </div>
-      <a class="hero__cue" href="#game" aria-label="Scroll to the game"><span></span></a>
+      <a class="hero__cue" href="#drop" aria-label="Scroll to the drop"><span></span></a>
+    </section>
+
+    <!-- THE DROP: the game's own opening, played by the scroll: the burn, the touchdown, the cockpit coming up
+         (/drop/drop.js; frames from a pre-alpha player build). It loads only as the visitor scrolls toward it. -->
+    <section class="drop drop--home" id="drop" data-section data-drop data-frames="74" data-src="/drop/frames/drop-{n}.webp" aria-label="The drop">
+      <div class="drop__screen">
+        <canvas class="drop__canvas" data-drop-canvas role="img" aria-label="The VIGIL's drop, from re-entry to the cockpit"></canvas>
+        <p class="drop__tag">Pre-alpha · the game's own opening</p>
+        <ol class="drop__phases" aria-hidden="true">
+          <li data-from="0" data-to="44">Entry</li>
+          <li data-from="45" data-to="66">Touchdown</li>
+          <li data-from="67" data-to="73">Boot</li>
+        </ol>
+        <p class="drop__loading" data-drop-loading>Loading the drop</p>
+        <div class="drop__progress" aria-hidden="true"><span data-drop-progress></span></div>
+      </div>
     </section>
 
     <!-- THE GAME: what you are, and the five pillars. -->
@@ -123,7 +152,7 @@
             <h2 data-reveal>Every match moves the war.</h2>
             <div class="game__lead" data-reveal>
               <p class="lead">You are a mech pilot with a faction, a rank and a clan that counts on you. What you do tonight is still on the map tomorrow.</p>
-              <p>The Reach: Unknown is a persistent mech war, fought from the cockpit. Join one of five factions, or fly alone as a Torrath mercenary, and fight for ground on a contested world. Every pilot shares one front line, and it never resets.</p>
+              <p>A persistent mech war, fought from the cockpit. The front line never resets.</p>
             </div>
           </div>
 
@@ -141,27 +170,27 @@
           <li data-reveal>
             <span class="pillars__num">01</span>
             <h3>Fly for a clan</h3>
-            <p>Up to fifty pilots under one banner. You fly for them, and they remember who showed up.</p>
+            <p>Fifty pilots, one banner. They remember who showed up.</p>
           </li>
           <li data-reveal>
             <span class="pillars__num">02</span>
             <h3>Move the line</h3>
-            <p>Every win and every loss shifts the front on a map all pilots share. The war keeps score.</p>
+            <p>Every match shifts a front all pilots share.</p>
           </li>
           <li data-reveal>
             <span class="pillars__num">03</span>
             <h3>Honor counts</h3>
-            <p>How you fight counts, not only whether you win. Your rank carries from season to season.</p>
+            <p>How you fight counts. Your rank carries on.</p>
           </li>
           <li data-reveal>
             <span class="pillars__num">04</span>
             <h3>Feel the weight</h3>
-            <p>Every fight is first person, from a full cockpit. Mechs have mass, and every loadout has a price.</p>
+            <p>First person, full cockpit. Every loadout has a price.</p>
           </li>
           <li data-reveal>
             <span class="pillars__num">05</span>
             <h3>Push into the unknown</h3>
-            <p>Most of The Reach is uncharted. Every season the front pushes into new ground.</p>
+            <p>Most of The Reach is uncharted.</p>
           </li>
         </ol>
 
@@ -184,7 +213,6 @@
         <div class="world__body">
           <div class="world__text" data-reveal>
             <p class="lead">An Earth-like world, with water, around the nearest star system to our own.</p>
-            <p>It is the first home humanity has found since Earth failed. The Archive set out for it on a voyage of 32.63 years, and every faction aboard means to claim it. None of them agrees on who has the right.</p>
           </div>
           <dl class="stats">
             <div data-reveal><dt>Light-years from Earth</dt><dd>4.34</dd></div>
@@ -220,6 +248,31 @@
             </ol>
           </figcaption>
         </figure>
+
+        <!-- The air, as the survey probe's descent capsule sampled it on the way down: dry air at sea level, by volume,
+             beside Earth's, every figure checkable against real chemistry. The carbon dioxide is what makes the mask. -->
+        <div class="air" data-reveal>
+          <figure class="air__panel">
+            <figcaption class="air__head">
+              <p class="air__title"><i aria-hidden="true"></i>Survey probe · descent capsule, surface air</p>
+              <p class="air__sub">Dry air at sea level, by volume</p>
+            </figcaption>
+            <table class="air__table">
+              <thead>
+                <tr><th scope="col"><span class="sr">Reading</span></th><th scope="col">The Reach</th><th scope="col">Earth</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Nitrogen <span>N<sub>2</sub></span></th><td>73.7%</td><td>78.1%</td></tr>
+                <tr><th scope="row">Oxygen <span>O<sub>2</sub></span></th><td>20.5%</td><td>20.9%</td></tr>
+                <tr class="air__alert"><th scope="row">Carbon dioxide <span>CO<sub>2</sub></span></th><td>4.9%</td><td>0.04%</td></tr>
+                <tr><th scope="row">Argon <span>Ar</span></th><td>0.93%</td><td>0.93%</td></tr>
+                <tr><th scope="row">Pressure</th><td>1,012 hPa</td><td>1,013 hPa</td></tr>
+                <tr><th scope="row">Rain <span>pH</span></th><td>about 4.6</td><td>about 5.6</td></tr>
+              </tbody>
+            </table>
+          </figure>
+          <p class="air__verdict">Breathable for minutes, not hours. Outside, you wear a mask.</p>
+        </div>
       </div>
     </section>
 
@@ -244,8 +297,8 @@
       </figure>
       <div class="wrap archive__body">
         <div class="archive__text" data-reveal>
-          <p class="lead">It was named before it left Earth. Not for what it carried, though it carried everything worth saving: for what it was meant to do. Remember, so the next civilization would know what the last one did wrong.</p>
-          <p>About twenty thousand people made the crossing in it, awake, and its crew kept it running the whole way. Over The Reach it stays in orbit, neutral ground above the war, and every drop to the surface starts here.</p>
+          <p class="lead">Named for what it was meant to do: remember, so the next civilization would know what the last one did wrong.</p>
+          <p>About twenty thousand people crossed in it, awake. In orbit it stays neutral ground, and every drop starts here.</p>
         </div>
         <dl class="archive__specs" data-reveal>
           <div><dt>Aboard</dt><dd>~20,000</dd></div>
@@ -262,66 +315,23 @@
         <p class="eyebrow" data-reveal>The story so far</p>
         <h2 data-reveal>How we got here.</h2>
         <div class="story__text">
-          <p class="lead" data-reveal>Earth was failing, and there was a plan. Probes went out to find somewhere new, and the first to answer came from the nearest star: a habitable world, with water. Earth could not wait for a second answer.</p>
-          <p data-reveal>A small crew went ahead, several hundred people on a fast ship, to land first and build. Then, on 19 January 3310, the Archive left Earth with about twenty thousand people and everything worth saving: the slowest ship in the plan, and the last to leave.</p>
-          <p data-reveal>Fifteen years into our crossing, the crew landed on The Reach. In 3330 their signal reached us: they were down, and they had built a settlement. We sent a faster ship ahead with supplies and more people, and in 3337 it landed.</p>
-          <p data-reveal>For years after that, the settlement's logs came home on schedule. The last one arrived in June 3340. Then the signal stopped.</p>
+          <p class="lead" data-reveal>Earth was failing. The probes found one world worth the trip, and a small crew went ahead to build.</p>
+          <p data-reveal>For years the settlement's logs came home on schedule. The last arrived in June 3340. Then the signal stopped.</p>
           <svg class="story__trace" data-reveal viewBox="0 0 320 40" aria-hidden="true" focusable="false"><path d="M0 20 H40 l6 -14 l8 28 l6 -14 H110 l6 -14 l8 28 l6 -14 H180 l6 -9 l8 18 l6 -9 H320" /></svg>
           <p class="story__now" data-reveal><span><i aria-hidden="true"></i><span data-ship-date>Now</span></span> The Archive is still coming. Nobody aboard agrees on what the silence means, and when we reach orbit, we will find out.</p>
         </div>
       </div>
     </section>
 
-    <!-- THE CROSSING: the Archive's voyage as a navigation chart, opening where the ship's clock stands today. -->
-    <section class="section voyage" id="crossing" data-section data-voyage>
+    <!-- VOYAGE LOGS: recordings made aboard the Archive on the way. Hidden until the first log is listed in
+         PUBLISHED_LOGS (assets/ship.js); then each published log gets a card here, and the next one is teased by its
+         number only. The site never says when a log will come. -->
+    <section class="section logs" id="logs" data-section data-logs hidden>
       <div class="wrap">
-        <p class="eyebrow" data-reveal>Navigation · The crossing</p>
-        <h2 data-reveal>32.63 years. <span class="voyage__awake">Awake.</span></h2>
-        <p class="lead voyage__intro" data-reveal>There was no cryosleep. People lived, worked, aged, had children and died on the way, and every faction was born in those years.</p>
-      </div>
-      <div class="wrap">
-        <div class="voyage__panel" data-reveal>
-          <div class="voyage__head">
-            <div class="voyage__heading">
-              <p>The Archive · Earth → The Reach</p>
-              <p class="voyage__view-title" data-view-title>Interstellar cruise</p>
-            </div>
-            <div class="voyage__views" role="group" aria-label="Chart view">
-              <button type="button" data-view="interstellar" aria-selected="true">Interstellar</button>
-              <button type="button" data-view="departure" aria-selected="false">Departure</button>
-              <button type="button" data-view="arrival" aria-selected="false">Arrival</button>
-            </div>
-          </div>
-          <div class="voyage__chart" data-voyage-chart></div>
-          <div class="voyage__notes">
-            <p data-view-note></p>
-            <p>The Archive reaches orbit · 22 Oct 3342</p>
-          </div>
-          <div class="voyage__timeline">
-            <div class="voyage__timeline-head">
-              <p>Mission elapsed</p>
-              <p>Drag the timeline, pick a milestone, or play the crossing</p>
-            </div>
-            <div class="voyage__controls">
-              <button class="btn btn--small voyage__play" type="button" aria-pressed="false" data-voyage-play><span>Play</span></button>
-              <input class="voyage__scrubber" type="range" aria-label="Earth date on the voyage, from launch to orbit" data-voyage-scrubber>
-              <button class="btn btn--small btn--ghost" type="button" data-voyage-now>Now</button>
-              <button class="btn btn--small btn--ghost" type="button" data-voyage-latest-log hidden>Latest log</button>
-            </div>
-            <ol class="voyage__milestones" data-voyage-milestones></ol>
-          </div>
-          <dl class="voyage__readouts">
-            <div><dt>Earth date</dt><dd data-readout="date">—</dd><p>The Earth calendar, as the Archive keeps it</p></div>
-            <div><dt>Voyage elapsed</dt><dd data-readout="elapsed">—</dd><p>Since the cruise began, 07 Mar 3310</p></div>
-            <div><dt>Velocity</dt><dd data-readout="speed">—</dd><p data-readout="kms"></p></div>
-            <div><dt>Distance crossed</dt><dd data-readout="crossed">—</dd><p>Of the way to The Reach</p></div>
-          </dl>
-          <div class="voyage__phase" aria-live="polite">
-            <p class="voyage__phase-label">Flight phase</p>
-            <p><b data-phase="name"></b> <span data-phase="text"></span></p>
-            <p class="voyage__phase-note" data-phase="note" hidden></p>
-          </div>
-        </div>
+        <p class="eyebrow" data-reveal>Voyage logs</p>
+        <h2 data-reveal>Recorded on the way.</h2>
+        <p class="lead logs__intro" data-reveal>Recorded aboard the Archive during the crossing. Each log goes up here when it is released.</p>
+        <ol class="logs__list" data-logs-list></ol>
       </div>
     </section>
 
@@ -357,36 +367,36 @@
             </button>
           </div>
           <div class="pick__panels" aria-live="polite">
-            <p class="pick__panel pick__prompt" data-panel="">Five answers to why Earth failed. Choose one to read its creed, and the page takes its colour.</p>
+            <p class="pick__panel pick__prompt" data-panel="">Five answers to why Earth failed. Pick one.</p>
             <article class="pick__panel" id="house-ksh" data-panel="ksh" data-accent="#D5636B" style="--house:#C8323C">
               <p class="house__word">Honor</p>
               <h3 class="house__name">Kashiro</h3>
               <blockquote>“We failed because we let small things go. Precision is honor.”</blockquote>
-              <p>The hardest path: honor that costs something real. Not inherited but chosen, which is what makes the code mean something. They fly as a disciplined team under a strict chain of command, and settle disputes by trial of combat.</p>
+              <p>Honor that costs something real. They fly as a disciplined team and settle disputes by trial of combat.</p>
             </article>
             <article class="pick__panel" id="house-vld" data-panel="vld" data-accent="#D4A23C" style="--house:#D4A23C">
               <p class="house__word">Dominion</p>
               <h3 class="house__name">Valdron</h3>
               <blockquote>“We failed because we were divided. Unity is survival.”</blockquote>
-              <p>They believe humanity needs one strong leader. Not cruel: convinced. Commanders and logistics officers who watched the ship's people split apart and decided the answer was more authority, not less. They advance in overwhelming force and hold what they take.</p>
+              <p>Humanity needs one strong leader, they believe. They advance in overwhelming force and hold what they take.</p>
             </article>
             <article class="pick__panel" id="house-drv" data-panel="drv" data-accent="#4A90C2" style="--house:#4A90C2">
               <p class="house__word">Shadow</p>
               <h3 class="house__name">Darvyn</h3>
               <blockquote>“We failed because we believed what we were told. Information is the only honest currency.”</blockquote>
-              <p>Not villains: realists. Intelligence officers and analysts who watched good intentions end in catastrophe, stopped trusting intentions and started trusting data. They would rather win before the battle starts.</p>
+              <p>Realists who trust data over intentions. They would rather win before the battle starts.</p>
             </article>
             <article class="pick__panel" id="house-grv" data-panel="grv" data-accent="#8FA83C" style="--house:#8FA83C">
               <p class="house__word">Pack</p>
               <h3 class="house__name">Gorvik</h3>
               <blockquote>“We failed because we each looked after our own. The pack eats first.”</blockquote>
-              <p>Not anarchists: tribalists. Small-unit soldiers and crew who watched every large structure fail and decided the only thing worth trusting is the person beside you. Fiercely loyal inside the pack, suspicious of anything larger.</p>
+              <p>Tribalists who trust only the pilot beside them. Fiercely loyal inside the pack.</p>
             </article>
             <article class="pick__panel" id="house-shv" data-panel="shv" data-accent="#A075CC" style="--house:#8E5BC2">
               <p class="house__word">Foundation</p>
               <h3 class="house__name">Shenvong</h3>
               <blockquote>“We failed because we never built anything that could hold. What holds, saves.”</blockquote>
-              <p>Engineers, architects and long-term planners. They fight because they have to, to make fighting unnecessary. The others are competing for something; Shenvong are building something, and they measure it by what still stands after they are gone.</p>
+              <p>Builders. They fight to make fighting unnecessary, and measure it by what still stands after they are gone.</p>
             </article>
           </div>
         </div>
@@ -403,16 +413,8 @@
         <div class="studio__text">
           <p class="eyebrow" data-reveal>The Studio</p>
           <h2 data-reveal>Mach Tuck Games</h2>
-          <p class="lead" data-reveal>We are an independent studio, and The Reach: Unknown is our first game. We are building it to run for years: one world, one war, and the pilots who fight it.</p>
+          <p class="lead" data-reveal>An independent studio, and this is our first game: one world, one war, built to run for years.</p>
         </div>
-      </div>
-      <div class="wrap">
-        <ul class="values">
-          <li data-reveal><h3>Belonging first</h3><p>We build for the people you fly with. Everything else serves that.</p></li>
-          <li data-reveal><h3>Built to last</h3><p>One game, made to run season after season, on a map that keeps its history.</p></li>
-          <li data-reveal><h3>All of it ours</h3><p>Every world, faction and machine is original.</p></li>
-          <li data-reveal><h3>The community writes it</h3><p>The story of the war is the one its pilots make.</p></li>
-        </ul>
       </div>
     </section>
 

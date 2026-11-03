@@ -168,6 +168,87 @@ if (typeof Voyage !== "undefined" && document.querySelector("[data-ship-date]"))
   setInterval(tick, 1000);
 }
 
+// The Voyage Logs: hidden until PUBLISHED_LOGS (assets/ship.js) has its first log. Each published log gets a card, and
+// the next one is teased as the next anticipated voyage log, by number only: the site does not publish the schedule.
+const LOGS_IN_ALL = 8;   // the voyage's logs, 01 to 08; after the last, nothing is teased
+function drawLogs(published) {
+  const section = document.querySelector("[data-logs]");
+  if (!section) return;
+  const list = section.querySelector("[data-logs-list]");
+  const make = (tag, className, text) => {
+    const element = document.createElement(tag);
+    if (className) element.className = className;
+    if (text) element.textContent = text;
+    return element;
+  };
+  const card = (frame, label, title) => {
+    const item = make("li", "log");
+    item.append(frame, make("p", "log__num", label), make("h3", "log__title", title));
+    return item;
+  };
+  list.replaceChildren();
+  for (const entry of published) {
+    const frame = make(entry.url ? "a" : "div", "log__frame");
+    if (entry.url) Object.assign(frame, { href: entry.url, target: "_blank", rel: "noopener" });
+    if (entry.poster) frame.append(Object.assign(make("img"), { src: entry.poster, alt: "", loading: "lazy" }));
+    else frame.append(make("span", "log__blank", entry.log));
+    if (entry.url) frame.append(make("span", "log__play", "Watch"));
+    list.append(card(frame, `Voyage log ${entry.log}`, entry.title || `Voyage Log ${entry.log}`));
+  }
+  const next = published.length ? Number(published[published.length - 1].log) + 1 : 1;
+  if (next <= LOGS_IN_ALL) {
+    const number = String(next).padStart(2, "0");
+    const frame = make("div", "log__frame log__frame--next");
+    frame.setAttribute("aria-hidden", "true");
+    frame.append(make("span", "log__blank", number), make("span", "log__pending", "Not yet released"));
+    const item = card(frame, "Next anticipated voyage log", `Voyage Log ${number}`);
+    item.classList.add("log--next");
+    list.append(item);
+  }
+  section.hidden = published.length === 0;
+  for (const link of document.querySelectorAll("[data-logs-rail]")) link.hidden = section.hidden;
+}
+if (typeof PUBLISHED_LOGS !== "undefined") drawLogs(PUBLISHED_LOGS);
+
+// The countdown under the title: the time left until the Archive reaches The Reach, from the ship's clock (assets/ship.js).
+// It is the ship's arrival, never a release date, so a slipped beta never makes it wrong. At zero it reads as in orbit.
+const eta = document.querySelector("[data-eta]");
+if (eta && typeof Voyage !== "undefined") {
+  const parts = Object.fromEntries([...eta.querySelectorAll("[data-eta-part]")].map((element) => [element.dataset.etaPart, element]));
+  const label = eta.querySelector("[data-eta-label]");
+  const place = eta.querySelector("[data-eta-place]");
+  const two = (n) => String(n).padStart(2, "0");
+  const draw = () => {
+    const seconds = Math.max(0, Math.floor((Voyage.arrivesAt - Date.now()) / 1000));
+    parts.days.textContent = String(Math.floor(seconds / 86400));
+    parts.hours.textContent = two(Math.floor(seconds / 3600) % 24);
+    parts.minutes.textContent = two(Math.floor(seconds / 60) % 60);
+    parts.seconds.textContent = two(seconds % 60);
+    if (seconds === 0) { label.textContent = "Archive · In orbit"; place.textContent = "Over The Reach"; }
+  };
+  draw();
+  eta.hidden = false;
+  setInterval(draw, 1000);
+}
+
+// The scroll cue steps aside when the hero's buttons would sit on it: on short, wide screens the countdown pushes them
+// down to the cue. Measured at the top of the page, where the parallax has not moved anything.
+const cue = document.querySelector(".hero__cue");
+const heroButtons = document.querySelector(".hero__actions");
+if (cue && heroButtons) {
+  const placeCue = () => {
+    if (window.scrollY > 0) return;
+    cue.classList.remove("is-aside");
+    const buttons = heroButtons.getBoundingClientRect();
+    const mark = cue.getBoundingClientRect();
+    const overlaps = buttons.bottom > mark.top - 16 && buttons.right > mark.left - 16 && buttons.left < mark.right + 16;
+    cue.classList.toggle("is-aside", overlaps);
+  };
+  placeCue();
+  document.fonts?.ready.then(placeCue);
+  window.addEventListener("resize", placeCue);
+}
+
 // Boarding: arriving from another site opens on the shipboard network for about two seconds. It says "Welcome back",
 // never "Welcome aboard": mid-crossing nobody comes aboard, and most people on the Archive grew up there. The inline
 // script in the page's head decides whether it shows (not on a reload, Back, or a link from this site; never to a

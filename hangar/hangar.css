@@ -1,0 +1,83 @@
+/* The Hangar: the turntable, the loadout and its gauges. Built on site.css's colours, type and bar. */
+
+/* No hero here, so the bar is solid from the top. */
+.bar { background: rgba(7, 9, 13, 0.88); box-shadow: 0 1px 0 var(--line); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+
+.hangar { padding: calc(var(--top-height) + clamp(36px, 6vw, 72px)) 0 clamp(80px, 10vw, 120px); }
+.hangar__head { max-width: 680px; }
+.hangar__head h1 { font-family: var(--font-display); font-size: clamp(2.6rem, 6vw, 4.6rem); line-height: 0.95; text-transform: uppercase; letter-spacing: 0.01em; }
+.hangar__head .lead { margin-top: 16px; color: var(--ink-dim); }
+
+.hangar__grid { display: grid; gap: 40px; margin-top: clamp(32px, 4vw, 56px); align-items: start; }
+@media (min-width: 980px) { .hangar__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 56px; } }
+
+/* the turntable */
+.spin { margin: 0; }
+.spin__stage {
+  position: relative; aspect-ratio: 1; overflow: hidden; cursor: grab; touch-action: pan-y; user-select: none;
+  background: radial-gradient(ellipse at 50% 88%, rgba(224, 137, 62, 0.16), transparent 55%), radial-gradient(circle at 50% 45%, #141a22, #07090d 70%);
+  box-shadow: 0 0 0 1px var(--line);
+}
+.spin__stage:active { cursor: grabbing; }
+.spin__stage:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.spin__stage img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.spin__hint {
+  position: absolute; left: 50%; bottom: 14px; margin: 0; transform: translateX(-50%);
+  font: 400 0.64rem/1 var(--font-mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim);
+  transition: opacity 0.4s;
+}
+.spin__stage.is-held .spin__hint { opacity: 0; }
+.spin__dial { width: 100%; margin: 14px 0 0; accent-color: var(--accent); }
+.spin figcaption { margin-top: 10px; font-size: 0.82rem; color: var(--ink-faint); }
+
+/* the loadout */
+.fit__title { font: 400 0.72rem/1 var(--font-mono); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 14px; }
+.fit__slots { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.fit__noscript { color: var(--ink-dim); }
+.slot { border-bottom: 1px solid var(--line); }
+.slot__toggle {
+  display: grid; grid-template-columns: 1fr auto; grid-template-areas: "label weight" "current weight"; gap: 2px 16px; align-items: center;
+  width: 100%; padding: 14px 4px; background: none; border: 0; color: var(--ink); text-align: left; cursor: pointer; font: inherit;
+}
+.slot__toggle:hover .slot__current, .slot.is-open .slot__current { color: var(--accent); }
+.slot__toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.slot__label { grid-area: label; font: 400 0.66rem/1.2 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); }
+.slot__current { grid-area: current; font: 600 1.25rem/1.2 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; transition: color 0.2s; }
+.slot__weight { grid-area: weight; font: 400 0.8rem/1 var(--font-mono); color: var(--ink-dim); font-variant-numeric: tabular-nums; }
+.slot__choices { display: grid; gap: 6px; padding: 0 0 16px; }
+.choice {
+  display: grid; grid-template-columns: 1fr auto; grid-template-areas: "name weight" "tag weight"; gap: 2px 12px; align-items: center;
+  padding: 10px 12px; background: rgba(232, 228, 220, 0.04); border: 1px solid transparent; color: var(--ink); text-align: left; cursor: pointer; font: inherit;
+}
+.choice:hover { background: rgba(232, 228, 220, 0.08); }
+.choice[aria-pressed="true"] { border-color: var(--accent); background: rgba(224, 137, 62, 0.08); }
+.choice:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.choice__name { grid-area: name; font-weight: 600; letter-spacing: 0.04em; }
+.choice__weight { grid-area: weight; font: 400 0.78rem/1 var(--font-mono); color: var(--ink-dim); font-variant-numeric: tabular-nums; }
+.choice__tag { grid-area: tag; font: 400 0.6rem/1.2 var(--font-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+.choice__tag.is-starter { color: var(--ink-faint); }
+.slot__note { margin: -6px 0 16px; font-size: 0.8rem; color: var(--ink-faint); }
+
+/* the gauges */
+.gauges { margin-top: clamp(40px, 5vw, 64px); padding: clamp(20px, 3vw, 32px); background: rgba(4, 6, 10, 0.88); box-shadow: 0 0 0 1px var(--line); }
+.gauge__label { margin: 0 0 6px; font: 400 0.66rem/1.2 var(--font-mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); }
+.gauge__value { margin: 0; color: var(--ink-dim); font-size: 0.92rem; }
+.gauge__value b { font: 600 clamp(1.6rem, 2.6vw, 2.2rem)/1.1 var(--font-display); color: var(--ink); font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+.gauge__bar { position: relative; height: 10px; margin: 14px 0 10px; background: rgba(232, 228, 220, 0.08); }
+.gauge__fill { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--accent); transition: width 0.35s ease, background 0.35s; }
+.gauge__mow { position: absolute; top: -6px; bottom: -6px; width: 2px; margin-left: -1px; background: var(--ink); }
+.gauge__mow::after {
+  content: "Max"; position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
+  font: 400 0.56rem/1 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim);
+}
+.gauge__note { margin: 0; font-size: 0.88rem; color: var(--ink-dim); }
+.gauges.is-over .gauge__fill { background: #e8564b; }
+.gauges.is-over .gauge__note { color: #f08a80; }
+.gauges__list { display: grid; gap: 24px; margin: 28px 0 0; padding-top: 24px; border-top: 1px solid var(--line); }
+@media (min-width: 760px) { .gauges__list { grid-template-columns: repeat(3, 1fr); } }
+.gauges__list dd { margin: 0; }
+.gauges__note { margin: 24px 0 0; font-size: 0.8rem; color: var(--ink-faint); }
+
+@media (prefers-reduced-motion: reduce) {
+  .gauge__fill, .spin__hint, .slot__current { transition: none; }
+}

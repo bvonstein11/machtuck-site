@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>The Drop · Test · The Reach: Unknown</title>
+  <!-- A test page for the scroll drop: linked from nothing and kept out of search. -->
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#07090d">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/site.css?v=301beded">
+  <link rel="stylesheet" href="/drop/drop.css?v=301beded">
+  <script src="/drop/drop.js?v=301beded" defer></script>
+</head>
+<body>
+  <main>
+    <section class="drop-intro">
+      <div class="wrap">
+        <p class="eyebrow">Test · Scroll drop · Pre-alpha</p>
+        <h1>Scroll to drop.</h1>
+        <p class="lead">The game's own opening, frame by frame: through the burn, down to the ground, and back in the cockpit.</p>
+      </div>
+    </section>
+
+    <!-- The drop: a tall track whose scroll position picks the frame. The frames are the game's opening (FirstDropOpening),
+         captured from a player build every sixth frame at 30 per second; they load only as the track comes near. -->
+    <section class="drop" data-drop data-frames="74" data-src="/drop/frames/drop-{n}.webp" aria-label="The opening drop">
+      <div class="drop__screen">
+        <canvas class="drop__canvas" data-drop-canvas role="img" aria-label="The VIGIL's drop, from re-entry to the cockpit"></canvas>
+        <ol class="drop__phases" aria-hidden="true">
+          <li data-from="0" data-to="44">Entry</li>
+          <li data-from="45" data-to="66">Touchdown</li>
+          <li data-from="67" data-to="73">Boot</li>
+        </ol>
+        <p class="drop__loading" data-drop-loading>Loading the drop</p>
+        <div class="drop__progress" aria-hidden="true"><span data-drop-progress></span></div>
+      </div>
+    </section>
+
+    <section class="drop-after">
+      <div class="wrap">
+        <p class="eyebrow">You're down</p>
+        <h2>The war is already moving.</h2>
+        <p class="lead">This is where the page carries on.</p>
+        <a class="btn" href="/thereach/">Back to the game page</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
