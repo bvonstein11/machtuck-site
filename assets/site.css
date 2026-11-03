@@ -544,53 +544,58 @@ h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
   .voyage__scrubber { order: -1; flex-basis: 100%; }
 }
 
-/* the factions: an accordion on wide screens, a swipe row on phones */
-.houses {
-  list-style: none; margin: 56px 0 0; padding: 0 var(--gutter);
-  display: flex; gap: 10px;
-  max-width: 1400px; margin-left: auto; margin-right: auto;
-  height: clamp(460px, 62vw, 680px);
+/* the factions: a select screen in type and colour. The chosen house opens its creed and tints the page (site.js). */
+@property --accent { syntax: "<color>"; inherits: true; initial-value: #e0893e; }
+:root.can-tint { transition: --accent 0.7s ease; }
+.factions { position: relative; }
+.factions > .wrap { position: relative; }
+.factions::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.7s;
+  background: radial-gradient(ellipse 80% 60% at 30% 45%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 70%);
 }
-.house {
-  position: relative; flex: 1 1 0; min-width: 0;
-  overflow: hidden; cursor: default;
-  background: var(--bg-raise);
-  transition: flex-grow 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
+:root[data-faction] .factions::before { opacity: 1; }
+.pick { margin-top: 56px; }
+.pick__marks { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; max-width: 1040px; }  /* clear of the section rail's label */
+.pick__mark {
+  position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; min-height: 132px;
+  padding: 20px 18px 18px; border: 0; text-align: left; cursor: pointer;
+  font: inherit; color: var(--ink-dim); background: var(--bg-raise); box-shadow: inset 0 0 0 1px var(--line);
+  transition: background 0.35s, box-shadow 0.35s, color 0.35s;
 }
-.house img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s, filter 0.5s; filter: saturate(0.75) brightness(0.8); }
-.house::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; z-index: 2; background: var(--house); }
-.house::after {
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(7, 9, 13, 0.95) 0%, rgba(7, 9, 13, 0.4) 40%, transparent 70%);
-}
-.house__text { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 24px 18px; transition: opacity 0.3s; }
-.house__word { margin: 0 0 4px; color: var(--house); font-size: 0.66rem; font-weight: 600; letter-spacing: 0.26em; text-transform: uppercase; }
-.house__name { font-family: var(--font-house); font-weight: 600; font-size: clamp(1.05rem, 1.6vw, 1.7rem); letter-spacing: 0.04em; white-space: nowrap; }
-.house blockquote {
-  margin: 0; max-height: 0; overflow: hidden; opacity: 0;
-  color: var(--ink-dim); font-style: italic; font-size: 0.92rem; line-height: 1.5;
-  transition: max-height 0.5s, opacity 0.4s, margin 0.5s;
-}
-@media (min-width: 821px) {
-  .houses:hover .house, .houses:focus-within .house { flex-grow: 0.75; }
-  .houses .house:hover, .houses .house:focus { flex-grow: 2.4; }
-  /* A squeezed card is too narrow for its name; it shows its colour bar and picture until it is opened. */
-  .houses:hover .house:not(:hover) .house__text, .houses:focus-within .house:not(:focus) .house__text { opacity: 0; }
-  .house:hover img, .house:focus img { transform: scale(1.03); filter: none; }
-  .house:hover blockquote, .house:focus blockquote { max-height: 9em; opacity: 1; margin-top: 12px; transition-delay: 0.15s; }
-}
+.pick__mark::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; background: var(--house); opacity: 0.55; transition: opacity 0.35s, height 0.35s; }
+.pick__word { color: var(--house-ink); font-size: 0.64rem; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; }
+.pick__name { font-family: var(--font-house); font-weight: 600; font-size: clamp(1rem, 1.7vw, 1.45rem); letter-spacing: 0.04em; color: var(--ink); }
+.pick__mark:hover::before, .pick__mark:focus-visible::before { opacity: 1; }
+.pick__mark:hover { background: color-mix(in srgb, var(--house) 7%, var(--bg-raise)); }
+.pick__mark[aria-pressed="true"] { background: color-mix(in srgb, var(--house) 16%, var(--bg-raise)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--house) 60%, transparent); }
+.pick__mark[aria-pressed="true"]::before { opacity: 1; height: 5px; }
+/* Every panel shares one grid cell, so the section keeps the height of the longest and nothing below it jumps. */
+.pick__panels { display: grid; margin-top: 40px; max-width: 760px; }
+.pick__panel { grid-area: 1 / 1; margin: 0; }
+.pick__panels.is-live .pick__panel { opacity: 0; visibility: hidden; transform: translateY(10px); transition: opacity 0.35s, transform 0.45s, visibility 0s 0.35s; }
+.pick__panels.is-live .pick__panel.is-shown { opacity: 1; visibility: visible; transform: none; transition: opacity 0.45s 0.1s, transform 0.55s 0.1s; }
+.pick__prompt { color: var(--ink-dim); }
+.pick__panels:not(.is-live) .pick__panel + .pick__panel { margin-top: 40px; }  /* without the script, all five stand in a column */
+.pick__panels:not(.is-live) { display: block; }
+.house__word { margin: 0 0 6px; color: var(--accent); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.26em; text-transform: uppercase; }
+.house__name { margin: 0; font-family: var(--font-house); font-weight: 600; font-size: clamp(1.8rem, 3.4vw, 2.6rem); letter-spacing: 0.04em; }
+.pick__panel blockquote { margin: 16px 0 0; padding-left: 18px; border-left: 2px solid var(--house); color: var(--ink); font-style: italic; font-size: clamp(1.05rem, 1.5vw, 1.25rem); line-height: 1.5; }
+.pick__panel blockquote + p { margin: 18px 0 0; color: var(--ink-dim); }
 @media (max-width: 820px) {
-  .houses {
-    height: auto; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 var(--gutter);
-    gap: 12px; padding-bottom: 8px; scrollbar-width: none;
-  }
-  .houses::-webkit-scrollbar { display: none; }
-  .house { flex: 0 0 78%; height: 128vw; max-height: 560px; scroll-snap-align: start; }
-  .house img { filter: none; }
-  .house blockquote { max-height: none; opacity: 1; margin-top: 10px; }
+  .pick { margin-top: 40px; }
+  .pick__marks { gap: 6px; }
+  .pick__mark { min-height: 76px; padding: 14px 4px 12px; align-items: center; text-align: center; }
+  .pick__word { display: none; }
+  .pick__name { font-size: 0.66rem; letter-spacing: 0.02em; }
+  .pick__panels { margin-top: 28px; }
 }
-.factions__free { margin: 40px 0 0; color: var(--ink-dim); }
-.factions__free b { color: var(--ink); letter-spacing: 0.08em; }
+.factions__free { margin: 48px 0 0; color: var(--ink-dim); }
+.pick__torrath {
+  padding: 0; border: 0; background: none; cursor: pointer;
+  font: inherit; font-weight: 600; letter-spacing: 0.08em; color: var(--ink);
+  text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 4px;
+}
+.pick__torrath:hover { text-decoration-color: currentColor; }
 
 /* the studio */
 .studio { background: linear-gradient(to bottom, var(--bg), #0a0d12 50%, var(--bg)); }
@@ -720,7 +725,7 @@ html.is-boarding::after { content: ""; position: fixed; inset: 0; z-index: 300; 
   html { scroll-behavior: auto; }
   [data-reveal] { opacity: 1; transform: none; transition: none; }
   .hero__cue span { animation: none; }
-  .house, .house img, .house blockquote { transition: none; }
+  :root.can-tint, .pick__mark, .pick__mark::before, .factions::before, .pick__panels.is-live .pick__panel { transition: none !important; }
   .ship__audio[aria-pressed="true"] i b { animation: none; height: 100%; }
   .story__trace path { stroke-dashoffset: 0; animation: none !important; }
   .story__now i { animation: none; }

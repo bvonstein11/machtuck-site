@@ -1,5 +1,5 @@
 // machtuck.com — the page's small amount of behaviour: the ship's strip, the bar, the menu, the rail, the reveals,
-// the parallax, and the Discord door. No libraries, no tracking, nothing sent anywhere.
+// the parallax, the faction pick, and the Discord door. No libraries, no tracking, nothing sent anywhere.
 
 /**
  * The Discord invite every "Join the Discord" button opens. Empty until the server exists: the buttons then say
@@ -110,6 +110,37 @@ if (!reducedMotion && layers.length) {
 }
 
 for (const year of document.querySelectorAll("[data-year]")) year.textContent = String(new Date().getFullYear());
+
+// The factions: a select screen. Picking a house shows its creed and tints the page in its colour for this visit; nothing
+// is stored, as the privacy page promises, so every visit opens on the prompt. Torrath, the mercenary who swears to none
+// of them, clears it.
+const pick = document.querySelector("[data-pick]");
+if (pick) {
+  const root = document.documentElement;
+  const marks = [...pick.querySelectorAll(".pick__mark")];
+  const panels = [...pick.querySelectorAll("[data-panel]")];
+  const choose = (house) => {
+    let accent = "";
+    for (const mark of marks) mark.setAttribute("aria-pressed", String(mark.dataset.house === house));
+    for (const panel of panels) {
+      const shown = panel.dataset.panel === house;
+      panel.classList.toggle("is-shown", shown);
+      if (shown) accent = panel.dataset.accent || "";
+    }
+    if (accent) {
+      root.style.setProperty("--accent", accent);
+      root.dataset.faction = house;
+    } else {
+      root.style.removeProperty("--accent");
+      delete root.dataset.faction;
+    }
+  };
+  pick.querySelector(".pick__panels").classList.add("is-live");
+  choose("");
+  // The colour fades only on a pick, never while the page first paints.
+  requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add("can-tint")));
+  for (const button of document.querySelectorAll("[data-house]")) button.addEventListener("click", () => choose(button.dataset.house));
+}
 
 // The ship's live readouts, in the status strip and over the ship in THE ARCHIVE: the clock is today's date and time on
 // the ship's calendar (assets/ship.js), and the speed, the voyage year, the share crossed and the state follow it, down

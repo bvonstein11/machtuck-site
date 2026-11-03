@@ -25,7 +25,7 @@
   <link rel="preload" href="/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/assets/img/sky-2560.webp" as="image" media="(min-width: 1281px)">
   <link rel="preload" href="/assets/img/sky-1280.webp" as="image" media="(max-width: 1280px)">
-  <link rel="stylesheet" href="/assets/site.css?v=89c10e30">
+  <link rel="stylesheet" href="/assets/site.css?v=63b3bab9">
   <script>
     // Boarding: arriving from another site opens on the shipboard network, which assets/site.js draws. Nothing is
     // stored in the browser (the privacy page promises that): a reload, Back, or a link from this site skips it. This
@@ -40,9 +40,9 @@
       }
     } catch (error) { /* no boarding screen */ }
   </script>
-  <script src="/assets/ship.js?v=89c10e30" defer></script>
-  <script src="/assets/site.js?v=89c10e30" defer></script>
-  <script src="/assets/voyage.js?v=89c10e30" defer></script>
+  <script src="/assets/ship.js?v=63b3bab9" defer></script>
+  <script src="/assets/site.js?v=63b3bab9" defer></script>
+  <script src="/assets/voyage.js?v=63b3bab9" defer></script>
 </head>
 <body>
   <a class="skip" href="#game">Skip to content</a>
@@ -166,7 +166,7 @@
         </ol>
 
         <ul class="facts" data-reveal>
-          <li>Free to play</li>
+          <li>Coming to Steam</li>
           <li>Closed beta on Windows &amp; Mac</li>
           <li>iOS and Android to follow</li>
         </ul>
@@ -325,56 +325,72 @@
       </div>
     </section>
 
-    <!-- FACTIONS: the five faction-picker portraits. -->
+    <!-- FACTIONS: a select screen in type and colour only. Each says who the faction is and how it fights, never what its mechs
+         are: the mech portraits came off on 2026-11-03, and the factions' identity art is still to be
+         decided. Picking one tints the page in its colour (site.js); data-accent is the house colour lightened until small
+         text on the page reads at 5.5 : 1. -->
     <section class="section factions" id="factions" data-section>
       <div class="wrap">
         <p class="eyebrow" data-reveal>Aboard · Five factions</p>
         <h2 data-reveal>Nobody was born into a faction. Every member chose.</h2>
-      </div>
-      <ul class="houses" data-reveal>
-        <li class="house" style="--house:#C8323C" tabindex="0">
-          <img src="/assets/img/faction-ksh.webp" alt="A black Kashiro mech with crimson trim on a snowfield" width="720" height="1279" loading="lazy">
-          <div class="house__text">
-            <p class="house__word">Honor</p>
-            <h3 class="house__name">Kashiro</h3>
-            <blockquote>“We failed because we let small things go. Precision is honor.”</blockquote>
+        <div class="pick" data-pick data-reveal>
+          <div class="pick__marks" role="group" aria-label="Choose a faction">
+            <button class="pick__mark" type="button" aria-pressed="false" aria-controls="house-ksh" data-house="ksh" style="--house:#C8323C; --house-ink:#D5636B">
+              <span class="pick__word">Honor</span>
+              <span class="pick__name">Kashiro</span>
+            </button>
+            <button class="pick__mark" type="button" aria-pressed="false" aria-controls="house-vld" data-house="vld" style="--house:#D4A23C; --house-ink:#D4A23C">
+              <span class="pick__word">Dominion</span>
+              <span class="pick__name">Valdron</span>
+            </button>
+            <button class="pick__mark" type="button" aria-pressed="false" aria-controls="house-drv" data-house="drv" style="--house:#4A90C2; --house-ink:#4A90C2">
+              <span class="pick__word">Shadow</span>
+              <span class="pick__name">Darvyn</span>
+            </button>
+            <button class="pick__mark" type="button" aria-pressed="false" aria-controls="house-grv" data-house="grv" style="--house:#8FA83C; --house-ink:#8FA83C">
+              <span class="pick__word">Pack</span>
+              <span class="pick__name">Gorvik</span>
+            </button>
+            <button class="pick__mark" type="button" aria-pressed="false" aria-controls="house-shv" data-house="shv" style="--house:#8E5BC2; --house-ink:#A075CC">
+              <span class="pick__word">Foundation</span>
+              <span class="pick__name">Shenvong</span>
+            </button>
           </div>
-        </li>
-        <li class="house" style="--house:#D4A23C" tabindex="0">
-          <img src="/assets/img/faction-vld.webp" alt="A bronze Valdron mech in a flooded city" width="720" height="1279" loading="lazy">
-          <div class="house__text">
-            <p class="house__word">Dominion</p>
-            <h3 class="house__name">Valdron</h3>
-            <blockquote>“We failed because we were divided. Unity is survival.”</blockquote>
+          <div class="pick__panels" aria-live="polite">
+            <p class="pick__panel pick__prompt" data-panel="">Five answers to why Earth failed. Choose one to read its creed, and the page takes its colour.</p>
+            <article class="pick__panel" id="house-ksh" data-panel="ksh" data-accent="#D5636B" style="--house:#C8323C">
+              <p class="house__word">Honor</p>
+              <h3 class="house__name">Kashiro</h3>
+              <blockquote>“We failed because we let small things go. Precision is honor.”</blockquote>
+              <p>The hardest path: honor that costs something real. Not inherited but chosen, which is what makes the code mean something. They fly as a disciplined team under a strict chain of command, and settle disputes by trial of combat.</p>
+            </article>
+            <article class="pick__panel" id="house-vld" data-panel="vld" data-accent="#D4A23C" style="--house:#D4A23C">
+              <p class="house__word">Dominion</p>
+              <h3 class="house__name">Valdron</h3>
+              <blockquote>“We failed because we were divided. Unity is survival.”</blockquote>
+              <p>They believe humanity needs one strong leader. Not cruel: convinced. Commanders and logistics officers who watched the ship's people split apart and decided the answer was more authority, not less. They advance in overwhelming force and hold what they take.</p>
+            </article>
+            <article class="pick__panel" id="house-drv" data-panel="drv" data-accent="#4A90C2" style="--house:#4A90C2">
+              <p class="house__word">Shadow</p>
+              <h3 class="house__name">Darvyn</h3>
+              <blockquote>“We failed because we believed what we were told. Information is the only honest currency.”</blockquote>
+              <p>Not villains: realists. Intelligence officers and analysts who watched good intentions end in catastrophe, stopped trusting intentions and started trusting data. They would rather win before the battle starts.</p>
+            </article>
+            <article class="pick__panel" id="house-grv" data-panel="grv" data-accent="#8FA83C" style="--house:#8FA83C">
+              <p class="house__word">Pack</p>
+              <h3 class="house__name">Gorvik</h3>
+              <blockquote>“We failed because we each looked after our own. The pack eats first.”</blockquote>
+              <p>Not anarchists: tribalists. Small-unit soldiers and crew who watched every large structure fail and decided the only thing worth trusting is the person beside you. Fiercely loyal inside the pack, suspicious of anything larger.</p>
+            </article>
+            <article class="pick__panel" id="house-shv" data-panel="shv" data-accent="#A075CC" style="--house:#8E5BC2">
+              <p class="house__word">Foundation</p>
+              <h3 class="house__name">Shenvong</h3>
+              <blockquote>“We failed because we never built anything that could hold. What holds, saves.”</blockquote>
+              <p>Engineers, architects and long-term planners. They fight because they have to, to make fighting unnecessary. The others are competing for something; Shenvong are building something, and they measure it by what still stands after they are gone.</p>
+            </article>
           </div>
-        </li>
-        <li class="house" style="--house:#4A90C2" tabindex="0">
-          <img src="/assets/img/faction-drv.webp" alt="A dark grey Darvyn mech on black volcanic ground under a storm" width="720" height="1279" loading="lazy">
-          <div class="house__text">
-            <p class="house__word">Shadow</p>
-            <h3 class="house__name">Darvyn</h3>
-            <blockquote>“We failed because we believed what we were told. Information is the only honest currency.”</blockquote>
-          </div>
-        </li>
-        <li class="house" style="--house:#8FA83C" tabindex="0">
-          <img src="/assets/img/faction-grv.webp" alt="A moss-covered Gorvik mech in a jungle" width="720" height="1279" loading="lazy">
-          <div class="house__text">
-            <p class="house__word">Pack</p>
-            <h3 class="house__name">Gorvik</h3>
-            <blockquote>“We failed because we each looked after our own. The pack eats first.”</blockquote>
-          </div>
-        </li>
-        <li class="house" style="--house:#8E5BC2" tabindex="0">
-          <img src="/assets/img/faction-shv.webp" alt="A sand-coloured Shenvong mech with violet lights in a desert" width="720" height="1279" loading="lazy">
-          <div class="house__text">
-            <p class="house__word">Foundation</p>
-            <h3 class="house__name">Shenvong</h3>
-            <blockquote>“We failed because we never built anything that could hold. What holds, saves.”</blockquote>
-          </div>
-        </li>
-      </ul>
-      <div class="wrap">
-        <p class="factions__free" data-reveal>Or swear to none of them. Decline all five and you fly as <b>Torrath</b>: a mercenary, and free.</p>
+        </div>
+        <p class="factions__free" data-reveal>Or swear to none of them. Decline all five and you fly as <button class="pick__torrath" type="button" data-house="">Torrath</button>: a mercenary, and free.</p>
       </div>
     </section>
 
