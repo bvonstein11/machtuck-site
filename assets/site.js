@@ -2,7 +2,7 @@
 // the parallax, and the Discord door. No libraries, no tracking, nothing sent anywhere.
 
 /**
- * The Discord invite every "Join the community" button opens. Empty until the server exists: the buttons then say
+ * The Discord invite every "Join the Discord" button opens. Empty until the server exists: the buttons then say
  * so instead of leading nowhere. Paste the invite here (for example "https://discord.gg/abc123") and every button
  * on every page follows.
  */
@@ -98,21 +98,117 @@ if (!reducedMotion && layers.length) {
 
 for (const year of document.querySelectorAll("[data-year]")) year.textContent = String(new Date().getFullYear());
 
-// The ship's status strip, live: the clock is today's date and time on the ship's calendar (assets/ship.js), and the
-// speed, the voyage year and the state follow it, down through the braking burn to orbit.
-const shipDate = document.querySelector("[data-ship-date]");
-if (shipDate && typeof Voyage !== "undefined") {
-  const shipSpeed = document.querySelector("[data-ship-speed]");
-  const shipYear = document.querySelector("[data-ship-year]");
-  const shipState = document.querySelector("[data-ship-state]");
+// The ship's live readouts, in the status strip and over the ship in THE ARCHIVE: the clock is today's date and time on
+// the ship's calendar (assets/ship.js), and the speed, the voyage year, the share crossed and the state follow it, down
+// through the braking burn to orbit. Every element carrying one of these attributes is filled, wherever it sits.
+if (typeof Voyage !== "undefined" && document.querySelector("[data-ship-date]")) {
+  const readouts = {
+    date: document.querySelectorAll("[data-ship-date]"),
+    speed: document.querySelectorAll("[data-ship-speed]"),
+    year: document.querySelectorAll("[data-ship-year]"),
+    crossed: document.querySelectorAll("[data-ship-crossed]"),
+    state: document.querySelectorAll("[data-ship-state]"),
+  };
+  const fill = (elements, text) => { for (const element of elements) element.textContent = text; };
   const tick = () => {
     const date = Voyage.shipNow();
     const y = Voyage.voyageTime(date);
-    shipDate.textContent = Voyage.stamp(date, true);
-    shipSpeed.textContent = `${Voyage.speedAt(y).toFixed(3)} c`;
-    shipYear.textContent = Voyage.voyageYearAt(y).toFixed(2);
-    shipState.textContent = y >= Voyage.archive.arrive ? "In orbit" : "In transit";
+    fill(readouts.date, Voyage.stamp(date, true));
+    fill(readouts.speed, `${Voyage.speedAt(y).toFixed(3)} c`);
+    fill(readouts.year, Voyage.voyageYearAt(y).toFixed(2));
+    // Rounded down, as The Crossing rounds it, so the ship never reads 100% before it is in orbit.
+    fill(readouts.crossed, `${(Math.floor(Voyage.progressAt(y) * 1000) / 10).toFixed(1)}%`);
+    fill(readouts.state, y >= Voyage.archive.arrive ? "In orbit" : "In transit");
   };
   tick();
   setInterval(tick, 1000);
+}
+
+// Boarding: the first page of a visit opens on the shipboard network for about two seconds. The inline script in the
+// page's head decides whether it shows (not twice in a visit, never to a visitor who asks for less motion) and keeps the
+// page dark until this draws it. Any key, click, touch or scroll goes straight to the page.
+if (document.documentElement.classList.contains("is-boarding") && typeof Voyage !== "undefined") {
+  try { sessionStorage.setItem("boarded", "1"); } catch (error) { /* storage blocked: it may show again */ }
+  const date = Voyage.shipNow();
+  const y = Voyage.voyageTime(date);
+  const screen = document.createElement("div");
+  screen.className = "boarding";
+  screen.setAttribute("aria-hidden", "true");
+  const lines = [
+    ["The Archive", "Shipboard network"],
+    ["Earth date", Voyage.stamp(date, false)],
+    ["Speed", `${Voyage.speedAt(y).toFixed(3)} c`],
+    ["Link", "Open"],
+  ];
+  screen.innerHTML = `<div class="boarding__panel">${lines.map(([label, value]) => `<p><b>${label}</b><span>${value}</span></p>`).join("")}<p class="boarding__welcome">Welcome aboard</p></div>`;
+  document.body.append(screen);
+  document.documentElement.classList.remove("is-boarding");
+  requestAnimationFrame(() => screen.classList.add("is-on"));
+  let left = false;
+  const leave = () => {
+    if (left) return;
+    left = true;
+    screen.classList.add("is-leaving");
+    setTimeout(() => screen.remove(), 500);
+  };
+  setTimeout(leave, 2100);
+  for (const type of ["keydown", "pointerdown", "wheel", "touchstart"]) window.addEventListener(type, leave, { once: true, passive: true });
+}
+
+// Ship audio: the hum of the hull, made in the browser from noise and a few low tones (no sound file), off until the
+// visitor turns it on. Browsers refuse sound before a click, so it can never start by itself.
+const audioSwitch = document.querySelector("[data-ship-audio]");
+const AudioEngine = window.AudioContext || window.webkitAudioContext;
+if (audioSwitch && AudioEngine) {
+  let context = null;
+  let master = null;
+  const build = () => {
+    context = new AudioEngine();
+    master = context.createGain();
+    master.gain.value = 0;
+    master.connect(context.destination);
+    // Brown noise through a low-pass filter: the air handlers.
+    const length = context.sampleRate * 4;
+    const buffer = context.createBuffer(1, length, context.sampleRate);
+    const samples = buffer.getChannelData(0);
+    let last = 0;
+    for (let i = 0; i < length; i++) {
+      last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02;
+      samples[i] = last * 3.5;
+    }
+    const air = context.createBufferSource();
+    air.buffer = buffer;
+    air.loop = true;
+    const filter = context.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = 350;
+    const airLevel = context.createGain();
+    airLevel.gain.value = 0.35;
+    air.connect(filter).connect(airLevel).connect(master);
+    air.start();
+    // Two low tones a little apart so they beat slowly, the drum turning, with harmonics a laptop speaker can play.
+    for (const [frequency, level] of [[55, 0.05], [55.4, 0.05], [110, 0.04], [165.2, 0.018], [220.5, 0.008]]) {
+      const tone = context.createOscillator();
+      tone.frequency.value = frequency;
+      const toneLevel = context.createGain();
+      toneLevel.gain.value = level;
+      tone.connect(toneLevel).connect(master);
+      tone.start();
+    }
+  };
+  audioSwitch.hidden = false;
+  audioSwitch.addEventListener("click", () => {
+    const on = audioSwitch.getAttribute("aria-pressed") !== "true";
+    audioSwitch.setAttribute("aria-pressed", String(on));
+    if (!context) build();
+    const now = context.currentTime;
+    master.gain.cancelScheduledValues(now);
+    master.gain.setValueAtTime(master.gain.value, now);
+    if (on) {
+      context.resume();
+      master.gain.linearRampToValueAtTime(0.6, now + 2.5);
+    } else {
+      master.gain.linearRampToValueAtTime(0, now + 0.6);
+    }
+  });
 }

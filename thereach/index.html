@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>The Reach: Unknown · Mach Tuck Games</title>
-  <meta name="description" content="A persistent mech war. Join one of five factions, or fly alone as a Torrath mercenary, and fight for ground on a contested world. Every match feeds a war that never ends.">
+  <meta name="description" content="A persistent mech war, fought from a first-person cockpit. Join one of five factions or fly alone as a Torrath mercenary, and every match you fight moves a front that never resets.">
   <link rel="canonical" href="https://machtuck.com/thereach/">
   <meta name="theme-color" content="#07090d">
 
@@ -22,13 +22,23 @@
   <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-  <link rel="preload" href="/assets/fonts/B612/B612-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/assets/img/sky-2560.webp" as="image" media="(min-width: 1281px)">
   <link rel="preload" href="/assets/img/sky-1280.webp" as="image" media="(max-width: 1280px)">
-  <link rel="stylesheet" href="/assets/site.css?v=870558d7">
-  <script src="/assets/ship.js?v=870558d7" defer></script>
-  <script src="/assets/site.js?v=870558d7" defer></script>
-  <script src="/assets/voyage.js?v=870558d7" defer></script>
+  <link rel="stylesheet" href="/assets/site.css?v=41eecf0a">
+  <script>
+    // Boarding: the first page of a visit opens on the shipboard network, which assets/site.js draws. This only keeps
+    // the page dark until then, and lets go after three seconds whatever happens.
+    try {
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches && sessionStorage.getItem("boarded") !== "1") {
+        document.documentElement.classList.add("is-boarding");
+        setTimeout(() => document.documentElement.classList.remove("is-boarding"), 3000);
+      }
+    } catch (error) { /* storage blocked: no boarding screen */ }
+  </script>
+  <script src="/assets/ship.js?v=41eecf0a" defer></script>
+  <script src="/assets/site.js?v=41eecf0a" defer></script>
+  <script src="/assets/voyage.js?v=41eecf0a" defer></script>
 </head>
 <body>
   <a class="skip" href="#game">Skip to content</a>
@@ -39,6 +49,9 @@
     <span class="ship__item"><b>Earth date</b> <span data-ship-date>—</span></span>
     <span class="ship__item ship__item--wide"><b>Speed</b> <span data-ship-speed>0.130 c</span></span>
     <span class="ship__item ship__item--wide"><b>Voyage year</b> <span data-ship-year>—</span></span>
+    <button class="ship__audio" type="button" aria-pressed="false" data-ship-audio hidden>
+      <i aria-hidden="true"><b></b><b></b><b></b></i><span>Ship audio</span>
+    </button>
   </div>
 
   <!-- The bar: the studio mark on the left, the sections, and the one door. -->
@@ -52,7 +65,7 @@
       <a href="#world">The World</a>
       <a href="#factions">Factions</a>
       <a href="#studio">Studio</a>
-      <a class="btn btn--small" data-discord href="#join">Join the community</a>
+      <a class="btn btn--small" data-discord href="#join">Join the Discord</a>
     </nav>
     <button class="bar__menu" type="button" aria-expanded="false" aria-controls="site-nav" data-menu>
       <span class="bar__menu-lines" aria-hidden="true"></span>
@@ -86,9 +99,10 @@
             <img src="/assets/img/title.webp" alt="The Reach: Unknown" width="1600" height="455">
           </h1>
           <div class="hero__actions">
-            <a class="btn" data-discord href="#join">Join the community</a>
-            <a class="btn btn--ghost" href="#game">The game</a>
+            <a class="btn" data-discord href="#join">Join the Discord</a>
+            <a class="btn btn--ghost" href="#game">Explore the game</a>
           </div>
+          <p class="hero__status">Free to play · Closed beta on Windows &amp; Mac</p>
         </div>
       </div>
       <a class="hero__cue" href="#game" aria-label="Scroll to the game"><span></span></a>
@@ -97,38 +111,38 @@
     <!-- THE GAME: what you are, and the five pillars. -->
     <section class="section game" id="game" data-section>
       <div class="wrap">
-        <p class="eyebrow" data-reveal>The Game</p>
-        <h2 data-reveal>Your victories matter beyond the match.</h2>
+        <p class="eyebrow" data-reveal>Pilot briefing · The game</p>
+        <h2 data-reveal>Every match moves the war.</h2>
         <div class="game__lead" data-reveal>
-          <p class="lead">You are a mech pilot. You have a faction. You have a rank. You have people who depend on you. Your reputation outlasts any single session.</p>
-          <p>The Reach: Unknown is a persistent mech war. Join one of five factions, or fly alone as a Torrath mercenary, and fight for ground on a contested world. Every match feeds a war that never ends. The community is the story.</p>
+          <p class="lead">You are a mech pilot with a faction, a rank and a clan that counts on you. What you do tonight is still on the map tomorrow.</p>
+          <p>The Reach: Unknown is a persistent mech war, fought from the cockpit. Join one of five factions, or fly alone as a Torrath mercenary, and fight for ground on a contested world. Every pilot shares one front line, and it never resets.</p>
         </div>
 
         <ol class="pillars">
           <li data-reveal>
             <span class="pillars__num">01</span>
-            <h3>The clan is the game</h3>
-            <p>Up to fifty pilots under one name. You fly for them, and they remember who showed up.</p>
+            <h3>Fly for a clan</h3>
+            <p>Up to fifty pilots under one banner. You fly for them, and they remember who showed up.</p>
           </li>
           <li data-reveal>
             <span class="pillars__num">02</span>
-            <h3>Consequence matters</h3>
-            <p>Wins and losses move the line on the map. The war keeps the score.</p>
+            <h3>Move the line</h3>
+            <p>Every win and every loss shifts the front on a map all pilots share. The war keeps score.</p>
           </li>
           <li data-reveal>
             <span class="pillars__num">03</span>
-            <h3>Honor is mechanical</h3>
-            <p>How you fight counts, not only whether you win.</p>
+            <h3>Honor counts</h3>
+            <p>How you fight counts, not only whether you win. Your rank carries from season to season.</p>
           </li>
           <li data-reveal>
             <span class="pillars__num">04</span>
-            <h3>Weight and permanence</h3>
-            <p>Mechs have mass, loadouts have a price, and the map never resets.</p>
+            <h3>Feel the weight</h3>
+            <p>Every fight is first person, from a full cockpit. Mechs have mass, and every loadout has a price.</p>
           </li>
           <li data-reveal>
             <span class="pillars__num">05</span>
-            <h3>The universe never finishes</h3>
-            <p>Most of The Reach is unmapped. Every season the front pushes into new ground.</p>
+            <h3>Push into the unknown</h3>
+            <p>Most of The Reach is uncharted. Every season the front pushes into new ground.</p>
           </li>
         </ol>
 
@@ -147,17 +161,17 @@
       </div>
       <div class="wrap">
         <p class="eyebrow" data-reveal>Archive record · The Reach</p>
-        <h2 data-reveal>The Reach</h2>
+        <h2 data-reveal>One world.<br> Five claims on it.</h2>
         <div class="world__body">
           <div class="world__text" data-reveal>
-            <p class="lead">The nearest star to Earth, and an Earth-like world in its light.</p>
-            <p>The Archive is bound for it on a 32.63-year voyage: the first home humanity has found since Earth failed. Every faction aboard wants to claim it. Nobody has agreed on who has the right.</p>
+            <p class="lead">An Earth-like world, with water, around the nearest star system to our own.</p>
+            <p>It is the first home humanity has found since Earth failed. The Archive set out for it on a voyage of 32.63 years, and every faction aboard means to claim it. None of them agrees on who has the right.</p>
           </div>
           <dl class="stats">
             <div data-reveal><dt>Light-years from Earth</dt><dd>4.34</dd></div>
             <div data-reveal><dt>Years in transit</dt><dd>32.63</dd></div>
             <div data-reveal><dt>Factions</dt><dd>5</dd></div>
-            <div data-reveal><dt>World</dt><dd>1</dd></div>
+            <div data-reveal><dt>Habitable worlds found</dt><dd>1</dd></div>
           </dl>
         </div>
 
@@ -173,19 +187,17 @@
               <li style="--x: 83%; --y: 27%"><b>3</b><span>Arid Desert / Mesa</span></li>
               <li style="--x: 73%; --y: 76%"><b>4</b><span>Volcanic Badlands</span></li>
               <li style="--x: 22%; --y: 63%"><b>5</b><span>The settlement</span></li>
-              <li style="--x: 50%; --y: 47%" class="is-heart"><b>6</b><span>The river junction</span></li>
             </ol>
           </div>
           <figcaption>
             <p class="reach-map__title">Archive record · The Reach</p>
-            <p>Five lands on one world, chained along one river. Where the rivers meet, every land comes closest to the others: the ground the war will be fought over hardest.</p>
+            <p>Five lands on one world, chained along one river.</p>
             <ol class="reach-map__legend">
               <li>Snow Highlands</li>
               <li>Dense Jungle</li>
               <li>Arid Desert / Mesa</li>
               <li>Volcanic Badlands</li>
               <li>The settlement</li>
-              <li>The river junction</li>
             </ol>
           </figcaption>
         </figure>
@@ -294,7 +306,7 @@
         </li>
       </ul>
       <div class="wrap">
-        <p class="factions__free" data-reveal>Or join none of them. Decline all five and you fly <b>Torrath</b>: a mercenary, and free.</p>
+        <p class="factions__free" data-reveal>Or swear to none of them. Decline all five and you fly as <b>Torrath</b>: a mercenary, and free.</p>
       </div>
     </section>
 
@@ -307,13 +319,13 @@
         <div class="studio__text">
           <p class="eyebrow" data-reveal>The Studio</p>
           <h2 data-reveal>Mach Tuck Games</h2>
-          <p class="lead" data-reveal>We are an independent studio, and The Reach: Unknown is our first game.</p>
+          <p class="lead" data-reveal>We are an independent studio, and The Reach: Unknown is our first game. We are building it to run for years: one world, one war, and the pilots who fight it.</p>
         </div>
       </div>
       <div class="wrap">
         <ul class="values">
-          <li data-reveal><h3>Belonging first</h3><p>We build for the people you fly with.</p></li>
-          <li data-reveal><h3>A war that remembers</h3><p>What happens tonight is still on the map tomorrow.</p></li>
+          <li data-reveal><h3>Belonging first</h3><p>We build for the people you fly with. Everything else serves that.</p></li>
+          <li data-reveal><h3>Built to last</h3><p>One game, made to run season after season, on a map that keeps its history.</p></li>
           <li data-reveal><h3>All of it ours</h3><p>Every world, faction and machine is original.</p></li>
           <li data-reveal><h3>The community writes it</h3><p>The story of the war is the one its pilots make.</p></li>
         </ul>
@@ -327,10 +339,10 @@
       </div>
       <div class="wrap join__inner">
         <p class="eyebrow" data-reveal>Join</p>
-        <h2 data-reveal>When we reach orbit, the war begins.</h2>
-        <p class="lead" data-reveal>The Archive reaches orbit on the day the open beta opens. Until then, the community gathers on Discord.</p>
+        <h2 data-reveal>When we reach orbit,<br> the war begins.</h2>
+        <p class="lead" data-reveal>The Archive reaches orbit the day open beta begins. Until then, the pilots gather on Discord. Come aboard.</p>
         <div data-reveal>
-          <a class="btn btn--large" data-discord href="#join">Join the community</a>
+          <a class="btn btn--large" data-discord href="#join">Join the Discord</a>
         </div>
       </div>
     </section>

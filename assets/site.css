@@ -1,10 +1,12 @@
 /* machtuck.com — one stylesheet for every page.
-   Type is the game's own: B612 (the cockpit face) for everything, Cinzel for faction names, as on the faction cards.
-   The fonts are served from this site, so a visit sends nothing to a third party. */
+   Type: Barlow Condensed for headlines (it matches the condensed caps of the title), Barlow for reading and labels,
+   B612 Mono (the cockpit's own face) for the ship's instruments and every changing number, and Cinzel for faction
+   names, as on the faction cards. The fonts are served from this site, so a visit sends nothing to a third party. */
 
-@font-face { font-family: "B612"; src: url("/assets/fonts/B612/B612-Regular.ttf") format("truetype"); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: "B612"; src: url("/assets/fonts/B612/B612-Bold.ttf") format("truetype"); font-weight: 700; font-style: normal; font-display: swap; }
-@font-face { font-family: "B612"; src: url("/assets/fonts/B612/B612-Italic.ttf") format("truetype"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Barlow"; src: url("/assets/fonts/Barlow/Barlow-Regular.ttf") format("truetype"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Barlow"; src: url("/assets/fonts/Barlow/Barlow-Italic.ttf") format("truetype"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Barlow"; src: url("/assets/fonts/Barlow/Barlow-SemiBold.ttf") format("truetype"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Barlow Condensed"; src: url("/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf") format("truetype"); font-weight: 600; font-style: normal; font-display: swap; }
 @font-face { font-family: "B612 Mono"; src: url("/assets/fonts/B612Mono/B612Mono-Regular.ttf") format("truetype"); font-weight: 400; font-style: normal; font-display: swap; }
 @font-face { font-family: "Cinzel"; src: url("/assets/fonts/Cinzel/Cinzel-SemiBold.ttf") format("truetype"); font-weight: 600; font-style: normal; font-display: swap; }
 
@@ -21,7 +23,8 @@
   --bar-height: 68px;
   --strip-height: 28px;      /* the ship's status strip above the bar */
   --top-height: calc(var(--strip-height) + var(--bar-height));
-  --font: "B612", "Helvetica Neue", Arial, sans-serif;
+  --font: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", sans-serif;
   --font-house: "Cinzel", Georgia, serif;
   --font-mono: "B612 Mono", "SFMono-Regular", Menlo, monospace;
   color-scheme: dark;
@@ -34,13 +37,15 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font);
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 1.0625rem;
+  line-height: 1.65;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; }
-h1, h2, h3 { margin: 0; font-weight: 700; }
+h1, h2, h3 { margin: 0; font-weight: 600; }
 p { margin: 0 0 1em; }
 
 [hidden] { display: none !important; } /* the attribute wins over any display a class sets */
@@ -53,22 +58,23 @@ p { margin: 0 0 1em; }
 
 /* ---------- type ---------- */
 h2 {
-  font-size: clamp(1.9rem, 4.6vw, 3.6rem);
-  line-height: 1.05;
-  letter-spacing: 0.01em;
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 5.6vw, 4.5rem);
+  line-height: 0.98;
+  letter-spacing: 0.005em;
   text-transform: uppercase;
-  max-width: 21ch;
+  max-width: 18ch;
   text-wrap: balance;
 }
-h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
+h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
 .eyebrow {
   display: flex; align-items: center; gap: 14px;
   margin-bottom: 18px;
   color: var(--accent);
-  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase;
+  font: 400 0.74rem/1.3 var(--font-mono); letter-spacing: 0.24em; text-transform: uppercase;
 }
 .eyebrow::before { content: ""; width: 34px; height: 2px; background: currentColor; }
-.lead { font-size: clamp(1.1rem, 1.7vw, 1.35rem); line-height: 1.5; color: var(--ink); }
+.lead { font-size: clamp(1.2rem, 1.8vw, 1.5rem); line-height: 1.45; color: var(--ink); text-wrap: pretty; }
 
 /* ---------- buttons: the corners are cut, like the game's panels ---------- */
 .btn {
@@ -76,7 +82,7 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
   min-height: 48px; padding: 0 26px;
   background: var(--accent); color: var(--accent-ink);
-  font: 700 0.8rem/1 var(--font); letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none;
+  font: 600 0.84rem/1 var(--font); letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none;
   clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
   transition: background 0.2s, color 0.2s, transform 0.2s;
 }
@@ -84,7 +90,7 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 .btn:active { transform: translateY(1px); }
 .btn--ghost { background: rgba(232, 228, 220, 0.08); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
 .btn--ghost:hover { background: rgba(232, 228, 220, 0.16); }
-.btn--small { min-height: 38px; padding: 0 16px; font-size: 0.7rem; --cut: 7px; }
+.btn--small { min-height: 38px; padding: 0 16px; font-size: 0.74rem; --cut: 7px; }
 .btn--large { min-height: 58px; padding: 0 38px; font-size: 0.9rem; }
 .btn[aria-disabled="true"] { background: rgba(232, 228, 220, 0.1); color: var(--ink-dim); cursor: default; }
 
@@ -102,11 +108,29 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 .ship__state { display: flex; align-items: center; gap: 8px; color: var(--accent); }
 .ship__state i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
 .ship__item span { font-variant-numeric: tabular-nums; color: var(--ink); }
+.ship__audio {
+  display: flex; align-items: center; gap: 8px; margin-left: auto; padding: 0; height: 100%;
+  background: none; border: 0; cursor: pointer; color: var(--ink-dim);
+  font: inherit; letter-spacing: inherit; text-transform: inherit;
+}
+.ship__audio:hover { color: var(--ink); }
+.ship__audio i { display: flex; align-items: flex-end; gap: 2px; height: 10px; }
+.ship__audio i b { width: 2px; height: 30%; margin: 0; background: currentColor; }
+.ship__audio[aria-pressed="true"] { color: var(--accent); }
+.ship__audio[aria-pressed="true"] i b { animation: hum 1.4s ease-in-out infinite; }
+.ship__audio[aria-pressed="true"] i b:nth-child(2) { animation-delay: -0.5s; }
+.ship__audio[aria-pressed="true"] i b:nth-child(3) { animation-delay: -0.9s; }
+@keyframes hum { 0%, 100% { height: 30%; } 50% { height: 100%; } }
+/* Narrower screens keep the strip on one line: the switch shows as its icon, then the speed and voyage year step aside
+   (THE ARCHIVE shows the speed). */
+@media (max-width: 1100px) { .ship__audio span { display: none; } }
+@media (max-width: 980px) { .ship__item--wide { display: none; } }
 @media (max-width: 700px) {
   .ship__item--wide { display: none; }
   .ship { justify-content: space-between; gap: 12px; letter-spacing: 0.08em; }
 }
-@media (max-width: 480px) { .ship__long, .ship b { display: none; } }
+/* A phone speaker cannot play the hum's low notes, and the strip has no room for the switch. */
+@media (max-width: 560px) { .ship__long, .ship b, .ship__audio { display: none; } }
 
 .bar {
   position: fixed; top: var(--strip-height); left: 0; right: 0; z-index: 50;
@@ -118,11 +142,11 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 .bar.is-solid { background: rgba(7, 9, 13, 0.88); box-shadow: 0 1px 0 var(--line); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
 .bar__brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 .bar__brand img { width: 26px; height: auto; }
-.bar__brand span { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; white-space: nowrap; }
+.bar__brand span { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; white-space: nowrap; }
 .bar__brand b { color: var(--ink-dim); font-weight: 400; }
 .bar__nav { display: flex; align-items: center; gap: 30px; }
 .bar__nav a:not(.btn) {
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none;
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none;
   color: var(--ink-dim); transition: color 0.2s;
 }
 .bar__nav a:not(.btn):hover { color: var(--ink); }
@@ -168,7 +192,7 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 .rail a {
   display: flex; align-items: center; justify-content: flex-end; gap: 12px;
   height: 18px; text-decoration: none;
-  font-size: 0.62rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase;
+  font-size: 0.62rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
   color: var(--ink-faint);
 }
 .rail a::after { content: ""; width: 14px; height: 2px; background: currentColor; transition: width 0.25s, background 0.25s; }
@@ -215,6 +239,11 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
   color: var(--ink); text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
 }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(20px, 2.4vw, 34px); }
+.hero__status {
+  margin: clamp(14px, 1.4vw, 20px) 0 0;
+  font: 600 clamp(0.72rem, 0.9vw, 0.84rem)/1.4 var(--font); letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--ink); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 2px 14px rgba(0, 0, 0, 0.9);
+}
 .hero::after {
   content: ""; position: absolute; inset: auto 0 0; height: 22%;
   background: linear-gradient(to bottom, transparent, var(--bg));
@@ -244,7 +273,7 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 }
 
 /* ---------- sections ---------- */
-.section { position: relative; padding: clamp(80px, 12vw, 160px) 0; }
+.section { position: relative; padding: clamp(80px, 10vw, 136px) 0; }
 
 .game__lead { display: grid; gap: 8px 48px; margin-top: 40px; max-width: 980px; color: var(--ink-dim); }
 @media (min-width: 900px) { .game__lead { grid-template-columns: 1.1fr 1fr; } }
@@ -257,8 +286,8 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 @media (min-width: 1000px) { .pillars { grid-template-columns: repeat(5, 1fr); } }
 .pillars li { position: relative; padding: 28px 24px 28px 0; }
 .pillars li + li { padding-left: 24px; border-left: 1px solid var(--line); }
-.pillars__num { display: block; margin-bottom: 18px; color: var(--accent); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em; }
-.pillars h3 { margin-bottom: 12px; font-size: 0.92rem; line-height: 1.35; }
+.pillars__num { display: block; margin-bottom: 18px; color: var(--accent); font: 400 0.75rem/1 var(--font-mono); letter-spacing: 0.2em; }
+.pillars h3 { margin-bottom: 12px; font-size: 0.95rem; line-height: 1.35; }
 .pillars p { margin: 0; color: var(--ink-dim); font-size: 0.92rem; }
 @media (max-width: 700px) {
   .pillars li, .pillars li + li { padding: 24px 0; border-left: 0; border-bottom: 1px solid var(--line); }
@@ -271,7 +300,7 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 .facts li {
   padding: 10px 16px;
   box-shadow: inset 0 0 0 1px var(--line);
-  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-dim);
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-dim);
 }
 
 /* the world */
@@ -288,8 +317,8 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 .world__text { max-width: 560px; color: var(--ink-dim); }
 .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin: 0; background: var(--line); }
 .stats div { padding: 26px 24px; background: rgba(7, 9, 13, 0.82); }
-.stats dt { order: 2; color: var(--ink-dim); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }
-.stats dd { margin: 0 0 6px; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; line-height: 1; letter-spacing: -0.01em; }
+.stats dt { order: 2; color: var(--ink-dim); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; }
+.stats dd { margin: 0 0 8px; font-family: var(--font-display); font-size: clamp(2.6rem, 4.6vw, 3.8rem); font-weight: 600; line-height: 1; letter-spacing: 0; font-variant-numeric: tabular-nums; }
 .stats div { display: flex; flex-direction: column-reverse; }
 
 /* the map of The Reach: labels on the picture on wide screens, numbered pins and a legend on phones */
@@ -304,17 +333,15 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 .reach-map__pins b {
   display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%;
   background: rgba(7, 9, 13, 0.82); box-shadow: 0 0 0 1.5px var(--ink);
-  font: 700 0.7rem/1 var(--font-mono); color: var(--ink);
+  font: 600 0.7rem/1 var(--font-mono); color: var(--ink);
 }
 .reach-map__pins span {
   padding: 5px 9px; background: rgba(7, 9, 13, 0.78);
-  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; white-space: nowrap;
+  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; white-space: nowrap;
 }
-.reach-map__pins .is-heart b { box-shadow: 0 0 0 1.5px var(--accent), 0 0 18px var(--accent); color: var(--accent); }
-.reach-map__pins .is-heart span { color: var(--accent); }
 .reach-map figcaption { display: grid; gap: 6px 40px; margin-top: 22px; color: var(--ink-dim); }
 .reach-map figcaption p { margin: 0; }
-.reach-map__title { color: var(--accent); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; }
+.reach-map__title { color: var(--accent); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; }
 .reach-map__legend { display: none; }
 @media (min-width: 900px) { .reach-map figcaption { grid-template-columns: auto 1fr; align-items: baseline; } }
 @media (max-width: 760px) {
@@ -324,6 +351,50 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
     display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px; margin: 10px 0 0; padding-left: 1.4em;
     font-size: 0.82rem; color: var(--ink);
   }
+}
+
+/* the archive: the ship, framed like a feed on the ship's own screens, with the strip's live numbers in its corners */
+.archive__view { position: relative; max-width: 1400px; margin: 48px auto 0; padding: 0 var(--gutter); }
+.archive__view picture, .archive__view img { display: block; width: 100%; }
+.archive__view picture { box-shadow: 0 0 0 1px var(--line), 0 30px 80px rgba(0, 0, 0, 0.55); }
+.archive__hud { position: absolute; inset: 0 var(--gutter); pointer-events: none; }
+.archive__hud::before {
+  content: ""; position: absolute; inset: 14px; pointer-events: none;
+  border: 1px solid rgba(232, 228, 220, 0.5);
+  -webkit-mask: linear-gradient(#000 0 0) top left / 28px 28px no-repeat, linear-gradient(#000 0 0) top right / 28px 28px no-repeat,
+    linear-gradient(#000 0 0) bottom left / 28px 28px no-repeat, linear-gradient(#000 0 0) bottom right / 28px 28px no-repeat;
+  mask: linear-gradient(#000 0 0) top left / 28px 28px no-repeat, linear-gradient(#000 0 0) top right / 28px 28px no-repeat,
+    linear-gradient(#000 0 0) bottom left / 28px 28px no-repeat, linear-gradient(#000 0 0) bottom right / 28px 28px no-repeat;
+}
+.archive__hud p {
+  position: absolute; margin: 0; padding: 0 4px;
+  font: 400 0.66rem/1.3 var(--font-mono); letter-spacing: 0.16em; text-transform: uppercase; white-space: nowrap;
+  color: var(--ink); text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+}
+.archive__hud p b { font-weight: 400; color: var(--ink-dim); margin-right: 6px; }
+.archive__hud span { font-variant-numeric: tabular-nums; }
+.archive__hud-state { top: 26px; left: 28px; display: flex; align-items: center; gap: 8px; color: var(--accent) !important; }
+.archive__hud-state i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+.archive__hud-date { top: 26px; right: 28px; }
+.archive__hud-speed { bottom: 26px; left: 28px; }
+.archive__hud-crossed { bottom: 26px; right: 28px; }
+.archive__body { display: grid; gap: 40px; margin-top: 48px; align-items: start; }
+@media (min-width: 980px) { .archive__body { grid-template-columns: 1.35fr 1fr; gap: 80px; } }
+.archive__text { color: var(--ink-dim); max-width: 640px; }
+.archive__text .lead { margin-bottom: 1.1em; }
+.archive__specs { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin: 0; background: var(--line); }
+.archive__specs div { display: flex; flex-direction: column-reverse; padding: 22px 22px; background: var(--bg); }
+.archive__specs dt { color: var(--ink-dim); font: 400 0.66rem/1.3 var(--font-mono); letter-spacing: 0.18em; text-transform: uppercase; }
+.archive__specs dd { margin: 0 0 8px; font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 600; line-height: 1; }
+@media (max-width: 600px) {
+  .archive__hud::before { inset: 8px; }
+  .archive__hud p { font-size: 0.56rem; letter-spacing: 0.1em; }
+  .archive__hud-state, .archive__hud-date { top: 16px; }
+  .archive__hud-speed, .archive__hud-crossed { bottom: 16px; }
+  .archive__hud-state, .archive__hud-speed { left: 16px; }
+  .archive__hud-date, .archive__hud-crossed { right: 16px; }
+  .archive__hud-date { display: none; }
+  .archive__hud-crossed b { display: none; }
 }
 
 /* the crossing: a navigation chart drawn by assets/voyage.js at the container's own pixel size */
@@ -339,7 +410,7 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 .voyage__views { display: flex; border: 1px solid var(--line); }
 .voyage__views button {
   padding: 9px 14px; border: 0; background: none; cursor: pointer; color: var(--ink-dim);
-  font: 700 0.64rem/1 var(--font); letter-spacing: 0.18em; text-transform: uppercase;
+  font: 600 0.64rem/1 var(--font); letter-spacing: 0.18em; text-transform: uppercase;
 }
 .voyage__views button + button { border-left: 1px solid var(--line); }
 .voyage__views button[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); }
@@ -357,7 +428,7 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 }
 .voyage__readout-label { fill: var(--ink); }
 .voyage__now-label { fill: var(--accent); }
-.voyage__body-name { fill: var(--ink); font: 700 13px/1 var(--font); letter-spacing: 0.2em; }
+.voyage__body-name { fill: var(--ink); font: 600 13px/1 var(--font); letter-spacing: 0.2em; }
 .voyage__body-sub { fill: var(--ink-dim); font: 400 11px/1 var(--font); letter-spacing: 0.06em; }
 .voyage__body-date { fill: var(--ink-dim); font: 400 11px/1 var(--font-mono); letter-spacing: 0.16em; }
 .voyage__halo { fill: currentColor; opacity: 0.16; }
@@ -375,7 +446,7 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 .voyage__ship-glow { fill: var(--accent); opacity: 0.18; }
 .voyage__ship-ring { fill: #fff3e4; stroke: var(--accent); stroke-width: 1.5; }
 .voyage__ship-tick { stroke: var(--accent); stroke-width: 1.5; }
-.voyage__ship-label { fill: var(--accent); font: 700 10px/1 var(--font-mono); letter-spacing: 0.18em; }
+.voyage__ship-label { fill: var(--accent); font: 600 10px/1 var(--font-mono); letter-spacing: 0.18em; }
 .voyage__ship.is-planned .voyage__ship-ring { fill: transparent; }
 
 .voyage__notes {
@@ -386,7 +457,7 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 
 .voyage__timeline { padding: 20px 22px 18px; border-top: 1px solid var(--line); }
 .voyage__timeline-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 20px; margin-bottom: 14px; }
-.voyage__timeline-head p { margin: 0; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+.voyage__timeline-head p { margin: 0; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
 .voyage__timeline-head p + p { color: var(--ink-faint); font-weight: 400; letter-spacing: 0.06em; text-transform: none; font-size: 0.78rem; }
 .voyage__controls { display: flex; align-items: center; gap: 14px; }
 .voyage__scrubber { flex: 1; min-width: 0; margin: 0; accent-color: var(--accent); cursor: pointer; }
@@ -418,14 +489,14 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 }
 .voyage__readouts div { padding: 18px 22px; }
 .voyage__readouts div + div { border-left: 1px solid var(--line); }
-.voyage__readouts dt { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-faint); }
-.voyage__readouts dd { margin: 8px 0 4px; font-size: clamp(1.3rem, 2.4vw, 1.75rem); font-weight: 700; font-variant-numeric: tabular-nums; }
+.voyage__readouts dt { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-faint); }
+.voyage__readouts dd { margin: 8px 0 4px; font-family: var(--font-display); font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 600; font-variant-numeric: tabular-nums; }
 .voyage__readouts p { margin: 0; font-size: 0.74rem; color: var(--ink-dim); }
 
 .voyage__phase { padding: 18px 22px 20px; border-top: 1px solid var(--line); }
 .voyage__phase p { margin: 0; color: var(--ink-dim); max-width: 860px; }
 .voyage__phase b { color: var(--ink); }
-.voyage__phase-label { margin-bottom: 8px !important; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink) !important; }
+.voyage__phase-label { margin-bottom: 8px !important; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink) !important; }
 .voyage__phase-note { margin-top: 10px !important; padding-left: 12px; border-left: 2px solid var(--accent); font-size: 0.86rem; }
 
 @media (max-width: 760px) {
@@ -463,7 +534,7 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
   background: linear-gradient(to top, rgba(7, 9, 13, 0.95) 0%, rgba(7, 9, 13, 0.4) 40%, transparent 70%);
 }
 .house__text { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 24px 18px; transition: opacity 0.3s; }
-.house__word { margin: 0 0 4px; color: var(--house); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.26em; text-transform: uppercase; }
+.house__word { margin: 0 0 4px; color: var(--house); font-size: 0.66rem; font-weight: 600; letter-spacing: 0.26em; text-transform: uppercase; }
 .house__name { font-family: var(--font-house); font-weight: 600; font-size: clamp(1.05rem, 1.6vw, 1.7rem); letter-spacing: 0.04em; white-space: nowrap; }
 .house blockquote {
   margin: 0; max-height: 0; overflow: hidden; opacity: 0;
@@ -520,8 +591,8 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
   background: radial-gradient(ellipse at 20% 50%, rgba(224, 137, 62, 0.12), transparent 60%);
 }
 .join__inner { position: relative; }
-.join h2 { font-size: clamp(2.2rem, 6vw, 4.6rem); }
-.join .lead { margin: 26px 0 36px; color: var(--ink-dim); }
+.join h2 { max-width: none; font-size: clamp(2.6rem, 6.4vw, 5.2rem); }
+.join .lead { max-width: 620px; margin: 26px 0 36px; color: var(--ink-dim); }
 
 /* footer */
 .foot { padding: 48px 0 calc(48px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); }
@@ -537,7 +608,7 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 .foot__links { display: flex; flex-wrap: wrap; gap: 8px 22px; justify-content: flex-end; margin-bottom: 8px; }
 .foot__links a {
   color: var(--ink-dim); text-decoration: none;
-  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
 }
 .foot__links a:hover { color: var(--ink); }
 @media (max-width: 640px) { .foot__links { justify-content: flex-start; } }
@@ -549,16 +620,39 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
 }
 .doc-bar__back {
   color: var(--ink-dim); text-decoration: none;
-  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
 }
 .doc-bar__back:hover { color: var(--ink); }
 .doc { max-width: 780px; padding-top: clamp(48px, 8vw, 96px); padding-bottom: clamp(64px, 10vw, 120px); }
-.doc h1 { font-size: clamp(1.8rem, 4.2vw, 2.8rem); line-height: 1.1; text-transform: uppercase; margin-bottom: 12px; }
-.doc h2 { max-width: none; margin: 40px 0 10px; font-size: 0.9rem; letter-spacing: 0.14em; }
+.doc h1 { font-family: var(--font-display); font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1; text-transform: uppercase; margin-bottom: 12px; }
+.doc h2 { max-width: none; margin: 40px 0 10px; font-family: var(--font); font-size: 0.95rem; line-height: 1.3; letter-spacing: 0.14em; }
 .doc p { color: var(--ink-dim); }
 .doc .lead { margin: 26px 0 8px; color: var(--ink); }
 .doc a { color: var(--accent); }
 .doc__date { color: var(--ink-faint); font-size: 0.8rem; }
+
+/* ---------- boarding: the shipboard network, on the first page of a visit ---------- */
+html.is-boarding::after { content: ""; position: fixed; inset: 0; z-index: 300; background: #04060a; }
+.boarding {
+  position: fixed; inset: 0; z-index: 300; display: grid; place-items: center; padding: var(--gutter);
+  background: #04060a repeating-linear-gradient(to bottom, rgba(232, 228, 220, 0.025) 0 1px, transparent 1px 3px);
+  transition: opacity 0.45s ease;
+}
+.boarding.is-leaving { opacity: 0; pointer-events: none; }
+.boarding__panel { width: min(420px, 100%); font: 400 0.78rem/1 var(--font-mono); letter-spacing: 0.18em; text-transform: uppercase; }
+.boarding__panel p {
+  display: flex; justify-content: space-between; gap: 24px; margin: 0; padding: 10px 0;
+  border-bottom: 1px solid var(--line); color: var(--ink);
+  opacity: 0; transform: translateY(4px); transition: opacity 0.25s, transform 0.25s;
+}
+.boarding__panel p b { font-weight: 400; color: var(--ink-dim); }
+.boarding__panel p:first-child b { color: var(--accent); }
+.boarding__panel .boarding__welcome { justify-content: center; margin-top: 18px; border: 0; color: var(--accent); letter-spacing: 0.4em; }
+.boarding.is-on .boarding__panel p { opacity: 1; transform: none; }
+.boarding.is-on .boarding__panel p:nth-child(2) { transition-delay: 0.18s; }
+.boarding.is-on .boarding__panel p:nth-child(3) { transition-delay: 0.36s; }
+.boarding.is-on .boarding__panel p:nth-child(4) { transition-delay: 0.54s; }
+.boarding.is-on .boarding__panel p:nth-child(5) { transition-delay: 0.9s; }
 
 /* ---------- motion: off when the visitor asks for less ---------- */
 [data-reveal] { opacity: 0; transform: translateY(22px); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1); }
@@ -569,4 +663,5 @@ h3 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; }
   [data-reveal] { opacity: 1; transform: none; transition: none; }
   .hero__cue span { animation: none; }
   .house, .house img, .house blockquote { transition: none; }
+  .ship__audio[aria-pressed="true"] i b { animation: none; height: 100%; }
 }
