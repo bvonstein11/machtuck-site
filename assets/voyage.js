@@ -19,7 +19,7 @@ const MILESTONES = [
   { at: ARCHIVE.brake, name: "Braking", date: "30 Aug 3342",
     text: "Forty-six days at one gravity again, to stop." },
   { at: ARCHIVE.arrive, name: "Orbit", date: "22 Oct 3342",
-    text: "The Archive reaches orbit over The Reach at the end of a 32.63-year voyage. It never lands. The generation that arrives is not the one that left." },
+    text: "The Archive reaches orbit over The Reach at the end of a 32.63-year voyage. The generation that arrives is not the one that left." },
   ...Voyage.logs.map((entry) => ({
     at: entry.y, name: `Log ${entry.log}`, isLog: true,
     date: Voyage.dayStamp(entry.date).replace(/ ([A-Z])([A-Z]{2}) /, (_, first, rest) => ` ${first}${rest.toLowerCase()} `),
@@ -32,7 +32,7 @@ const PHASES = {
   cruise: ["Interstellar cruise.", "The engines are quiet. The Archive coasts at 0.130 of the speed of light, and everyone aboard is awake."],
   braking: ["Braking burn.", "Forty-six days at one gravity, to stop."],
   approach: ["Final approach.", "A week over the last three million kilometres, at about five kilometres a second."],
-  orbit: ["In orbit over The Reach.", "The Archive never lands."],
+  orbit: ["In orbit over The Reach.", "The Archive stays in orbit, and every drop to the surface starts here."],
 };
 
 const VIEWS = {
