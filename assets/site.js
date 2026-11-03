@@ -147,12 +147,12 @@ if (record) {
   }
 }
 
-// Boarding: the first page of a visit opens on the shipboard network for about two seconds. It says "Welcome back",
+// Boarding: arriving from another site opens on the shipboard network for about two seconds. It says "Welcome back",
 // never "Welcome aboard": mid-crossing nobody comes aboard, and most people on the Archive grew up there. The inline
-// script in the page's head decides whether it shows (not twice in a visit, never to a visitor who asks for less motion)
-// and keeps the page dark until this draws it. Any key, click, touch or scroll goes straight to the page.
+// script in the page's head decides whether it shows (not on a reload, Back, or a link from this site; never to a
+// visitor who asks for less motion) and keeps the page dark until this draws it. Nothing is stored in the browser.
+// Any key, click, touch or scroll goes straight to the page.
 if (document.documentElement.classList.contains("is-boarding") && typeof Voyage !== "undefined") {
-  try { sessionStorage.setItem("boarded", "1"); } catch (error) { /* storage blocked: it may show again */ }
   const date = Voyage.shipNow();
   const y = Voyage.voyageTime(date);
   const screen = document.createElement("div");
