@@ -8,6 +8,12 @@
  */
 const DISCORD_INVITE = "https://discord.gg/akCxskKStX";
 
+/**
+ * The Kit form the email sign-up sends to: the form's number, from its embed code in Kit. Empty until the form exists,
+ * and the sign-up stays hidden while it is; the privacy page must describe the sign-up before this is filled in.
+ */
+const SIGNUP_FORM = "";
+
 document.documentElement.classList.remove("no-js");
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -23,6 +29,13 @@ for (const link of document.querySelectorAll("[data-discord]")) {
     link.setAttribute("aria-disabled", "true");
     link.removeAttribute("href");
   }
+}
+
+// The email sign-up: shown only once a Kit form is named above. It posts to Kit in a new tab; nothing loads from Kit.
+const signup = document.querySelector("[data-signup]");
+if (signup && SIGNUP_FORM) {
+  signup.action = `https://app.kit.com/forms/${SIGNUP_FORM}/subscriptions`;
+  signup.hidden = false;
 }
 
 // The bar turns solid once the hero has scrolled past, so the links stay readable over the sections below.

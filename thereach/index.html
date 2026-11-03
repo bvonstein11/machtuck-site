@@ -25,7 +25,7 @@
   <link rel="preload" href="/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/assets/img/sky-2560.webp" as="image" media="(min-width: 1281px)">
   <link rel="preload" href="/assets/img/sky-1280.webp" as="image" media="(max-width: 1280px)">
-  <link rel="stylesheet" href="/assets/site.css?v=b95ffd8f">
+  <link rel="stylesheet" href="/assets/site.css?v=84d1e16f">
   <script>
     // Boarding: arriving from another site opens on the shipboard network, which assets/site.js draws. Nothing is
     // stored in the browser (the privacy page promises that): a reload, Back, or a link from this site skips it. This
@@ -40,9 +40,9 @@
       }
     } catch (error) { /* no boarding screen */ }
   </script>
-  <script src="/assets/ship.js?v=b95ffd8f" defer></script>
-  <script src="/assets/site.js?v=b95ffd8f" defer></script>
-  <script src="/assets/voyage.js?v=b95ffd8f" defer></script>
+  <script src="/assets/ship.js?v=84d1e16f" defer></script>
+  <script src="/assets/site.js?v=84d1e16f" defer></script>
+  <script src="/assets/voyage.js?v=84d1e16f" defer></script>
 </head>
 <body>
   <a class="skip" href="#game">Skip to content</a>
@@ -109,7 +109,6 @@
             <a class="btn" data-discord href="#join">Join the Discord</a>
             <a class="btn btn--ghost" href="#game">Explore the game</a>
           </div>
-          <p class="hero__status">Free to play · Closed beta on Windows &amp; Mac</p>
         </div>
       </div>
       <a class="hero__cue" href="#game" aria-label="Scroll to the game"><span></span></a>
@@ -445,6 +444,16 @@
         <div data-reveal>
           <a class="btn btn--large" data-discord href="#join">Join the Discord</a>
         </div>
+        <!-- The email sign-up posts straight to Kit, with no script from Kit on this page. It stays hidden until
+             SIGNUP_FORM in assets/site.js names the form, and the privacy page describes it. -->
+        <form class="signup" data-signup method="post" target="_blank" hidden>
+          <label for="signup-email">Or get the news by email</label>
+          <div class="signup__row">
+            <input id="signup-email" type="email" name="email_address" autocomplete="email" placeholder="you@example.com" required>
+            <button class="btn btn--ghost" type="submit">Sign up</button>
+          </div>
+          <p class="signup__note">Your address goes to Kit, the service we send email with. News about The Reach only, and every email has an unsubscribe link. <a href="/privacy/">Privacy</a></p>
+        </form>
       </div>
     </section>
   </main>
@@ -457,6 +466,7 @@
       </a>
       <div class="foot__small">
         <nav class="foot__links" aria-label="Legal">
+          <a href="/presskit/">Press kit</a>
           <a href="/privacy/">Privacy</a>
           <a href="/terms/">Terms</a>
           <a href="/art/">Art &amp; AI</a>
