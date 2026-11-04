@@ -25,8 +25,8 @@
   <link rel="preload" href="/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/assets/img/sky-2560.webp" as="image" media="(min-width: 1281px)">
   <link rel="preload" href="/assets/img/sky-1280.webp" as="image" media="(max-width: 1280px)">
-  <link rel="stylesheet" href="/assets/site.css?v=bfc59ba8">
-  <link rel="stylesheet" href="/drop/drop.css?v=bfc59ba8">
+  <link rel="stylesheet" href="/assets/site.css?v=b40f6cee">
+  <link rel="stylesheet" href="/drop/drop.css?v=b40f6cee">
   <script>
     // Boarding: arriving from another site opens on the shipboard network, which assets/site.js draws. Nothing is
     // stored in the browser (the privacy page promises that): a reload, Back, or a link from this site skips it. This
@@ -41,11 +41,12 @@
       }
     } catch (error) { /* no boarding screen */ }
   </script>
-  <script src="/assets/ship.js?v=bfc59ba8" defer></script>
-  <script src="/assets/site.js?v=bfc59ba8" defer></script>
-  <script src="/drop/drop.js?v=bfc59ba8" defer></script>
-  <script src="/assets/patch.js?v=bfc59ba8" defer></script>
-  <script src="/assets/patchmaker.js?v=bfc59ba8" defer></script>
+  <script src="/assets/ship.js?v=b40f6cee" defer></script>
+  <script src="/assets/site.js?v=b40f6cee" defer></script>
+  <script src="/drop/drop.js?v=b40f6cee" defer></script>
+  <script src="/assets/patch.js?v=b40f6cee" defer></script>
+  <script src="/assets/patchmaker.js?v=b40f6cee" defer></script>
+  <script src="/assets/valor.js?v=b40f6cee" defer></script>
 </head>
 <body>
   <a class="skip" href="#game">Skip to content</a>
@@ -189,11 +190,18 @@
             <h3>Move the line</h3>
             <p>Every match shifts a front all pilots share.</p>
           </li>
-          <li data-reveal>
-            <figure class="pillars__art"><img src="/assets/img/pillars/pillar-honor.webp" alt="The seven Valor wings, from the cadet's half wing up" width="960" height="540" loading="lazy"></figure>
+          <li data-reveal class="pillars__honor" id="valor-wings">
+            <!-- The seven Valor wings, the game's own art (assets/valor.js): the stage climbs them under the game's Ranked
+                 rules. Without scripts the picture of all seven stays. -->
+            <figure class="pillars__art" data-valor><img src="/assets/img/pillars/pillar-honor.webp" alt="The seven Valor wings, from the cadet's half wing up" width="960" height="540" loading="lazy"></figure>
             <span class="pillars__num">03</span>
             <h3>Honor counts</h3>
             <p>How you fight counts. Your rank carries on.</p>
+            <div class="pillars__rules">
+              <p>Valor is won in Ranked, one on one, best of three. A 2–0 win is +200 and a 2–1 win is +100. A lost series costs the same.</p>
+              <p>Every wing is a floor. Once you earn one, a bad run this season can't take it from you.</p>
+              <p>Each season starts again at Rookie. The best wings you ever earned stay on your record.</p>
+            </div>
           </li>
           <li data-reveal>
             <figure class="pillars__art"><img src="/assets/img/pillars/pillar-weight.webp" alt="The VIGIL's cockpit with the HUD up, looking out over red ground" width="960" height="540" loading="lazy"><p class="pillars__tag">Pre-alpha</p></figure>
