@@ -18,7 +18,15 @@
     pale3: ["Left", "Middle", "Right"], chief_pale: ["Top left", "Top right", "Bottom"], base_pale: ["Top", "Bottom left", "Bottom right"],
   };
   const PIECE_KEYS = ["field", "field2", "field3"];
-  const TABS = [["field", "Field"], ["border", "Border"], ["emblem", "Emblem"], ["layout", "Layout"], ["inlay", "Inlay"]];
+  const TABS = [["field", "Field"], ["border", "Border"], ["emblem", "Emblem"], ["layout", "Layout"]];
+  // The pillar opens on these, patches the game made for its sample clans, until a visitor asks to make one. Each is a
+  // patch code (patch.js), so the game's own rules draw it; the inlay in each code is the tile's, which the site no
+  // longer shows, and stays in the code because the game reads it.
+  const SHOWCASE = ["1.solid.6B4226...C9A24A.skull_crossbones.E8E1CF....brass.open", "1.fess.6B1F2A.B9A27A..C9A24A.skull.F4F3EF....steel.",
+    "1.solid.2E4B33...141414.bear.C9A24A....steel.open", "1.solid.1F2F4A...C9A24A.dragon.F4F3EF....stone.",
+    "1.solid.2E4B33...A9AEB4.mech_raven.A9AEB4....brass.", "1.solid.6B4226...B9A27A.mech_eagle.F4F3EF....brass.open",
+    "1.solid.6B4226...141414.mech_tiger.E8E1CF....brass."];
+  const SHOWCASE_MS = 3800;
   // the game's own lines when a design may not be worn (PatchDesignerScreen)
   const HELD = {
     blocked: ["That combination is not allowed.", "Change the layout or an emblem."],
@@ -62,21 +70,14 @@
   patchCanvas.width = PATCH_WIDTH; patchCanvas.height = 625;
   patchCanvas.setAttribute("role", "img");
   patchFigure.append(patchCanvas, el("figcaption", "", "The patch · every pilot wears it"));
-  const tileFigure = el("figure", "maker__tile");
-  const tileFrame = el("div", "maker__tileframe");
-  const tileImage = el("img");
-  tileImage.alt = "";
-  tileImage.width = 420; tileImage.height = 512;
-  const inlayCanvas = el("canvas", "maker__inlay");
-  inlayCanvas.width = INLAY_WIDTH; inlayCanvas.height = 548;
-  inlayCanvas.setAttribute("aria-hidden", "true");
-  const tileCaption = el("figcaption", "", "The clan tile");
-  tileFrame.append(tileImage, inlayCanvas);
-  tileFigure.append(tileFrame, tileCaption);
   const heldNote = el("p", "maker__held");
   heldNote.hidden = true;
   heldNote.setAttribute("role", "status");
-  stage.append(patchFigure, tileFigure, heldNote);
+  stage.append(patchFigure, heldNote);
+  // the opening: one patch at a time and a way in
+  const invite = el("div", "maker__invite");
+  const create = button("maker__create", "Create your clan's patch", () => openBuilder());
+  invite.append(create);
 
   const tabBar = el("div", "maker__tabs");
   tabBar.setAttribute("role", "tablist");
@@ -139,7 +140,7 @@
   actions.append(copyCode, copyLink, save);
   codeRow.append(codeLabel, codeInput, actions, codeStatus);
 
-  maker.append(stage, tabBar, panel, codeRow);
+  maker.append(stage, invite, tabBar, panel, codeRow);
 
   // ── the controls ────────────────────────────────────────────────────────────────────────────────────────────────
   function swatches(key, label) {
@@ -238,7 +239,7 @@
       panel.append(chips([[1, "First emblem"], [2, "Second emblem"]], slot, (s) => { slot = s; drawControls(); }, ""));
       if (design["emblem" + slot]) panel.append(swatches("color" + slot, "Thread"));
       panel.append(emblemGrid());
-    } else if (tab === "layout") {
+    } else {
       const two = !!design.emblem2;
       panel.append(chips(rules.layouts.map((l, i) => [l, title(rules.layoutNames[i])]), two ? design.layout : "single",
         (l) => { design.layout = l; changed(); }, "Two emblems", !two));
@@ -247,9 +248,6 @@
       panel.append(chips([["", "None"]].concat(rules.wingStyles.map((w) => [w, title(w) + " wings"])), room ? design.wings : "",
         (w) => { design.wings = w; changed(); }, "Wings", !room));
       if (!room) panel.append(el("p", "maker__hint", "Two emblems side by side leave no room for wings."));
-    } else {
-      panel.append(chips(rules.inlays.map((m, i) => [m, title(rules.inlayNames[i])]), design.inlay, (m) => { design.inlay = m; changed(); }, "The clan tile's inlay"));
-      panel.append(el("p", "maker__hint", "The same design, set into the clan's tile: the field in enamel, the emblems raised in metal or cut in stone."));
     }
     const grid = panel.querySelector(".maker__grid");
     if (grid) grid.scrollTop = gridScroll;
@@ -311,7 +309,6 @@
       if (held) heldNote.replaceChildren(...HELD[held].map((line) => el("span", "", line)));
       for (const b of [copyCode, copyLink, save]) b.disabled = !!held;
       codeInput.value = held ? "" : P.encode(rules, d);
-      tileCaption.textContent = "The clan tile · " + title(rules.inlayNames[rules.inlays.indexOf(d.inlay)] || "");
       if (held) continue;
       await Promise.all(["Shield_" + rules.shape, "Recess", d.emblem1, d.emblem2,
         d.wings ? "Wing_" + d.wings + "_L" : "", d.wings ? "Wing_" + d.wings + "_R" : ""].map(loadMask));
@@ -320,7 +317,6 @@
       if (again) continue;
       const out = P.render(rules, d, lib, PATCH_WIDTH, INLAY_WIDTH);
       paint(patchCanvas, out.patch);
-      paint(inlayCanvas, out.inlay);
       patchCanvas.setAttribute("aria-label", describe(d));
       stage.classList.add("is-drawn");
     } while (again);
@@ -357,14 +353,10 @@
     } catch (e) {
       return;   // the picture stays; the page works without the maker
     }
-    const r = rules.recessRect;
-    inlayCanvas.style.left = (r.x / r.tileW) * 100 + "%";
-    inlayCanvas.style.top = (r.y / r.tileH) * 100 + "%";
-    inlayCanvas.style.width = (r.w / r.tileW) * 100 + "%";
-    inlayCanvas.style.height = (r.h / r.tileH) * 100 + "%";
-    tileImage.src = BASE + "tile.webp";
     const shared = fromLink();
-    design = shared || Object.assign({}, rules.sims[Math.floor(Math.random() * rules.sims.length)]);
+    showcase = SHOWCASE.map((c) => P.decode(rules, c)).filter(Boolean);
+    design = shared || Object.assign({}, showcase[0]);
+    if (!shared) maker.classList.add("is-showcase");
     if (fallback) fallback.remove();
     root.classList.add("is-live");
     root.append(maker);
@@ -375,13 +367,42 @@
     if (shared) {
       say(SHARED);
       showMaker();
-    }
+    } else cycle();
   }
+
+  // ── the opening: the showcase turns until a visitor asks to make their own ──────────────────────────────────────
+  let showcase = [], turn = 0, timer = 0, onScreen = true;
+  const calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function cycle() {
+    clearTimeout(timer);
+    if (calm || !maker.classList.contains("is-showcase") || showcase.length < 2) return;
+    timer = setTimeout(async () => {
+      if (!onScreen || document.hidden) return cycle();
+      turn = (turn + 1) % showcase.length;
+      patchFigure.classList.add("is-turning");
+      await new Promise((r) => setTimeout(r, 260));
+      design = Object.assign({}, showcase[turn]);
+      drawControls();
+      await draw();
+      patchFigure.classList.remove("is-turning");
+      cycle();
+    }, SHOWCASE_MS);
+  }
+  function openBuilder() {
+    clearTimeout(timer);
+    patchFigure.classList.remove("is-turning");
+    maker.classList.remove("is-showcase");
+    drawControls();
+    const first = tabBar.querySelector("[role=tab]");
+    if (first) first.focus({ preventScroll: true });
+    tabBar.scrollIntoView({ block: "nearest", behavior: calm ? "auto" : "smooth" });
+  }
+  if ("IntersectionObserver" in window) new IntersectionObserver((e) => { onScreen = e[e.length - 1].isIntersecting; }).observe(root);
 
   window.addEventListener("hashchange", () => {
     if (!rules) return;
     const d = fromLink();
-    if (d) { design = d; changed(); say(SHARED); showMaker(); }
+    if (d) { clearTimeout(timer); maker.classList.remove("is-showcase"); design = d; changed(); say(SHARED); showMaker(); }
   });
 
   // a shared link starts at once; otherwise the library loads as the pillar comes near

@@ -111,12 +111,13 @@ if (!reducedMotion && layers.length) {
 
 for (const year of document.querySelectorAll("[data-year]")) year.textContent = String(new Date().getFullYear());
 
-// The factions: a select screen. Picking a house shows its creed and tints the page in its colour for this visit; nothing
+// The factions: a select screen. Picking a house shows its creed and tints this section in its colour for this visit; nothing
 // is stored, as the privacy page promises, so every visit opens on the prompt. Torrath, the mercenary who swears to none
 // of them, clears it.
 const pick = document.querySelector("[data-pick]");
 if (pick) {
-  const root = document.documentElement;
+  // A house's colour stays inside the FACTIONS section; the rest of the site keeps its own amber.
+  const root = pick.closest(".factions") || pick;
   const marks = [...pick.querySelectorAll(".pick__mark")];
   const panels = [...pick.querySelectorAll("[data-panel]")];
   const choose = (house) => {

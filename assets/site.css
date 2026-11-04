@@ -362,22 +362,31 @@ h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
 
 /* 2026-11-03 — the clan patch maker in the first pillar (assets/patchmaker.js): the game's own designer, on the page.
    The patch and the clan tile above, the designer's tabs below, the patch code last. */
-.pillars li.pillars__clan { grid-template-rows: 1fr auto auto auto auto 1fr; }
+@media (min-width: 821px) { .pillars li.pillars__clan { grid-template-rows: 1fr auto auto auto auto 1fr; } }   /* a phone stacks it */
 .pillars li.pillars__clan > .pillars__note { grid-column: 2; grid-row: 5; margin-top: 18px; max-width: 34ch; font-size: 0.95rem; color: var(--ink-faint); }
 .pillars__art.is-live { aspect-ratio: auto; overflow: visible; padding: clamp(14px, 2.2vw, 28px); background: var(--bg-raise); }
 .pillars__art.is-live img, .pillars li:hover .pillars__art.is-live img { height: auto; transform: none; transition: none; }
 @media (max-width: 820px) { .pillars li.pillars__clan > .pillars__note { grid-column: 1; grid-row: auto; } }
 
 .maker { display: grid; gap: 16px; }
-.maker__stage {
-  position: relative; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(14px, 3vw, 40px);
-  align-items: end; padding: clamp(4px, 1.5vw, 16px) clamp(4px, 3vw, 36px) 0;
+.maker__stage {   /* the patch alone: the clan tile stays in the game */
+  position: relative; display: grid; justify-items: center; padding: clamp(10px, 2vw, 22px) clamp(4px, 3vw, 36px) 0;
 }
-.maker__stage figure { margin: 0; }
+.maker__stage figure { margin: 0; width: min(100%, 360px); }
 .maker__patch canvas { display: block; width: 100%; height: auto; }
-.maker__tileframe { position: relative; }
-.maker__tileframe img { display: block; width: 100%; }
-.maker__inlay { position: absolute; display: block; }
+.maker__patch { transition: opacity 0.26s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.maker__patch.is-turning { opacity: 0; transform: scale(0.96); }
+/* the opening: a patch the game made, and a way in; the builder opens on the button */
+.maker__invite { display: none; justify-items: center; gap: 12px; padding: 6px 0 clamp(6px, 1.5vw, 14px); text-align: center; }
+.maker.is-showcase .maker__invite { display: grid; }
+.maker.is-showcase .maker__tabs, .maker.is-showcase .maker__panel, .maker.is-showcase .maker__code { display: none; }
+.maker.is-showcase .maker__stage figure { width: min(100%, 420px); }
+.maker__create {
+  padding: 15px 24px; border: 0; background: var(--accent); color: var(--accent-ink); cursor: pointer;
+  font: 600 0.8rem/1 var(--font); letter-spacing: 0.2em; text-transform: uppercase;
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+}
+.maker__create:hover { filter: brightness(1.08); }
 .maker figcaption { margin-top: 8px; text-align: center; color: var(--ink-dim); font: 400 0.6rem/1.4 var(--font-mono); letter-spacing: 0.16em; text-transform: uppercase; }
 .maker__stage canvas { opacity: 0; transition: opacity 0.35s ease; }
 .maker__stage.is-drawn canvas { opacity: 1; }
@@ -466,7 +475,7 @@ h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
 
 /* 2026-11-03 — the Valor wings in HONOR COUNTS (assets/valor.js): the game's seven wings one at a time on a lit black
    stage, the Valor count climbing series by series, the ladder of wings along the foot. */
-.pillars li.pillars__honor { grid-template-rows: 1fr auto auto auto auto 1fr; }
+@media (min-width: 821px) { .pillars li.pillars__honor { grid-template-rows: 1fr auto auto auto auto 1fr; } }   /* a phone stacks it */
 .pillars li.pillars__honor > .pillars__rules { grid-column: 2; grid-row: 5; }
 .pillars__rules { display: grid; gap: 10px; margin-top: 22px; max-width: 36ch; }
 .pillars .pillars__rules p { position: relative; padding-left: 18px; color: var(--ink-faint); font-size: 0.95rem; }
@@ -676,7 +685,7 @@ h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
 }
 
 /* the air: the survey probe's reading, drawn as an instrument readout in the strip's monospace. The carbon dioxide row
-   is marked in a fixed amber, not the faction tint: it is a warning, whichever house you picked. */
+   is marked in a fixed amber: it is a warning. */
 .air { max-width: 760px; margin: clamp(56px, 8vw, 96px) 0 0; }
 .air__panel {
   position: relative; margin: 0;
@@ -980,16 +989,16 @@ a.log__frame:hover { box-shadow: 0 0 0 1px var(--accent); }
 .log--next .log__num { color: var(--ink-dim); }
 .log__title { margin: 0; font-size: 1.15rem; }
 
-/* the factions: a select screen in type and colour. The chosen house opens its creed and tints the page (site.js). */
+/* the factions: a select screen in type and colour. The chosen house opens its creed and tints this section, never the page (site.js). */
 @property --accent { syntax: "<color>"; inherits: true; initial-value: #e0893e; }
-:root.can-tint { transition: --accent 0.7s ease; }
+.factions.can-tint { transition: --accent 0.7s ease; }
 .factions { position: relative; }
 .factions > .wrap { position: relative; }
 .factions::before {
   content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.7s;
   background: radial-gradient(ellipse 80% 60% at 30% 45%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 70%);
 }
-:root[data-faction] .factions::before { opacity: 1; }
+.factions[data-faction]::before { opacity: 1; }
 .pick { margin-top: 56px; }
 .pick__marks { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; max-width: 1040px; }  /* clear of the section rail's label */
 .pick__mark {
@@ -1165,7 +1174,7 @@ html.is-boarding::after { content: ""; position: fixed; inset: 0; z-index: 300; 
   html { scroll-behavior: auto; }
   [data-reveal] { opacity: 1; transform: none; transition: none; }
   .hero__cue span { animation: none; }
-  :root.can-tint, .pick__mark, .pick__mark::before, .factions::before, .pick__panels.is-live .pick__panel { transition: none !important; }
+  .factions.can-tint, .pick__mark, .pick__mark::before, .factions::before, .pick__panels.is-live .pick__panel { transition: none !important; }
   .ship__audio[aria-pressed="true"] i b { animation: none; height: 100%; }
   .story__trace path { stroke-dashoffset: 0; animation: none !important; }
   .story__live i { animation: none; }
