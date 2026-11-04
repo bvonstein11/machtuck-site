@@ -12,7 +12,13 @@ from the site itself, so a visit sends nothing to a third party.
 | `404.html` | The page for an address that does not exist |
 | `assets/site.css`, `assets/site.js` | The look and the behaviour, shared by every page |
 | `assets/img/`, `assets/fonts/`, the icons | Made from the game's own art by `Tools/website/build_site_assets.py` in the game's repository; never edited by hand |
+| `assets/patch.js`, `assets/patchmaker.js` | The clan patch maker in the first pillar: a port of the game's own patch code, which `Tools/website/build_patch_library.py` checks against the game pixel for pixel, and the designer around it |
+| `assets/patch/` | The game's patch pieces and rules, written by `Tools/website/build_patch_library.py`; never edited by hand |
 | `CNAME` | Tells GitHub Pages the site's address |
+
+**The clan patch maker** stores nothing. A design is its patch code (`1.` and twelve values joined by dots, written in
+`assets/patch.js`), which the visitor copies, shares as a link (`/thereach/#patch=<code>`) or pastes back in. The game
+will read the same code, so change its format only by adding a version.
 
 **The Discord buttons** read one line at the top of `assets/site.js`, `DISCORD_INVITE`. While it is empty they say
 "Discord opening soon" and lead nowhere.
