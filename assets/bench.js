@@ -8,13 +8,9 @@
   const root = document.querySelector("[data-bench]");
   if (!root || !("IntersectionObserver" in window)) return;
 
-  // The four loadouts the bench shows. The labels are the site's, not names from the game; each key is the export's.
-  const LOADOUTS = [
-    { label: "Starter", key: "PULSE-50+CHAIN-30+SLUG-250|VOLLEY-6|" },
-    { label: "Light", key: "PULSE-50+DART-20+THUMP-82|VOLLEY-6|" },
-    { label: "Jump jets", key: "PULSE-50+DART-20+THUMP-82|VOLLEY-6|JumpJets" },
-    { label: "Heavy", key: "CHAIN-30+SLUG-250+SPIKE-90|BREACH-275|ArmorModule" },
-  ];
+  // The four named loadouts, shared with the Hangar (assets/loadouts.js); each key is a row of the Hangar's export.
+  const LOADOUTS = window.VIGIL_LOADOUTS || [];
+  const hangarLink = document.querySelector("[data-hangar-link]");
   // The paints, as the Hangar names them; their frames are the Hangar's (Tools/website/hangar_paint_frames.py).
   const PAINTS = [
     { id: "base", label: "Base" },
@@ -173,6 +169,7 @@
     function showLoadout(i) {
       loadoutAt = i;
       const { row } = shown[i];
+      if (hangarLink) hangarLink.href = `/hangar/#fit=${row.key.split(/[+|]/).join(",")}`;   // the Hangar opens on this loadout
       const [arms, shoulder, module] = row.key.split("|");
       name.textContent = shown[i].label;
       // each weapon kept whole, so a line never breaks inside DART-20

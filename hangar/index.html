@@ -21,11 +21,12 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preload" href="/hangar/bay/plate.webp" as="image">
   <link rel="preload" href="/hangar/spin/base/vigil-000.webp" as="image">
-  <link rel="stylesheet" href="/assets/site.css?v=87890023">
-  <link rel="stylesheet" href="/hangar/hangar.css?v=87890023">
-  <script src="/assets/ship.js?v=87890023" defer></script>
-  <script src="/assets/site.js?v=87890023" defer></script>
-  <script src="/hangar/hangar.js?v=87890023" defer></script>
+  <link rel="stylesheet" href="/assets/site.css?v=5d361e25">
+  <link rel="stylesheet" href="/hangar/hangar.css?v=5d361e25">
+  <script src="/assets/ship.js?v=5d361e25" defer></script>
+  <script src="/assets/site.js?v=5d361e25" defer></script>
+  <script src="/assets/loadouts.js?v=5d361e25" defer></script>
+  <script src="/hangar/hangar.js?v=5d361e25" defer></script>
 </head>
 <body>
   <a class="skip" href="#hangar">Skip to content</a>
@@ -84,45 +85,47 @@
             <button type="button" class="skin" data-skin="desert" aria-pressed="false"><span class="skin__swatch skin__swatch--desert"></span>Desert</button>
             <button type="button" class="skin" data-skin="snow" aria-pressed="false"><span class="skin__swatch skin__swatch--snow"></span>Snow</button>
           </div>
-          <figcaption>The VIGIL as the game draws it, under the hangar's own lights. Pre-alpha.</figcaption>
+          <figcaption>The VIGIL as the game draws it, under the hangar's own lights. The turntable shows one fit; the figures follow yours. Pre-alpha.</figcaption>
         </figure>
 
-        <!-- The loadout: every slot and every number comes from hangar-data.json, which Vigil ▸ Website ▸ Export Hangar
-             Data writes from the game. This page only looks a loadout up; it computes nothing. -->
+        <!-- The fitting bay: every slot and every number comes from hangar-data.json, which Vigil ▸ Website ▸ Export Hangar
+             Data writes from the game. This page only looks a loadout up; it computes nothing. A choice shows the loadout it
+             would make before it is fitted, and the readout under the page follows what is fitted. -->
         <section class="fit" aria-labelledby="fit-title" data-fit>
-          <h2 class="fit__title" id="fit-title">Loadout</h2>
+          <header class="fit__head">
+            <p class="fit__kicker">The fitting bay</p>
+            <h2 class="fit__title" id="fit-title">Fit your VIGIL</h2>
+            <p class="fit__how">Tap a hardpoint and choose what goes on it. Every weapon shows what it would do to the weight, the speed and the cooling before you fit it.</p>
+          </header>
+          <div class="fit__presets" role="group" aria-label="Start from a loadout" data-fit-presets></div>
           <ol class="fit__slots" data-fit-slots></ol>
+          <div class="fit__share" data-fit-share-row hidden>
+            <button class="btn btn--ghost btn--small" type="button" data-fit-share>Share this loadout</button>
+            <span class="fit__shared" data-fit-shared aria-live="polite"></span>
+          </div>
           <p class="fit__noscript">The loadout needs JavaScript to run.</p>
         </section>
       </div>
 
-      <section class="gauges" aria-labelledby="gauges-title" data-gauges hidden>
-        <h2 class="sr" id="gauges-title">Weight and performance</h2>
-        <div class="gauge gauge--weight">
-          <p class="gauge__label">Operating weight</p>
-          <p class="gauge__value"><b data-g="operating">—</b> <span>of <span data-g="mow">—</span> max operating weight</span></p>
-          <div class="gauge__bar" aria-hidden="true">
-            <span class="gauge__fill" data-g="weight-fill"></span>
-            <span class="gauge__mow" data-g="mow-mark"></span>
+      <!-- The readout: docked to the bottom of the screen while the bay is in view, so a change is seen where it is made. -->
+      <section class="dock" aria-labelledby="dock-title" data-gauges hidden>
+        <h2 class="sr" id="dock-title">Weight and performance</h2>
+        <div class="dock__weight">
+          <div class="dock__head">
+            <span class="dock__label">Operating weight</span>
+            <span class="dock__delta" data-g="delta" aria-hidden="true"></span>
+            <span class="dock__readout"><b data-g="operating">—</b><span class="dock__unit">lb</span></span>
           </div>
-          <p class="gauge__note" data-g="load">—</p>
+          <div class="dock__bar" aria-hidden="true"><i class="dock__fill" data-g="weight-fill"></i><i class="dock__mow" data-g="mow-mark"><span data-g="mow">Max</span></i></div>
+          <p class="dock__load" data-g="load">—</p>
         </div>
-        <dl class="gauges__list">
-          <div class="gauge">
-            <dt class="gauge__label">Top speed</dt>
-            <dd class="gauge__value"><b data-g="speed">—</b> <span data-g="speed-tax"></span></dd>
-          </div>
-          <div class="gauge">
-            <dt class="gauge__label">Cooling</dt>
-            <dd class="gauge__value"><b data-g="cooling">—</b> <span>of nominal</span></dd>
-          </div>
-          <div class="gauge">
-            <dt class="gauge__label">Jump jets</dt>
-            <dd class="gauge__value"><b data-g="jets">—</b> <span data-g="jets-more"></span></dd>
-          </div>
+        <dl class="dock__stats">
+          <div><dt class="dock__label">Top speed</dt><dd><b data-g="speed">—</b><span class="dock__unit">mph</span><span class="dock__sub" data-g="speed-tax"></span></dd></div>
+          <div><dt class="dock__label">Cooling</dt><dd><b data-g="cooling">—</b><span class="dock__sub">of its heat shed</span></dd></div>
+          <div><dt class="dock__label">Jump jets</dt><dd><b data-g="jets">—</b><span class="dock__sub" data-g="jets-more"></span></dd></div>
         </dl>
-        <p class="gauges__note" data-g="source"></p>
       </section>
+      <p class="hangar__source" data-g-source>Every figure comes from the game's own data, for a new pilot's VIGIL. Pre-alpha: they move as the game is tuned.</p>
     </div>
   </main>
 

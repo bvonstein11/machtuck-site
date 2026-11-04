@@ -205,6 +205,9 @@
   }
   for (const [k, c] of [["acc", ACC], ["cool", COOL], ["sun", SUN], ["white", WHITE], ["ember", EMBER]]) sprites[k] = glowSprite(c);
   for (const [k, c] of [["amber", EMBER], ["cream", CREAM], ["blue", COOL]]) sprites["disc-" + k] = discSprite(c);
+  // the five decks, top to bottom in the story's list order, each in its house's colour (the Factions section's inks)
+  const DECKS = ["212,162,60", "160,117,204", "213,99,107", "74,144,194", "143,168,60"];
+  DECKS.forEach((c, i) => { sprites["deck" + i] = glowSprite(c); });
   function glow(x, y, r, sprite, a) { if (a <= 0.003 || r <= 0) return; g.globalAlpha = Math.min(1, a); g.drawImage(sprites[sprite], x - r, y - r, 2 * r, 2 * r); }
 
   function makeSky() {
@@ -368,7 +371,33 @@
     if (g.letterSpacing !== undefined) g.letterSpacing = "0px";
   }
 
-  const SCENES = { earth: drawEarth, answer: drawAnswer, chosen: drawChosen, silence: drawSilence };
+  // the five decks: a cutaway of the drum, each deck a lit band in its house's colour, its windows drifting slowly
+  const WINDOWS = (() => { const r = rng(5150); return DECKS.map(() => Array.from({ length: 64 }, () => ({ x: r(), on: r() > 0.2, w: 0.5 + r(), ph: r() * 6.283 }))); })();
+  function drawDecks(a, s) {
+    drawSky(a, 0.6 + s / 20);
+    const top = portrait ? H * 0.12 : H * 0.11, bottom = portrait ? H * 0.34 : H * 0.44, gap = (bottom - top) / 5, deck = gap * 0.64;
+    g.globalCompositeOperation = "source-over";
+    for (let i = 0; i < 5; i++) {
+      const y = top + i * gap, shade = g.createLinearGradient(0, y, 0, y + deck);
+      shade.addColorStop(0, "rgba(24,26,33,0.96)"); shade.addColorStop(0.5, "rgba(14,15,20,0.96)"); shade.addColorStop(1, "rgba(8,9,13,0.96)");
+      g.globalAlpha = a; g.fillStyle = shade; g.fillRect(0, y, W, deck);
+      g.fillStyle = rgba(DECKS[i], 0.9 * a); g.fillRect(0, y + deck - 2 * dpr, W, 2 * dpr);
+      g.fillStyle = rgba("232,228,220", 0.08 * a); g.fillRect(0, y, W, dpr);
+    }
+    g.globalCompositeOperation = "lighter";
+    for (let i = 0; i < 5; i++) {
+      const y = top + i * gap, wy = y + deck * 0.48, dir = i % 2 ? 1 : -1, ww = u * 0.011, wh = deck * 0.2;
+      for (let k = 0; k < 4; k++) glow(W * (0.12 + 0.26 * k), wy, Math.max(W, H) * 0.16, "deck" + i, 0.16 * a);
+      for (const win of WINDOWS[i]) {
+        if (!win.on) continue;
+        const x = (((win.x + dir * s * 0.0035) % 1) + 1) % 1 * W, tw = 0.72 + 0.28 * Math.sin(s * 0.7 + win.ph * 5);
+        g.globalAlpha = 0.62 * tw * a; g.fillStyle = "rgb(255,226,190)"; g.fillRect(x, wy - wh / 2, ww * win.w, wh);
+        glow(x + ww * win.w / 2, wy, u * 0.018, "deck" + i, 0.5 * tw * a);
+      }
+    }
+  }
+
+  const SCENES = { earth: drawEarth, answer: drawAnswer, chosen: drawChosen, decks: drawDecks, silence: drawSilence };
   const sceneTime = (ms) => (calm ? 6 : ms / 1000);
   // returns true while a drawn card is showing, so the loop keeps it moving
   function paint(now) {

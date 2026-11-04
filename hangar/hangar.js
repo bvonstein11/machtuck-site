@@ -174,7 +174,9 @@
     }
   }
 
-  // The loadout explorer: tap a slot to open it, pick what goes there, and the gauges follow.
+  // The fitting bay: tap a hardpoint to open its rack, pick what goes there, and the readout docked under the page follows.
+  // Every choice in a rack first shows the loadout it would make (its weight, speed and cooling against what is fitted
+  // now), looked up in the export like everything else here. The fit lives in the address (#fit=…), so a link shares it.
   const fit = document.querySelector("[data-fit]");
   const gauges = document.querySelector("[data-gauges]");
   if (!fit || !gauges) return;
@@ -185,7 +187,13 @@
     if (text !== undefined) element.textContent = text;
     return element;
   };
-  const pounds = (value) => `${Math.round(value).toLocaleString("en-US")} lb`;
+  const number = (value) => Math.round(value).toLocaleString("en-US");
+  const pounds = (value) => `${number(value)} lb`;
+  const signed = (value, digits, unit) => {
+    const text = Math.abs(value).toFixed(digits);
+    if (Number(text) === 0) return null;
+    return `${value > 0 ? "+" : "−"}${digits ? text : number(Math.abs(value))}${unit}`;
+  };
 
   fetch("/hangar/hangar-data.json")
     .then((response) => response.json())
@@ -200,120 +208,196 @@
     const armSlots = data.slots.filter((slot) => slot.accepts === "arm").map((slot) => slot.id);
     const shoulderSlot = data.slots.find((slot) => slot.accepts === "shoulder").id;
     const moduleSlot = data.slots.find((slot) => slot.accepts === "module").id;
-    const fitted = Object.fromEntries(data.slots.map((slot) => [slot.id, slot.default]));
     const heaviest = Math.max(...data.loadouts.map((loadout) => loadout.operatingLb));
     const { mech } = data;
+    let fitted = Object.fromEntries(data.slots.map((slot) => [slot.id, slot.default]));
+    let touched = false;   // the address carries the fit once the visitor has changed it, or arrived with one
 
-    /** The export's key for what is fitted: the arm weapons in the game's weapon order, the shoulder, the module. */
-    const keyNow = () => {
-      const arms = armSlots.map((id) => fitted[id]).sort((a, b) => armOrder.indexOf(a) - armOrder.indexOf(b));
-      return `${arms.join("+")}|${fitted[shoulderSlot]}|${fitted[moduleSlot]}`;
+    /** The export's key for a fit: the arm weapons in the game's weapon order, the shoulder, the module. */
+    const keyOf = (f) => {
+      const arms = armSlots.map((id) => f[id]).sort((a, b) => armOrder.indexOf(a) - armOrder.indexOf(b));
+      return `${arms.join("+")}|${f[shoulderSlot]}|${f[moduleSlot]}`;
     };
-
-    /** What a slot can take, as [id, name, weight, tag]. The torso can also stay empty. */
-    const choicesFor = (slot) => {
-      if (slot.accepts === "module") {
-        return [["", "Empty", 0, ""], ...data.modules.map((module) => [module.id, module.name, module.weightLb, "Earned with Marks"])];
+    /** The fit a choice would make. Arms carry three different weapons: picking one another arm holds swaps the two. */
+    const withChoice = (f, slot, id) => {
+      const next = { ...f };
+      if (slot.accepts === "arm") {
+        const other = armSlots.find((armId) => armId !== slot.id && next[armId] === id);
+        if (other) next[other] = next[slot.id];
       }
-      return data.weapons.filter((weapon) => weapon.slot === slot.accepts)
-        .map((weapon) => [weapon.id, weapon.id, weapon.weightLb, weapon.earnedWithMarks ? "Earned with Marks" : "Starter"]);
+      next[slot.id] = id;
+      return next;
     };
+    /** A fit from the address or a named loadout: slot by slot, in the slots' order. Anything illegal is refused. */
+    const parseFit = (list) => {
+      if (list.length !== data.slots.length) return null;
+      const next = {};
+      for (const [i, slot] of data.slots.entries()) {
+        const id = list[i];
+        const ok = slot.accepts === "module" ? id === "" || modules.has(id) : weapons.get(id)?.slot === slot.accepts;
+        if (!ok) return null;
+        next[slot.id] = id;
+      }
+      return loadouts.has(keyOf(next)) ? next : null;
+    };
+    const fromKey = (key) => parseFit(key.replace("|", "+").split(/[+|]/));
+    const presets = (window.VIGIL_LOADOUTS || []).map((preset) => ({ ...preset, fit: fromKey(preset.key) })).filter((preset) => preset.fit);
+
     const nameOf = (id) => (modules.get(id)?.name ?? (id || "Empty"));
     const weightOf = (id) => (weapons.get(id) ?? modules.get(id))?.weightLb ?? 0;
+    const choicesFor = (slot) => (slot.accepts === "module"
+      ? [["", "Empty", ""], ...data.modules.map((module) => [module.id, module.name, "Earned with Marks"])]
+      : data.weapons.filter((weapon) => weapon.slot === slot.accepts).map((weapon) => [weapon.id, weapon.id, weapon.earnedWithMarks ? "Earned with Marks" : "Starter"]));
 
+    // ── the named loadouts, to start from ──────────────────────────────────────────────────────────────────────────
+    const presetRow = fit.querySelector("[data-fit-presets]");
+    presetRow.append(make("span", "fit__label", "Start from"));
+    const presetButtons = presets.map((preset) => {
+      const button = make("button", "preset");
+      button.type = "button";
+      button.append(make("span", "preset__name", preset.label), make("span", "preset__lb", pounds(loadouts.get(preset.key).operatingLb)));
+      button.addEventListener("click", () => { fitted = { ...preset.fit }; touched = true; setOpen(null); draw(); });
+      presetRow.append(button);
+      return button;
+    });
+
+    // ── the hardpoints, each with its rack ─────────────────────────────────────────────────────────────────────────
     const list = fit.querySelector("[data-fit-slots]");
     const rows = new Map();
     let open = null;
-
     const setOpen = (slotId) => {
-      open = open === slotId ? null : slotId;
+      open = slotId;
       for (const [id, row] of rows) {
         const isOpen = id === open;
         row.item.classList.toggle("is-open", isOpen);
         row.toggle.setAttribute("aria-expanded", String(isOpen));
-        row.choices.hidden = !isOpen;
+        row.rack.hidden = !isOpen;
       }
+      if (open) rows.get(open).item.scrollIntoView({ block: "nearest", behavior: reducedMotion ? "auto" : "smooth" });
     };
-
-    const choose = (slot, id) => {
-      // Arms carry three different weapons: picking one another arm already holds swaps the two.
-      if (slot.accepts === "arm") {
-        const other = armSlots.find((armId) => armId !== slot.id && fitted[armId] === id);
-        if (other) fitted[other] = fitted[slot.id];
-      }
-      fitted[slot.id] = id;
-      draw();
-    };
-
     for (const slot of data.slots) {
-      const item = make("li", "slot");
-      const toggle = make("button", "slot__toggle");
+      const item = make("li", "hardpoint");
+      const toggle = make("button", "hardpoint__toggle");
       toggle.type = "button";
       toggle.setAttribute("aria-expanded", "false");
-      const label = make("span", "slot__label", slot.label);
-      const current = make("span", "slot__current");
-      const weight = make("span", "slot__weight");
-      toggle.append(label, current, weight);
-      const choices = make("div", "slot__choices");
-      choices.hidden = true;
-      choices.setAttribute("role", "group");
-      choices.setAttribute("aria-label", `${slot.label}: choose what to fit`);
-      const buttons = choicesFor(slot).map(([id, name, weightLb, tag]) => {
+      const current = make("span", "hardpoint__current");
+      const weight = make("span", "hardpoint__weight");
+      toggle.append(make("span", "hardpoint__label", slot.label), current, weight, make("span", "hardpoint__change", "Change"));
+      const rack = make("div", "rack");
+      rack.hidden = true;
+      rack.setAttribute("role", "group");
+      rack.setAttribute("aria-label", `${slot.label}: choose what to fit`);
+      const choices = choicesFor(slot).map(([id, name, tag]) => {
         const button = make("button", "choice");
         button.type = "button";
-        button.dataset.id = id;
-        button.append(make("span", "choice__name", name), make("span", "choice__weight", weightLb ? `+${pounds(weightLb)}` : "—"));
+        const effect = make("span", "choice__effect");
+        button.append(make("span", "choice__name", name), make("span", "choice__weight", weightOf(id) ? pounds(weightOf(id)) : "—"), effect);
         if (tag) button.append(make("span", `choice__tag${tag === "Starter" ? " is-starter" : ""}`, tag));
-        button.addEventListener("click", () => choose(slot, id));
-        choices.append(button);
-        return button;
+        button.addEventListener("click", () => { fitted = withChoice(fitted, slot, id); touched = true; draw(); });
+        rack.append(button);
+        return { id, button, effect };
       });
-      toggle.addEventListener("click", () => setOpen(slot.id));
-      item.append(toggle, choices);
-      if (slot.accepts === "module") item.append(make("p", "slot__note", "The torso slot itself is earned with Marks."));
+      toggle.addEventListener("click", () => setOpen(open === slot.id ? null : slot.id));
+      item.append(toggle, rack);
+      if (slot.accepts === "module") item.append(make("p", "hardpoint__note", "The torso slot itself is earned with Marks."));
       list.append(item);
-      rows.set(slot.id, { item, toggle, current, weight, buttons });
+      rows.set(slot.id, { slot, item, toggle, current, weight, rack, choices });
     }
 
+    // ── the readout ────────────────────────────────────────────────────────────────────────────────────────────────
     const field = (name) => gauges.querySelector(`[data-g="${name}"]`);
+    const hashOf = (f) => `#fit=${data.slots.map((slot) => f[slot.id]).join(",")}`;
+    const share = (value) => `${((value - mech.emptyLb) / (heaviest - mech.emptyLb)) * 100}%`;
+    field("mow").textContent = `Max ${number(mech.maxOperatingLb)}`;
+    field("mow-mark").style.left = share(mech.maxOperatingLb);
+    let shownLb = null, deltaTimer = 0;
+
+    /** What a choice would change, against the loadout fitted now. */
+    function effectOf(now, next) {
+      const parts = [signed(next.operatingLb - now.operatingLb, 0, " lb"), signed(next.topSpeedMph - now.topSpeedMph, 1, " mph"),
+        signed(Math.round(next.coolingPct) - Math.round(now.coolingPct), 0, "% cooling")].filter(Boolean);
+      const wasOver = now.operatingLb > mech.maxOperatingLb, isOver = next.operatingLb > mech.maxOperatingLb;
+      const line = isOver && !wasOver ? "over max" : isOver ? "still over max" : wasOver ? "under max" : "";
+      return { text: [parts.join(" · ") || "No change", line].filter(Boolean).join(" · "), crosses: isOver && !wasOver, still: isOver && wasOver };
+    }
 
     function draw() {
-      for (const slot of data.slots) {
-        const row = rows.get(slot.id);
-        row.current.textContent = nameOf(fitted[slot.id]);
-        row.weight.textContent = fitted[slot.id] ? pounds(weightOf(fitted[slot.id])) : "";
-        for (const button of row.buttons) button.setAttribute("aria-pressed", String(button.dataset.id === fitted[slot.id]));
-      }
-      const loadout = loadouts.get(keyNow());
+      const key = keyOf(fitted);
+      const loadout = loadouts.get(key);
       if (!loadout) return;
+      for (const row of rows.values()) {
+        const id = fitted[row.slot.id];
+        row.current.textContent = nameOf(id);
+        row.weight.textContent = id ? pounds(weightOf(id)) : "";
+        for (const choice of row.choices) {
+          const next = loadouts.get(keyOf(withChoice(fitted, row.slot, choice.id)));
+          const holder = row.slot.accepts === "arm" && choice.id !== id ? rows.get(armSlots.find((armId) => fitted[armId] === choice.id)) : null;
+          const effect = choice.id === id ? { text: "Fitted" } : holder ? { text: `Swaps with the ${holder.slot.label.toLowerCase()}` } : next ? effectOf(loadout, next) : { text: "" };
+          choice.button.setAttribute("aria-pressed", String(choice.id === id));
+          choice.effect.textContent = effect.text;
+          choice.button.classList.toggle("is-over", Boolean(effect.crosses));
+          choice.button.classList.toggle("is-still-over", Boolean(effect.still));
+        }
+      }
+      for (const [i, preset] of presets.entries()) presetButtons[i].setAttribute("aria-pressed", String(preset.key === key));
+
       const over = loadout.operatingLb > mech.maxOperatingLb;
       gauges.classList.toggle("is-over", over);
-      field("operating").textContent = pounds(loadout.operatingLb);
-      field("mow").textContent = pounds(mech.maxOperatingLb);
-      const share = (value) => `${((value - mech.emptyLb) / (heaviest - mech.emptyLb)) * 100}%`;
+      field("operating").textContent = number(loadout.operatingLb);
       field("weight-fill").style.width = share(loadout.operatingLb);
-      field("mow-mark").style.left = share(mech.maxOperatingLb);
       field("load").textContent = over
         ? `Overloaded: ${loadout.loadPct}% of its carrying capacity. It still flies, slower and hotter.`
         : `${loadout.loadPct}% of its carrying capacity.`;
-      field("speed").textContent = `${loadout.topSpeedMph.toFixed(1)} mph`;
+      field("speed").textContent = loadout.topSpeedMph.toFixed(1);
       const lost = mech.topSpeedEmptyMph - loadout.topSpeedMph;
-      field("speed-tax").textContent = lost > 0.05
-        ? `${lost.toFixed(1)} mph under its ${mech.topSpeedEmptyMph.toFixed(1)} stripped`
-        : `${(-lost).toFixed(1)} mph over its ${mech.topSpeedEmptyMph.toFixed(1)} stripped`;
+      field("speed-tax").textContent = `${lost > 0.05 ? "−" : "+"}${Math.abs(lost).toFixed(1)} from ${mech.topSpeedEmptyMph} stripped`;
       field("cooling").textContent = `${Math.round(loadout.coolingPct)}%`;
       if (loadout.flightSeconds !== undefined) {
         field("jets").textContent = `${loadout.flightSeconds.toFixed(1)} s`;
-        field("jets-more").textContent = `of climb, to ${loadout.climbCeilingFt} ft (${mech.climbCeilingEmptyFt} ft stripped)`;
+        field("jets-more").textContent = `of climb, to ${loadout.climbCeilingFt} ft`;
       } else {
-        field("jets").textContent = "Not fitted";
+        field("jets").textContent = "None";
         field("jets-more").textContent = "fit them in the centre torso";
       }
+      if (shownLb !== null && shownLb !== loadout.operatingLb) {   // a change shows its size for a moment, where it lands
+        const delta = field("delta");
+        delta.textContent = signed(loadout.operatingLb - shownLb, 0, " lb");
+        delta.classList.remove("is-on"); void delta.offsetWidth; delta.classList.add("is-on");
+        gauges.classList.remove("is-changed"); void gauges.offsetWidth; gauges.classList.add("is-changed");
+        clearTimeout(deltaTimer);
+        deltaTimer = setTimeout(() => { delta.classList.remove("is-on"); gauges.classList.remove("is-changed"); }, 1800);
+      }
+      shownLb = loadout.operatingLb;
+      if (touched && location.hash !== hashOf(fitted)) history.replaceState(null, "", hashOf(fitted));
     }
 
-    field("source").textContent = "Every figure comes from the game's own data, for a new pilot's VIGIL. Pre-alpha: they move as the game is tuned.";
+    // ── share: the fit is in the address ───────────────────────────────────────────────────────────────────────────
+    const shareRow = fit.querySelector("[data-fit-share-row]");
+    const shareButton = fit.querySelector("[data-fit-share]");
+    const shared = fit.querySelector("[data-fit-shared]");
+    shareButton.addEventListener("click", async () => {
+      const url = `${location.origin}${location.pathname}${hashOf(fitted)}`, title = "My VX-21 VIGIL loadout · The Reach: Unknown";
+      try {
+        if (navigator.share) { await navigator.share({ title, url }); return; }
+        await navigator.clipboard.writeText(url);
+        shared.textContent = "Link copied.";
+      } catch (error) {
+        if (error && error.name === "AbortError") return;
+        shared.textContent = "Copy the address bar to share it.";
+      }
+    });
+
+    const fromAddress = () => {
+      const match = location.hash.match(/^#fit=([^&]*)$/);
+      return match ? parseFit(decodeURIComponent(match[1]).split(",")) : null;
+    };
+    const arrived = fromAddress();
+    if (arrived) { fitted = arrived; touched = true; }
+    window.addEventListener("hashchange", () => { const next = fromAddress(); if (next) { fitted = next; touched = true; draw(); } });
+
     fit.querySelector(".fit__noscript").remove();
     gauges.hidden = false;
+    shareRow.hidden = false;
     draw();
   }
 })();
