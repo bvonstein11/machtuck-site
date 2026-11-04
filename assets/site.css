@@ -1126,3 +1126,9 @@ html.is-boarding::after { content: ""; position: fixed; inset: 0; z-index: 300; 
 }
 .pillars__art.is-engaged .frontmap__hint { opacity: 0; }
 @media (max-width: 700px) { .frontmap__hint { right: 12px; top: 12px; font-size: 0.62rem; padding: 5px 9px; } }
+
+/* 2026-11-04 — FEEL THE WEIGHT links to the Hangar, where a reader loads a VIGIL and watches the weight move. */
+.pillars p .pillars__link { display: inline-block; margin-top: 14px; color: var(--accent); font: 400 0.75rem/1 var(--font-mono);
+  letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 3px; }
+.pillars p .pillars__link::after { content: " →"; }
+.pillars p .pillars__link:hover { color: var(--ink); }
