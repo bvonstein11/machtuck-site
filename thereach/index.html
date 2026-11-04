@@ -25,8 +25,8 @@
   <link rel="preload" href="/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/assets/img/sky-2560.webp" as="image" media="(min-width: 1281px)">
   <link rel="preload" href="/assets/img/sky-1280.webp" as="image" media="(max-width: 1280px)">
-  <link rel="stylesheet" href="/assets/site.css?v=b40f6cee">
-  <link rel="stylesheet" href="/drop/drop.css?v=b40f6cee">
+  <link rel="stylesheet" href="/assets/site.css?v=429db81b">
+  <link rel="stylesheet" href="/drop/drop.css?v=429db81b">
   <script>
     // Boarding: arriving from another site opens on the shipboard network, which assets/site.js draws. Nothing is
     // stored in the browser (the privacy page promises that): a reload, Back, or a link from this site skips it. This
@@ -41,12 +41,13 @@
       }
     } catch (error) { /* no boarding screen */ }
   </script>
-  <script src="/assets/ship.js?v=b40f6cee" defer></script>
-  <script src="/assets/site.js?v=b40f6cee" defer></script>
-  <script src="/drop/drop.js?v=b40f6cee" defer></script>
-  <script src="/assets/patch.js?v=b40f6cee" defer></script>
-  <script src="/assets/patchmaker.js?v=b40f6cee" defer></script>
-  <script src="/assets/valor.js?v=b40f6cee" defer></script>
+  <script src="/assets/ship.js?v=429db81b" defer></script>
+  <script src="/assets/site.js?v=429db81b" defer></script>
+  <script src="/drop/drop.js?v=429db81b" defer></script>
+  <script src="/assets/patch.js?v=429db81b" defer></script>
+  <script src="/assets/patchmaker.js?v=429db81b" defer></script>
+  <script src="/assets/front.js" defer></script>
+  <script src="/assets/valor.js?v=429db81b" defer></script>
 </head>
 <body>
   <a class="skip" href="#game">Skip to content</a>
@@ -184,8 +185,10 @@
             <p>Fifty pilots, one banner. They remember who showed up.</p>
             <p class="pillars__note" data-patchmaker-note hidden>Design your clan's patch. Every piece and every stitch is the game's own. Keep the code: when you can found a clan, it brings this patch into the game.</p>
           </li>
-          <li data-reveal>
-            <figure class="pillars__art"><img src="/assets/img/pillars/pillar-front.webp" alt="The Front: the war map, its sectors outlined in each faction's colour" width="960" height="540" loading="lazy"><p class="pillars__tag">Pre-alpha</p></figure>
+          <!-- The Front's war table: the game's map in relief, live (assets/front.js). Without scripts or WebGL2 the picture
+               of it stays. -->
+          <li data-reveal id="move-the-line">
+            <figure class="pillars__art" data-frontmap><img src="/assets/img/pillars/pillar-front.webp" alt="The Front: the war table, the map raised into relief, each house's ground in its colour and a glowing front line where two houses meet" width="960" height="540" loading="lazy"><p class="pillars__tag">Pre-alpha</p></figure>
             <span class="pillars__num">02</span>
             <h3>Move the line</h3>
             <p>Every match shifts a front all pilots share.</p>

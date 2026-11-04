@@ -1107,3 +1107,19 @@ html.is-boarding::after { content: ""; position: fixed; inset: 0; z-index: 300; 
   .story__now i { animation: none; }
   .log__frame--next::after { animation: none; background: none; }
 }
+
+/* 2026-11-03 — The Front's war table in MOVE THE LINE (assets/front.js): the game's map live over its picture. A vertical
+   swipe still scrolls the page on a phone; the tag and the hint stay above the map. */
+.pillars__art[data-frontmap] .frontmap__canvas { position: absolute; inset: 0; z-index: 1; display: block; width: 100%; height: 100%;
+  opacity: 0; transition: opacity 0.6s ease; touch-action: pan-y; cursor: grab; }
+.pillars__art[data-frontmap].is-map .frontmap__canvas { opacity: 1; }
+.pillars__art[data-frontmap] .frontmap__canvas:active { cursor: grabbing; }
+.pillars__art[data-frontmap] .pillars__tag { z-index: 2; }
+.pillars li:hover .pillars__art[data-frontmap] img { transform: none; }
+.frontmap__hint {
+  position: absolute; right: 8px; top: 8px; z-index: 2; margin: 0; padding: 4px 7px; background: rgba(7, 9, 13, 0.78);
+  font: 400 0.56rem/1 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim);
+  white-space: nowrap; pointer-events: none; transition: opacity 0.6s ease;
+}
+.pillars__art.is-engaged .frontmap__hint { opacity: 0; }
+@media (max-width: 700px) { .frontmap__hint { right: 12px; top: 12px; font-size: 0.62rem; padding: 5px 9px; } }
