@@ -127,6 +127,51 @@
       load(skin);
       if (!reducedMotion) idle = setInterval(() => show(frame + 1), 140);
     });
+
+    // The bay's moving light: the game's HubBackdrop layers (bay.json), each between its low and full strength on its own
+    // slow period, as HubBackdrop.Strength does it, and the arcs stepping through their eight frames at ten a second
+    // (HubBackdrop.ArcFrame). With reduced motion they hold at the middle of their range, as the hub's still setting does.
+    const bay = spin.querySelector("[data-bay]");
+    if (bay) {
+      fetch("/hangar/bay/bay.json").then((r) => (r.ok ? r.json() : Promise.reject(new Error("no bay")))).then((data) => {
+        const shadow = bay.querySelector(".bay__shadow");
+        const layers = [];
+        for (const layer of data.layers) {
+          if (layer.name === "plate") continue;
+          const light = document.createElement("i");
+          light.className = `bay__l bay__l--${layer.name}`;
+          const [x, y, w, h] = layer.rect;
+          Object.assign(light.style, { left: `${x * 100}%`, top: `${y * 100}%`, width: `${w * 100}%`, height: `${h * 100}%`,
+            backgroundImage: `url("/hangar/bay/${layer.file}")` });
+          if (layer.frames > 1) light.style.backgroundSize = `100% ${layer.frames * 100}%`;
+          layers.push({ light, low: layer.low ?? 1, period: layer.period ?? 0, frames: layer.frames, phase: Math.random() * 2 * Math.PI });
+          bay.insertBefore(light, shadow);
+        }
+        const paint = (seconds) => {
+          for (const l of layers) {
+            const t = reducedMotion || !l.period ? 0.5 : 0.5 + 0.5 * Math.sin((seconds * 2 * Math.PI) / l.period + l.phase);
+            l.light.style.opacity = (l.low + (1 - l.low) * t).toFixed(3);
+            if (l.frames > 1) {
+              const step = reducedMotion ? 0 : Math.floor(seconds * 10);
+              l.light.style.backgroundPositionY = `${(((step + Math.floor(step / 5)) % l.frames) / (l.frames - 1)) * 100}%`;
+            }
+          }
+        };
+        paint(0);
+        if (reducedMotion) return;
+        let shown = false, raf = 0, last = 0;
+        const tick = (now) => {
+          raf = 0;
+          if (!shown) return;
+          if (now - last > 33) { last = now; paint(now / 1000); }   // about thirty a second is plenty for a slow glow
+          raf = requestAnimationFrame(tick);
+        };
+        new IntersectionObserver((entries) => {
+          shown = entries[entries.length - 1].isIntersecting;
+          if (shown && !raf) raf = requestAnimationFrame(tick);
+        }).observe(stage);
+      }).catch(() => { /* the plate alone stays */ });
+    }
   }
 
   // The loadout explorer: tap a slot to open it, pick what goes there, and the gauges follow.

@@ -14,13 +14,34 @@
 /* the turntable */
 .spin { margin: 0; }
 .spin__stage {
-  position: relative; aspect-ratio: 1; overflow: hidden; cursor: grab; touch-action: pan-y; user-select: none;
+  position: relative; aspect-ratio: 4 / 5; overflow: hidden; cursor: grab; touch-action: pan-y; user-select: none;
   background: radial-gradient(ellipse at 50% 88%, rgba(224, 137, 62, 0.16), transparent 55%), radial-gradient(circle at 50% 45%, #141a22, #07090d 70%);
   box-shadow: 0 0 0 1px var(--line);
 }
 .spin__stage:active { cursor: grabbing; }
 .spin__stage:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .spin__stage img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+
+/* 2026-11-03 — the bay: the Command Hub's backdrop, its middle half (bay.json's cut, 0.889 wide for 1 tall), placed so
+   the platform sits under the stage's centre and 82% down, the cut a little taller than the stage. In the cut, the mech
+   stands as the hub draws it (bounds 0.59 of the height, feet at 0.75; its frames keep their bounds in the middle 88%). */
+.bay { position: absolute; left: -11.03%; top: -1%; width: 122.2%; height: 110%; pointer-events: none; }
+.spin__stage .bay img.bay__plate { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; }
+.bay__l { position: absolute; background: no-repeat 0 0 / 100% 100%; will-change: opacity; }
+.bay__shadow {
+  position: absolute; left: 49.944%; top: 74.6%; width: 30%; height: 4.5%; transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.25) 55%, transparent);
+}
+.spin__stage .bay img.bay__mech {
+  position: absolute; left: 49.944%; top: 11.96%; width: auto; height: 67.05%; aspect-ratio: 1; transform: translateX(-50%);
+  filter: brightness(0.88) saturate(1.06);   /* the frames were lifted for a black stage; the lit bay needs less. Never animated. */
+}
+.spin__stage::after {   /* the edge of the bay falls into the dark, like the hub's vignette */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 90% 80% at 50% 55%, transparent 55%, rgba(3, 4, 6, 0.55) 100%),
+              linear-gradient(to bottom, rgba(3, 4, 6, 0.35), transparent 18%, transparent 82%, rgba(3, 4, 6, 0.45));
+}
+.spin__hint { z-index: 1; text-shadow: 0 1px 8px rgba(3, 4, 6, 0.95); }
 .spin__hint {
   position: absolute; left: 50%; bottom: 14px; margin: 0; transform: translateX(-50%);
   font: 400 0.64rem/1 var(--font-mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim);

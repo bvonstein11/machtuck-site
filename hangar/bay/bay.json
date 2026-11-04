@@ -1,0 +1,138 @@
+{
+ "note": "Written by Tools/website/hangar_bay.py from the game's HubBackdrop; rects are [x, y, w, h] as fractions of the cut.",
+ "cutAspect": 0.88889,
+ "platform": [
+  0.49944,
+  0.73444
+ ],
+ "layers": [
+  {
+   "name": "plate",
+   "file": "plate.webp",
+   "frames": 1,
+   "rect": [
+    0.0,
+    0.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "name": "ring",
+   "file": "ring.webp",
+   "frames": 1,
+   "rect": [
+    0.02194,
+    0.57732,
+    0.92083,
+    0.29815
+   ],
+   "low": 0.7,
+   "period": 8.1
+  },
+  {
+   "name": "core",
+   "file": "core.webp",
+   "frames": 1,
+   "rect": [
+    0.10944,
+    0.56991,
+    0.75208,
+    0.26204
+   ],
+   "low": 0.6,
+   "period": 5.2
+  },
+  {
+   "name": "sparks",
+   "file": "sparks.webp",
+   "frames": 1,
+   "rect": [
+    0.09173,
+    0.57639,
+    0.77552,
+    0.23519
+   ],
+   "low": 0.6,
+   "period": 1.9
+  },
+  {
+   "name": "arc",
+   "file": "arc.webp",
+   "frames": 8,
+   "rect": [
+    0.21933,
+    0.66667,
+    0.53646,
+    0.13241
+   ],
+   "low": 0.7,
+   "period": 1.3
+  },
+  {
+   "name": "dust",
+   "file": "dust.webp",
+   "frames": 1,
+   "rect": [
+    0.0,
+    0.36806,
+    1.0,
+    0.53935
+   ],
+   "low": 0.85,
+   "period": 11.0
+  },
+  {
+   "name": "embers",
+   "file": "embers.webp",
+   "frames": 1,
+   "rect": [
+    0.0,
+    0.2838,
+    1.0,
+    0.62593
+   ],
+   "low": 0.8,
+   "period": 7.0
+  },
+  {
+   "name": "coolBloom",
+   "file": "coolBloom.webp",
+   "frames": 1,
+   "rect": [
+    0.0,
+    0.0,
+    1.0,
+    0.98935
+   ],
+   "low": 0.88,
+   "period": 13.0
+  },
+  {
+   "name": "warmBloom",
+   "file": "warmBloom.webp",
+   "frames": 1,
+   "rect": [
+    0.0,
+    0.0,
+    1.0,
+    1.0
+   ],
+   "low": 0.88,
+   "period": 9.7
+  },
+  {
+   "name": "haze",
+   "file": "haze.webp",
+   "frames": 1,
+   "rect": [
+    0.0,
+    0.0,
+    1.0,
+    1.0
+   ],
+   "low": 0.82,
+   "period": 17.0
+  }
+ ]
+}

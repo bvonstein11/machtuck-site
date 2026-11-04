@@ -19,12 +19,13 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preload" href="/hangar/bay/plate.webp" as="image">
   <link rel="preload" href="/hangar/spin/base/vigil-000.webp" as="image">
-  <link rel="stylesheet" href="/assets/site.css?v=1b6bf57b">
-  <link rel="stylesheet" href="/hangar/hangar.css?v=1b6bf57b">
-  <script src="/assets/ship.js?v=1b6bf57b" defer></script>
-  <script src="/assets/site.js?v=1b6bf57b" defer></script>
-  <script src="/hangar/hangar.js?v=1b6bf57b" defer></script>
+  <link rel="stylesheet" href="/assets/site.css?v=cea4e023">
+  <link rel="stylesheet" href="/hangar/hangar.css?v=cea4e023">
+  <script src="/assets/ship.js?v=cea4e023" defer></script>
+  <script src="/assets/site.js?v=cea4e023" defer></script>
+  <script src="/hangar/hangar.js?v=cea4e023" defer></script>
 </head>
 <body>
   <a class="skip" href="#hangar">Skip to content</a>
@@ -65,10 +66,15 @@
       </header>
 
       <div class="hangar__grid">
-        <!-- The turntable: 72 rendered frames, one every 5 degrees. Pictures only, never the 3D model. -->
+        <!-- The turntable: 72 rendered frames, one every 5 degrees, standing on the Command Hub's own bay and platform (the
+             game's HubBackdrop, cut by Tools/website/hangar_bay.py). Pictures only, never the 3D model. -->
         <figure class="spin" data-spin>
-          <div class="spin__stage" data-spin-stage tabindex="0" role="img" aria-label="The VX-21 VIGIL on a turntable. Drag, or use the arrow keys, to turn it.">
-            <img src="/hangar/spin/base/vigil-000.webp" alt="" width="640" height="640" data-spin-frame draggable="false">
+          <div class="spin__stage" data-spin-stage tabindex="0" role="img" aria-label="The VX-21 VIGIL on the hangar's platform. Drag, or use the arrow keys, to turn it.">
+            <div class="bay" data-bay>
+              <img class="bay__plate" src="/hangar/bay/plate.webp" alt="" width="1280" height="1440">
+              <i class="bay__shadow" aria-hidden="true"></i>
+              <img class="bay__mech" src="/hangar/spin/base/vigil-000.webp" alt="" width="640" height="640" data-spin-frame draggable="false">
+            </div>
             <p class="spin__hint" aria-hidden="true">Drag to turn</p>
           </div>
           <input class="spin__dial" type="range" min="0" max="71" step="1" value="0" aria-label="Turn the VIGIL" data-spin-dial>
