@@ -1,7 +1,9 @@
 /* The Front in MOVE THE LINE: the game's war table, live in the page. The map plate is raised into relief by the game's
    own bake, each house's ground is one tinted region, a glowing line runs where two houses meet, and the week's
-   battlegrounds pulse. Drag to turn it, pinch or scroll to zoom, two fingers (or a right-drag) to move across it. The
-   board is the opening war, every house on its home ground: no live war is shown. Without WebGL2 the picture stays. */
+   battlegrounds pulse. It handles like a globe viewer: drag the ground to move it, Shift- or right-drag to turn and tilt,
+   scroll toward a point to zoom there; on a phone two fingers move it in the page and one finger moves it full screen.
+   The land runs on past the plate into haze. The board is the opening war, every house on its home ground: no live war
+   is shown. Without WebGL2 the picture stays. */
 (function () {
   "use strict";
   const root = document.querySelector("[data-frontmap]");
@@ -14,14 +16,13 @@
   // of it; a map pixel is 0.01 world units and the highest ground 0.95 (FrontDioramaHeight).
   const HOUSES = [[200, 50, 60], [212, 162, 60], [74, 144, 194], [99, 217, 122], [142, 91, 194]];
   const MAP_W = 2200, MAP_H = 1200, FIELD = 0.85, WORLD = 0.01, RELIEF = 0.95, SQ3 = 1.7320508;
-  const COLS = 200, ROWS = 110;                       // the relief mesh: 22,000 vertices, the game's phone budget
-  const TILT = 35, TILT_NEAR = 52, FOV = 30, ZOOM_IN = 4;
-
-  const canvas = document.createElement("canvas");
-  canvas.className = "frontmap__canvas";
-  canvas.setAttribute("aria-hidden", "true");
-  const gl = canvas.getContext("webgl2", { antialias: true, alpha: false });
-  if (!gl) { console.info("The Front's war table needs WebGL2; its picture stays."); return; }
+  const W = MAP_W * WORLD, D = MAP_H * WORLD, GROUND = 0.25 * RELIEF;   // the plate in world units; the plane a hand holds
+  const COLS = 200, ROWS = 110;                       // the plate's relief mesh: 22,000 vertices, the game's phone budget
+  // The land past the plate's edge, in world units out from it: a few rings of widening steps, so the mesh stays small.
+  const BEYOND = [0.25, 0.6, 1.1, 1.8, 2.8, 4.2, 6.2, 9, 13, 19];
+  const TILT = 35, TILT_MIN = 8, TILT_MAX = 72, FOV = 30, ZOOM_MIN = 0.8, ZOOM_MAX = 6, DEG = Math.PI / 180;
+  const HAZE = [0.05, 0.065, 0.09];   // the card's own ground (#0d1117), so the haze meets the frame
+  const REST_ZOOM = 1.2;                 // at rest the plate fills the frame
 
   // ── the board: q, r, house; laid out exactly as the game lays it (FrontHexLayout) ──────────────────────────────
   function layOut(hexes) {
@@ -38,7 +39,7 @@
 
   // Three battlegrounds to pulse: the grids where the most houses meet (illustrative; the game picks them by vote).
   function battlegrounds(hexes) {
-    const at = new Map(hexes.map(([q, r, h], i) => [q + "," + r, h]));
+    const at = new Map(hexes.map(([q, r, h]) => [q + "," + r, h]));
     const scored = hexes.map(([q, r, h], i) => {
       const others = new Set();
       for (const [dq, dr] of STEPS) { const n = at.get((q + dq) + "," + (r + dr)); if (n !== undefined && n !== h) others.add(n); }
@@ -49,18 +50,20 @@
     return picked;
   }
 
-  // ── shaders: the game's FrontDiorama.shader, in GLSL ──────────────────────────────────────────────────────────
+  // ── shaders: the game's FrontDiorama.shader, in GLSL, with the land beyond the plate and a distance haze ─────────
   const VS = `#version 300 es
     in vec3 aPos; in vec3 aNormal; in vec2 aUv;
-    uniform mat4 uViewProj;
-    out vec2 vUv; out vec3 vNormal;
-    void main() { vUv = aUv; vNormal = aNormal; gl_Position = uViewProj * vec4(aPos, 1.0); }`;
+    uniform mat4 uViewProj; uniform vec3 uEye;
+    out vec2 vUv; out vec3 vNormal; out float vDist;
+    void main() { vUv = aUv; vNormal = aNormal; vDist = distance(aPos, uEye); gl_Position = uViewProj * vec4(aPos, 1.0); }`;
   const FS = `#version 300 es
     precision highp float; precision highp int;
-    in vec2 vUv; in vec3 vNormal; out vec4 outColor;
+    in vec2 vUv; in vec3 vNormal; in float vDist; out vec4 outColor;
     uniform sampler2D uPlate, uRelief; uniform highp sampler2D uLookup, uState;
     uniform vec4 uLayout;   // radius, centre x, centre y, time
     uniform vec4 uRange;    // q0, r0, q span, r span
+    uniform vec2 uFog;      // where the distance haze begins and where it is whole
+    const vec3 HAZE = vec3(${HAZE.join(", ")});
     const int NQ[6] = int[6](1, 1, 0, -1, -1, 0);
     const int NR[6] = int[6](0, -1, -1, 0, 1, 1);
     const vec2 NN[6] = vec2[6](vec2(1.0, 0.0), vec2(0.5, -0.8660254), vec2(-0.5, -0.8660254),
@@ -77,7 +80,14 @@
       return mix(mix(hash(i), hash(i + vec2(1, 0)), u.x), mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), u.x), u.y); }
     void main() {
       float t = uLayout.w;
-      vec3 col = texture(uPlate, vUv).rgb;
+      // Past the plate's edge the land carries on as the plate mirrored, softer the further out (a blurrier mip), darker,
+      // and into the haze. The picture is read three texels in from its edges: its outermost columns are near black.
+      vec2 inUv = clamp(vUv, 0.0, 1.0);
+      float beyond = length((vUv - inUv) * vec2(1.0, ${MAP_H}.0 / ${MAP_W}.0));   // in plate widths
+      vec2 mirrored = abs(mod(vUv + 1.0, 2.0) - 1.0), inset = 3.0 / vec2(textureSize(uPlate, 0));
+      // the blur is chosen from the unfolded position, so the fold itself draws no seam
+      vec2 grad = (1.0 - 2.0 * inset) * exp2(min(6.0, beyond * 30.0));
+      vec3 col = textureGrad(uPlate, mix(inset, 1.0 - inset, mirrored), dFdx(vUv) * grad, dFdy(vUv) * grad).rgb;
       col *= 0.62 + 0.55 * clamp(dot(normalize(vNormal), normalize(vec3(-0.45, 0.8, 0.4))), 0.0, 1.0);
       vec2 c = vUv * vec2(3.2, 1.75) + t * 0.012 * vec2(1.0, 0.35);
       col *= 1.0 - 0.2 * smoothstep(0.48, 0.82, noise(c) * 0.65 + noise(c * 2.3 + 7.1) * 0.35);
@@ -119,9 +129,17 @@
         }
       } else col *= 0.84;
       vec2 relief = texture(uRelief, vUv).rg;
-      col += relief.g * vec3(1.0, 0.32, 0.06) * (0.6 + 0.4 * sin(t * 1.4 + vUv.x * 23.0 + vUv.y * 11.0));
-      outColor = vec4(col, 1.0);
+      col += relief.g * vec3(1.0, 0.32, 0.06) * (0.6 + 0.4 * sin(t * 1.4 + vUv.x * 23.0 + vUv.y * 11.0)) * (1.0 - smoothstep(0.0, 0.2, beyond));
+      col *= 1.0 - 0.5 * smoothstep(0.0, 0.2, beyond);
+      float fog = max(smoothstep(0.02, 0.42, beyond), smoothstep(uFog.x, uFog.y, vDist));
+      outColor = vec4(mix(col, HAZE, fog), 1.0);
     }`;
+
+  const canvas = document.createElement("canvas");
+  canvas.className = "frontmap__canvas";
+  canvas.setAttribute("aria-hidden", "true");
+  const gl = canvas.getContext("webgl2", { antialias: true, alpha: false });
+  if (!gl) { console.info("The Front's war table needs WebGL2; its picture stays."); return; }
 
   function program() {
     const make = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
@@ -134,26 +152,39 @@
     return p;
   }
 
-  // ── the relief mesh, from the bake's red channel ─────────────────────────────────────────────────────────────
+  // ── the relief mesh, from the bake's red channel, and the land beyond it settling to the plain ──────────────────
   function mesh(relief) {
     const w = relief.width, h = relief.height, px = relief.data;
     const sample = (u, v) => {   // bilinear, u right, v up; the image's row 0 is the plate's top
-      const x = Math.min(Math.max(u, 0), 1) * (w - 1), y = (1 - Math.min(Math.max(v, 0), 1)) * (h - 1);
+      // two texels in from the bake's edges, which read low, so the mirrored land past them has no trench
+      const iu = 2 / (w - 1), iv = 2 / (h - 1);
+      const x = (iu + (1 - 2 * iu) * Math.min(Math.max(u, 0), 1)) * (w - 1), y = (1 - iv - (1 - 2 * iv) * Math.min(Math.max(v, 0), 1)) * (h - 1);
       const x0 = Math.min(x | 0, w - 2), y0 = Math.min(y | 0, h - 2), fx = x - x0, fy = y - y0, i = (y0 * w + x0) * 4;
       const a = px[i] + (px[i + 4] - px[i]) * fx, b = px[i + w * 4] + (px[i + w * 4 + 4] - px[i + w * 4]) * fx;
       return (a + (b - a) * fy) / 255 * RELIEF;
     };
-    const W = MAP_W * WORLD, D = MAP_H * WORLD, du = 1 / (COLS - 1), dv = 1 / (ROWS - 1);
-    const data = new Float32Array(COLS * ROWS * 8);
-    for (let j = 0, k = 0; j < ROWS; j++) for (let i = 0; i < COLS; i++, k += 8) {
-      const u = i * du, v = j * dv;
-      const nx = (sample(u - du, v) - sample(u + du, v)) / (2 * du * W), nz = (sample(u, v - dv) - sample(u, v + dv)) / (2 * dv * D);
+    // Off the plate the land is the plate mirrored, as the texture wraps, and sinks over several units into the plain.
+    const mirror = (x) => Math.abs(((x + 1) % 2 + 2) % 2 - 1);
+    const height = (u, v) => {
+      const out = Math.hypot(Math.max(-u, u - 1, 0) * W, Math.max(-v, v - 1, 0) * D);
+      return sample(mirror(u), mirror(v)) * Math.exp(-out / 5);
+    };
+    const axis = (n, size) => {
+      const inner = Array.from({ length: n }, (_, i) => i / (n - 1));
+      return [...BEYOND.slice().reverse().map((m) => -m / size), ...inner, ...BEYOND.map((m) => 1 + m / size)];
+    };
+    const us = axis(COLS, W), vs = axis(ROWS, D), nu = us.length, nv = vs.length;
+    const du = 1 / (COLS - 1), dv = 1 / (ROWS - 1);
+    const data = new Float32Array(nu * nv * 8);
+    for (let j = 0, k = 0; j < nv; j++) for (let i = 0; i < nu; i++, k += 8) {
+      const u = us[i], v = vs[j];
+      const nx = (height(u - du, v) - height(u + du, v)) / (2 * du * W), nz = (height(u, v - dv) - height(u, v + dv)) / (2 * dv * D);
       const len = Math.hypot(nx, 1, nz);
-      data.set([(u - 0.5) * W, sample(u, v), (v - 0.5) * D, nx / len, 1 / len, nz / len, u, v], k);
+      data.set([(u - 0.5) * W, height(u, v), (v - 0.5) * D, nx / len, 1 / len, nz / len, u, v], k);
     }
-    const index = new Uint16Array((COLS - 1) * (ROWS - 1) * 6);
-    for (let j = 0, t = 0; j < ROWS - 1; j++) for (let i = 0; i < COLS - 1; i++) {
-      const a = j * COLS + i, b = a + 1, c = a + COLS, d = c + 1;
+    const index = new Uint16Array((nu - 1) * (nv - 1) * 6);
+    for (let j = 0, t = 0; j < nv - 1; j++) for (let i = 0; i < nu - 1; i++) {
+      const a = j * nu + i, b = a + 1, c = a + nu, d = c + 1;
       index.set([a, c, b, c, d, b], t); t += 6;
     }
     const vao = gl.createVertexArray(); gl.bindVertexArray(vao);
@@ -165,7 +196,7 @@
     return { vao, count: index.length };
   }
 
-  function texture(unit, source, w, h, nearest, mips) {
+  function texture(unit, source, w, h, nearest, mips, mirrored) {
     const t = gl.createTexture(); gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, t);
     // An image's top row is the plate's north, and v runs north (up) here, as in the game: flip images on upload. The
     // lookup and state tables are indexed by texel, so they go up as they are.
@@ -176,37 +207,36 @@
     if (mips) gl.generateMipmap(gl.TEXTURE_2D);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, mips ? gl.LINEAR_MIPMAP_LINEAR : f);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, f);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    const wrap = mirrored ? gl.MIRRORED_REPEAT : gl.CLAMP_TO_EDGE;
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrap); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrap);
     const aniso = gl.getExtension("EXT_texture_filter_anisotropic");
     if (mips && aniso) gl.texParameterf(gl.TEXTURE_2D, aniso.TEXTURE_MAX_ANISOTROPY_EXT, 8);
     return t;
   }
 
-  // ── the camera ───────────────────────────────────────────────────────────────────────────────────────────────
-  const view = { yaw: 0, zoom: 1, tx: 0, tz: 0 };
-  function viewProj(aspect, t) {
-    const near = Math.min(1, (view.zoom - 1) / (ZOOM_IN - 1));
-    const tilt = (TILT + (TILT_NEAR - TILT) * near) * Math.PI / 180;
-    const sway = calm ? 0 : Math.sin(t * 0.027) * 1.6 / view.zoom;
-    const yaw = (view.yaw + sway) * Math.PI / 180;
+  // ── the camera: a point on the ground it looks at, a heading, a tilt from straight down, and a distance ─────────
+  const view = { yaw: 0, tilt: TILT, zoom: REST_ZOOM, tx: 0, tz: 0 };
+  let engaged = false, full = false;
+  function camera(aspect, t) {
+    const idle = !engaged && !calm;   // a slow drift until a hand is on it, never under one
+    const yaw = (view.yaw + (idle ? Math.sin(t * 0.027) * 1.6 : 0)) * DEG, tilt = view.tilt * DEG;
     const half = Math.tan(FOV * Math.PI / 360);
-    const dist = (MAP_W * WORLD * 0.5 * 1.08) / (half * aspect) / view.zoom;   // the whole map across at zoom 1
-    const tx = view.tx + (calm ? 0 : Math.sin(t * 0.045) * 0.15 / view.zoom), tz = view.tz + (calm ? 0 : Math.sin(t * 0.031 + 1.3) * 0.1 / view.zoom);
-    const ty = 0.25 * RELIEF;
-    const ex = tx - Math.sin(yaw) * Math.sin(tilt) * dist, ey = ty + Math.cos(tilt) * dist, ez = tz - Math.cos(yaw) * Math.sin(tilt) * dist;
+    const dist = (W * 0.5 * 1.08) / (half * Math.max(aspect, 0.9)) / view.zoom;   // the whole plate across at zoom 1
+    const tx = view.tx + (idle ? Math.sin(t * 0.045) * 0.15 : 0), tz = view.tz + (idle ? Math.sin(t * 0.031 + 1.3) * 0.1 : 0);
+    const ex = tx - Math.sin(yaw) * Math.sin(tilt) * dist, ey = GROUND + Math.cos(tilt) * dist, ez = tz - Math.cos(yaw) * Math.sin(tilt) * dist;
     // look-at (right-handed GL: the camera looks down −z; the map's north is +z in the game, so flip z)
-    const f = norm([tx - ex, ty - ey, -(tz - ez)]), s = norm(cross(f, [0, 1, 0])), u = cross(s, f);
+    const f = norm([tx - ex, GROUND - ey, -(tz - ez)]), s = norm(cross(f, [0, 1, 0])), u = cross(s, f);
     const e = [ex, ey, -ez];
-    const v = [s[0], u[0], -f[0], 0, s[1], u[1], -f[1], 0, s[2], u[2], -f[2], 0,
-      -dot(s, e), -dot(u, e), dot(f, e), 1];
-    const n = 0.1, far = 200, k = 1 / half;
+    const v = [s[0], u[0], -f[0], 0, s[1], u[1], -f[1], 0, s[2], u[2], -f[2], 0, -dot(s, e), -dot(u, e), dot(f, e), 1];
+    const n = 0.1, far = 400, k = 1 / half;
     const pr = [k / aspect, 0, 0, 0, 0, k, 0, 0, 0, 0, (far + n) / (n - far), -1, 0, 0, 2 * far * n / (n - far), 0];
     const flip = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1];   // world z → GL −z
-    return mul(pr, mul(v, flip));
+    return { m: mul(pr, mul(v, flip)), eye: [ex, ey, ez], dist };
   }
   const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
   const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
   const norm = (a) => { const l = Math.hypot(a[0], a[1], a[2]); return [a[0] / l, a[1] / l, a[2] / l]; };
+  const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
   function mul(a, b) {   // column-major 4×4
     const o = new Array(16);
     for (let c = 0; c < 4; c++) for (let r = 0; r < 4; r++) {
@@ -214,46 +244,233 @@
     }
     return o;
   }
-
-  // ── the hand on it ───────────────────────────────────────────────────────────────────────────────────────────
-  const pointers = new Map();
-  let lastPair = null, engaged = false;
-  function pan(dxPx, dyPx) {   // a drag carries the ground under the finger along the camera's own axes
-    const scale = (MAP_W * WORLD * 1.08 / canvas.clientWidth) / view.zoom, y = view.yaw * Math.PI / 180;
-    const c = Math.cos(y), s = Math.sin(y);
-    view.tx -= (dxPx * c - dyPx * s) * scale;
-    view.tz += (dxPx * s + dyPx * c) * scale;
-    view.tx = Math.max(-11, Math.min(11, view.tx)); view.tz = Math.max(-6, Math.min(6, view.tz));
+  function invert(m) {   // column-major 4×4 inverse (cofactors)
+    const [a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23, a30, a31, a32, a33] = m;
+    const b00 = a00 * a11 - a01 * a10, b01 = a00 * a12 - a02 * a10, b02 = a00 * a13 - a03 * a10, b03 = a01 * a12 - a02 * a11;
+    const b04 = a01 * a13 - a03 * a11, b05 = a02 * a13 - a03 * a12, b06 = a20 * a31 - a21 * a30, b07 = a20 * a32 - a22 * a30;
+    const b08 = a20 * a33 - a23 * a30, b09 = a21 * a32 - a22 * a31, b10 = a21 * a33 - a23 * a31, b11 = a22 * a33 - a23 * a32;
+    const det = 1 / (b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06);
+    return [(a11 * b11 - a12 * b10 + a13 * b09) * det, (a02 * b10 - a01 * b11 - a03 * b09) * det, (a31 * b05 - a32 * b04 + a33 * b03) * det,
+      (a22 * b04 - a21 * b05 - a23 * b03) * det, (a12 * b08 - a10 * b11 - a13 * b07) * det, (a00 * b11 - a02 * b08 + a03 * b07) * det,
+      (a32 * b02 - a30 * b05 - a33 * b01) * det, (a20 * b05 - a22 * b02 + a23 * b01) * det, (a10 * b10 - a11 * b08 + a13 * b06) * det,
+      (a01 * b08 - a00 * b10 - a03 * b06) * det, (a30 * b04 - a31 * b02 + a33 * b00) * det, (a21 * b02 - a20 * b04 - a23 * b00) * det,
+      (a11 * b07 - a10 * b09 - a12 * b06) * det, (a00 * b09 - a01 * b07 + a02 * b06) * det, (a31 * b01 - a30 * b03 - a32 * b00) * det,
+      (a20 * b03 - a21 * b01 + a22 * b00) * det];
   }
-  function zoomBy(f) { view.zoom = Math.max(1, Math.min(ZOOM_IN, view.zoom * f)); if (view.zoom === 1) { view.tx *= 0.5; view.tz *= 0.5; } }
-  function engage() { if (!engaged) { engaged = true; root.classList.add("is-engaged"); } }
-  canvas.addEventListener("pointerdown", (e) => { pointers.set(e.pointerId, { x: e.clientX, y: e.clientY, b: e.button }); canvas.setPointerCapture(e.pointerId); engage(); });
-  canvas.addEventListener("pointermove", (e) => {
-    const p = pointers.get(e.pointerId); if (!p) return;
-    const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY;
-    if (pointers.size >= 2) {
-      const [a, b] = [...pointers.values()];
-      const pair = { d: Math.hypot(b.x - a.x, b.y - a.y), ang: Math.atan2(b.y - a.y, b.x - a.x), mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2 };
-      if (lastPair) {
-        zoomBy(pair.d / Math.max(1, lastPair.d));
-        let turn = pair.ang - lastPair.ang; if (turn > Math.PI) turn -= 2 * Math.PI; if (turn < -Math.PI) turn += 2 * Math.PI;
-        view.yaw -= turn * 180 / Math.PI;
-        pan(pair.mx - lastPair.mx, pair.my - lastPair.my);
-      }
-      lastPair = pair;
-    } else if (p.b === 2 || e.shiftKey) pan(dx, dy);
-    else view.yaw += dx * 0.3;
+  const apply = (m, x, y, z) => { const w = m[3] * x + m[7] * y + m[11] * z + m[15];
+    return [(m[0] * x + m[4] * y + m[8] * z + m[12]) / w, (m[1] * x + m[5] * y + m[9] * z + m[13]) / w, (m[2] * x + m[6] * y + m[10] * z + m[14]) / w, w]; };
+
+  // The ground under a point of the canvas (CSS pixels), on the plane a hand holds: [x, z], or null above the horizon.
+  function pick(px, py) {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    if (!w || !h) return null;
+    const inv = invert(camera(w / h, 0).m), x = px / w * 2 - 1, y = 1 - py / h * 2;
+    const a = apply(inv, x, y, -1), b = apply(inv, x, y, 1), dy = b[1] - a[1];
+    if (dy > -1e-6) return null;
+    const s = (GROUND - a[1]) / dy;
+    return s < 0 ? null : [a[0] + (b[0] - a[0]) * s, a[2] + (b[2] - a[2]) * s];
+  }
+  // Where a point of the ground lands on the canvas (CSS pixels).
+  function place(x, z) {
+    const w = canvas.clientWidth, h = canvas.clientHeight, c = apply(camera(w / h, 0).m, x, GROUND, z);
+    return c[3] > 0 ? [(c[0] + 1) / 2 * w, (1 - c[1]) / 2 * h] : null;
+  }
+  function settle() {   // the point looked at stays over the plate
+    view.tx = clamp(view.tx, -W / 2, W / 2); view.tz = clamp(view.tz, -D / 2, D / 2);
+    view.tilt = clamp(view.tilt, TILT_MIN, TILT_MAX); view.zoom = clamp(view.zoom, ZOOM_MIN, ZOOM_MAX);
+  }
+  // Each move keeps the ground under the hand where the hand is: shift the look-at point by the slip.
+  function hold(px, py, change) {
+    const before = pick(px, py);
+    change();
+    settle();
+    const after = before && pick(px, py);
+    if (before && after) { view.tx += before[0] - after[0]; view.tz += before[1] - after[1]; settle(); }
+  }
+  const zoomAt = (px, py, f) => hold(px, py, () => { view.zoom *= f; });
+  const turnAt = (px, py, deg) => hold(px, py, () => { view.yaw += deg; });
+  function slide(fromX, fromY, toX, toY) {   // the ground under (from) is carried to (to)
+    const a = pick(fromX, fromY), b = pick(toX, toY);
+    if (!a || !b) return [0, 0];
+    const dx = a[0] - b[0], dz = a[1] - b[1];
+    view.tx += dx; view.tz += dz; settle();
+    return [dx, dz];
+  }
+
+  // ── motion: a glide after a fling, and an eased return to north ──────────────────────────────────────────────
+  let glide = null, tween = null, trail = [];
+  function track(dx, dz) { const now = performance.now(); trail.push({ t: now, dx, dz }); while (trail.length && now - trail[0].t > 90) trail.shift(); }
+  function fling() {
+    const now = performance.now(), recent = trail.filter((s) => now - s.t < 90);
+    trail = [];
+    if (calm || recent.length < 2) return;
+    const span = Math.max(16, now - recent[0].t);
+    const vx = recent.reduce((s, r) => s + r.dx, 0) / span, vz = recent.reduce((s, r) => s + r.dz, 0) / span;
+    if (Math.hypot(vx, vz) > 0.0005) { glide = { vx, vz }; kick(); }
+  }
+  function ease(to, ms) {
+    let yaw = ((view.yaw % 360) + 540) % 360 - 180;
+    view.yaw = yaw;
+    if (calm) { Object.assign(view, to); settle(); kick(); return; }
+    tween = { from: { yaw, tilt: view.tilt }, to, t0: performance.now(), ms }; kick();
+  }
+  function step(dt) {
+    if (glide) {
+      view.tx += glide.vx * dt; view.tz += glide.vz * dt;   // the look-at point keeps the drift the hand gave it
+      const before = [view.tx, view.tz]; settle();
+      if (before[0] !== view.tx) glide.vx = 0; if (before[1] !== view.tz) glide.vz = 0;
+      const k = Math.exp(-dt / 320); glide.vx *= k; glide.vz *= k;
+      if (Math.hypot(glide.vx, glide.vz) < 0.00004) glide = null;
+    }
+    if (tween) {
+      const p = Math.min(1, (performance.now() - tween.t0) / tween.ms), e = 1 - Math.pow(1 - p, 3);
+      for (const key of Object.keys(tween.to)) view[key] = tween.from[key] + (tween.to[key] - tween.from[key]) * e;
+      if (p >= 1) tween = null;
+    }
+  }
+  const stopMotion = () => { glide = null; tween = null; trail = []; };
+
+  // ── the stage: the canvas, its hint, the compass and the full-screen door ────────────────────────────────────
+  const stage = document.createElement("div");
+  stage.className = "frontmap__stage";
+  const hint = document.createElement("div");
+  hint.className = "frontmap__hint";
+  const tools = document.createElement("div");
+  tools.className = "frontmap__tools";
+  const button = (label, svg) => { const b = document.createElement("button"); b.type = "button"; b.className = "frontmap__tool";
+    b.setAttribute("aria-label", label); b.title = label; b.innerHTML = svg; return b; };
+  const compass = button("Face north", '<svg viewBox="0 0 24 24" aria-hidden="true"><g class="frontmap__needle"><path d="M12 3l3.2 9h-6.4z" fill="currentColor" class="frontmap__north"/><path d="M12 21l-3.2-9h6.4z" fill="currentColor" opacity="0.35"/></g></svg>');
+  const opener = button("Explore full screen", '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>');
+  const closer = button("Close the war table", '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6L6 18"/></svg>');
+  closer.classList.add("frontmap__close");
+  tools.append(compass, opener);
+  stage.append(canvas, hint, tools, closer);
+  const needle = compass.querySelector(".frontmap__needle");
+
+  const WORDS = {
+    rest: touch ? "Two fingers to move the map · ⤢ to explore" : "Drag to move · Shift-drag to turn and tilt · Scroll to zoom",
+    wheel: "Click the map, then scroll to zoom",
+    fingers: "Use two fingers to move the map, or ⤢ to explore",
+    full: touch ? "Drag to move · Pinch to zoom · Twist to turn · Two fingers up or down to tilt"
+                : "Drag to move · Shift-drag to turn and tilt · Scroll to zoom · Esc to close",
+  };
+  let hintTimer = 0;
+  function say(words, ms) {
+    hint.textContent = WORDS[words]; hint.classList.add("is-shown");
+    clearTimeout(hintTimer);
+    if (ms) hintTimer = setTimeout(() => hint.classList.remove("is-shown"), ms);
+  }
+  function engage() { if (!engaged) { engaged = true; root.classList.add("is-engaged"); hint.classList.remove("is-shown"); } }
+
+  compass.addEventListener("click", () => { engage(); stopMotion(); ease({ yaw: 0, tilt: TILT }, 650); });
+  let overlay = null, ioVisible = false;
+  const shown = () => full || ioVisible;
+  function openFull() {
+    if (full) return;
+    overlay = document.createElement("div");
+    overlay.className = "frontmap-full";
+    overlay.setAttribute("role", "dialog"); overlay.setAttribute("aria-modal", "true"); overlay.setAttribute("aria-label", "The Front's war table");
+    document.body.appendChild(overlay); overlay.appendChild(stage);
+    document.documentElement.classList.add("has-frontmap-full");
+    full = true; engaged = true; root.classList.add("is-engaged");
+    if (canvas.clientWidth / Math.max(1, canvas.clientHeight) < 0.8) { view.zoom = Math.max(view.zoom, 1.8); settle(); }   // a tall phone: closer in
+    say("full", 4200); closer.focus({ preventScroll: true }); kick();
+  }
+  function closeFull() {
+    if (!full) return;
+    full = false; stopMotion(); dropTouches();
+    root.appendChild(stage); overlay.remove(); overlay = null;
+    document.documentElement.classList.remove("has-frontmap-full");
+    hint.classList.remove("is-shown"); opener.focus({ preventScroll: true }); kick();
+  }
+  opener.addEventListener("click", openFull);
+  closer.addEventListener("click", closeFull);
+  document.addEventListener("keydown", (e) => { if (full && e.key === "Escape") closeFull(); });
+
+  // ── the hand on it: a mouse or pen ───────────────────────────────────────────────────────────────────────────
+  const local = (e) => { const r = canvas.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+  let mouse = null;
+  canvas.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "touch") return;
+    engage(); stopMotion();
+    const [x, y] = local(e);
+    mouse = { id: e.pointerId, x, y, turn: e.button !== 0 || e.shiftKey || e.ctrlKey || e.altKey || e.metaKey };
+    try { canvas.setPointerCapture(e.pointerId); } catch (_) { /* a pointer already gone keeps no capture */ }
+    stage.classList.add("is-dragging"); kick();
   });
-  const lift = (e) => { pointers.delete(e.pointerId); lastPair = null; };
-  canvas.addEventListener("pointerup", lift); canvas.addEventListener("pointercancel", lift);
+  canvas.addEventListener("pointermove", (e) => {
+    if (!mouse || e.pointerId !== mouse.id) return;
+    const [x, y] = local(e);
+    if (mouse.turn) { view.yaw += (x - mouse.x) * 0.3; view.tilt -= (y - mouse.y) * 0.25; settle(); }
+    else { const [dx, dz] = slide(mouse.x, mouse.y, x, y); track(dx, dz); }
+    mouse.x = x; mouse.y = y; kick();
+  });
+  const letGo = (e) => {
+    if (!mouse || e.pointerId !== mouse.id) return;
+    if (!mouse.turn) fling();
+    mouse = null; stage.classList.remove("is-dragging"); kick();
+  };
+  canvas.addEventListener("pointerup", letGo); canvas.addEventListener("pointercancel", letGo);
   canvas.addEventListener("contextmenu", (e) => e.preventDefault());
-  // The wheel zooms once the map has been touched, so a reader scrolling past the page is never caught by it.
-  canvas.addEventListener("wheel", (e) => { if (!engaged && !e.ctrlKey) return; e.preventDefault(); zoomBy(Math.exp(-e.deltaY * 0.0015)); }, { passive: false });
-  canvas.addEventListener("dblclick", () => { view.yaw = 0; view.zoom = 1; view.tx = 0; view.tz = 0; });
+  // The wheel zooms once the map has been clicked (or with Ctrl or ⌘, as a trackpad pinch sends), so a reader scrolling
+  // past is never caught by it.
+  canvas.addEventListener("wheel", (e) => {
+    if (!engaged && !e.ctrlKey && !e.metaKey) { say("wheel", 1800); return; }
+    e.preventDefault(); engage(); stopMotion();
+    const [x, y] = local(e);
+    zoomAt(x, y, Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.0015))); kick();
+  }, { passive: false });
+  canvas.addEventListener("dblclick", (e) => { engage(); stopMotion(); const [x, y] = local(e); zoomAt(x, y, 1.8); kick(); });
+
+  // ── the hand on it: fingers. In the page two fingers move it (one still scrolls); full screen, one finger does. ──
+  const fingers = new Map();
+  let pair = null, lone = null;
+  const at = (t) => { const r = canvas.getBoundingClientRect(); return [t.clientX - r.left, t.clientY - r.top]; };
+  function dropTouches() { fingers.clear(); pair = null; lone = null; }
+  canvas.addEventListener("touchstart", (e) => {
+    for (const t of e.changedTouches) fingers.set(t.identifier, at(t));
+    stopMotion(); pair = null; lone = null;
+    if (fingers.size >= 2 || full) { e.preventDefault(); engage(); stage.classList.add("is-dragging"); }
+    if (fingers.size === 1) lone = [...fingers.values()][0].slice();
+    kick();
+  }, { passive: false });
+  canvas.addEventListener("touchmove", (e) => {
+    for (const t of e.changedTouches) if (fingers.has(t.identifier)) fingers.set(t.identifier, at(t));
+    if (fingers.size >= 2) {
+      e.preventDefault();
+      const [a, b] = [...fingers.values()];
+      const now = { mx: (a[0] + b[0]) / 2, my: (a[1] + b[1]) / 2, d: Math.hypot(b[0] - a[0], b[1] - a[1]), ang: Math.atan2(b[1] - a[1], b[0] - a[0]) };
+      if (pair) {
+        let turn = now.ang - pair.ang; if (turn > Math.PI) turn -= 2 * Math.PI; if (turn < -Math.PI) turn += 2 * Math.PI;
+        zoomAt(pair.mx, pair.my, now.d / Math.max(1, pair.d));
+        turnAt(pair.mx, pair.my, -turn / DEG);
+        if (full) { view.tilt -= (now.my - pair.my) * 0.3; settle(); }   // full screen: two fingers up or down tilt
+        else slide(pair.mx, pair.my, now.mx, now.my);                     // in the page: two fingers carry the ground
+      }
+      pair = now; kick();
+    } else if (fingers.size === 1 && full && lone) {
+      e.preventDefault();
+      const p = [...fingers.values()][0];
+      const [dx, dz] = slide(lone[0], lone[1], p[0], p[1]); track(dx, dz);
+      lone = p.slice(); kick();
+    } else if (fingers.size === 1 && !full && lone) {
+      const p = [...fingers.values()][0];
+      if (Math.hypot(p[0] - lone[0], p[1] - lone[1]) > 14) say("fingers", 1600);
+    }
+  }, { passive: false });
+  const lift = (e) => {
+    const wasLone = fingers.size === 1 && full;
+    for (const t of e.changedTouches) fingers.delete(t.identifier);
+    if (wasLone && fingers.size === 0) fling();
+    pair = null;
+    lone = fingers.size === 1 ? [...fingers.values()][0].slice() : null;
+    if (!fingers.size) stage.classList.remove("is-dragging");
+    kick();
+  };
+  canvas.addEventListener("touchend", lift); canvas.addEventListener("touchcancel", lift);
 
   // ── start when near, draw while seen ─────────────────────────────────────────────────────────────────────────
-  let started = false, visible = false, frame = 0, draw = null;
-  let hint = null;
+  let started = false, frame = 0, draw = null, last = 0;
   async function start() {
     started = true;
     const load = (src) => new Promise((ok, fail) => { const i = new Image(); i.onload = () => ok(i); i.onerror = fail; i.src = BASE + src; });
@@ -266,8 +483,8 @@
       const hexes = board.hexes, L = layOut(hexes), fights = battlegrounds(hexes);
       const prog = program(); gl.useProgram(prog);
       const terrain = mesh(reliefPx);
-      texture(0, plate, 0, 0, false, true);
-      texture(1, relief, 0, 0, false, false);
+      texture(0, plate, 0, 0, false, true, false);
+      texture(1, relief, 0, 0, false, false, true);
       const lookup = new Uint8Array(L.qs * L.rs * 4);
       hexes.forEach(([q, r], i) => { lookup[((r - L.r0) * L.qs + (q - L.q0)) * 4] = i + 1; });
       texture(2, lookup, L.qs, L.rs, true, false);
@@ -278,47 +495,59 @@
       for (const [name, unit] of [["uPlate", 0], ["uRelief", 1], ["uLookup", 2], ["uState", 3]]) gl.uniform1i(gl.getUniformLocation(prog, name), unit);
       gl.uniform4f(gl.getUniformLocation(prog, "uRange"), L.q0, L.r0, L.qs, L.rs);
       const uLayout = gl.getUniformLocation(prog, "uLayout"), uViewProj = gl.getUniformLocation(prog, "uViewProj");
+      const uEye = gl.getUniformLocation(prog, "uEye"), uFog = gl.getUniformLocation(prog, "uFog");
       gl.enable(gl.DEPTH_TEST);
       const t0 = performance.now();
+      let heading = null;
       draw = () => {
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
         const w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr);
+        if (!w || !h) return;
         if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
         gl.viewport(0, 0, w, h);
-        gl.clearColor(0.03, 0.04, 0.06, 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        gl.clearColor(HAZE[0], HAZE[1], HAZE[2], 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         const t = calm ? 0 : (performance.now() - t0) / 1000;
+        const cam = camera(w / h, t);
         gl.uniform4f(uLayout, L.R, L.cx, L.cy, t);
-        gl.uniformMatrix4fv(uViewProj, false, viewProj(w / Math.max(1, h), t));
+        gl.uniformMatrix4fv(uViewProj, false, cam.m);
+        gl.uniform3f(uEye, cam.eye[0], cam.eye[1], cam.eye[2]);
+        gl.uniform2f(uFog, cam.dist * 1.25, cam.dist * 2.4);
         gl.bindVertexArray(terrain.vao);
         gl.drawElements(gl.TRIANGLES, terrain.count, gl.UNSIGNED_SHORT, 0);
+        // the compass points where north lies on the screen
+        const a = place(view.tx, view.tz), b = place(view.tx, view.tz + 1);
+        if (a && b) {
+          const deg = Math.round(Math.atan2(b[0] - a[0], a[1] - b[1]) / DEG);
+          if (deg !== heading) { heading = deg; needle.style.transform = `rotate(${deg}deg)`; compass.classList.toggle("is-north", Math.abs(deg) < 2); }
+        }
       };
-      root.appendChild(canvas);
-      hint = document.createElement("p");
-      hint.className = "frontmap__hint";
-      hint.textContent = touch ? "Drag to turn · pinch to zoom" : "Drag to turn · scroll to zoom";
-      root.appendChild(hint);
+      root.appendChild(stage);
+      say("rest");
       draw();
       root.classList.add("is-map");
-      loop();
+      kick();
     } catch (err) {
-      canvas.remove();   // the picture stays
-      if (hint) hint.remove();
+      stage.remove();   // the picture stays
       console.warn("The Front's war table did not start; its picture stays.", err);
     }
   }
-  function loop() {
-    cancelAnimationFrame(frame);
-    if (!visible || !draw) return;
+  const moving = () => glide || tween || mouse || fingers.size;
+  function loop(now) {
+    frame = 0;
+    if (!draw || !shown()) return;
+    const dt = last ? Math.min(50, now - last) : 16; last = now;
+    step(dt);
     draw();
-    if (!calm || pointers.size) frame = requestAnimationFrame(loop);
+    if (!calm || moving()) frame = requestAnimationFrame(loop); else last = 0;
   }
-  if (calm) canvas.addEventListener("pointermove", () => { if (draw) draw(); });
+  function kick() { if (!frame && draw && shown()) frame = requestAnimationFrame(loop); }
+  window.addEventListener("resize", kick);
 
   new IntersectionObserver((entries) => {
     for (const e of entries) {
-      visible = e.isIntersecting;
-      if (visible && !started) start();
-      if (visible) loop();
+      ioVisible = e.isIntersecting;
+      if (ioVisible && !started) start();
+      kick();
     }
   }, { rootMargin: "200px 0px" }).observe(root);
 })();

@@ -1310,23 +1310,46 @@ html.is-boarding::after { content: ""; position: fixed; inset: 0; z-index: 300; 
   .log__frame--next::after { animation: none; background: none; }
 }
 
-/* 2026-11-03 — The Front's war table in MOVE THE LINE (assets/front.js): the game's map live over its picture. A vertical
-   swipe still scrolls the page on a phone; the tag and the hint stay above the map. */
-.pillars__art[data-frontmap] .frontmap__canvas { position: absolute; inset: 0; z-index: 1; display: block; width: 100%; height: 100%;
-  opacity: 0; transition: opacity 0.6s ease; touch-action: pan-y; cursor: grab; }
-.pillars__art[data-frontmap].is-map .frontmap__canvas { opacity: 1; }
-.pillars__art[data-frontmap] .frontmap__canvas:active { cursor: grabbing; }
+/* 2026-11-04 — The Front's war table in MOVE THE LINE (assets/front.js): the game's map live over its picture, handled like a
+   globe viewer. In the page one finger still scrolls it on a phone and two fingers move the map; full screen, one finger
+   does. The tag stays above the map, the hint top right, the compass and the full-screen door bottom right. */
+.frontmap__stage { position: absolute; inset: 0; z-index: 1; opacity: 0; transition: opacity 0.6s ease; }
+.pillars__art.is-map .frontmap__stage, .frontmap-full .frontmap__stage { opacity: 1; }
+.frontmap__canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; touch-action: pan-x pan-y; cursor: grab; }
+.frontmap__stage.is-dragging .frontmap__canvas { cursor: grabbing; }
 .pillars__art[data-frontmap] .pillars__tag { z-index: 2; }
 .pillars li:hover .pillars__art[data-frontmap] img { transform: none; }
-/* .pillars__art in front: the hint is a p, and .pillars p (0,1,1) would otherwise set its size and colour. */
-.pillars__art .frontmap__hint {
-  position: absolute; right: 8px; top: 8px; z-index: 2; margin: 0; padding: 4px 7px; background: rgba(7, 9, 13, 0.78);
-  font: 400 0.56rem/1 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim);
-  white-space: nowrap; pointer-events: none; transition: opacity 0.6s ease;
+.frontmap__hint {
+  position: absolute; right: 10px; top: 10px; z-index: 2; margin: 0; padding: 5px 8px; background: rgba(7, 9, 13, 0.8);
+  font: 400 0.56rem/1.35 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim);
+  white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 0.5s ease;
 }
-.pillars__art.is-engaged .frontmap__hint { opacity: 0; }
-@media (max-width: 700px) { .pillars__art .frontmap__hint { right: 12px; top: 12px; max-width: calc(100% - 24px); font-size: 0.56rem;
-  padding: 5px 8px; white-space: normal; text-align: right; } }
+.frontmap__hint.is-shown { opacity: 1; }
+.frontmap__tools { position: absolute; right: 12px; bottom: 12px; z-index: 2; display: grid; gap: 8px; }
+.frontmap__tool {
+  display: grid; place-items: center; width: 38px; height: 38px; margin: 0; padding: 0; border: 1px solid var(--line); border-radius: 50%;
+  background: rgba(7, 9, 13, 0.82); color: var(--ink-dim); cursor: pointer; transition: color 0.2s ease, border-color 0.2s ease;
+}
+.frontmap__tool svg { width: 18px; height: 18px; }
+.frontmap__tool:hover { color: var(--ink); border-color: rgba(224, 137, 62, 0.6); }
+.frontmap__tool:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
+.frontmap__needle { transform-origin: 12px 12px; transition: transform 0.12s linear; }
+.frontmap__north { color: var(--accent); }
+.frontmap__close { display: none; position: absolute; left: 12px; top: 12px; z-index: 2; }
+.frontmap-full { position: fixed; inset: 0; z-index: 1000; background: #08090d; }
+.frontmap-full .frontmap__canvas { touch-action: none; }
+.frontmap-full .frontmap__close { display: grid; }
+.frontmap-full .frontmap__tools { right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); }
+.frontmap-full .frontmap__tools .frontmap__tool:nth-child(2) { display: none; }   /* already full screen */
+.frontmap-full .frontmap__hint { top: max(16px, env(safe-area-inset-top)); right: max(16px, env(safe-area-inset-right)); }
+html.has-frontmap-full, html.has-frontmap-full body { overflow: hidden; }
+@media (max-width: 700px) {
+  .frontmap__hint { right: 10px; top: 10px; max-width: calc(100% - 20px); white-space: normal; text-align: right; }
+  .frontmap__tools { right: 10px; bottom: 10px; gap: 6px; }
+  .pillars__art .frontmap__tool { width: 32px; height: 32px; }
+  .pillars__art .frontmap__tool svg { width: 15px; height: 15px; }
+}
+@media (prefers-reduced-motion: reduce) { .frontmap__stage, .frontmap__hint, .frontmap__needle { transition: none; } }
 
 /* 2026-11-03 — FEEL THE WEIGHT links to the Hangar, where a reader loads a VIGIL and watches the weight move. */
 .pillars p .pillars__link { display: inline-block; margin-top: 14px; color: var(--accent); font: 400 0.75rem/1 var(--font-mono);
