@@ -25,8 +25,8 @@
   <link rel="preload" href="/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/assets/img/sky-2560.webp" as="image" media="(min-width: 1281px)">
   <link rel="preload" href="/assets/img/sky-1280.webp" as="image" media="(max-width: 1280px)">
-  <link rel="stylesheet" href="/assets/site.css?v=f4d8239e">
-  <link rel="stylesheet" href="/drop/drop.css?v=f4d8239e">
+  <link rel="stylesheet" href="/assets/site.css?v=87890023">
+  <link rel="stylesheet" href="/drop/drop.css?v=87890023">
   <script>
     // Boarding: arriving from another site opens on the shipboard network, which assets/site.js draws. Nothing is
     // stored in the browser (the privacy page promises that): a reload, Back, or a link from this site skips it. This
@@ -41,16 +41,15 @@
       }
     } catch (error) { /* no boarding screen */ }
   </script>
-  <script src="/assets/ship.js?v=f4d8239e" defer></script>
-  <script src="/assets/site.js?v=f4d8239e" defer></script>
-  <script src="/drop/drop.js?v=f4d8239e" defer></script>
-  <script src="/assets/patch.js?v=f4d8239e" defer></script>
-  <script src="/assets/patchmaker.js?v=f4d8239e" defer></script>
-  <script src="/assets/front.js?v=f4d8239e" defer></script>
-  <script src="/assets/bench.js?v=f4d8239e" defer></script>
-  <script src="/assets/recon.js?v=f4d8239e" defer></script>
-  <script src="/assets/valor.js?v=f4d8239e" defer></script>
-  <script src="/assets/story.js?v=f4d8239e" defer></script>
+  <script src="/assets/ship.js?v=87890023" defer></script>
+  <script src="/assets/site.js?v=87890023" defer></script>
+  <script src="/drop/drop.js?v=87890023" defer></script>
+  <script src="/assets/patch.js?v=87890023" defer></script>
+  <script src="/assets/patchmaker.js?v=87890023" defer></script>
+  <script src="/assets/front.js?v=87890023" defer></script>
+  <script src="/assets/bench.js?v=87890023" defer></script>
+  <script src="/assets/valor.js?v=87890023" defer></script>
+  <script src="/assets/story.js?v=87890023" defer></script>
 </head>
 <body>
   <a class="skip" href="#game">Skip to content</a>
@@ -156,7 +155,7 @@
       </div>
     </section>
 
-    <!-- THE GAME: what you are, and the five pillars. -->
+    <!-- THE GAME: what you are, and the four pillars. -->
     <section class="section game" id="game" data-section>
       <div class="wrap">
         <div class="game__intro">
@@ -217,14 +216,6 @@
             <span class="pillars__num">04</span>
             <h3>Feel the weight</h3>
             <p>First person, full cockpit. Every loadout has a price. <a class="pillars__link" href="/hangar/">Load one in the Hangar</a></p>
-          </li>
-          <!-- The recon scope: the map of The Reach under survey fog, charted where the scope passes (assets/recon.js).
-               Without scripts the jungle picture stays. -->
-          <li data-reveal id="push-into-the-unknown">
-            <figure class="pillars__art" data-recon><img src="/assets/img/pillars/pillar-unknown.webp" alt="Dense jungle from the air, a river through it and mountains behind" width="960" height="540" loading="lazy"><p class="pillars__tag">Recon · pre-alpha</p></figure>
-            <span class="pillars__num">05</span>
-            <h3>Push into the unknown</h3>
-            <p>Most of The Reach is uncharted. Every season, the front pushes into new ground.</p>
           </li>
         </ol>
 
