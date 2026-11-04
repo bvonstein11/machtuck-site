@@ -13,21 +13,58 @@
     const stage = spin.querySelector("[data-spin-stage]");
     const picture = spin.querySelector("[data-spin-frame]");
     const dial = spin.querySelector("[data-spin-dial]");
-    // Four paints, each its own 72 frames, filmed from the game (the hub's VIGIL, the hangar's lights).
+    // Four paints, each its own 72 frames, filmed from the game (the hub's VIGIL under the hangar's lights). A paint goes
+    // on only once its frames are in, and the turn only ever shows a frame that has arrived: an <img> whose source moves
+    // on every 140 ms never finishes loading any new frame over a phone's connection, so the old paint stayed on screen
+    // (2026-11-03, on an iPhone: the desert paint would not load). While a paint comes in, its swatch fills as a ring.
     let skin = "base", wanted = "base";
-    const source = (index, paint = skin) => `/hangar/spin/${paint}/vigil-${String(index * 5).padStart(3, "0")}.webp`;
-    const held = [];
-    const fetched = new Set();
-    const fetchAll = (paint) => {
-      if (fetched.has(paint)) return;
-      fetched.add(paint);
-      for (let index = 0; index < frames; index++) held.push(Object.assign(new Image(), { src: source(index, paint) }));
+    const source = (index, paint) => `/hangar/spin/${paint}/vigil-${String(index * 5).padStart(3, "0")}.webp`;
+    const sets = new Map();
+    /** Fetches a paint's frames once, the angle on screen first and then outward; resolves when every one has settled. */
+    const load = (paint, onProgress) => {
+      if (!sets.has(paint)) {
+        const set = { images: [], ready: new Array(frames).fill(false), settled: 0, listeners: [] };
+        const order = Array.from({ length: frames }, (_, k) => (frame + (k % 2 ? -1 : 1) * Math.ceil(k / 2) + frames) % frames);
+        set.done = new Promise((resolve) => {
+          for (const index of order) {
+            const img = new Image();
+            img.decoding = "async";
+            const settle = (ok) => {
+              set.ready[index] = ok;
+              set.settled++;
+              for (const listener of set.listeners) listener(set.settled / frames);
+              if (set.settled === frames) resolve(set);
+            };
+            img.onload = () => settle(true);
+            img.onerror = () => settle(false);
+            img.src = source(index, paint);
+            set.images.push(img);
+          }
+        });
+        sets.set(paint, set);
+      }
+      const set = sets.get(paint);
+      if (onProgress) { set.listeners.push(onProgress); onProgress(set.settled / frames); }
+      return set.done;
     };
     let frame = 0;
     let idle = null;
+    /** The nearest frame of the paint on show that has arrived, so the turn never waits on the network. */
+    const nearestReady = (index) => {
+      const set = sets.get(skin);
+      if (!set) return index;
+      for (let d = 0; d <= frames / 2; d++) {
+        for (const candidate of [index + d, index - d]) {
+          const k = (candidate + frames) % frames;
+          if (set.ready[k]) return k;
+        }
+      }
+      return -1;
+    };
     const show = (index) => {
       frame = ((index % frames) + frames) % frames;
-      picture.src = source(frame);
+      const k = nearestReady(frame);
+      if (k >= 0) picture.src = source(k, skin);
       dial.value = String(frame);
     };
     const takeHold = () => {
@@ -60,27 +97,34 @@
     dial.addEventListener("input", () => { takeHold(); show(Number(dial.value)); });
     // A paint is picked by its swatch; its frames are fetched then, the base paint's once the page has loaded.
     const skins = spin.querySelector("[data-spin-skins]");
+    const press = (paint) => {
+      for (const other of skins.querySelectorAll("[data-skin]")) {
+        const on = other.dataset.skin === paint;
+        other.classList.toggle("is-on", on);
+        other.setAttribute("aria-pressed", String(on));
+      }
+    };
     if (skins) {
       for (const button of skins.querySelectorAll("[data-skin]")) {
         button.addEventListener("click", () => {
           const paint = button.dataset.skin;
           wanted = paint;
-          fetchAll(paint);
-          for (const other of skins.querySelectorAll("[data-skin]")) {
-            const on = other === button;
-            other.classList.toggle("is-on", on);
-            other.setAttribute("aria-pressed", String(on));
-          }
-          // The new paint goes on once its frame at this angle is in, so the turntable never blinks empty.
-          const first = new Image();
-          first.src = source(frame, paint);
-          const swap = () => { if (wanted === paint) { skin = paint; show(frame); } };
-          (first.decode ? first.decode() : Promise.resolve()).then(swap, swap);
+          press(paint);
+          button.classList.add("is-loading");
+          button.setAttribute("aria-busy", "true");
+          load(paint, (share) => button.style.setProperty("--progress", share.toFixed(3))).then((set) => {
+            button.classList.remove("is-loading");
+            button.removeAttribute("aria-busy");
+            if (wanted !== paint) return;
+            if (!set.ready.some(Boolean)) { wanted = skin; press(skin); return; }   // nothing came: keep the paint on show
+            skin = paint;
+            show(frame);
+          });
         });
       }
     }
     window.addEventListener("load", () => {
-      fetchAll(skin);
+      load(skin);
       if (!reducedMotion) idle = setInterval(() => show(frame + 1), 140);
     });
   }

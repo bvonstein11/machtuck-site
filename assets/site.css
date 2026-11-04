@@ -1246,6 +1246,14 @@ html.is-boarding::after { content: ""; position: fixed; inset: 0; z-index: 300; 
 .bench__paint--snow { background: #c9cccd url("/hangar/spin/swatch-snow.webp") center / cover; }
 .bench__paint:hover { transform: scale(1.08); }
 .bench__paint[aria-pressed="true"] { box-shadow: 0 0 0 2px #050608, 0 0 0 3px var(--accent); }
+/* While a tapped paint's frames come in, a ring round its chip fills with them (bench.js sets --progress, 0 to 1). */
+.bench__paint { position: relative; }
+.bench__paint.is-loading::after, .skin.is-loading .skin__swatch::after {
+  content: ""; position: absolute; inset: -4px; border-radius: 50%; pointer-events: none;
+  background: conic-gradient(var(--accent) calc(var(--progress, 0) * 1turn), rgba(232, 228, 220, 0.16) 0);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+}
 
 .bench__sheet { grid-row: 1; grid-column: 2; align-self: center; display: grid; gap: 16px; min-width: 0; padding: 4px 0; }
 .bench__head { display: grid; gap: 8px; }
@@ -1337,7 +1345,9 @@ html.is-boarding::after { content: ""; position: fixed; inset: 0; z-index: 300; 
 .recon__tag.is-charted .recon__state { color: #9fc7a3; }
 .recon__live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 @media (max-width: 700px) {
-  .pillars__art.is-recon { aspect-ratio: 4 / 3.4; }
+  /* min-width 0: at 4 : 3.4 the 16 : 9 picture inside would otherwise set the card's minimum width, and in Safari the
+     card ran 25 px past a 375 px screen. */
+  .pillars__art.is-recon { aspect-ratio: 4 / 3.4; min-width: 0; }
   .recon__tag { padding: 6px 8px; }
   .recon__land { font-size: 0.72rem; }
 }

@@ -31,19 +31,41 @@
   const fmt = (n) => Math.round(n).toLocaleString("en-US");
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 
-  // ── the frames: a paint's 72 are fetched once, and a paint is shown only once its frames are in ─────────────────
+  // ── the frames: a paint's 72 are fetched once, and a paint is shown only once its frames have settled ───────────
+  // Settled, not all loaded: one frame lost on a phone's connection must not keep a paint off the bench for good. The
+  // turn shows the nearest frame that did arrive; a listener hears how much has come in, for the swatch's ring.
   const loaded = new Map();
-  const loadPaint = (paint) => {
+  const loadPaint = (paint, onProgress) => {
     if (!loaded.has(paint)) {
-      loaded.set(paint, Promise.all(Array.from({ length: FRAMES }, (_, i) => new Promise((done, fail) => {
-        const img = new Image();
-        img.decoding = "async";
-        img.onload = () => done(img);
-        img.onerror = fail;
-        img.src = frameSrc(paint, i);
-      }))));
+      const set = { ready: new Array(FRAMES).fill(false), settled: 0, listeners: [] };
+      set.done = new Promise((resolve) => {
+        for (let i = 0; i < FRAMES; i++) {
+          const img = new Image();
+          img.decoding = "async";
+          const settle = (ok) => {
+            set.ready[i] = ok;
+            set.settled++;
+            for (const listener of set.listeners) listener(set.settled / FRAMES);
+            if (set.settled === FRAMES) resolve(set);
+          };
+          img.onload = () => settle(true);
+          img.onerror = () => settle(false);
+          img.src = frameSrc(paint, i);
+        }
+      });
+      loaded.set(paint, set);
     }
-    return loaded.get(paint);
+    const set = loaded.get(paint);
+    if (onProgress) { set.listeners.push(onProgress); onProgress(set.settled / FRAMES); }
+    return set.done.then((done) => (done.ready.some(Boolean) ? done : Promise.reject(new Error("no frames"))));
+  };
+  const nearestReady = (paint, index) => {
+    const set = loaded.get(paint);
+    if (!set) return index;
+    for (let d = 0; d <= FRAMES / 2; d++) {
+      for (const k of [(index + d) % FRAMES, (index - d + FRAMES) % FRAMES]) if (set.ready[k]) return k;
+    }
+    return index;
   };
 
   function build(data) {
@@ -127,7 +149,7 @@
       b.type = "button";
       b.title = p.label;
       b.setAttribute("aria-label", `${p.label} paint`);
-      b.addEventListener("click", () => { takeHold(); showPaint(i); });
+      b.addEventListener("click", () => { takeHold(); showPaint(i, true); });
       paintGroup.append(b);
       return b;
     });
@@ -139,7 +161,7 @@
     let frame = 0, paintAt = 0, loadoutAt = 0, playing = !calm, inView = false;
     let spinTimer = 0, stepTimer = 0, resumeTimer = 0, tween = 0, tweenEnd = 0, shownLb = shown[0].row.operatingLb;
 
-    const drawFrame = () => { picture.src = frameSrc(PAINTS[paintAt].id, frame); };
+    const drawFrame = () => { picture.src = frameSrc(PAINTS[paintAt].id, nearestReady(PAINTS[paintAt].id, frame)); };
     const describe = () => {
       turntable.setAttribute("aria-label", `The VX-21 VIGIL in ${PAINTS[paintAt].label.toLowerCase()} paint, ${shown[loadoutAt].label.toLowerCase()} loadout. Drag, or use the arrow keys, to turn it.`);
     };
@@ -197,16 +219,23 @@
     }
 
     let paintWanted = 0;
-    function showPaint(i) {
+    function showPaint(i, tapped) {
       paintWanted = i;
-      loadPaint(PAINTS[i].id).then(() => {
+      const button = paintButtons[i];
+      if (tapped) {
+        button.classList.add("is-loading");
+        button.setAttribute("aria-busy", "true");
+      }
+      const settle = () => { button.classList.remove("is-loading"); button.removeAttribute("aria-busy"); };
+      loadPaint(PAINTS[i].id, tapped ? (share) => button.style.setProperty("--progress", share.toFixed(3)) : null).then(() => {
+        settle();
         if (paintWanted !== i) return;   // a later pick overtook this one while its frames came in
         paintAt = i;
         paintButtons.forEach((b, k) => b.setAttribute("aria-pressed", String(k === i)));
         stage.style.setProperty("--paint", `url("/hangar/spin/swatch-${PAINTS[i].id}.webp")`);
         drawFrame();
         describe();
-      }, () => {});
+      }, settle);
     }
 
     // ── motion: the turn, and the step through loadouts and paints ─────────────────────────────────────────────

@@ -279,7 +279,7 @@
     const box = canvas.getBoundingClientRect();
     target = { x: (e.clientX - box.left) / box.width, y: (e.clientY - box.top) / box.height };
     lastHand = performance.now();
-    if (!root.classList.contains("is-engaged")) { root.classList.add("is-engaged"); chartedNote.textContent = "The rest is still unknown"; }
+    if (!root.classList.contains("is-engaged")) { root.classList.add("is-engaged"); chartedNote.textContent = "Charted this visit"; }
   };
   canvas.addEventListener("pointermove", (e) => { if (e.pointerType === "mouse" || held) { aim(e); held = e.pointerType === "mouse" ? true : held; } });
   canvas.addEventListener("pointerdown", (e) => { held = true; aim(e); });
@@ -294,7 +294,7 @@
     target = { x: Math.min(0.97, Math.max(0.03, from.x + step[0] * 0.04)), y: Math.min(0.95, Math.max(0.05, from.y + step[1] * 0.06)) };
     lastHand = performance.now();
     lastSaid = "";
-    if (!root.classList.contains("is-engaged")) { root.classList.add("is-engaged"); chartedNote.textContent = "The rest is still unknown"; }
+    if (!root.classList.contains("is-engaged")) { root.classList.add("is-engaged"); chartedNote.textContent = "Charted this visit"; }
   });
   canvas.addEventListener("blur", () => { held = false; });
 
