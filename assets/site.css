@@ -180,7 +180,9 @@ h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
   .bar__nav.is-open { visibility: visible; opacity: 1; transform: none; transition: opacity 0.2s, transform 0.2s; }
   .bar__nav a:not(.btn) { padding: 16px 0; border-bottom: 1px solid var(--line); font-size: 0.85rem; color: var(--ink); }
   .bar__nav .btn { margin-top: 20px; min-height: 48px; }
-  .bar.is-open { background: var(--bg); }
+  /* A backdrop filter makes the bar the containing block of the fixed menu, which then hung a status strip's height
+     below the bar with the page showing through the gap; open, the bar is solid and needs no filter. */
+  .bar.is-open { background: var(--bg); -webkit-backdrop-filter: none; backdrop-filter: none; }
 }
 
 /* ---------- the rail ---------- */
