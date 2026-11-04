@@ -14,6 +14,7 @@ from the site itself, so a visit sends nothing to a third party.
 | `assets/img/`, `assets/fonts/`, the icons | Made from the game's own art by `Tools/website/build_site_assets.py` in the game's repository; never edited by hand |
 | `assets/patch.js`, `assets/patchmaker.js` | The clan patch maker in the first pillar: a port of the game's own patch code, which `Tools/website/build_patch_library.py` checks against the game pixel for pixel, and the designer around it |
 | `assets/patch/` | The game's patch pieces and rules, written by `Tools/website/build_patch_library.py`; never edited by hand |
+| `assets/story.js` | HOW WE GOT HERE as a voyage you scroll through: scrolling moves time from Earth's failure to the ship's clock now, the timeline drags, a ship tapped shows its readout, and the last chapter sends a message; the Archive's numbers are `ship.js`'s |
 | `assets/valor.js` | The Valor wings in the third pillar: the game's seven wings (`assets/img/valor/`) on a stage that climbs them under the game's Ranked rules |
 | `CNAME` | Tells GitHub Pages the site's address |
 

@@ -763,18 +763,73 @@ h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
   .archive__hud-crossed b { display: none; }
 }
 
-/* the story: how we got here, told in order, ending on the live clock */
-.story__text { max-width: 720px; margin-top: 40px; color: var(--ink-dim); }
-.story__text p { margin-bottom: 1.2em; }
-.story__text .lead { color: var(--ink); }
-.story__trace { display: block; width: min(320px, 100%); height: 40px; margin: 4px 0 28px; overflow: visible; }
-.story__trace path { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-linejoin: round; stroke-dasharray: 520; stroke-dashoffset: 520; }
-.story__trace.is-in path { animation: trace 2.8s ease-out 0.3s forwards; }
-@keyframes trace { to { stroke-dashoffset: 0; } }
-.story__now { color: var(--ink); }
-.story__now > span { display: inline-flex; align-items: center; gap: 8px; margin-right: 10px; color: var(--accent); font: 400 0.72rem/1.4 var(--font-mono); letter-spacing: 0.16em; text-transform: uppercase; font-variant-numeric: tabular-nums; }
-.story__now i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); animation: now-pulse 2.4s ease-in-out infinite; }
+/* the story: how we got here, as a voyage you scroll through (assets/story.js). Without scripts the chapters are a list
+   to read; with them, the stage pins full screen, scrolling moves time, and the words sit over the sky. */
+.story__hint { margin-top: 18px; color: var(--ink-faint); font: 400 0.78rem/1.4 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; }
+.story__chapters { display: grid; gap: 40px; max-width: 760px; margin-top: 48px; list-style: none; }
+.story__chapters li { margin: 0; padding: 0; }
+.story__chapters h3 { margin: 0 0 12px; font: 600 clamp(1.8rem, 3.4vw, 2.6rem)/1.02 var(--font-display); letter-spacing: 0.02em; text-transform: uppercase; color: var(--ink); }
+.story__chapters h3 em { font-style: normal; color: var(--accent); }
+.story__chapters p { margin: 0; color: var(--ink-dim); max-width: 46ch; }
+.story__when { margin-bottom: 12px !important; color: var(--accent) !important; font: 400 0.76rem/1.4 var(--font-mono); letter-spacing: 0.2em; text-transform: uppercase; }
+.story__live { display: inline-flex; align-items: center; gap: 10px; font-variant-numeric: tabular-nums; }
+.story__live i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); animation: now-pulse 2.4s ease-in-out infinite; }
 @keyframes now-pulse { 50% { box-shadow: 0 0 2px var(--accent); } }
+.story__trace { display: block; width: min(320px, 100%); height: 40px; margin: 6px 0 14px; overflow: visible; }
+.story__trace path { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-linejoin: round; stroke-dasharray: 520; stroke-dashoffset: 0; }
+@keyframes trace { from { stroke-dashoffset: 520; } to { stroke-dashoffset: 0; } }
+.story__readouts { display: flex; gap: 34px; margin: 22px 0 0; }
+.story__readouts div { display: grid; gap: 4px; }
+.story__readouts dt { color: var(--ink-faint); font: 400 0.68rem/1 var(--font-mono); letter-spacing: 0.2em; text-transform: uppercase; }
+.story__readouts dd { margin: 0; color: var(--ink); font: 600 1.5rem/1 var(--font-display); letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+.story__send {
+  margin-top: 24px; padding: 13px 20px; border: 0; background: var(--accent); color: var(--accent-ink); cursor: pointer;
+  font: 600 0.78rem/1 var(--font); letter-spacing: 0.18em; text-transform: uppercase;
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+}
+.story__send:hover { filter: brightness(1.08); }
+.story__sent { margin-top: 14px !important; min-height: 1.4em; color: var(--ink) !important; font-size: 0.95rem; }
+.story__canvas, .story__readout, .story__timeline { display: none; }
+
+.story.is-live { padding-bottom: 0; }
+.story.is-live .story__track { position: relative; height: calc(var(--chapters) * 78svh + 100svh); margin-top: clamp(32px, 4vw, 56px); }
+.story.is-live .story__stage { position: sticky; top: 0; height: 100svh; overflow: hidden; background: #05070b; }
+.story.is-live .story__canvas { display: block; position: absolute; inset: 0; width: 100%; height: 100%; touch-action: pan-y; }
+.story.is-live .story__chapters { position: absolute; inset: 0; margin: 0 auto; max-width: none; display: block; pointer-events: none; }
+.story.is-live .story__chapters li {
+  position: absolute; left: var(--gutter); top: calc(var(--top-height) + 5svh); width: min(620px, calc(100% - 2 * var(--gutter)));
+  opacity: 0; transform: translateY(-12px); transition: opacity 0.22s ease, transform 0.3s ease;   /* the old words leave quickly */
+}
+.story.is-live .story__chapters li.is-on {   /* and the new ones arrive once they have gone */
+  opacity: 1; transform: none; pointer-events: auto; transition: opacity 0.5s ease 0.2s, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s;
+}
+.story.is-live .story__chapters h3 { font-size: clamp(2.4rem, 5.2vw, 4.8rem); line-height: 0.96; text-shadow: 0 2px 24px rgba(3, 4, 8, 0.8); }
+.story.is-live .story__chapters p { color: var(--ink); text-shadow: 0 1px 14px rgba(3, 4, 8, 0.95); font-size: clamp(1rem, 1.3vw, 1.15rem); }
+.story.is-live .story__chapters li.is-on .story__trace path { animation: trace 2.4s ease-out 0.2s both; }
+.story.is-live .story__readout {
+  display: grid; gap: 4px; position: absolute; z-index: 3; min-width: 200px; padding: 14px 16px; pointer-events: none;
+  background: rgba(7, 9, 13, 0.82); box-shadow: inset 0 0 0 1px var(--line); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.story.is-live .story__readout[hidden] { display: none; }
+.story__readout p { margin: 0; color: var(--ink-dim); font: 400 0.78rem/1.45 var(--font-mono); letter-spacing: 0.06em; }
+.story__readout .story__readout-name { color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 4px; }
+.story.is-live .story__timeline { display: block; position: absolute; left: var(--gutter); right: var(--gutter); bottom: 22px; z-index: 2; }
+.story.is-live .story__timeline[hidden] { display: none; }
+.story__rail { position: relative; height: 26px; cursor: pointer; touch-action: none; }
+.story__rail::before { content: ""; position: absolute; left: 0; right: 0; top: 12px; height: 2px; background: rgba(232, 228, 220, 0.16); }
+.story__fill { position: absolute; left: 0; right: 0; top: 12px; height: 2px; background: linear-gradient(90deg, rgba(224, 137, 62, 0.15), var(--accent)); transform-origin: 0 50%; transform: scaleX(0); }
+.story__thumb { position: absolute; top: 13px; width: 14px; height: 14px; margin: -7px 0 0 -7px; background: var(--accent); transform: rotate(45deg); box-shadow: 0 0 18px rgba(224, 137, 62, 0.8); outline-offset: 4px; }
+.story__thumb::after { content: attr(data-date); position: absolute; left: 50%; bottom: 20px; transform: rotate(-45deg) translateX(-30%); white-space: nowrap; color: var(--ink); font: 400 0.7rem/1 var(--font-mono); letter-spacing: 0.14em; }
+.story__years { display: flex; justify-content: space-between; margin-top: 4px; color: var(--ink-faint); font: 400 0.66rem/1 var(--font-mono); letter-spacing: 0.14em; }
+@media (max-width: 700px), (max-aspect-ratio: 10/11) {
+  .story.is-live .story__chapters li { top: auto; bottom: 86px; }
+  .story.is-live .story__chapters h3 { font-size: clamp(2rem, 9vw, 2.8rem); }
+  .story.is-live .story__chapters p { font-size: 0.95rem; }
+  .story.is-live .story__stage::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 58%; pointer-events: none; background: linear-gradient(0deg, rgba(5, 7, 11, 0.96) 42%, rgba(5, 7, 11, 0)); }
+  .story.is-live .story__chapters, .story.is-live .story__timeline { z-index: 2; }
+  .story__readouts { gap: 22px; margin-top: 14px; }
+  .story__send { margin-top: 16px; }
+}
 
 /* the crossing: a navigation chart drawn by assets/voyage.js at the container's own pixel size */
 .voyage__awake { color: var(--accent); }
@@ -1107,7 +1162,9 @@ html.is-boarding::after { content: ""; position: fixed; inset: 0; z-index: 300; 
   :root.can-tint, .pick__mark, .pick__mark::before, .factions::before, .pick__panels.is-live .pick__panel { transition: none !important; }
   .ship__audio[aria-pressed="true"] i b { animation: none; height: 100%; }
   .story__trace path { stroke-dashoffset: 0; animation: none !important; }
-  .story__now i { animation: none; }
+  .story__live i { animation: none; }
+  .story.is-live .story__chapters li { transition: none; }
+  .story.is-live .story__chapters li.is-on .story__trace path { animation: none; }
   .log__frame--next::after { animation: none; background: none; }
 }
 
