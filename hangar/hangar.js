@@ -13,8 +13,16 @@
     const stage = spin.querySelector("[data-spin-stage]");
     const picture = spin.querySelector("[data-spin-frame]");
     const dial = spin.querySelector("[data-spin-dial]");
-    const source = (index) => `/hangar/spin/vigil-${String(index * 5).padStart(3, "0")}.webp`;
+    // Four paints, each its own 72 frames, filmed from the game (the hub's VIGIL, the hangar's lights).
+    let skin = "base", wanted = "base";
+    const source = (index, paint = skin) => `/hangar/spin/${paint}/vigil-${String(index * 5).padStart(3, "0")}.webp`;
     const held = [];
+    const fetched = new Set();
+    const fetchAll = (paint) => {
+      if (fetched.has(paint)) return;
+      fetched.add(paint);
+      for (let index = 0; index < frames; index++) held.push(Object.assign(new Image(), { src: source(index, paint) }));
+    };
     let frame = 0;
     let idle = null;
     const show = (index) => {
@@ -50,9 +58,29 @@
       show(frame + step);
     });
     dial.addEventListener("input", () => { takeHold(); show(Number(dial.value)); });
-    // Every frame is fetched once the page has loaded, so a turn never waits on the network.
+    // A paint is picked by its swatch; its frames are fetched then, the base paint's once the page has loaded.
+    const skins = spin.querySelector("[data-spin-skins]");
+    if (skins) {
+      for (const button of skins.querySelectorAll("[data-skin]")) {
+        button.addEventListener("click", () => {
+          const paint = button.dataset.skin;
+          wanted = paint;
+          fetchAll(paint);
+          for (const other of skins.querySelectorAll("[data-skin]")) {
+            const on = other === button;
+            other.classList.toggle("is-on", on);
+            other.setAttribute("aria-pressed", String(on));
+          }
+          // The new paint goes on once its frame at this angle is in, so the turntable never blinks empty.
+          const first = new Image();
+          first.src = source(frame, paint);
+          const swap = () => { if (wanted === paint) { skin = paint; show(frame); } };
+          (first.decode ? first.decode() : Promise.resolve()).then(swap, swap);
+        });
+      }
+    }
     window.addEventListener("load", () => {
-      for (let index = 0; index < frames; index++) held.push(Object.assign(new Image(), { src: source(index) }));
+      fetchAll(skin);
       if (!reducedMotion) idle = setInterval(() => show(frame + 1), 140);
     });
   }
