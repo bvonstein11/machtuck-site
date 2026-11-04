@@ -25,8 +25,8 @@
   <link rel="preload" href="/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/assets/img/sky-2560.webp" as="image" media="(min-width: 1281px)">
   <link rel="preload" href="/assets/img/sky-1280.webp" as="image" media="(max-width: 1280px)">
-  <link rel="stylesheet" href="/assets/site.css?v=cea4e023">
-  <link rel="stylesheet" href="/drop/drop.css?v=cea4e023">
+  <link rel="stylesheet" href="/assets/site.css?v=f4d8239e">
+  <link rel="stylesheet" href="/drop/drop.css?v=f4d8239e">
   <script>
     // Boarding: arriving from another site opens on the shipboard network, which assets/site.js draws. Nothing is
     // stored in the browser (the privacy page promises that): a reload, Back, or a link from this site skips it. This
@@ -41,16 +41,16 @@
       }
     } catch (error) { /* no boarding screen */ }
   </script>
-  <script src="/assets/ship.js?v=cea4e023" defer></script>
-  <script src="/assets/site.js?v=cea4e023" defer></script>
-  <script src="/drop/drop.js?v=cea4e023" defer></script>
-  <script src="/assets/patch.js?v=cea4e023" defer></script>
-  <script src="/assets/patchmaker.js?v=cea4e023" defer></script>
-  <script src="/assets/front.js?v=cea4e023" defer></script>
-  <script src="/assets/bench.js?v=cea4e023" defer></script>
-  <script src="/assets/recon.js?v=cea4e023" defer></script>
-  <script src="/assets/valor.js?v=cea4e023" defer></script>
-  <script src="/assets/story.js?v=cea4e023" defer></script>
+  <script src="/assets/ship.js?v=f4d8239e" defer></script>
+  <script src="/assets/site.js?v=f4d8239e" defer></script>
+  <script src="/drop/drop.js?v=f4d8239e" defer></script>
+  <script src="/assets/patch.js?v=f4d8239e" defer></script>
+  <script src="/assets/patchmaker.js?v=f4d8239e" defer></script>
+  <script src="/assets/front.js?v=f4d8239e" defer></script>
+  <script src="/assets/bench.js?v=f4d8239e" defer></script>
+  <script src="/assets/recon.js?v=f4d8239e" defer></script>
+  <script src="/assets/valor.js?v=f4d8239e" defer></script>
+  <script src="/assets/story.js?v=f4d8239e" defer></script>
 </head>
 <body>
   <a class="skip" href="#game">Skip to content</a>
@@ -342,45 +342,60 @@
       </div>
     </section>
 
-    <!-- THE STORY: how we got here, as a voyage you scroll through (assets/story.js): scrolling moves time from Earth's
-         failure to the ship's clock today, the timeline drags, a ship tapped shows its readout, and the last chapter sends a
-         message from where the Archive is now. The words are the approved Script v3's; the Archive's numbers
-         are ship.js's. What canon spends later stays off: the settlement's fate, what the signal is, every name, and what
-         the first log holds. Without scripts the chapters read as plain text. -->
+    <!-- THE STORY: how we got here, as story cards (assets/story.js). Nine full-screen cards run from Earth's failure to
+         the ship's clock today, each a picture, a date and a line or two. They play on their own while on screen; a tap, a
+         swipe or an arrow key moves through them, and a hold pauses. The last card sends a message from where the Archive
+         is now. The words follow the approved Script v3, and the Archive's numbers are ship.js's. What canon spends later
+         stays off: the settlement's fate, what the signal is, every name, and what the first log holds. Without scripts the
+         cards read as a list. -->
     <section class="section story" id="story" data-section data-story>
       <div class="wrap">
         <p class="eyebrow" data-reveal>The story so far</p>
         <h2 data-reveal>How we got here.</h2>
-        <p class="story__hint" data-story-hint hidden>Scroll to cross. Drag the timeline to any year, or tap a ship.</p>
       </div>
-      <div class="story__track" data-story-track>
-        <div class="story__stage" data-story-stage>
-          <canvas class="story__canvas" aria-hidden="true"></canvas>
-          <ol class="story__chapters wrap">
-            <li data-chapter="earth"><p class="story__when">Aug 3289</p><h3>Earth was failing.</h3><p>There was no saving it, so there was a plan.</p></li>
-            <li data-chapter="probes"><p class="story__when">The search</p><h3>Probes went out to the nearest stars.</h3><p>At half the speed of light, looking for a new home.</p></li>
-            <li data-chapter="answer"><p class="story__when">Mar 3304 · the first answer</p><h3>Alpha Centauri.</h3><p>The closest, more than four light-years away. Even at the speed of light, its report took more than four years to reach us.</p></li>
-            <li data-chapter="world"><p class="story__when">Probe report</p><h3>A habitable world. <em>With water.</em></h3><p>Earth could not wait for a second answer.</p></li>
-            <li data-chapter="chosen"><p class="story__when">The chosen</p><h3><span data-story-count>20,000</span> people.</h3><p>The ships were already being built, and the chosen were already gathering: twenty thousand people, picked for what they could do.</p></li>
-            <li data-chapter="advance"><p class="story__when">Mar 3308</p><h3>A small, fast ship went first.</h3><p>A few hundred crew and the materials to build, to make a place for the rest of us. Some of them left family behind, to follow on the Archive.</p></li>
-            <li data-chapter="archive"><p class="story__when">19 Jan 3310</p><h3>The Archive left Earth.</h3><p>Families came aboard with young children. Almost no one over fifty. It carried everything worth saving, and the memory of what went wrong.</p></li>
-            <li data-chapter="crossing"><p class="story__when">More than thirty years ahead</p><h3>We crossed awake.</h3><p>Children were born aboard who would never see Earth. Five mission groups each worked their own deck, with their work waiting on the ground.</p></li>
-            <li data-chapter="landed"><p class="story__when">Jul 3325</p><h3>The advance crew landed on The Reach.</h3><p>Fifteen years into our crossing, the few hundred who had gone ahead on the fast ship were down.</p></li>
-            <li data-chapter="signal"><p class="story__when">Jul 3328 · Mar 3330</p><h3>They were alive.</h3><p>They built for three years. Then they switched on the signal, and it set out to find us. When it reached us, everything changed. It could be done.</p></li>
-            <li data-chapter="supply"><p class="story__when">Oct 3330 · Mar 3337</p><h3>We sent a faster ship ahead.</h3><p>With supplies and our young people, to learn the new world first and teach the rest of us. In 3337 it reached orbit, and its landers came down.</p></li>
-            <li data-chapter="news"><p class="story__when">The settlement grew</p><h3>Their news reached us sooner.</h3><p>Its domes filled with crops. Children were born there. And every year we flew closer, so every year their news took less time to reach us.</p></li>
-            <li data-chapter="silence"><p class="story__when">Jun 3340</p><h3>Then the signal stopped.</h3><svg class="story__trace" viewBox="0 0 320 40" aria-hidden="true" focusable="false"><path d="M0 20 H40 l6 -14 l8 28 l6 -14 H110 l6 -14 l8 28 l6 -14 H180 l6 -9 l8 18 l6 -9 H320" /></svg><p>The logs didn't come anymore. What happened? Who would lead? Deck by deck, no one could agree. That is when the fracture began.</p></li>
-            <li data-chapter="now"><p class="story__when story__live"><i aria-hidden="true"></i><span data-ship-date>Now</span></p><h3>The Archive is still coming.</h3><p>Nobody aboard agrees on what the silence means, and when we reach orbit, we will find out.</p>
+      <div class="story__stage" data-story-stage tabindex="0" role="region" aria-roledescription="story" aria-label="How we got here, in nine cards">
+        <canvas class="story__canvas" aria-hidden="true"></canvas>
+        <ol class="story__cards">
+          <li class="story__card" data-card="earth" data-scene="earth">
+            <div class="story__words"><p class="story__when">Aug 3289</p><h3>Earth was failing.</h3><p>There was no saving it, so there was a plan: send probes to the nearest stars at half the speed of light, and find a new home.</p></div>
+          </li>
+          <li class="story__card" data-card="answer" data-scene="answer">
+            <div class="story__words"><p class="story__when">Mar 3304 · The first answer</p><h3>A world, <em>with water.</em></h3><p>Alpha Centauri, the closest star, more than four light-years away. Its report took more than four years to reach us, and Earth could not wait for a second.</p></div>
+          </li>
+          <li class="story__card story__card--count" data-card="chosen" data-scene="chosen">
+            <div class="story__words"><p class="story__when">The chosen</p><h3><span class="story__count" data-story-count>20,000</span> people.</h3><p>Picked for what they could do. In 3308 a small, fast ship went first, a few hundred crew sent to make a place for the rest of us.</p></div>
+          </li>
+          <li class="story__card" data-card="archive" style="--focus: 50% 50%; --focus-p: 66% 50%; --z0: 1.12; --z1: 1.02">
+            <div class="story__art"><img src="/assets/img/archive-1280.webp" srcset="/assets/img/archive-1280.webp 1280w, /assets/img/archive-full.webp 1915w" sizes="(max-aspect-ratio: 1/1) 420vw, 100vw" alt="The Archive between the stars, its spine lit in amber" width="1280" height="549" loading="lazy" decoding="async"></div>
+            <div class="story__words"><p class="story__when">19 Jan 3310</p><h3>The Archive left Earth.</h3><p>Families came aboard with young children, and almost no one over fifty. It carried everything worth saving, and the memory of what went wrong.</p></div>
+          </li>
+          <li class="story__card" data-card="crossing" style="--focus: 66% 44%; --focus-p: 62% 44%; --z0: 1.7; --z1: 1.5">
+            <div class="story__art"><img src="/assets/img/archive-1280.webp" srcset="/assets/img/archive-1280.webp 1280w, /assets/img/archive-full.webp 1915w" sizes="(max-aspect-ratio: 1/1) 420vw, 100vw" alt="Close on the Archive's great drum, its decks lit" width="1280" height="549" loading="lazy" decoding="async"></div>
+            <div class="story__words"><p class="story__when">More than thirty years</p><h3>We crossed awake.</h3><p>Children were born aboard who would never see Earth. Five mission groups each worked their own deck, with their work waiting on the ground.</p></div>
+          </li>
+          <li class="story__card" data-card="landed" style="--focus: 50% 55%; --focus-p: 33% 50%; --z0: 1.14; --z1: 1.03">
+            <div class="story__art"><img src="/assets/img/sky-1280.webp" srcset="/assets/img/sky-1280.webp 1280w, /assets/img/sky-2560.webp 2560w" sizes="(max-aspect-ratio: 1/1) 330vw, 100vw" alt="Dusk on The Reach: dark highlands under two moons" width="1280" height="720" loading="lazy" decoding="async"></div>
+            <div class="story__words"><p class="story__when">Jul 3325 · The Reach</p><h3>The advance crew landed.</h3><p>They built for three years, then switched on the signal. When it reached us in 3330, everything changed: it could be done.</p></div>
+          </li>
+          <li class="story__card story__card--right" data-card="news" style="--focus: 22% 68%; --origin: 0% 100%; --z0: 1.42; --z1: 1.28; --focus-p: 9% 68%; --origin-p: 50% 100%; --z0-p: 1.95; --z1-p: 1.8">
+            <div class="story__art"><img src="/assets/img/reach-map-1280.webp" srcset="/assets/img/reach-map-1280.webp 1280w, /assets/img/reach-map-2560.webp 2560w" sizes="(max-aspect-ratio: 1/1) 330vw, 100vw" alt="The settlement from above: domes and fields at the edge of the highlands" width="1280" height="720" loading="lazy" decoding="async"></div>
+            <div class="story__words"><p class="story__when">Mar 3337</p><h3>Their news reached us sooner.</h3><p>A faster ship we sent ahead brought supplies and our young people down. Domes filled with crops, children were born there, and every year we flew closer.</p></div>
+          </li>
+          <li class="story__card" data-card="silence" data-scene="silence">
+            <div class="story__words"><p class="story__when">Jun 3340</p><h3>Then the signal stopped.</h3><p>The logs didn't come anymore. Who would lead? Deck by deck, no one could agree. That is when the fracture began.</p></div>
+          </li>
+          <li class="story__card story__card--now" data-card="now" style="--focus: 72% 45%; --focus-p: 100% 40%; --z0: 1.16; --z1: 1.06">
+            <div class="story__art"><img src="/assets/img/archive-1280.webp" srcset="/assets/img/archive-1280.webp 1280w, /assets/img/archive-full.webp 1915w" sizes="(max-aspect-ratio: 1/1) 420vw, 100vw" alt="The Archive, with a far star ahead of it" width="1280" height="549" loading="lazy" decoding="async"></div>
+            <div class="story__words">
+              <p class="story__when story__live"><i aria-hidden="true"></i><span data-ship-date>Now</span></p>
+              <h3>The Archive is still coming.</h3>
+              <p>Nobody aboard agrees on what the silence means. When we reach orbit, we will find out.</p>
               <dl class="story__readouts"><div><dt>Speed</dt><dd data-ship-speed>0.130 c</dd></div><div><dt>Crossed</dt><dd data-ship-crossed>—</dd></div></dl>
-              <button class="story__send" type="button" data-story-send hidden>Send a message to The Reach</button>
-              <p class="story__sent" data-story-sent aria-live="polite"></p></li>
-          </ol>
-          <div class="story__readout" data-story-readout role="status" hidden></div>
-          <div class="story__timeline" data-story-timeline hidden>
-            <div class="story__rail"><span class="story__fill" data-story-fill></span><span class="story__thumb" data-story-thumb role="slider" tabindex="0" aria-label="Earth date" aria-valuemin="3289" aria-valuemax="3342"></span></div>
-            <div class="story__years" aria-hidden="true"><span>3290</span><span>3300</span><span>3310</span><span>3320</span><span>3330</span><span>3340</span></div>
-          </div>
-        </div>
+              <div class="story__acts"><button class="story__send" type="button" data-story-send hidden>Send a message to The Reach</button><button class="story__again" type="button" data-story-again hidden>Watch again</button></div>
+              <p class="story__sent" data-story-sent aria-live="polite"></p>
+            </div>
+          </li>
+        </ol>
       </div>
     </section>
 
