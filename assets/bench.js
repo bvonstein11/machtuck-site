@@ -24,7 +24,9 @@
   ];
   const FRAMES = 72, TURN_MS = 120, STEP_MS = 5200, TWEEN_MS = 650;
   const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const thrifty = Boolean(navigator.connection && navigator.connection.saveData);
+  // On a phone, or with data saving on, the bench steps through loadouts only and a paint loads when it is tapped:
+  // each paint's frames are about 3 MB, too much to fetch unasked over a phone's data.
+  const thrifty = Boolean(navigator.connection && navigator.connection.saveData) || window.matchMedia("(max-width: 700px)").matches;
   const frameSrc = (paint, i) => `/hangar/spin/${paint}/vigil-${String(i * 5).padStart(3, "0")}.webp`;
   const fmt = (n) => Math.round(n).toLocaleString("en-US");
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };

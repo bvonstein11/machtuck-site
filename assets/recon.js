@@ -10,16 +10,17 @@
   if (!probe) return;
 
   // The land under each cell of a 16 × 9 survey grid laid over the map picture: the site's reading of the illustration
-  // (reach-map-*.webp), using the map legend's names. S snow, J jungle, D desert, V volcanic, C the settlement's country.
+  // (reach-map-*.webp), in the map legend's names, checked cell by cell against the picture's colours (snow, green,
+  // tan, dark rock and lava) on 2026-11-03. S snow, J jungle, D desert, V volcanic, C the settlement's country.
   const LANDS = { S: "Snow Highlands", J: "Dense Jungle", D: "Arid Desert / Mesa", V: "Volcanic Badlands", C: "The settlement" };
   const GRID = [
-    "SSSSSJJJJJJJJDDD",
+    "SSSSSJJJJJJJJJDD",
     "SSSSSJJJJJJJDDDD",
-    "SSSSSSJJJJDDDDDD",
-    "SSSSSSSJJDDDDDDD",
+    "SSSSSSJJJJJDDDDD",
+    "SSSSSSSJJJDDDDDD",
     "SSSSSSJJDDDDDDDD",
-    "CCCCCCCVVVVVDDDD",
-    "CCCCCCCVVVVVVVVV",
+    "CCCCCCCJVVVVVVDD",
+    "CCCCCCCJVVVVVVVV",
     "CCCCCCCCVVVVVVVV",
     "CCCCCCCCVVVVVVVV",
   ];
@@ -33,7 +34,10 @@
 
   // ── the layers: the map in colour, the same map dimmed under fog, the charted mask and the fog itself ──────────
   const canvas = el("canvas", "recon__canvas");
-  canvas.setAttribute("aria-hidden", "true");
+  // The scope can be moved from the keyboard too; the live region below says where it is.
+  canvas.tabIndex = 0;
+  canvas.setAttribute("role", "img");
+  canvas.setAttribute("aria-label", "The map of The Reach under survey fog, with a recon scope. Arrow keys move the scope.");
   const ctx = canvas.getContext("2d");
   const hud = el("div", "recon__hud");
   hud.setAttribute("aria-hidden", "true");
@@ -263,7 +267,7 @@
       lastMeasure = now;
       measure();
       const said = `${ref}, ${cell.land}, ${state.toLowerCase()}. ${chartedValue.textContent} of the map charted.`;
-      if (held && said !== lastSaid && now - lastHand < 400) { lastSaid = said; live.textContent = said; }
+      if (said !== lastSaid && now - lastHand < 600) { lastSaid = said; live.textContent = said; }   // only after a hand moved it
     }
     raf = requestAnimationFrame(frame);
   }
@@ -282,6 +286,17 @@
   canvas.addEventListener("pointerup", (e) => { if (e.pointerType !== "mouse") held = false; lastHand = performance.now(); });
   canvas.addEventListener("pointercancel", () => { held = false; });
   canvas.addEventListener("pointerleave", () => { held = false; lastHand = performance.now(); });
+  canvas.addEventListener("keydown", (e) => {
+    const step = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[e.key];
+    if (!step) return;
+    e.preventDefault();
+    const from = performance.now() - lastHand < 2600 ? target : scope;
+    target = { x: Math.min(0.97, Math.max(0.03, from.x + step[0] * 0.04)), y: Math.min(0.95, Math.max(0.05, from.y + step[1] * 0.06)) };
+    lastHand = performance.now();
+    lastSaid = "";
+    if (!root.classList.contains("is-engaged")) { root.classList.add("is-engaged"); chartedNote.textContent = "The rest is still unknown"; }
+  });
+  canvas.addEventListener("blur", () => { held = false; });
 
   function mount() {
     map = new Image();

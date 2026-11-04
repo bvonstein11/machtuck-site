@@ -1311,6 +1311,7 @@ html.is-boarding::after { content: ""; position: fixed; inset: 0; z-index: 300; 
   opacity: 0; transition: opacity 0.8s ease; touch-action: pan-y; cursor: crosshair; }
 .pillars__art[data-recon].is-live .recon__canvas { opacity: 1; }
 .pillars__art[data-recon] .pillars__tag { z-index: 3; }
+.pillars__art[data-recon] .recon__canvas:focus-visible { outline: 1px solid var(--accent); outline-offset: -1px; }
 .pillars li:hover .pillars__art[data-recon] img { transform: none; }
 .recon__hud {
   position: absolute; left: clamp(12px, 2vw, 22px); top: clamp(12px, 2vw, 20px); z-index: 2; display: grid; gap: 6px; pointer-events: none;
