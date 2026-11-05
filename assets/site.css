@@ -151,8 +151,15 @@ h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
 }
 .bar__nav a:not(.btn):hover { color: var(--ink); }
 .bar__menu { display: none; }
+/* 2026-11-04 — eight links. In full the nav needs about 1,235 px; below that it tightens, and at 1,100 px and below it folds
+   into the menu button. A link never breaks onto a second line (at 1,000 px four of the six text links did). */
+.bar__nav a { white-space: nowrap; }
+@media (min-width: 1101px) and (max-width: 1239px) {
+  .bar__nav { gap: 18px; }
+  .bar__nav a:not(.btn) { letter-spacing: 0.12em; }
+}
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .bar__menu {
     display: grid; place-items: center;
     width: 44px; height: 44px; margin-right: -10px;

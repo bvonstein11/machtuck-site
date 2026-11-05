@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>The Armory · The Reach: Unknown</title>
+  <meta name="description" content="Every weapon the VX-21 VIGIL can carry: six guns for its arms, a rocket pod and a mortar for its shoulder, and four centre-torso modules, each with the game's own range, damage, heat and weight.">
+  <link rel="canonical" href="https://machtuck.com/armory/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Mach Tuck Games">
+  <meta property="og:title" content="The Armory · The Reach: Unknown">
+  <meta property="og:description" content="Six guns, two pieces of ordnance and four modules for the VX-21 VIGIL. Every figure is the game's own.">
+  <meta property="og:url" content="https://machtuck.com/armory/">
+  <meta property="og:image" content="https://machtuck.com/assets/img/share-card.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#07090d">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="/assets/site.css?v=b1fa04b9">
+  <link rel="stylesheet" href="/armory/armory.css?v=b1fa04b9">
+  <script src="/assets/ship.js?v=b1fa04b9" defer></script>
+  <script src="/assets/site.js?v=b1fa04b9" defer></script>
+</head>
+<body>
+  <a class="skip" href="#armory">Skip to content</a>
+
+  <div class="ship" aria-label="The Archive, in transit">
+    <span class="ship__state"><i aria-hidden="true"></i><span class="ship__long">Archive · </span><span data-ship-state>In transit</span></span>
+    <span class="ship__item"><b>Earth date</b> <span data-ship-date>—</span></span>
+    <span class="ship__item ship__item--wide"><b>Speed</b> <span data-ship-speed>0.130 c</span></span>
+    <span class="ship__item ship__item--wide"><b>Voyage year</b> <span data-ship-year>—</span></span>
+  </div>
+
+  <header class="bar is-solid" data-bar>
+    <a class="bar__brand" href="/thereach/" aria-label="Mach Tuck Games, The Reach: Unknown">
+      <img src="/assets/img/mt-monogram.svg" alt="" width="26" height="30">
+      <span>Mach Tuck <b>Games</b></span>
+    </a>
+    <nav class="bar__nav" id="site-nav" aria-label="Sections">
+      <a href="/thereach/#game">The Game</a>
+      <a href="/thereach/#world">The World</a>
+      <a href="/thereach/#archive">The Archive</a>
+      <a href="/thereach/#factions">Factions</a>
+      <a href="/hangar/">The Hangar</a>
+      <a href="#armory" aria-current="page">The Armory</a>
+      <a href="/thereach/#studio">Studio</a>
+      <a class="btn btn--small" data-discord href="/thereach/#join">Join the Discord</a>
+    </nav>
+    <button class="bar__menu" type="button" aria-expanded="false" aria-controls="site-nav" data-menu>
+      <span class="bar__menu-lines" aria-hidden="true"></span>
+      <span class="sr">Menu</span>
+    </button>
+  </header>
+
+  <!-- The Armory: what the VIGIL can carry and how each piece fights. The figures are the game's own, for a weapon at Mk I:
+       range, damage, heat and rounds from each weapon's script (the indirect pair's blast from IndirectWeaponCatalog), and the
+       weights from /hangar/hangar-data.json. Tools/website/armory_check.py reads them back from the game and fails on any
+       that has drifted. The pictures are the game's Ordnance strip renders (Tools/website/build_site_assets.py). -->
+  <main class="armory" id="armory">
+    <div class="wrap">
+      <header class="armory__head">
+        <p class="eyebrow">VX-21 VIGIL · Pre-alpha</p>
+        <h1>The Armory</h1>
+        <p class="lead">Everything the <span class="nw">VX-21 VIGIL</span> can carry into a fight: six guns for its arms, a rocket pod or a mortar for its shoulder, and four modules for its centre torso. Every figure here is the game's own.</p>
+      </header>
+
+      <!-- Where each piece goes. -->
+      <ol class="mounts" aria-label="The VIGIL's hardpoints">
+        <li class="mounts__item">
+          <p class="mounts__count"><b>3</b> hardpoints</p>
+          <h2 class="mounts__name">Arms</h2>
+          <p>Direct fire. Fit any three of the six guns, one to a hardpoint. There is no auto-aim and no lock-on: you turn the torso and the guns go where it points.</p>
+          <a class="mounts__go" href="#arms">The six guns</a>
+        </li>
+        <li class="mounts__item">
+          <p class="mounts__count"><b>1</b> bay</p>
+          <h2 class="mounts__name">Shoulder</h2>
+          <p>The ordnance. The rocket pod or the siege mortar, one or the other: they share the right shoulder's mount.</p>
+          <a class="mounts__go" href="#shoulder">The two pieces</a>
+        </li>
+        <li class="mounts__item">
+          <p class="mounts__count"><b>1</b> slot, earned</p>
+          <h2 class="mounts__name">Centre torso</h2>
+          <p>A fifth slot, earned with Marks. It takes a module, not a gun: lift, cooling, armour or speed.</p>
+          <a class="mounts__go" href="#torso">The four modules</a>
+        </li>
+      </ol>
+
+      <!-- The range ladder: each bar runs to the weapon's effective range, the farthest it can hurt a target. -->
+      <section class="reach" aria-labelledby="reach-title">
+        <header class="armory__section-head">
+          <p class="armory__kicker">Effective range</p>
+          <h2 id="reach-title">Who reaches whom</h2>
+          <p class="armory__intro">The farthest each weapon can hurt a target, in yards. Past it a round does nothing. Tap a weapon to read it.</p>
+        </header>
+        <ol class="ladder">
+          <li class="ladder__row" style="--yd: 1000"><a href="#dart-20"><span class="ladder__name">DART-20</span><span class="ladder__track"><i class="ladder__bar"></i></span><span class="ladder__yd">1,000 yd</span></a></li>
+          <li class="ladder__row" style="--yd: 650"><a href="#spike-90"><span class="ladder__name">SPIKE-90</span><span class="ladder__track"><i class="ladder__bar"></i></span><span class="ladder__yd">650 yd</span></a></li>
+          <li class="ladder__row is-shoulder" style="--yd: 600"><a href="#breach-275"><span class="ladder__name">BREACH-275</span><span class="ladder__track"><i class="ladder__bar"></i></span><span class="ladder__yd">600 yd</span></a></li>
+          <li class="ladder__row is-shoulder" style="--yd: 425"><a href="#volley-6"><span class="ladder__name">VOLLEY-6</span><span class="ladder__track"><i class="ladder__bar"></i></span><span class="ladder__yd">425 yd</span></a></li>
+          <li class="ladder__row" style="--yd: 275"><a href="#pulse-50"><span class="ladder__name">PULSE-50</span><span class="ladder__track"><i class="ladder__bar"></i></span><span class="ladder__yd">275 yd</span></a></li>
+          <li class="ladder__row" style="--yd: 200"><a href="#slug-250"><span class="ladder__name">SLUG-250</span><span class="ladder__track"><i class="ladder__bar"></i></span><span class="ladder__yd">200 yd</span></a></li>
+          <li class="ladder__row" style="--yd: 175"><a href="#thump-82"><span class="ladder__name">THUMP-82</span><span class="ladder__track"><i class="ladder__bar"></i></span><span class="ladder__yd">175 yd</span></a></li>
+          <li class="ladder__row" style="--yd: 150"><a href="#chain-30"><span class="ladder__name">CHAIN-30</span><span class="ladder__track"><i class="ladder__bar"></i></span><span class="ladder__yd">150 yd</span></a></li>
+        </ol>
+        <div class="ladder__foot">
+          <p class="ladder__axis" aria-hidden="true"><span>0</span><span>250</span><span>500</span><span>750</span><span>1,000</span></p>
+          <p class="ladder__key"><span class="ladder__swatch"></span>Arm <span class="ladder__swatch ladder__swatch--shoulder"></span>Shoulder</p>
+        </div>
+      </section>
+
+      <!-- The arms: six guns. -->
+      <section class="rack" id="arms" aria-labelledby="arms-title">
+        <header class="armory__section-head">
+          <p class="armory__kicker">Arms · Direct fire</p>
+          <h2 id="arms-title">Six guns, three hardpoints</h2>
+          <p class="armory__intro">The right arm carries one, the left arm two. Fit any three that are yours, and switch between them in the fight: managing heat across your guns is part of the skill.</p>
+        </header>
+
+        <article class="piece" id="pulse-50" aria-labelledby="pulse-50-name">
+          <div class="piece__stage" data-num="50"><img src="/assets/img/armory/pulse-50.webp" alt="The PULSE-50 energy gun on the VIGIL's forearm" width="1080" height="810" decoding="async"></div>
+          <div class="piece__body">
+            <p class="piece__kicker"><span>Arm</span><span>Energy beam</span></p>
+            <h3 class="piece__name" id="pulse-50-name">PULSE-50</h3>
+            <p class="piece__own">Every pilot starts with it</p>
+            <p class="piece__text">The arsenal's one beam. It lands the instant you fire, with no drop to hold over and no lead to give, and the wind never touches it. It carries four charges, each refilling by itself two seconds after it is spent, so it never runs dry. It hits lightly; it wins by never stopping.</p>
+            <dl class="piece__stats">
+              <div><dt>Range</dt><dd><b>275</b> yd<small>251 m</small></dd></div>
+              <div><dt>Damage</dt><dd><b>15</b><small>a shot</small></dd></div>
+              <div><dt>Heat</dt><dd><b>+6</b><small>a shot</small></dd></div>
+              <div><dt>Charges</dt><dd><b>4</b><small>never runs out</small></dd></div>
+              <div><dt>Recharge</dt><dd><b>2</b> s<small>each charge</small></dd></div>
+              <div><dt>Weight</dt><dd><b>5,000</b> lb</dd></div>
+            </dl>
+            <p class="piece__foot"><span><b>Wind</b> never moves it</span><span><b>Mk II–IV</b> less heat a shot</span><a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,SLUG-250,VOLLEY-6,">Fit it in the Hangar</a></p>
+          </div>
+        </article>
+
+        <article class="piece" id="chain-30" aria-labelledby="chain-30-name">
+          <div class="piece__stage" data-num="30"><img src="/assets/img/armory/chain-30.webp" alt="The CHAIN-30 autocannon and its ammunition belt on the VIGIL's forearm" width="1080" height="810" loading="lazy" decoding="async"></div>
+          <div class="piece__body">
+            <p class="piece__kicker"><span>Arm</span><span>30&nbsp;mm autocannon</span></p>
+            <h3 class="piece__name" id="chain-30-name">CHAIN-30</h3>
+            <p class="piece__own">Every pilot starts with it</p>
+            <p class="piece__text">Sixty-five rounds a second. One round barely marks the paint; the stream takes a mech apart, 52 damage for every second the trigger is down. It makes heat faster than any VIGIL can shed it, so fire it in bursts. One belt of 1,174 rounds has to last the whole life: about eighteen seconds of trigger.</p>
+            <dl class="piece__stats">
+              <div><dt>Range</dt><dd><b>150</b> yd<small>137 m</small></dd></div>
+              <div><dt>Damage</dt><dd><b>0.8</b><small>a round</small></dd></div>
+              <div><dt>Rate</dt><dd><b>65</b><small>rounds a second</small></dd></div>
+              <div><dt>Heat</dt><dd><b>+0.3</b><small>a round</small></dd></div>
+              <div><dt>Belt</dt><dd><b>1,174</b><small>a life, no reload</small></dd></div>
+              <div><dt>Weight</dt><dd><b>7,600</b> lb</dd></div>
+            </dl>
+            <p class="piece__foot"><span><b>Wind</b> drifts it</span><span><b>Mk II–IV</b> less heat a round</span><a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,SLUG-250,VOLLEY-6,">Fit it in the Hangar</a></p>
+          </div>
+        </article>
+
+        <article class="piece" id="slug-250" aria-labelledby="slug-250-name">
+          <div class="piece__stage" data-num="250"><img src="/assets/img/armory/slug-250.webp" alt="The SLUG-250 cannon on the VIGIL's forearm" width="1080" height="810" loading="lazy" decoding="async"></div>
+          <div class="piece__body">
+            <p class="piece__kicker"><span>Arm</span><span>250&nbsp;mm cannon</span></p>
+            <h3 class="piece__name" id="slug-250-name">SLUG-250</h3>
+            <p class="piece__own">Every pilot starts with it</p>
+            <p class="piece__text">A tank round built for a mech: one 250&nbsp;mm shell, 60 damage in a single blow. The next takes four seconds to load, so every shot has to count, and there are twelve to a life. No gun in the starting kit hits harder in one shot.</p>
+            <dl class="piece__stats">
+              <div><dt>Range</dt><dd><b>200</b> yd<small>183 m</small></dd></div>
+              <div><dt>Damage</dt><dd><b>60</b><small>a shot</small></dd></div>
+              <div><dt>Heat</dt><dd><b>+10</b><small>a shot</small></dd></div>
+              <div><dt>Rounds</dt><dd><b>12</b><small>a life</small></dd></div>
+              <div><dt>Reload</dt><dd><b>4</b> s<small>every shot</small></dd></div>
+              <div><dt>Weight</dt><dd><b>8,400</b> lb</dd></div>
+            </dl>
+            <p class="piece__foot"><span><b>Wind</b> drifts it</span><span><b>Mk II–IV</b> more damage</span><a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,SLUG-250,VOLLEY-6,">Fit it in the Hangar</a></p>
+          </div>
+        </article>
+
+        <article class="piece" id="dart-20" aria-labelledby="dart-20-name">
+          <div class="piece__stage" data-num="20"><img src="/assets/img/armory/dart-20.webp" alt="The DART-20 rifle and its scope on the VIGIL's forearm" width="1080" height="810" loading="lazy" decoding="async"></div>
+          <div class="piece__body">
+            <p class="piece__kicker"><span>Arm</span><span>20&nbsp;mm precision rifle</span></p>
+            <h3 class="piece__name" id="dart-20-name">DART-20</h3>
+            <p class="piece__own is-earned">Earned with 25,000 Marks</p>
+            <p class="piece__text">The longest reach in the game: a thousand yards, through a scoped sight. The round leaves the barrel at 330&nbsp;metres a second, so at long range you hold over for the drop, and at a thousand yards you hold off for the wind as well. Ten rounds to a life, three and a half seconds apart. Each one should be a hit.</p>
+            <dl class="piece__stats">
+              <div><dt>Range</dt><dd><b>1,000</b> yd<small>914 m</small></dd></div>
+              <div><dt>Damage</dt><dd><b>45</b><small>a shot</small></dd></div>
+              <div><dt>Heat</dt><dd><b>+12</b><small>a shot</small></dd></div>
+              <div><dt>Rounds</dt><dd><b>10</b><small>a life</small></dd></div>
+              <div><dt>Between shots</dt><dd><b>3.5</b> s</dd></div>
+              <div><dt>Weight</dt><dd><b>5,600</b> lb</dd></div>
+            </dl>
+            <p class="piece__foot"><span><b>Wind</b> drifts it most</span><span><b>Mk II–IV</b> longer reach</span><a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,DART-20,VOLLEY-6,">Fit it in the Hangar</a></p>
+          </div>
+        </article>
+
+        <article class="piece" id="thump-82" aria-labelledby="thump-82-name">
+          <div class="piece__stage" data-num="82"><img src="/assets/img/armory/thump-82.webp" alt="The THUMP-82 grenade launcher and its drum on the VIGIL's forearm" width="1080" height="810" loading="lazy" decoding="async"></div>
+          <div class="piece__body">
+            <p class="piece__kicker"><span>Arm</span><span>82&nbsp;mm grenade launcher</span></p>
+            <h3 class="piece__name" id="thump-82-name">THUMP-82</h3>
+            <p class="piece__own is-earned">Earned with 25,000 Marks</p>
+            <p class="piece__text">The arm's one lobber. Pick a spot on the ground and it throws an 82&nbsp;mm grenade there on a short arc, landing 1.3&nbsp;seconds later. Full damage at the centre, a fifth of it at the edge of the blast, and every mech inside takes its share. Ten to a magazine, one every 1.2&nbsp;seconds, three seconds to reload.</p>
+            <dl class="piece__stats">
+              <div><dt>Range</dt><dd><b>175</b> yd<small>160 m</small></dd></div>
+              <div><dt>Damage</dt><dd><b>45</b><small>at the centre</small></dd></div>
+              <div><dt>Blast</dt><dd><b>15</b> yd<small>14 m radius</small></dd></div>
+              <div><dt>Heat</dt><dd><b>+8</b><small>a grenade</small></dd></div>
+              <div><dt>Magazine</dt><dd><b>10</b><small>3 s to reload</small></dd></div>
+              <div><dt>Weight</dt><dd><b>5,200</b> lb</dd></div>
+            </dl>
+            <p class="piece__foot"><span><b>Wind</b> drifts it</span><span><b>Mk II–IV</b> more damage</span><a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,THUMP-82,VOLLEY-6,">Fit it in the Hangar</a></p>
+          </div>
+        </article>
+
+        <article class="piece" id="spike-90" aria-labelledby="spike-90-name">
+          <div class="piece__stage" data-num="90"><img src="/assets/img/armory/spike-90.webp" alt="The SPIKE-90 railgun's twin rails on the VIGIL's forearm" width="1080" height="810" loading="lazy" decoding="async"></div>
+          <div class="piece__body">
+            <p class="piece__kicker"><span>Arm</span><span>90&nbsp;mm railgun</span></p>
+            <h3 class="piece__name" id="spike-90-name">SPIKE-90</h3>
+            <p class="piece__own is-earned">Earned with 25,000 Marks</p>
+            <p class="piece__text">A railgun. It fires a 90&nbsp;mm tungsten dart with no warhead, only speed: 70 damage, the hardest direct shot in the game, out to 650&nbsp;yards, and so fast the wind never moves it. The price is patience. Ten and a half seconds between shots, the most heat of any weapon, and three darts to a life.</p>
+            <dl class="piece__stats">
+              <div><dt>Range</dt><dd><b>650</b> yd<small>594 m</small></dd></div>
+              <div><dt>Damage</dt><dd><b>70</b><small>a shot</small></dd></div>
+              <div><dt>Heat</dt><dd><b>+18</b><small>a shot</small></dd></div>
+              <div><dt>Rounds</dt><dd><b>3</b><small>a life</small></dd></div>
+              <div><dt>Between shots</dt><dd><b>10.5</b> s</dd></div>
+              <div><dt>Weight</dt><dd><b>9,000</b> lb</dd></div>
+            </dl>
+            <p class="piece__foot"><span><b>Wind</b> never moves it</span><span><b>Mk II–IV</b> more damage</span><a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,SPIKE-90,VOLLEY-6,">Fit it in the Hangar</a></p>
+          </div>
+        </article>
+      </section>
+
+      <!-- The shoulder: one bay, two pieces of ordnance. -->
+      <section class="rack" id="shoulder" aria-labelledby="shoulder-title">
+        <header class="armory__section-head">
+          <p class="armory__kicker">Shoulder · Ordnance</p>
+          <h2 id="shoulder-title">One bay, two choices</h2>
+          <p class="armory__intro">The shoulder takes one piece of ordnance per drop. The rocket pod is where every VIGIL starts; the mortar takes its place.</p>
+        </header>
+
+        <article class="piece" id="volley-6" aria-labelledby="volley-6-name">
+          <div class="piece__stage" data-num="6"><img src="/assets/img/armory/volley-6.webp" alt="The VOLLEY-6 rocket pod, six rockets in its tubes" width="1080" height="810" loading="lazy" decoding="async"></div>
+          <div class="piece__body">
+            <p class="piece__kicker"><span>Shoulder</span><span>Rocket pod</span></p>
+            <h3 class="piece__name" id="volley-6-name">VOLLEY-6</h3>
+            <p class="piece__own">Every pilot starts with it</p>
+            <p class="piece__text">Eighteen tubes, fired six at a time. A salvo ripples out of the pod in under half a second and spreads in a tight cone: 12 damage a rocket, 72 if all six land, and the farther the target, the more of them miss. Dumb-fire, no lock; you aim it. Three salvos six seconds apart empty the pod, and its one reload takes twelve.</p>
+            <dl class="piece__stats">
+              <div><dt>Range</dt><dd><b>425</b> yd<small>389 m</small></dd></div>
+              <div><dt>Damage</dt><dd><b>12</b><small>a rocket, 72 a salvo</small></dd></div>
+              <div><dt>Heat</dt><dd><b>+12</b><small>a salvo</small></dd></div>
+              <div><dt>Rockets</dt><dd><b>36</b><small>a life, 18 in the pod</small></dd></div>
+              <div><dt>Reload</dt><dd><b>12</b> s<small>once</small></dd></div>
+              <div><dt>Weight</dt><dd><b>4,200</b> lb</dd></div>
+            </dl>
+            <p class="piece__foot"><span><b>Wind</b> drifts it</span><span><b>Mk II–IV</b> more damage</span><a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,SLUG-250,VOLLEY-6,">Fit it in the Hangar</a></p>
+          </div>
+        </article>
+
+        <article class="piece" id="breach-275" aria-labelledby="breach-275-name">
+          <div class="piece__stage" data-num="275"><img src="/assets/img/armory/breach-275.webp" alt="The BREACH-275 siege mortar on its shoulder mount" width="1080" height="810" loading="lazy" decoding="async"></div>
+          <div class="piece__body">
+            <p class="piece__kicker"><span>Shoulder</span><span>275&nbsp;mm siege mortar</span></p>
+            <h3 class="piece__name" id="breach-275-name">BREACH-275</h3>
+            <p class="piece__own is-earned">Earned with 25,000 Marks</p>
+            <p class="piece__text">Artillery on a mech's shoulder. Mark a spot on the ground up to 600&nbsp;yards out and it lobs a 275&nbsp;mm shell high over everything; three seconds later it comes down. 80 damage where it lands, a fifth of that 52&nbsp;yards out, and every mech in between takes its share. The target gets no warning on its screen, only the shell's whistle a moment before it hits.</p>
+            <dl class="piece__stats">
+              <div><dt>Range</dt><dd><b>600</b> yd<small>549 m</small></dd></div>
+              <div><dt>Damage</dt><dd><b>80</b><small>at the centre</small></dd></div>
+              <div><dt>Blast</dt><dd><b>52</b> yd<small>48 m radius</small></dd></div>
+              <div><dt>Heat</dt><dd><b>+16</b><small>a shell</small></dd></div>
+              <div><dt>Magazine</dt><dd><b>4</b><small>8 s to reload</small></dd></div>
+              <div><dt>Weight</dt><dd><b>7,800</b> lb</dd></div>
+            </dl>
+            <p class="piece__foot"><span><b>Wind</b> drifts it</span><span><b>Mk II–IV</b> more damage</span><a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,SLUG-250,BREACH-275,">Fit it in the Hangar</a></p>
+          </div>
+        </article>
+      </section>
+
+      <!-- The centre torso: four modules. Their two figures are rows of the Hangar's export, on the starting loadout. -->
+      <section class="rack" id="torso" aria-labelledby="torso-title">
+        <header class="armory__section-head">
+          <p class="armory__kicker">Centre torso · Modules</p>
+          <h2 id="torso-title">The fifth slot</h2>
+          <p class="armory__intro">Earn the centre-torso slot with Marks and it takes one module. Each is earned with Marks too, and each one's weight counts against everything else you carry.</p>
+        </header>
+        <ul class="modules">
+          <li class="module">
+            <p class="module__weight"><b>6,000</b> lb</p>
+            <h3 class="module__name">Jump jets</h3>
+            <p>Vectored thrust that lifts the VIGIL clear of the ground. On the starting loadout: <b>9.7 s</b> of lift and a <b>102 ft</b> ceiling. The heavier the load, the shorter and lower it flies.</p>
+            <a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,SLUG-250,VOLLEY-6,JumpJets">Fit it in the Hangar</a>
+          </li>
+          <li class="module">
+            <p class="module__weight"><b>4,000</b> lb</p>
+            <h3 class="module__name">Reactor cooling</h3>
+            <p>More cooling for the reactor, so the heat of every shot bleeds away faster and the guns stay in the fight longer.</p>
+            <a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,SLUG-250,VOLLEY-6,HeatSinks">Fit it in the Hangar</a>
+          </li>
+          <li class="module">
+            <p class="module__weight"><b>8,000</b> lb</p>
+            <h3 class="module__name">CT armor</h3>
+            <p>More armour on the centre torso, where the cockpit rides. The heaviest of the four.</p>
+            <a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,SLUG-250,VOLLEY-6,ArmorModule">Fit it in the Hangar</a>
+          </li>
+          <li class="module">
+            <p class="module__weight"><b>3,000</b> lb</p>
+            <h3 class="module__name">Overboost</h3>
+            <p>More speed, walking forward and in reverse. On the starting loadout: a top speed of <b>43.3 mph</b> against <b>40</b>. The lightest of the four.</p>
+            <a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,SLUG-250,VOLLEY-6,SpeedBoost">Fit it in the Hangar</a>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Heat: what each pull of the trigger adds, against the 100 that shuts the VIGIL down. The bars run to 20. -->
+      <section class="heat" id="heat" aria-labelledby="heat-title">
+        <div class="heat__text">
+          <p class="armory__kicker">Heat</p>
+          <h2 id="heat-title">Heat is the other magazine</h2>
+          <p>Every weapon here makes heat, and at 100 the VIGIL shuts down. Heat bleeds away fastest when you stand still, slower on the move, and not at all at a run, and a heavier VIGIL sheds less of it. So a fight has a rhythm: fire, move, cool, and switch to a cooler gun before the needle gets there.</p>
+        </div>
+        <ol class="heatbars" aria-label="Heat each shot adds">
+          <li style="--h: 18"><span class="heatbars__name">SPIKE-90</span><span class="heatbars__track"><i></i></span><span class="heatbars__v">+18</span></li>
+          <li style="--h: 16"><span class="heatbars__name">BREACH-275</span><span class="heatbars__track"><i></i></span><span class="heatbars__v">+16</span></li>
+          <li style="--h: 12"><span class="heatbars__name">DART-20</span><span class="heatbars__track"><i></i></span><span class="heatbars__v">+12</span></li>
+          <li style="--h: 12"><span class="heatbars__name">VOLLEY-6</span><span class="heatbars__track"><i></i></span><span class="heatbars__v">+12 <small>a salvo</small></span></li>
+          <li style="--h: 10"><span class="heatbars__name">SLUG-250</span><span class="heatbars__track"><i></i></span><span class="heatbars__v">+10</span></li>
+          <li style="--h: 8"><span class="heatbars__name">THUMP-82</span><span class="heatbars__track"><i></i></span><span class="heatbars__v">+8</span></li>
+          <li style="--h: 6"><span class="heatbars__name">PULSE-50</span><span class="heatbars__track"><i></i></span><span class="heatbars__v">+6</span></li>
+          <li class="is-held" style="--h: 19.5"><span class="heatbars__name">CHAIN-30</span><span class="heatbars__track"><i></i></span><span class="heatbars__v">+19.5 <small>a second held</small></span></li>
+        </ol>
+      </section>
+
+      <!-- Marks: what is owned from the start, what is earned, and the four Marks a weapon climbs. -->
+      <section class="marks" id="marks" aria-labelledby="marks-title">
+        <header class="armory__section-head">
+          <p class="armory__kicker">Marks</p>
+          <h2 id="marks-title">Earned, then improved</h2>
+        </header>
+        <div class="marks__grid">
+          <div class="marks__item">
+            <h3>Yours from the start</h3>
+            <p><span class="nw">PULSE-50</span>, <span class="nw">CHAIN-30</span>, <span class="nw">SLUG-250</span> and <span class="nw">VOLLEY-6</span> come with every VIGIL. Together they are a full fighting loadout.</p>
+          </div>
+          <div class="marks__item">
+            <h3>Earned in the fight</h3>
+            <p><span class="nw">DART-20</span>, <span class="nw">THUMP-82</span>, <span class="nw">SPIKE-90</span> and <span class="nw">BREACH-275</span> cost 25,000 Marks each, and Marks are earned by playing. Earn one once and it is yours on any VIGIL you fly.</p>
+          </div>
+          <div class="marks__item">
+            <h3>Mk I to Mk IV</h3>
+            <p>Every weapon climbs from Mk&nbsp;I to Mk&nbsp;IV. You qualify for each step by flying it, then pay for the step in Marks. What a step improves depends on the gun: the <span class="nw">PULSE-50</span> and <span class="nw">CHAIN-30</span> run cooler, the <span class="nw">DART-20</span> reaches farther, and the rest hit harder.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="armory__end">
+        <p class="armory__end-line">Six guns, two pieces of ordnance, four modules. Now fit yours.</p>
+        <a class="btn btn--large" href="/hangar/">Open the Hangar</a>
+      </div>
+      <p class="armory__source">Every figure is the game's own, for a weapon at Mk&nbsp;I. <span class="nw">Pre-alpha</span>: they move as the game is tuned.</p>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot__inner">
+      <a class="foot__brand" href="/thereach/" aria-label="Back to The Reach: Unknown">
+        <img src="/assets/img/mt-monogram.svg" alt="" width="34" height="40">
+        <img class="foot__wordmark" src="/assets/img/the-reach-wordmark.svg" alt="The Reach: Unknown" width="220" height="58">
+      </a>
+      <div class="foot__small">
+        <nav class="foot__links" aria-label="Legal">
+          <a href="/presskit/">Press kit</a>
+          <a href="/privacy/">Privacy</a>
+          <a href="/terms/">Terms</a>
+          <a href="/art/">Art &amp; AI</a>
+        </nav>
+        <p>© <span data-year>2026</span> Mach Tuck Games LLC</p>
+        <p>The Reach: Unknown™ and the MT shield are trademarks of Mach Tuck Games LLC.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
