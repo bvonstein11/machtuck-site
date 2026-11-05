@@ -17,6 +17,10 @@ const ORBIT_ON = "2027-10-22";
  */
 const PUBLISHED_LOGS = [];
 
+/** The crew card in VOYAGE LOGS: who records the logs, a name and a role only, shown once a log is out. Empty until then,
+ *  so nothing on the site names them early; fill it in the same change that lists the first log: { name: "…", role: "…" }. */
+const LOG_CREW = null;
+
 const Voyage = (() => {
   /** 19 January 3310 is Y+20.39, so Y+0 falls in late August 3289. */
   const yearAtLaunch = 3310 + 18 / 365.25 - 20.39;

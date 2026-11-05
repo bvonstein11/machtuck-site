@@ -140,7 +140,15 @@ if (pick) {
   choose("");
   // The colour fades only on a pick, never while the page first paints.
   requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add("can-tint")));
-  for (const button of document.querySelectorAll("[data-house]")) button.addEventListener("click", () => choose(button.dataset.house));
+  // CR-11: after a pick, the page's Join buttons read "Join the Discord as <house>", Torrath included; the same invite, and
+  // the Discord's own onboarding gives the role. The bar's small button keeps its words.
+  const joins = [...document.querySelectorAll("main [data-discord]")];
+  const nameOf = (house) => (house ? pick.querySelector(`[data-panel="${house}"] .house__name`)?.textContent.trim() : "Torrath");
+  for (const button of document.querySelectorAll("[data-house]")) button.addEventListener("click", () => {
+    choose(button.dataset.house);
+    const name = nameOf(button.dataset.house);
+    if (name && DISCORD_INVITE) for (const join of joins) join.textContent = `Join the Discord as ${name}`;
+  });
 }
 
 // The ship's live readouts, in the status strip and over the ship in THE ARCHIVE: the clock is today's date and time on
@@ -169,8 +177,9 @@ if (typeof Voyage !== "undefined" && document.querySelector("[data-ship-date]"))
   setInterval(tick, 1000);
 }
 
-// The Voyage Logs: hidden until PUBLISHED_LOGS (assets/ship.js) has its first log. Each published log gets a card, and
-// the next one is teased as the next anticipated voyage log, by number only: the site does not publish the schedule.
+// The Voyage Logs: always shown (CR-10). Each log in PUBLISHED_LOGS (assets/ship.js) gets a card, and the next one is
+// teased as the next anticipated voyage log, by number only: the site does not publish the schedule. The crew card
+// (CR-8) appears with the first log, filled from LOG_CREW (assets/ship.js).
 const LOGS_IN_ALL = 8;   // the voyage's logs, 01 to 08; after the last, nothing is teased
 function drawLogs(published) {
   const section = document.querySelector("[data-logs]");
@@ -206,8 +215,12 @@ function drawLogs(published) {
     item.classList.add("log--next");
     list.append(item);
   }
-  section.hidden = published.length === 0;
-  for (const link of document.querySelectorAll("[data-logs-rail]")) link.hidden = section.hidden;
+  const crew = section.querySelector("[data-crew]");
+  const who = typeof LOG_CREW !== "undefined" ? LOG_CREW : null;
+  if (crew) {
+    crew.hidden = !(published.length && who && who.name);
+    if (!crew.hidden) { crew.querySelector("[data-crew-name]").textContent = who.name; crew.querySelector("[data-crew-role]").textContent = who.role || ""; }
+  }
 }
 if (typeof PUBLISHED_LOGS !== "undefined") drawLogs(PUBLISHED_LOGS);
 
