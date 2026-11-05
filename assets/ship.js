@@ -12,13 +12,14 @@ const ORBIT_ON = "2027-10-22";
  * The Voyage Logs published so far, oldest first, each with the Earth date and time stamped on it. Add one line when a
  * log goes out, for example { log: "01", stamp: "3341-05-07 21:47", title: "…", url: "https://…", poster: "/assets/img/log-01.webp" }:
  * it joins The Crossing's milestones and its "Latest log" button, and gets a card in VOYAGE LOGS, which stays hidden
- * until this has its first line. The title, url (where the log plays) and poster are optional. Empty until the first
- * log is published.
+ * until this has its first line. The title, url (where the log plays) and poster are optional.
  */
-const PUBLISHED_LOGS = [];
+const PUBLISHED_LOGS = [
+  { log: "01", stamp: "3341-05-07 21:47", url: "https://youtu.be/3S6ZinguqzM", poster: "/assets/img/log-01.webp" },
+];
 
-/** The crew card in VOYAGE LOGS: who records the logs, a name and a role only, shown once a log is out. Empty until then,
- *  so nothing on the site names them early; fill it in the same change that lists the first log: { name: "…", role: "…" }. */
+/** The crew card in VOYAGE LOGS: who records the logs, a name and a role only, shown once a log is out: { name: "…", role: "…" }.
+ *  Still empty after Log 01 went out (2026-11-04): its name and its picture are not cleared for the site yet. */
 const LOG_CREW = null;
 
 const Voyage = (() => {
