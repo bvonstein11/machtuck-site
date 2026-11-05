@@ -112,7 +112,7 @@
 .choice.is-still-over .choice__effect { color: var(--ink-dim); }
 .hardpoint { scroll-margin: calc(var(--top-height) + 16px) 0 150px; }
 .choice__tag { grid-area: tag; font: 400 0.58rem/1.2 var(--font-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
-.choice__tag.is-starter { color: var(--ink-faint); }
+.choice__tag.is-basic { color: var(--ink-faint); }
 
 .fit__share { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 20px; }
 .fit__share[hidden] { display: none; }
@@ -122,11 +122,13 @@
 .dock {
   position: sticky; bottom: 0; z-index: 30; display: grid; gap: 14px; margin: clamp(32px, 4vw, 48px) calc(-1 * var(--gutter)) 0;
   padding: 14px var(--gutter) calc(14px + env(safe-area-inset-bottom, 0px));
-  background: rgba(5, 7, 11, 0.95); box-shadow: 0 -1px 0 var(--line), 0 -24px 48px rgba(0, 0, 0, 0.55);
+  background: #05070b; box-shadow: 0 -1px 0 var(--line), 0 -24px 48px rgba(0, 0, 0, 0.55);
 }
 .dock[hidden] { display: none; }
 @media (min-width: 980px) {
-  .dock { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: center; gap: 36px; margin-inline: 0; padding: 18px 24px; box-shadow: 0 0 0 1px var(--line), 0 -24px 48px rgba(0, 0, 0, 0.55); }
+  /* the readout is the fitting column's footer: it rides the bottom of the screen past the hardpoints and comes to rest under
+     the Share button, so it never covers the turntable, the paints or the caption beside it */
+  .dock { gap: 14px; margin-inline: 0; padding: 16px 20px; box-shadow: 0 0 0 1px var(--line), 0 -24px 48px rgba(0, 0, 0, 0.55); }
 }
 .dock__label { font: 400 0.6rem/1 var(--font-mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-faint); white-space: nowrap; }
 .dock__weight { display: grid; gap: 8px; }

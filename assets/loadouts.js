@@ -4,7 +4,7 @@
    loadout, never a weight class: the VIGIL is a medium mech whatever it carries. "Overloaded" is the game's own word for a
    load past its maximum. */
 window.VIGIL_LOADOUTS = Object.freeze([
-  { label: "Starter", key: "PULSE-50+CHAIN-30+SLUG-250|VOLLEY-6|" },
+  { label: "Basic", key: "PULSE-50+CHAIN-30+SLUG-250|VOLLEY-6|" },
   { label: "Lean", key: "PULSE-50+DART-20+THUMP-82|VOLLEY-6|" },
   { label: "Jump jets", key: "PULSE-50+DART-20+THUMP-82|VOLLEY-6|JumpJets" },
   { label: "Overloaded", key: "CHAIN-30+SLUG-250+SPIKE-90|BREACH-275|ArmorModule" },

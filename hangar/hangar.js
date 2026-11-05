@@ -247,7 +247,7 @@
     const weightOf = (id) => (weapons.get(id) ?? modules.get(id))?.weightLb ?? 0;
     const choicesFor = (slot) => (slot.accepts === "module"
       ? [["", "Empty", ""], ...data.modules.map((module) => [module.id, module.name, "Earned with Marks"])]
-      : data.weapons.filter((weapon) => weapon.slot === slot.accepts).map((weapon) => [weapon.id, weapon.id, weapon.earnedWithMarks ? "Earned with Marks" : "Starter"]));
+      : data.weapons.filter((weapon) => weapon.slot === slot.accepts).map((weapon) => [weapon.id, weapon.id, weapon.earnedWithMarks ? "Earned with Marks" : "Basic"]));
 
     // ── the named loadouts, to start from ──────────────────────────────────────────────────────────────────────────
     const presetRow = fit.querySelector("[data-fit-presets]");
@@ -292,7 +292,7 @@
         button.type = "button";
         const effect = make("span", "choice__effect");
         button.append(make("span", "choice__name", name), make("span", "choice__weight", weightOf(id) ? pounds(weightOf(id)) : "—"), effect);
-        if (tag) button.append(make("span", `choice__tag${tag === "Starter" ? " is-starter" : ""}`, tag));
+        if (tag) button.append(make("span", `choice__tag${tag === "Basic" ? " is-basic" : ""}`, tag));
         button.addEventListener("click", () => { fitted = withChoice(fitted, slot, id); touched = true; draw(); });
         rack.append(button);
         return { id, button, effect };

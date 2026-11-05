@@ -2,7 +2,7 @@
    own bake, each house's ground is one tinted region, a glowing line runs where two houses meet, and the week's
    battlegrounds pulse. It handles like a globe viewer: drag the ground to move it, Shift- or right-drag to turn and tilt,
    scroll toward a point to zoom there; on a phone two fingers move it in the page and one finger moves it full screen.
-   The land runs on past the plate into haze. The board is the opening war, every house on its home ground: no live war
+   Past the plate's edges everything lies in shadow. The board is the opening war, every house on its home ground: no live war
    is shown. Without WebGL2 the picture stays. */
 (function () {
   "use strict";
@@ -21,7 +21,7 @@
   // The land past the plate's edge, in world units out from it: a few rings of widening steps, so the mesh stays small.
   const BEYOND = [0.25, 0.6, 1.1, 1.8, 2.8, 4.2, 6.2, 9, 13, 19];
   const TILT = 35, TILT_MIN = 8, TILT_MAX = 72, FOV = 30, ZOOM_MIN = 0.8, ZOOM_MAX = 6, DEG = Math.PI / 180;
-  const HAZE = [0.05, 0.065, 0.09];   // the card's own ground (#0d1117), so the haze meets the frame
+  const SHADOW = [0.027, 0.035, 0.051];   // the page's own ground (#07090d): past the plate there is only this
   const REST_ZOOM = 1.2;                 // at rest the plate fills the frame
 
   // ── the board: q, r, house; laid out exactly as the game lays it (FrontHexLayout) ──────────────────────────────
@@ -50,7 +50,7 @@
     return picked;
   }
 
-  // ── shaders: the game's FrontDiorama.shader, in GLSL, with the land beyond the plate and a distance haze ─────────
+  // ── shaders: the game's FrontDiorama.shader, in GLSL, with the plate's rim falling into shadow and a distance haze ─
   const VS = `#version 300 es
     in vec3 aPos; in vec3 aNormal; in vec2 aUv;
     uniform mat4 uViewProj; uniform vec3 uEye;
@@ -63,7 +63,7 @@
     uniform vec4 uLayout;   // radius, centre x, centre y, time
     uniform vec4 uRange;    // q0, r0, q span, r span
     uniform vec2 uFog;      // where the distance haze begins and where it is whole
-    const vec3 HAZE = vec3(${HAZE.join(", ")});
+    const vec3 SHADOW = vec3(${SHADOW.join(", ")});
     const int NQ[6] = int[6](1, 1, 0, -1, -1, 0);
     const int NR[6] = int[6](0, -1, -1, 0, 1, 1);
     const vec2 NN[6] = vec2[6](vec2(1.0, 0.0), vec2(0.5, -0.8660254), vec2(-0.5, -0.8660254),
@@ -80,14 +80,11 @@
       return mix(mix(hash(i), hash(i + vec2(1, 0)), u.x), mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), u.x), u.y); }
     void main() {
       float t = uLayout.w;
-      // Past the plate's edge the land carries on as the plate mirrored, softer the further out (a blurrier mip), darker,
-      // and into the haze. The picture is read three texels in from its edges: its outermost columns are near black.
-      vec2 inUv = clamp(vUv, 0.0, 1.0);
-      float beyond = length((vUv - inUv) * vec2(1.0, ${MAP_H}.0 / ${MAP_W}.0));   // in plate widths
-      vec2 mirrored = abs(mod(vUv + 1.0, 2.0) - 1.0), inset = 3.0 / vec2(textureSize(uPlate, 0));
-      // the blur is chosen from the unfolded position, so the fold itself draws no seam
-      vec2 grad = (1.0 - 2.0 * inset) * exp2(min(6.0, beyond * 30.0));
-      vec3 col = textureGrad(uPlate, mix(inset, 1.0 - inset, mirrored), dFdx(vUv) * grad, dFdy(vUv) * grad).rgb;
+      // Nothing is drawn past the plate: its rim darkens into the page's shadow over its outer 3.5%, and past the edge there
+      // is only the shadow. The picture is read three texels in from its edges: its outermost columns are near black.
+      vec2 inUv = clamp(vUv, 0.0, 1.0), inset = 3.0 / vec2(textureSize(uPlate, 0));
+      float rim = min(min(vUv.x, 1.0 - vUv.x), min(vUv.y, 1.0 - vUv.y) * ${MAP_H}.0 / ${MAP_W}.0);   // plate widths to the edge, < 0 past it
+      vec3 col = texture(uPlate, mix(inset, 1.0 - inset, inUv)).rgb;
       col *= 0.62 + 0.55 * clamp(dot(normalize(vNormal), normalize(vec3(-0.45, 0.8, 0.4))), 0.0, 1.0);
       vec2 c = vUv * vec2(3.2, 1.75) + t * 0.012 * vec2(1.0, 0.35);
       col *= 1.0 - 0.2 * smoothstep(0.48, 0.82, noise(c) * 0.65 + noise(c * 2.3 + 7.1) * 0.35);
@@ -128,11 +125,10 @@
           col = mix(col, vec3(1.0, 0.55, 0.2) * 1.5, clamp(ring * 0.9 + pin * 0.85, 0.0, 1.0));
         }
       } else col *= 0.84;
-      vec2 relief = texture(uRelief, vUv).rg;
-      col += relief.g * vec3(1.0, 0.32, 0.06) * (0.6 + 0.4 * sin(t * 1.4 + vUv.x * 23.0 + vUv.y * 11.0)) * (1.0 - smoothstep(0.0, 0.2, beyond));
-      col *= 1.0 - 0.5 * smoothstep(0.0, 0.2, beyond);
-      float fog = max(smoothstep(0.02, 0.42, beyond), smoothstep(uFog.x, uFog.y, vDist));
-      outColor = vec4(mix(col, HAZE, fog), 1.0);
+      vec2 relief = texture(uRelief, inUv).rg;
+      col += relief.g * vec3(1.0, 0.32, 0.06) * (0.6 + 0.4 * sin(t * 1.4 + vUv.x * 23.0 + vUv.y * 11.0));
+      col = mix(col, SHADOW, smoothstep(uFog.x, uFog.y, vDist));   // the far distance, when tilted toward the horizon
+      outColor = vec4(mix(SHADOW, col, smoothstep(0.0, 0.035, rim)), 1.0);
     }`;
 
   const canvas = document.createElement("canvas");
@@ -152,22 +148,21 @@
     return p;
   }
 
-  // ── the relief mesh, from the bake's red channel, and the land beyond it settling to the plain ──────────────────
+  // ── the relief mesh, from the bake's red channel, on a dark plain that runs out to the horizon ──────────────────
   function mesh(relief) {
     const w = relief.width, h = relief.height, px = relief.data;
     const sample = (u, v) => {   // bilinear, u right, v up; the image's row 0 is the plate's top
-      // two texels in from the bake's edges, which read low, so the mirrored land past them has no trench
+      // two texels in from the bake's edges, which read low, so the plate's rim has no trench
       const iu = 2 / (w - 1), iv = 2 / (h - 1);
       const x = (iu + (1 - 2 * iu) * Math.min(Math.max(u, 0), 1)) * (w - 1), y = (1 - iv - (1 - 2 * iv) * Math.min(Math.max(v, 0), 1)) * (h - 1);
       const x0 = Math.min(x | 0, w - 2), y0 = Math.min(y | 0, h - 2), fx = x - x0, fy = y - y0, i = (y0 * w + x0) * 4;
       const a = px[i] + (px[i + 4] - px[i]) * fx, b = px[i + w * 4] + (px[i + w * 4 + 4] - px[i + w * 4]) * fx;
       return (a + (b - a) * fy) / 255 * RELIEF;
     };
-    // Off the plate the land is the plate mirrored, as the texture wraps, and sinks over several units into the plain.
-    const mirror = (x) => Math.abs(((x + 1) % 2 + 2) % 2 - 1);
+    // Off the plate the ground sinks within a unit or so to a flat plain, which the shader leaves in shadow.
     const height = (u, v) => {
       const out = Math.hypot(Math.max(-u, u - 1, 0) * W, Math.max(-v, v - 1, 0) * D);
-      return sample(mirror(u), mirror(v)) * Math.exp(-out / 5);
+      return sample(u, v) * Math.exp(-out / 0.5);
     };
     const axis = (n, size) => {
       const inner = Array.from({ length: n }, (_, i) => i / (n - 1));
@@ -196,7 +191,7 @@
     return { vao, count: index.length };
   }
 
-  function texture(unit, source, w, h, nearest, mips, mirrored) {
+  function texture(unit, source, w, h, nearest, mips) {
     const t = gl.createTexture(); gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, t);
     // An image's top row is the plate's north, and v runs north (up) here, as in the game: flip images on upload. The
     // lookup and state tables are indexed by texel, so they go up as they are.
@@ -207,8 +202,7 @@
     if (mips) gl.generateMipmap(gl.TEXTURE_2D);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, mips ? gl.LINEAR_MIPMAP_LINEAR : f);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, f);
-    const wrap = mirrored ? gl.MIRRORED_REPEAT : gl.CLAMP_TO_EDGE;
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrap); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrap);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     const aniso = gl.getExtension("EXT_texture_filter_anisotropic");
     if (mips && aniso) gl.texParameterf(gl.TEXTURE_2D, aniso.TEXTURE_MAX_ANISOTROPY_EXT, 8);
     return t;
@@ -483,8 +477,8 @@
       const hexes = board.hexes, L = layOut(hexes), fights = battlegrounds(hexes);
       const prog = program(); gl.useProgram(prog);
       const terrain = mesh(reliefPx);
-      texture(0, plate, 0, 0, false, true, false);
-      texture(1, relief, 0, 0, false, false, true);
+      texture(0, plate, 0, 0, false, true);
+      texture(1, relief, 0, 0, false, false);
       const lookup = new Uint8Array(L.qs * L.rs * 4);
       hexes.forEach(([q, r], i) => { lookup[((r - L.r0) * L.qs + (q - L.q0)) * 4] = i + 1; });
       texture(2, lookup, L.qs, L.rs, true, false);
@@ -505,7 +499,7 @@
         if (!w || !h) return;
         if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
         gl.viewport(0, 0, w, h);
-        gl.clearColor(HAZE[0], HAZE[1], HAZE[2], 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        gl.clearColor(SHADOW[0], SHADOW[1], SHADOW[2], 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         const t = calm ? 0 : (performance.now() - t0) / 1000;
         const cam = camera(w / h, t);
         gl.uniform4f(uLayout, L.R, L.cx, L.cy, t);

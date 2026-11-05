@@ -21,12 +21,12 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preload" href="/hangar/bay/plate.webp" as="image">
   <link rel="preload" href="/hangar/spin/base/vigil-000.webp" as="image">
-  <link rel="stylesheet" href="/assets/site.css?v=c048b0ab">
-  <link rel="stylesheet" href="/hangar/hangar.css?v=c048b0ab">
-  <script src="/assets/ship.js?v=c048b0ab" defer></script>
-  <script src="/assets/site.js?v=c048b0ab" defer></script>
-  <script src="/assets/loadouts.js?v=c048b0ab" defer></script>
-  <script src="/hangar/hangar.js?v=c048b0ab" defer></script>
+  <link rel="stylesheet" href="/assets/site.css?v=2e0bea69">
+  <link rel="stylesheet" href="/hangar/hangar.css?v=2e0bea69">
+  <script src="/assets/ship.js?v=2e0bea69" defer></script>
+  <script src="/assets/site.js?v=2e0bea69" defer></script>
+  <script src="/assets/loadouts.js?v=2e0bea69" defer></script>
+  <script src="/hangar/hangar.js?v=2e0bea69" defer></script>
 </head>
 <body>
   <a class="skip" href="#hangar">Skip to content</a>
@@ -90,7 +90,7 @@
 
         <!-- The fitting bay: every slot and every number comes from hangar-data.json, which Vigil ▸ Website ▸ Export Hangar
              Data writes from the game. This page only looks a loadout up; it computes nothing. A choice shows the loadout it
-             would make before it is fitted, and the readout under the page follows what is fitted. -->
+             would make before it is fitted, and the readout at the foot of this column follows what is fitted. -->
         <section class="fit" aria-labelledby="fit-title" data-fit>
           <header class="fit__head">
             <p class="fit__kicker">The fitting bay</p>
@@ -104,27 +104,28 @@
             <span class="fit__shared" data-fit-shared aria-live="polite"></span>
           </div>
           <p class="fit__noscript">The loadout needs JavaScript to run.</p>
+          <!-- The readout: the fitting column's footer, docked to the bottom of the screen while the column is in view, so a
+               change is seen where it is made, and never over the turntable. -->
+          <section class="dock" aria-labelledby="dock-title" data-gauges hidden>
+            <h2 class="sr" id="dock-title">Weight and performance</h2>
+            <div class="dock__weight">
+              <div class="dock__head">
+                <span class="dock__label">Operating weight</span>
+                <span class="dock__delta" data-g="delta" aria-hidden="true"></span>
+                <span class="dock__readout"><b data-g="operating">—</b><span class="dock__unit">lb</span></span>
+              </div>
+              <div class="dock__bar" aria-hidden="true"><i class="dock__fill" data-g="weight-fill"></i><i class="dock__mow" data-g="mow-mark"><span data-g="mow">Max</span></i></div>
+              <p class="dock__load" data-g="load">—</p>
+            </div>
+            <dl class="dock__stats">
+              <div><dt class="dock__label">Top speed</dt><dd><b data-g="speed">—</b><span class="dock__unit">mph</span><span class="dock__sub" data-g="speed-tax"></span></dd></div>
+              <div><dt class="dock__label">Cooling</dt><dd><b data-g="cooling">—</b><span class="dock__sub">of its heat shed</span></dd></div>
+              <div><dt class="dock__label">Jump jets</dt><dd><b data-g="jets">—</b><span class="dock__sub" data-g="jets-more"></span></dd></div>
+            </dl>
+          </section>
         </section>
       </div>
 
-      <!-- The readout: docked to the bottom of the screen while the bay is in view, so a change is seen where it is made. -->
-      <section class="dock" aria-labelledby="dock-title" data-gauges hidden>
-        <h2 class="sr" id="dock-title">Weight and performance</h2>
-        <div class="dock__weight">
-          <div class="dock__head">
-            <span class="dock__label">Operating weight</span>
-            <span class="dock__delta" data-g="delta" aria-hidden="true"></span>
-            <span class="dock__readout"><b data-g="operating">—</b><span class="dock__unit">lb</span></span>
-          </div>
-          <div class="dock__bar" aria-hidden="true"><i class="dock__fill" data-g="weight-fill"></i><i class="dock__mow" data-g="mow-mark"><span data-g="mow">Max</span></i></div>
-          <p class="dock__load" data-g="load">—</p>
-        </div>
-        <dl class="dock__stats">
-          <div><dt class="dock__label">Top speed</dt><dd><b data-g="speed">—</b><span class="dock__unit">mph</span><span class="dock__sub" data-g="speed-tax"></span></dd></div>
-          <div><dt class="dock__label">Cooling</dt><dd><b data-g="cooling">—</b><span class="dock__sub">of its heat shed</span></dd></div>
-          <div><dt class="dock__label">Jump jets</dt><dd><b data-g="jets">—</b><span class="dock__sub" data-g="jets-more"></span></dd></div>
-        </dl>
-      </section>
       <p class="hangar__source" data-g-source>Every figure comes from the game's own data, for a new pilot's VIGIL. Pre-alpha: they move as the game is tuned.</p>
     </div>
   </main>
