@@ -18,9 +18,14 @@ const PUBLISHED_LOGS = [
   { log: "01", stamp: "3341-05-07 21:47", url: "https://youtu.be/3S6ZinguqzM", poster: "/assets/img/log-01.webp" },
 ];
 
-/** The crew card in VOYAGE LOGS: who records the logs, a name and a role only, shown once a log is out: { name: "…", role: "…" }.
- *  Still empty after Log 01 went out (2026-11-04): its name and its picture are not cleared for the site yet. */
-const LOG_CREW = null;
+/** The crew card in VOYAGE LOGS (CR-8): who records the logs, shown once a log is out. Her first name and her role
+ *  only, never her surname, and a picture with her visor down, never her face. Set null to take the card down. */
+const LOG_CREW = {
+  name: "Sera",
+  role: "Chief Engineer of Exploration",
+  image: "/assets/img/crew-720.webp",
+  alt: "Sera kneels at the foot of the VIGIL, welding, her visor down",
+};
 
 const Voyage = (() => {
   /** 19 January 3310 is Y+20.39, so Y+0 falls in late August 3289. */

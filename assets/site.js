@@ -219,7 +219,16 @@ function drawLogs(published) {
   const who = typeof LOG_CREW !== "undefined" ? LOG_CREW : null;
   if (crew) {
     crew.hidden = !(published.length && who && who.name);
-    if (!crew.hidden) { crew.querySelector("[data-crew-name]").textContent = who.name; crew.querySelector("[data-crew-role]").textContent = who.role || ""; }
+    if (!crew.hidden) {
+      crew.querySelector("[data-crew-name]").textContent = who.name;
+      crew.querySelector("[data-crew-role]").textContent = who.role || "";
+      // The picture comes from LOG_CREW too, so nothing in the page itself shows the person before ship.js does.
+      if (who.image && !crew.querySelector(".crew__image")) {
+        const picture = make("img", "crew__image");
+        Object.assign(picture, { src: who.image, alt: who.alt || "", width: 720, height: 540, decoding: "async" });
+        crew.prepend(picture);
+      }
+    }
   }
 }
 if (typeof PUBLISHED_LOGS !== "undefined") drawLogs(PUBLISHED_LOGS);
