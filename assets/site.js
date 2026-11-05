@@ -81,8 +81,8 @@ for (const element of document.querySelectorAll("[data-reveal]")) {
   else revealWatcher.observe(element);
 }
 
-// Parallax: each layer drifts at its own data-depth, measured from where its section starts.
-// The hero copy also fades as it rises, so it never sits on top of the next section's heading.
+// Parallax: each layer drifts at its own data-depth, measured from where its section starts. A layer marked data-fade also
+// fades as it rises; the hero's words no longer do (2026-11-04): they scroll with the page and stay solid.
 const layers = [...document.querySelectorAll("[data-depth]")].map((element) => ({
   element,
   depth: Number(element.dataset.depth),

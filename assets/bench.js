@@ -264,6 +264,9 @@
 
     let dragFrom = null;
     turntable.addEventListener("pointerdown", (e) => {
+      // 2026-11-04: the paint swatches sit on the turntable. A press on one is the swatch's own; captured as a drag, it turned
+      // the mech and the swatch never heard its click, so no paint could be picked with a mouse or a finger.
+      if (e.target.closest(".bench__paints")) return;
       takeHold();
       clearTimeout(resumeTimer);
       dragFrom = { x: e.clientX, frame };
