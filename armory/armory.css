@@ -17,7 +17,7 @@
 .armory__intro { margin: 16px 0 0; max-width: 58ch; color: var(--ink-dim); }
 
 /* A panel's corners, cut in light like the game's brackets. */
-.mounts__item, .module {
+.hp, .module {
   --tick: 14px;
   background-image:
     linear-gradient(var(--accent), var(--accent)), linear-gradient(var(--accent), var(--accent)),
@@ -27,27 +27,128 @@
   background-repeat: no-repeat;
 }
 
-/* ---------- the hardpoints ---------- */
-.mounts { display: grid; gap: 10px; margin: clamp(36px, 5vw, 56px) 0 0; padding: 0; list-style: none; }
-@media (min-width: 820px) { .mounts { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.mounts__item {
-  display: flex; flex-direction: column; gap: 10px; padding: 22px 22px 20px;
-  background-color: rgba(13, 17, 23, 0.7); box-shadow: inset 0 0 0 1px var(--line);
-}
-.mounts__count { margin: 0; font: 400 0.66rem/1 var(--font-mono); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint); }
-.mounts__count b { margin-right: 6px; font: 600 1.6rem/1 var(--font-display); letter-spacing: 0; color: var(--accent); vertical-align: -3px; }
-.mounts__name { max-width: none; font-size: clamp(1.7rem, 2.6vw, 2.1rem); }
-.mounts__item p:not(.mounts__count) { margin: 0; font-size: 0.96rem; color: var(--ink-dim); }
-.mounts__go { margin-top: auto; padding-top: 6px; }
-
-/* the small "go" link, shared by the hardpoints, every weapon and every module */
-.mounts__go, .piece__fit {
+/* the small "go" link, shared by every weapon and every module */
+.piece__fit {
   display: inline-flex; align-items: center; gap: 10px; align-self: flex-start;
   font: 600 0.68rem/1.2 var(--font); letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; color: var(--accent);
 }
-.mounts__go::after, .piece__fit::after { content: ""; width: 7px; height: 7px; border: solid currentColor; border-width: 1.5px 1.5px 0 0; transform: rotate(45deg); transition: transform 0.2s; }
-.mounts__go:hover::after, .piece__fit:hover::after { transform: translateX(3px) rotate(45deg); }
-.mounts__go:hover, .piece__fit:hover { color: #f0a25c; }
+.piece__fit::after { content: ""; width: 7px; height: 7px; border: solid currentColor; border-width: 1.5px 1.5px 0 0; transform: rotate(45deg); transition: transform 0.2s; }
+.piece__fit:hover::after { transform: translateX(3px) rotate(45deg); }
+.piece__fit:hover { color: #f0a25c; }
+
+/* ---------- the loadout bay: the VIGIL on the Command Hub's platform, its five hardpoints around it ---------- */
+.lbay { margin-top: clamp(32px, 5vw, 56px); }
+.lbay__grid { position: relative; display: grid; gap: 14px; }
+.lbay__stage { margin: 0; }
+@media (min-width: 1000px) {
+  .lbay__grid { grid-template-columns: minmax(0, 1fr) minmax(360px, 440px) minmax(0, 1fr); gap: 0 48px; align-items: center; }
+  .lbay__slots--left { grid-column: 1; grid-row: 1; }
+  .lbay__stage { grid-column: 2; grid-row: 1; }
+  .lbay__slots--right { grid-column: 3; grid-row: 1; }
+}
+@media (max-width: 999px) { .lbay__stage { order: -1; width: 100%; max-width: 480px; margin: 0 auto 8px; } }
+
+/* The bay and the mech sit exactly as the Hangar's turntable stands them (hangar.css → "the bay"): the plate's cut is calibrated
+   so the mech's feet meet the platform, and the marks sit on the frame in the frame's own percentages. */
+.lbay__view {
+  position: relative; aspect-ratio: 4 / 5; overflow: hidden; isolation: isolate;
+  background: radial-gradient(ellipse at 50% 88%, rgba(224, 137, 62, 0.16), transparent 55%), radial-gradient(circle at 50% 45%, #141a22, #07090d 70%);
+  box-shadow: 0 0 0 1px var(--line);
+}
+.lbay__bay { position: absolute; left: -11.03%; top: -1%; width: 122.2%; height: 110%; }
+.lbay__view .lbay__plate { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; }
+.lbay__shadow {
+  position: absolute; left: 49.944%; top: 74.6%; width: 30%; height: 4.5%; transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.25) 55%, transparent);
+}
+.lbay__mech { position: absolute; z-index: 2; left: 49.944%; top: 11.96%; height: 67.05%; aspect-ratio: 1; transform: translateX(-50%); }
+.lbay__mech > img { width: 100%; height: 100%; filter: brightness(0.88) saturate(1.06); }
+.lbay__view::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse 90% 80% at 50% 55%, transparent 55%, rgba(3, 4, 6, 0.55) 100%),
+              linear-gradient(to bottom, rgba(3, 4, 6, 0.35), transparent 18%, transparent 82%, rgba(3, 4, 6, 0.45));
+}
+.lbay__mark {
+  position: absolute; left: var(--x); top: var(--y); z-index: 2;
+  display: grid; place-items: center; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 50%;
+  font: 600 0.66rem/1 var(--font-mono); color: var(--accent-ink); background: var(--accent);
+  box-shadow: 0 0 0 3px rgba(7, 9, 13, 0.6), 0 0 16px rgba(224, 137, 62, 0.55); transition: transform 0.2s, background 0.2s;
+}
+.lbay__mark::before {
+  content: ""; position: absolute; inset: -7px; border-radius: 50%; box-shadow: 0 0 0 1px rgba(224, 137, 62, 0.7);
+  animation: lbay-ping 2.6s ease-out infinite; animation-delay: calc(var(--y) * 0.04s);
+}
+.lbay__mark.is-lit { transform: scale(1.25); background: #ffd9b0; }
+@keyframes lbay-ping { 0% { transform: scale(0.6); opacity: 0.9; } 70%, 100% { transform: scale(1.6); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .lbay__mark::before { animation: none; opacity: 0.6; } }
+.lbay__stage figcaption { margin-top: 12px; font-size: 0.82rem; line-height: 1.45; color: var(--ink-faint); text-align: center; }
+.lbay__lines { display: none; position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+@media (min-width: 1000px) { .lbay__lines { display: block; } }
+.lbay__lines path { fill: none; stroke: rgba(224, 137, 62, 0.5); stroke-width: 1; transition: stroke 0.2s; }
+.lbay__lines path.is-lit { stroke: var(--accent); stroke-width: 1.5; }
+.lbay__lines circle { fill: var(--accent); }
+
+/* the hardpoint cards: on a phone two to a row under the bay, on a wide screen beside it */
+.lbay__slots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; }
+.lbay__slots li:has(.hp--ct) { grid-column: 1 / -1; }
+@media (min-width: 1000px) { .lbay__slots { grid-template-columns: minmax(0, 1fr); gap: 14px; } }
+.hp {
+  --tick: 10px; position: relative; display: grid; grid-template-areas: "label" "art" "name" "note"; gap: 6px;
+  height: 100%; padding: 14px 14px 16px; text-decoration: none; color: var(--ink);
+  background-color: rgba(10, 13, 18, 0.85); box-shadow: inset 0 0 0 1px var(--line); transition: box-shadow 0.2s, background-color 0.2s;
+}
+@media (min-width: 1000px) {
+  .hp { grid-template-columns: 104px minmax(0, 1fr); grid-template-areas: "art label" "art name" "art note"; gap: 4px 14px; align-content: center; padding: 14px 16px; }
+}
+.hp:hover, .hp:focus-visible, .hp.is-lit { background-color: rgba(224, 137, 62, 0.07); box-shadow: inset 0 0 0 1px var(--accent); }
+.hp__num {
+  position: absolute; top: -9px; left: -9px; z-index: 1; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%;
+  font: 600 0.62rem/1 var(--font-mono); color: var(--accent-ink); background: var(--accent); box-shadow: 0 0 0 3px var(--bg);
+}
+.hp__label { grid-area: label; font: 400 0.6rem/1.3 var(--font-mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); }
+.hp__art { grid-area: art; display: block; aspect-ratio: 4 / 3; background: radial-gradient(ellipse 70% 55% at 50% 72%, rgba(224, 137, 62, 0.14), transparent 70%); }
+.hp__art img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.6)); }
+.hp__mods { grid-area: art; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; align-self: center; }
+.hp__mods img { width: 100%; aspect-ratio: 1; object-fit: cover; opacity: 0.6; filter: grayscale(0.3); }
+@media (max-width: 999px) { .hp--ct .hp__mods { max-width: 280px; } }
+@media (min-width: 1000px) { .hp--ct .hp__mods { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3px; } }
+.hp__name { grid-area: name; font: 600 1.35rem/1 var(--font-display); letter-spacing: 0.03em; text-transform: uppercase; }
+.hp--ct .hp__name { color: var(--ink-dim); }
+.hp__note { grid-area: note; font-size: 0.78rem; line-height: 1.35; color: var(--ink-faint); }
+
+/* ---------- the ordnance strip, as the Command Hub's ORDNANCE opens it ---------- */
+.ord { margin-top: clamp(56px, 7vw, 96px); scroll-margin-top: calc(var(--top-height) + 12px); }
+.ord__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 18px 24px; }
+.ord__tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.ord__tabs button {
+  padding: 10px 12px; border: 0; cursor: pointer; font: 600 0.64rem/1 var(--font); letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ink-dim); background: rgba(232, 228, 220, 0.04); box-shadow: inset 0 0 0 1px var(--line); transition: color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.ord__tabs button span { margin-left: 6px; font-family: var(--font-mono); font-weight: 400; color: var(--ink-faint); }
+.ord__tabs button:hover { color: var(--ink); }
+.ord__tabs button[aria-pressed="true"] { color: var(--ink); background: rgba(224, 137, 62, 0.1); box-shadow: inset 0 0 0 1px var(--accent); }
+.ord__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0; padding: 0; list-style: none; }
+@media (min-width: 640px) { .ord__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 900px) { .ord__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 1200px) { .ord__grid { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+.ord__card a {
+  position: relative; display: flex; flex-direction: column; gap: 4px; height: 100%; padding: 10px 12px 12px; text-decoration: none; color: var(--ink);
+  background: linear-gradient(to bottom, rgba(20, 26, 34, 0.92), rgba(8, 10, 14, 0.92)); box-shadow: inset 0 0 0 1px var(--line);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.ord__card a:hover, .ord__card a:focus-visible { box-shadow: inset 0 0 0 1px var(--accent); transform: translateY(-2px); }
+.ord__art { display: block; aspect-ratio: 4 / 3; margin: 0 -4px 6px; background: radial-gradient(ellipse 70% 50% at 50% 75%, rgba(224, 137, 62, 0.14), transparent 70%); }
+.ord__art img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.6)); }
+.ord__card--mod .ord__art { margin: 0 0 6px; overflow: hidden; }
+.ord__card--mod .ord__art img { object-fit: cover; filter: none; }
+.ord__kind { font: 400 0.56rem/1.35 var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); }
+.ord__name { font: 600 1.25rem/1 var(--font-display); letter-spacing: 0.03em; text-transform: uppercase; }
+.ord__meta { display: flex; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 4px; font: 400 0.64rem/1 var(--font-mono); color: var(--ink-dim); font-variant-numeric: tabular-nums; }
+.ord__tag {
+  position: absolute; top: 8px; right: 8px; padding: 4px 6px; font: 400 0.5rem/1 var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-faint); background: rgba(7, 9, 13, 0.75); box-shadow: inset 0 0 0 1px var(--line);
+}
+.ord__tag.is-earned { color: var(--accent); box-shadow: inset 0 0 0 1px rgba(224, 137, 62, 0.45); }
 
 /* ---------- the range ladder ---------- */
 .reach { margin-top: clamp(72px, 9vw, 120px); }
@@ -174,6 +275,10 @@
 .module p:not(.module__weight) { margin: 0; font-size: 0.94rem; color: var(--ink-dim); }
 .module p b { font-weight: 600; color: var(--ink); white-space: nowrap; }
 .module .piece__fit { margin-top: auto; padding-top: 6px; }
+.module { scroll-margin-top: calc(var(--top-height) + 12px); }
+.module__art { display: block; aspect-ratio: 4 / 3; margin-bottom: 4px; overflow: hidden; box-shadow: inset 0 0 0 1px var(--line); }
+.module__art img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.module:hover .module__art img { transform: scale(1.04); }
 
 /* ---------- heat ---------- */
 .heat { display: grid; gap: 36px; margin-top: clamp(80px, 10vw, 136px); padding-top: clamp(48px, 6vw, 72px); border-top: 1px solid var(--line); scroll-margin-top: calc(var(--top-height) + 12px); }
@@ -190,13 +295,90 @@
 .heatbars__v { font: 400 0.74rem/1.2 var(--font-mono); color: var(--ink); font-variant-numeric: tabular-nums; }
 .heatbars__v small { display: block; font-size: 0.6rem; color: var(--ink-faint); }
 
-/* ---------- Marks ---------- */
-.marks { margin-top: clamp(80px, 10vw, 136px); }
-.marks__grid { display: grid; gap: 28px; }
-@media (min-width: 900px) { .marks__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; } }
-.marks__item { padding-top: 18px; border-top: 2px solid var(--accent); }
-.marks__item h3 { margin-bottom: 12px; font: 600 1.5rem/1 var(--font-display); letter-spacing: 0.02em; text-transform: uppercase; }
-.marks__item p { margin: 0; color: var(--ink-dim); }
+/* ---------- the upgrade path: Mk I to Mk IV, paid in Marks and the weapon's own part ---------- */
+.upg { margin-top: clamp(80px, 10vw, 136px); scroll-margin-top: calc(var(--top-height) + 12px); }
+.upg__table { display: grid; gap: 1px; background: var(--line); box-shadow: 0 0 0 1px var(--line); }
+.upg__row { display: grid; grid-template-columns: minmax(0, 1.7fr) repeat(3, minmax(0, 1fr)); gap: 1px; }
+.upg__row > * { background: var(--bg); }
+.upg__row--cost > * { background: rgba(16, 21, 28, 0.95); }
+.upg__lead {
+  display: grid; grid-template-columns: 76px minmax(0, 1fr); grid-template-areas: "art title" "art guns" "art who";
+  gap: 6px 16px; align-items: center; padding: 16px 18px;
+}
+.upg__row--cost .upg__lead { grid-template-areas: "art title"; }
+.upg__part-art, .upg__coin { grid-area: art; width: 76px; height: 76px; object-fit: contain; filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.6)); }
+.upg__coin { width: 60px; height: 60px; justify-self: center; }
+.upg__lead-title { grid-area: title; font: 600 1.35rem/1 var(--font-display); letter-spacing: 0.02em; text-transform: uppercase; }
+.upg__guns { grid-area: guns; display: flex; flex-wrap: wrap; gap: 0 2px; }
+.upg__guns img { width: 48px; height: 36px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.6)); }
+.upg__who { grid-area: who; font-size: 0.84rem; line-height: 1.35; color: var(--ink-dim); }
+.upg__step { display: flex; flex-direction: column; justify-content: center; gap: 6px; padding: 14px 16px; }
+.upg__mk { font: 400 0.6rem/1 var(--font-mono); letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+.upg__step > b { font: 600 1.8rem/1 var(--font-display); letter-spacing: 0.01em; }
+.upg__step small { font: 400 0.64rem/1.2 var(--font-mono); color: var(--ink-faint); }
+.upg__price, .upg__parts { font: 400 0.7rem/1.2 var(--font-mono); color: var(--ink-dim); }
+.upg__price b, .upg__parts b { margin-right: 3px; font: 600 1.5rem/1 var(--font-display); color: var(--ink); }
+.upg__note { margin: 14px 0 0; max-width: 70ch; font-size: 0.88rem; color: var(--ink-faint); }
+@media (max-width: 720px) {
+  .upg__row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .upg__lead { grid-column: 1 / -1; grid-template-columns: 60px minmax(0, 1fr); padding: 14px; }
+  .upg__part-art, .upg__coin { width: 60px; height: 60px; }
+  .upg__step { padding: 12px; }
+  .upg__step > b { font-size: 1.5rem; }
+  .upg__price b, .upg__parts b { font-size: 1.25rem; }
+}
+
+/* ---------- salvage: what each part of an enemy pays, the 70/30 split, the eight parts and the crate ---------- */
+.salv { margin-top: clamp(80px, 10vw, 136px); scroll-margin-top: calc(var(--top-height) + 12px); }
+.salv__grid { display: grid; gap: 28px; align-items: center; }
+@media (min-width: 900px) { .salv__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 56px; } }
+.salv__mech { margin: 0; }
+.salv__frame {
+  position: relative; max-width: 520px; aspect-ratio: 1; margin: 0 auto;
+  background: radial-gradient(ellipse at 50% 92%, rgba(224, 137, 62, 0.12), transparent 50%), radial-gradient(circle at 50% 45%, #141a22, #07090d 72%);
+  box-shadow: 0 0 0 1px var(--line);
+}
+.salv__frame > img { width: 100%; height: 100%; object-fit: contain; filter: brightness(0.8) saturate(0.85); }
+.salv__chip {
+  position: absolute; left: var(--x); top: var(--y); transform: translate(-50%, -50%);
+  display: flex; gap: 2px; padding: 3px; background: rgba(7, 9, 13, 0.85);
+  box-shadow: inset 0 0 0 1px rgba(224, 137, 62, 0.65), 0 4px 14px rgba(0, 0, 0, 0.6);
+}
+.salv__chip img { width: clamp(24px, 6.5vw, 36px); height: clamp(24px, 6.5vw, 36px); object-fit: contain; }
+.salv__chip.is-none {
+  display: grid; place-items: center; width: 24px; height: 24px; padding: 0; border-radius: 50%;
+  font: 600 0.8rem/1 var(--font); color: var(--ink-dim); box-shadow: inset 0 0 0 1px rgba(232, 228, 220, 0.3);
+}
+.salv__mech figcaption { margin-top: 10px; font-size: 0.82rem; line-height: 1.45; color: var(--ink-faint); text-align: center; }
+.salv__zones { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.salv__zones li { display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); color: var(--ink-dim); }
+@media (max-width: 440px) { .salv__zones li { grid-template-columns: 84px minmax(0, 1fr); } .salv__icons img { width: 28px; height: 28px; } }
+.salv__zones b { font-weight: 600; color: var(--ink); }
+.salv__zones li.is-none { color: var(--ink-faint); }
+.salv__icons { display: flex; gap: 2px; }
+.salv__icons img { width: 36px; height: 36px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5)); }
+.salv__icons i { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; font-style: normal; color: var(--ink-dim); box-shadow: inset 0 0 0 1px rgba(232, 228, 220, 0.3); }
+.salv__split { display: flex; margin-top: 40px; box-shadow: 0 0 0 1px var(--line); }
+.salv__share {
+  flex: 0 0 var(--w); display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 10px 18px;
+  background: linear-gradient(90deg, rgba(224, 137, 62, 0.3), rgba(224, 137, 62, 0.12));
+}
+.salv__share.is-wild { background: repeating-linear-gradient(135deg, rgba(232, 228, 220, 0.07) 0 8px, rgba(232, 228, 220, 0.02) 8px 16px); }
+.salv__share b { font: 600 1.9rem/1 var(--font-display); }
+.salv__share span { font: 400 0.68rem/1.25 var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); }
+@media (max-width: 600px) { .salv__share { flex-direction: column; align-items: flex-start; gap: 4px; padding: 10px 12px; } .salv__share b { font-size: 1.5rem; } }
+.salv__split-note { margin: 12px 0 0; max-width: 66ch; font-size: 0.92rem; color: var(--ink-dim); }
+.salv__parts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 40px 0 0; padding: 0; list-style: none; }
+@media (min-width: 760px) { .salv__parts { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.salv__parts li { display: grid; justify-items: start; align-content: start; gap: 6px; padding: 14px; background: rgba(13, 17, 23, 0.7); box-shadow: inset 0 0 0 1px var(--line); }
+.salv__parts img { width: 88px; height: 88px; object-fit: contain; filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.6)); }
+.salv__parts b { font: 600 1.2rem/1 var(--font-display); letter-spacing: 0.02em; text-transform: uppercase; }
+.salv__parts li > span { font-size: 0.84rem; line-height: 1.4; color: var(--ink-dim); }
+.salv__crate { display: grid; gap: 20px; align-items: center; margin-top: 40px; padding: 22px; background: rgba(13, 17, 23, 0.7); box-shadow: inset 0 0 0 1px var(--line); }
+@media (min-width: 700px) { .salv__crate { grid-template-columns: 240px minmax(0, 1fr); gap: 32px; } }
+.salv__crate img { width: 100%; max-width: 260px; filter: drop-shadow(0 12px 16px rgba(0, 0, 0, 0.6)); }
+.salv__crate h3 { margin-bottom: 10px; font: 600 1.7rem/1 var(--font-display); letter-spacing: 0.02em; text-transform: uppercase; }
+.salv__crate p { margin: 0; max-width: 56ch; color: var(--ink-dim); }
 
 /* ---------- the way out ---------- */
 .armory__end {
