@@ -5,50 +5,65 @@
 (() => {
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // The turntable: 72 frames, one every 5 degrees. It turns slowly by itself until the visitor takes hold of it, by
-  // dragging, by the arrow keys or by the dial under it.
+  // The turntable: 360 frames, one a degree, turned at thirty a second (a full turn in twelve seconds), so a 60 Hz screen
+  // holds every frame for exactly two refreshes and the turn runs even. Until 2026-11-05 it was 72 frames five degrees
+  // apart, stepped seven times a second, and it read choppy. It turns slowly by itself until the visitor
+  // takes hold of it, by dragging, by the arrow keys or by the dial under it.
   const spin = document.querySelector("[data-spin]");
   if (spin) {
-    const frames = 72;
+    const frames = 360, coarse = 5, perSecond = 30;
     const stage = spin.querySelector("[data-spin-stage]");
     const picture = spin.querySelector("[data-spin-frame]");
     const dial = spin.querySelector("[data-spin-dial]");
-    // Four paints, each its own 72 frames, filmed from the game (the hub's VIGIL under the hangar's lights). A paint goes
-    // on only once its frames are in, and the turn only ever shows a frame that has arrived: an <img> whose source moves
-    // on every 140 ms never finishes loading any new frame over a phone's connection, so the old paint stayed on screen
-    // (2026-11-03, on an iPhone: the desert paint would not load). While a paint comes in, its swatch fills as a ring.
+    dial.max = String(frames - 1);
+    // Four paints, each its own 360 frames, filmed from the game (the hub's VIGIL under the hangar's lights). A paint comes
+    // in two passes: every fifth degree first (72 frames, about 3 MB, all the page had before), then the degrees between,
+    // those ahead of the turn first. A paint goes on once its first pass is in, and the turn only ever shows a frame that
+    // has arrived: an <img> whose source moves on every 140 ms never finishes loading any new frame over a phone's
+    // connection, so the old paint stayed on screen (2026-11-03, on an iPhone: the desert paint would not load). While a
+    // paint's first pass comes in, its swatch fills as a ring. With data saving on, only the first pass is fetched.
+    const thrifty = Boolean(navigator.connection && navigator.connection.saveData);
     let skin = "base", wanted = "base";
-    const source = (index, paint) => `/hangar/spin/${paint}/vigil-${String(index * 5).padStart(3, "0")}.webp`;
+    const source = (index, paint) => `/hangar/spin/${paint}/vigil-${String(index).padStart(3, "0")}.webp`;
     const sets = new Map();
-    /** Fetches a paint's frames once, the angle on screen first and then outward; resolves when every one has settled. */
+    let frame = 0;
+    /** Fetches a paint's frames once, in its two passes; resolves when the first pass has settled. */
     const load = (paint, onProgress) => {
       if (!sets.has(paint)) {
         const set = { images: [], ready: new Array(frames).fill(false), settled: 0, listeners: [] };
-        const order = Array.from({ length: frames }, (_, k) => (frame + (k % 2 ? -1 : 1) * Math.ceil(k / 2) + frames) % frames);
+        const fetchFrame = (index, settle) => {
+          const img = new Image();
+          img.decoding = "async";
+          img.onload = () => { set.ready[index] = true; settle(); };
+          img.onerror = () => settle();
+          img.src = source(index, paint);
+          set.images.push(img);
+        };
+        // The first pass from the angle on screen outward; the second from the angle on screen onward, the way it turns.
+        const first = Array.from({ length: frames }, (_, k) => (frame + (k % 2 ? -1 : 1) * Math.ceil(k / 2) + frames) % frames)
+          .filter((index) => index % coarse === 0);
+        set.first = first.length;
         set.done = new Promise((resolve) => {
-          for (const index of order) {
-            const img = new Image();
-            img.decoding = "async";
-            const settle = (ok) => {
-              set.ready[index] = ok;
+          for (const index of first) {
+            fetchFrame(index, () => {
               set.settled++;
-              for (const listener of set.listeners) listener(set.settled / frames);
-              if (set.settled === frames) resolve(set);
-            };
-            img.onload = () => settle(true);
-            img.onerror = () => settle(false);
-            img.src = source(index, paint);
-            set.images.push(img);
+              for (const listener of set.listeners) listener(set.settled / set.first);
+              if (set.settled < set.first) return;
+              resolve(set);
+              if (thrifty) return;
+              for (let k = 0; k < frames; k++) {
+                const index = (frame + k) % frames;
+                if (index % coarse) fetchFrame(index, () => {});
+              }
+            });
           }
         });
         sets.set(paint, set);
       }
       const set = sets.get(paint);
-      if (onProgress) { set.listeners.push(onProgress); onProgress(set.settled / frames); }
+      if (onProgress) { set.listeners.push(onProgress); onProgress(set.settled / set.first); }
       return set.done;
     };
-    let frame = 0;
-    let idle = null;
     /** The nearest frame of the paint on show that has arrived, so the turn never waits on the network. */
     const nearestReady = (index) => {
       const set = sets.get(skin);
@@ -61,15 +76,42 @@
       }
       return -1;
     };
+    let drawn = "";
     const show = (index) => {
       frame = ((index % frames) + frames) % frames;
       const k = nearestReady(frame);
-      if (k >= 0) picture.src = source(k, skin);
+      if (k >= 0) {
+        const want = source(k, skin);
+        if (want !== drawn) { picture.src = want; drawn = want; }   // a frame still on its way leaves the last one up
+      }
       dial.value = String(frame);
     };
+    // The slow turn, timed by the screen's own refresh: it moves on by the time that has passed, so a late refresh never
+    // slows it, and it rests while the turntable is off screen or the page is hidden. The count starts half a refresh's
+    // worth in, so the steps land midway between refreshes and never flicker between two and three of them.
+    let turning = false, inView = false, raf = 0, last = 0, carry = 0, fresh = true;
+    const tick = (now) => {
+      raf = 0;
+      if (!turning || !inView || document.hidden) return;
+      if (last) {
+        const gained = (Math.min(now - last, 100) * perSecond) / 1000;
+        if (fresh) { carry = gained / 2; fresh = false; }
+        carry += gained;
+        const step = Math.floor(carry);
+        if (step) { carry -= step; show(frame + step); }
+      }
+      last = now;
+      raf = requestAnimationFrame(tick);
+    };
+    const wake = () => {
+      if (!turning || !inView || document.hidden || raf) return;
+      last = 0; fresh = true;
+      raf = requestAnimationFrame(tick);
+    };
+    new IntersectionObserver((entries) => { inView = entries[entries.length - 1].isIntersecting; wake(); }).observe(stage);
+    document.addEventListener("visibilitychange", wake);
     const takeHold = () => {
-      if (idle) clearInterval(idle);
-      idle = null;
+      turning = false;
       stage.classList.add("is-held");
     };
     let dragFrom = null;
@@ -88,7 +130,7 @@
     stage.addEventListener("pointerup", letGo);
     stage.addEventListener("pointercancel", letGo);
     stage.addEventListener("keydown", (event) => {
-      const step = { ArrowLeft: 1, ArrowRight: -1 }[event.key];
+      const step = { ArrowLeft: coarse, ArrowRight: -coarse }[event.key];   // five degrees a press, as before
       if (!step) return;
       event.preventDefault();
       takeHold();
@@ -125,7 +167,7 @@
     }
     window.addEventListener("load", () => {
       load(skin);
-      if (!reducedMotion) idle = setInterval(() => show(frame + 1), 140);
+      if (!reducedMotion && !stage.classList.contains("is-held")) { turning = true; wake(); }
     });
 
     // The bay's moving light: the game's HubBackdrop layers (bay.json), each between its low and full strength on its own

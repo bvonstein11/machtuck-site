@@ -18,41 +18,49 @@
     { id: "desert", label: "Desert" },
     { id: "snow", label: "Snow" },
   ];
-  const FRAMES = 72, TURN_MS = 120, STEP_MS = 5200, TWEEN_MS = 650;
+  // 360 frames, one a degree, turned at thirty a second as in the Hangar (until 2026-11-05: 72 frames five degrees apart,
+  // stepped eight times a second, which read choppy).
+  const FRAMES = 360, COARSE = 5, PER_SECOND = 30, STEP_MS = 5200, TWEEN_MS = 650;
   const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   // On a phone, or with data saving on, the bench steps through loadouts only and a paint loads when it is tapped:
-  // each paint's frames are about 3 MB, too much to fetch unasked over a phone's data.
+  // each paint's frames are about 3 MB, too much to fetch unasked over a phone's data. There it keeps to every fifth degree.
   const thrifty = Boolean(navigator.connection && navigator.connection.saveData) || window.matchMedia("(max-width: 700px)").matches;
-  const frameSrc = (paint, i) => `/hangar/spin/${paint}/vigil-${String(i * 5).padStart(3, "0")}.webp`;
+  const frameSrc = (paint, i) => `/hangar/spin/${paint}/vigil-${String(i).padStart(3, "0")}.webp`;
   const fmt = (n) => Math.round(n).toLocaleString("en-US");
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 
-  // ── the frames: a paint's 72 are fetched once, and a paint is shown only once its frames have settled ───────────
+  // ── the frames: a paint's are fetched once, every fifth degree first (72 frames) and then the degrees between; a
+  // paint is shown once its first 72 have settled ──────────────────────────────────────────────────────────────────
   // Settled, not all loaded: one frame lost on a phone's connection must not keep a paint off the bench for good. The
-  // turn shows the nearest frame that did arrive; a listener hears how much has come in, for the swatch's ring.
+  // turn shows the nearest frame that did arrive; a listener hears how much of the first pass has come in, for the
+  // swatch's ring.
+  const FIRST = FRAMES / COARSE;
   const loaded = new Map();
   const loadPaint = (paint, onProgress) => {
     if (!loaded.has(paint)) {
       const set = { ready: new Array(FRAMES).fill(false), settled: 0, listeners: [] };
+      const fetchFrame = (i, settle) => {
+        const img = new Image();
+        img.decoding = "async";
+        img.onload = () => { set.ready[i] = true; settle(); };
+        img.onerror = () => settle();
+        img.src = frameSrc(paint, i);
+      };
       set.done = new Promise((resolve) => {
-        for (let i = 0; i < FRAMES; i++) {
-          const img = new Image();
-          img.decoding = "async";
-          const settle = (ok) => {
-            set.ready[i] = ok;
+        for (let i = 0; i < FRAMES; i += COARSE) {
+          fetchFrame(i, () => {
             set.settled++;
-            for (const listener of set.listeners) listener(set.settled / FRAMES);
-            if (set.settled === FRAMES) resolve(set);
-          };
-          img.onload = () => settle(true);
-          img.onerror = () => settle(false);
-          img.src = frameSrc(paint, i);
+            for (const listener of set.listeners) listener(set.settled / FIRST);
+            if (set.settled < FIRST) return;
+            resolve(set);
+            if (!thrifty) for (let k = 0; k < FRAMES; k++) if (k % COARSE) fetchFrame(k, () => {});
+          });
         }
       });
       loaded.set(paint, set);
     }
     const set = loaded.get(paint);
-    if (onProgress) { set.listeners.push(onProgress); onProgress(set.settled / FRAMES); }
+    if (onProgress) { set.listeners.push(onProgress); onProgress(set.settled / FIRST); }
     return set.done.then((done) => (done.ready.some(Boolean) ? done : Promise.reject(new Error("no frames"))));
   };
   const nearestReady = (paint, index) => {
@@ -155,7 +163,7 @@
 
     // ── what is on the bench ───────────────────────────────────────────────────────────────────────────────────
     let frame = 0, paintAt = 0, loadoutAt = 0, playing = !calm, inView = false;
-    let spinTimer = 0, stepTimer = 0, resumeTimer = 0, tween = 0, tweenEnd = 0, shownLb = shown[0].row.operatingLb;
+    let turnRaf = 0, stepTimer = 0, resumeTimer = 0, tween = 0, tweenEnd = 0, shownLb = shown[0].row.operatingLb;
 
     const drawFrame = () => { picture.src = frameSrc(PAINTS[paintAt].id, nearestReady(PAINTS[paintAt].id, frame)); };
     const describe = () => {
@@ -237,10 +245,28 @@
 
     // ── motion: the turn, and the step through loadouts and paints ─────────────────────────────────────────────
     const turnTo = (i) => { frame = ((i % FRAMES) + FRAMES) % FRAMES; drawFrame(); };
+    // The slow turn, timed by the screen's own refresh as in the Hangar (hangar.js says why the count starts half a
+    // refresh in): it moves on by the time that has passed, and rests off screen, in a hidden tab and under a hand.
+    let turnLast = 0, carry = 0, fresh = true;
+    const turnTick = (now) => {
+      turnRaf = 0;
+      if (calm || !inView || document.hidden || dragFrom) return;
+      if (turnLast) {
+        const gained = (Math.min(now - turnLast, 100) * PER_SECOND) / 1000;
+        if (fresh) { carry = gained / 2; fresh = false; }
+        carry += gained;
+        const step = Math.floor(carry);
+        if (step) { carry -= step; turnTo(frame + step); }
+      }
+      turnLast = now;
+      turnRaf = requestAnimationFrame(turnTick);
+    };
     const spin = () => {
-      clearInterval(spinTimer);
-      spinTimer = 0;
-      if (!calm && inView && !document.hidden && !dragFrom) spinTimer = setInterval(() => turnTo(frame + 1), TURN_MS);
+      cancelAnimationFrame(turnRaf);
+      turnRaf = 0;
+      if (calm || !inView || document.hidden || dragFrom) return;
+      turnLast = 0; fresh = true;
+      turnRaf = requestAnimationFrame(turnTick);
     };
     const step = () => {
       clearTimeout(stepTimer);
@@ -288,12 +314,12 @@
     turntable.addEventListener("pointerup", letGo);
     turntable.addEventListener("pointercancel", letGo);
     turntable.addEventListener("keydown", (e) => {
-      const d = { ArrowLeft: 1, ArrowRight: -1 }[e.key];
+      const d = { ArrowLeft: COARSE, ArrowRight: -COARSE }[e.key];   // five degrees a press, as before
       if (!d) return;
       e.preventDefault();
       takeHold();
-      clearInterval(spinTimer);
-      spinTimer = 0;
+      cancelAnimationFrame(turnRaf);
+      turnRaf = 0;
       turnTo(frame + d);
     });
 

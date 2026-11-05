@@ -21,12 +21,12 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preload" href="/hangar/bay/plate.webp" as="image">
   <link rel="preload" href="/hangar/spin/base/vigil-000.webp" as="image">
-  <link rel="stylesheet" href="/assets/site.css?v=316a6df4">
-  <link rel="stylesheet" href="/hangar/hangar.css?v=316a6df4">
-  <script src="/assets/ship.js?v=316a6df4" defer></script>
-  <script src="/assets/site.js?v=316a6df4" defer></script>
-  <script src="/assets/loadouts.js?v=316a6df4" defer></script>
-  <script src="/hangar/hangar.js?v=316a6df4" defer></script>
+  <link rel="stylesheet" href="/assets/site.css?v=8620960b">
+  <link rel="stylesheet" href="/hangar/hangar.css?v=8620960b">
+  <script src="/assets/ship.js?v=8620960b" defer></script>
+  <script src="/assets/site.js?v=8620960b" defer></script>
+  <script src="/assets/loadouts.js?v=8620960b" defer></script>
+  <script src="/hangar/hangar.js?v=8620960b" defer></script>
 </head>
 <body>
   <a class="skip" href="#hangar">Skip to content</a>
@@ -69,7 +69,7 @@
       </header>
 
       <div class="hangar__grid">
-        <!-- The turntable: 72 rendered frames, one every 5 degrees, standing on the Command Hub's own bay and platform (the
+        <!-- The turntable: 360 rendered frames, one a degree, standing on the Command Hub's own bay and platform (the
              game's HubBackdrop, cut by Tools/website/hangar_bay.py). Pictures only, never the 3D model. -->
         <figure class="spin" data-spin>
           <div class="spin__stage" data-spin-stage tabindex="0" role="img" aria-label="The VX-21 VIGIL on the hangar's platform. Drag, or use the arrow keys, to turn it.">
@@ -80,7 +80,7 @@
             </div>
             <p class="spin__hint" aria-hidden="true">Drag to turn</p>
           </div>
-          <input class="spin__dial" type="range" min="0" max="71" step="1" value="0" aria-label="Turn the VIGIL" data-spin-dial>
+          <input class="spin__dial" type="range" min="0" max="359" step="1" value="0" aria-label="Turn the VIGIL" data-spin-dial>
           <div class="spin__skins" role="group" aria-label="Paint" data-spin-skins>
             <button type="button" class="skin is-on" data-skin="base" aria-pressed="true"><span class="skin__swatch skin__swatch--base"></span>Base</button>
             <button type="button" class="skin" data-skin="tiger" aria-pressed="false"><span class="skin__swatch skin__swatch--tiger"></span>Tiger stripe</button>
