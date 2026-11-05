@@ -714,6 +714,108 @@ h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
   }
 }
 
+/* the map's pins and names open each land's panel (assets/lands.js): links, so they work without scripts too */
+.reach-map__pins a { display: flex; align-items: center; gap: 8px; color: inherit; text-decoration: none; cursor: pointer; }
+.reach-map__pins b { position: relative; transition: background 0.2s, box-shadow 0.2s, color 0.2s; }
+.reach-map__pins b::after {
+  content: ""; position: absolute; inset: -6px; border-radius: 50%; box-shadow: 0 0 0 1.5px var(--accent); opacity: 0;
+  animation: pin-call 2.8s ease-out infinite;
+}
+.reach-map__pins li:nth-child(2) b::after { animation-delay: 0.55s; }
+.reach-map__pins li:nth-child(3) b::after { animation-delay: 1.1s; }
+.reach-map__pins li:nth-child(4) b::after { animation-delay: 1.65s; }
+.reach-map__pins li:nth-child(5) b::after { animation-delay: 2.2s; }
+@keyframes pin-call { 0% { transform: scale(0.7); opacity: 0; } 25% { opacity: 0.9; } 100% { transform: scale(1.6); opacity: 0; } }
+.reach-map__pins span { transition: background 0.2s, color 0.2s; }
+.reach-map__pins a:hover b, .reach-map__pins a:focus-visible b, .reach-map__pins li.is-hot b { background: var(--accent); color: var(--accent-ink); box-shadow: 0 0 0 1.5px var(--accent); }
+.reach-map__pins a:hover span, .reach-map__pins a:focus-visible span, .reach-map__pins li.is-hot span { background: rgba(7, 9, 13, 0.92); color: var(--accent); }
+.reach-map__pins a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.reach-map__frame.is-live { cursor: pointer; }
+.reach-map__hint { color: var(--ink); }
+.reach-map__legend a { color: inherit; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) { .reach-map__pins b::after { animation: none; } }
+
+/* the lands: without scripts a list under the map; with them, one land at a time in a panel over the page */
+.lands { display: grid; gap: clamp(48px, 7vw, 80px); margin-top: clamp(48px, 7vw, 80px); }
+.land { display: grid; gap: 28px 48px; scroll-margin-top: 90px; }
+@media (min-width: 1000px) { .land { grid-template-columns: minmax(0, 1.7fr) minmax(300px, 1fr); align-items: start; } }
+.land__stage { position: relative; display: grid; gap: 12px; }
+.land__shot { margin: 0; }
+.land__shot img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: #0b0f14; }
+.land__shot figcaption { margin-top: 8px; color: var(--ink-dim); font-size: 0.85rem; line-height: 1.45; }
+.land__eyebrow { margin: 0 0 14px; color: var(--accent); font: 400 0.72rem/1.3 var(--font-mono); letter-spacing: 0.24em; text-transform: uppercase; }
+.land h3 { margin: 0; font-family: var(--font-display); font-size: clamp(2rem, 3.6vw, 3rem); font-weight: 600; line-height: 1; letter-spacing: 0.01em; }
+.land__lead { margin: 18px 0 0; color: var(--ink); font-size: clamp(1.1rem, 1.5vw, 1.3rem); line-height: 1.45; text-wrap: pretty; }
+.land__text > p:not([class]) { margin: 14px 0 0; color: var(--ink-dim); line-height: 1.6; text-wrap: pretty; }
+.land__facts { display: grid; gap: 1px; margin: 26px 0 0; background: var(--line); }
+.land__facts div { padding: 14px 16px; background: rgba(7, 9, 13, 0.6); }
+.land__facts dt { color: var(--ink-faint); font: 400 0.62rem/1.3 var(--font-mono); letter-spacing: 0.22em; text-transform: uppercase; }
+.land__facts dd { margin: 6px 0 0; color: var(--ink); font-size: 0.95rem; line-height: 1.45; }
+.land__source { margin: 16px 0 0; color: var(--ink-faint); font: 400 0.62rem/1.4 var(--font-mono); letter-spacing: 0.18em; text-transform: uppercase; }
+
+/* the panel */
+html.has-panel { overflow: hidden; }
+.lands-dialog {
+  width: min(1320px, calc(100vw - 48px)); max-width: none; max-height: calc(100dvh - 48px); margin: auto; padding: 0;
+  border: 0; background: #090c11; color: var(--ink); overflow: auto; overscroll-behavior: contain;
+  box-shadow: 0 0 0 1px var(--line), 0 40px 140px rgba(0, 0, 0, 0.75);
+}
+.lands-dialog::backdrop { background: rgba(3, 5, 8, 0.84); }
+.lands-dialog[open] { animation: panel-in 0.32s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.lands-dialog[open]::backdrop { animation: panel-fade 0.32s ease-out; }
+@keyframes panel-in { from { opacity: 0; transform: translateY(18px) scale(0.985); } to { opacity: 1; transform: none; } }
+@keyframes panel-fade { from { opacity: 0; } to { opacity: 1; } }
+.lands-dialog.is-still[open], .lands-dialog.is-still[open]::backdrop { animation: none; }
+.lands-dialog__bar {
+  position: sticky; top: 0; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 14px clamp(16px, 3vw, 32px); background: rgba(9, 12, 17, 0.94); box-shadow: 0 1px 0 var(--line);
+}
+.lands-dialog__count { margin: 0; color: var(--ink-dim); font: 400 0.68rem/1 var(--font-mono); letter-spacing: 0.22em; text-transform: uppercase; }
+.lands-dialog__close {
+  display: grid; place-items: center; width: 44px; height: 44px; margin: -6px -10px -6px 0; border: 0; border-radius: 50%;
+  background: none; color: var(--ink); cursor: pointer;
+}
+.lands-dialog__close:hover { background: rgba(232, 228, 220, 0.08); color: var(--accent); }
+.lands-dialog__body { padding: clamp(16px, 3vw, 32px); }
+.lands.is-panel { margin: 0; }
+.lands.is-panel .land[hidden] { display: none; }
+.lands.is-panel .land__stage { display: block; aspect-ratio: 16 / 9; overflow: hidden; background: #0b0f14; touch-action: pan-y; }
+.lands.is-panel .land__shot { position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity 0.45s, visibility 0s 0.45s; }
+.lands.is-panel .land__shot.is-on { opacity: 1; visibility: visible; transition: opacity 0.45s; }
+.lands.is-panel .land__shot img { height: 100%; }
+.lands.is-panel .land__shot figcaption {
+  position: absolute; left: 0; right: 0; bottom: 0; margin: 0; padding: 40px 18px 14px;
+  background: linear-gradient(to top, rgba(4, 6, 9, 0.82), transparent); color: var(--ink); font-size: 0.85rem;
+}
+.lands-dialog.is-still .land__shot { transition: none; }
+.land__step {
+  position: absolute; top: 50%; z-index: 2; display: grid; place-items: center; width: 46px; height: 46px; margin-top: -23px;
+  border: 0; border-radius: 50%; background: rgba(7, 9, 13, 0.6); color: var(--ink); cursor: pointer; transition: background 0.2s, color 0.2s;
+}
+.land__step:hover { background: rgba(7, 9, 13, 0.88); color: var(--accent); }
+.land__step--prev { left: 12px; }
+.land__step--next { right: 12px; }
+.land__thumbs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+.land__thumb { padding: 0; border: 0; background: none; cursor: pointer; opacity: 0.55; box-shadow: 0 0 0 1px var(--line); transition: opacity 0.2s, box-shadow 0.2s; }
+.land__thumb img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.land__thumb:hover { opacity: 0.85; }
+.land__thumb[aria-pressed="true"] { opacity: 1; box-shadow: 0 0 0 2px var(--accent); }
+.lands-dialog__nav {
+  display: flex; justify-content: space-between; gap: 12px; padding: 16px clamp(16px, 3vw, 32px) clamp(18px, 3vw, 28px);
+  box-shadow: 0 -1px 0 var(--line);
+}
+.lands-dialog__go {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 4px; border: 0; background: none; cursor: pointer;
+  color: var(--ink-dim); font: 600 0.72rem/1 var(--font); letter-spacing: 0.18em; text-transform: uppercase;
+}
+.lands-dialog__go:hover { color: var(--accent); }
+@media (max-width: 760px) {
+  .lands-dialog { width: 100vw; max-height: 100dvh; height: 100dvh; }
+  .lands.is-panel .land__stage { margin: 0 calc(-1 * clamp(16px, 3vw, 32px)); }
+  .land__step { width: 40px; height: 40px; margin-top: -20px; }
+  .lands.is-panel .land__shot figcaption { font-size: 0.78rem; padding: 30px 14px 10px; }
+}
+
 /* the air: the survey probe's reading, drawn as an instrument readout in the strip's monospace. The carbon dioxide row
    is marked in a fixed amber: it is a warning. */
 .air { max-width: 760px; margin: clamp(56px, 8vw, 96px) 0 0; }
