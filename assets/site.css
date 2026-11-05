@@ -151,15 +151,17 @@ h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
 }
 .bar__nav a:not(.btn):hover { color: var(--ink); }
 .bar__menu { display: none; }
-/* 2026-11-04 — eight links. In full the nav needs about 1,235 px; below that it tightens, and at 1,100 px and below it folds
-   into the menu button. A link never breaks onto a second line (at 1,000 px four of the six text links did). */
+/* 2026-11-04 — nine links since The Physics joined. In full the nav needs about 1,400 px; below that it tightens (and then
+   needs about 1,220), and at 1,220 px and below it folds into the menu button. Measured in the browser: the full nav is
+   1,045 px wide, the tight one 882, beside a 190 px brand. A link never breaks onto a second line (at 1,000 px four of the
+   six text links did). */
 .bar__nav a { white-space: nowrap; }
-@media (min-width: 1101px) and (max-width: 1239px) {
+@media (min-width: 1221px) and (max-width: 1399px) {
   .bar__nav { gap: 18px; }
   .bar__nav a:not(.btn) { letter-spacing: 0.12em; }
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1220px) {
   .bar__menu {
     display: grid; place-items: center;
     width: 44px; height: 44px; margin-right: -10px;
@@ -736,6 +738,7 @@ h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
 .air__alert th, .air__alert td:nth-child(2) { color: #e0893e; }
 .air__alert th span { color: rgba(224, 137, 62, 0.75); }
 .air__verdict { margin: 22px 0 0; font-size: clamp(1.05rem, 1.5vw, 1.25rem); color: var(--ink); }
+.air__more { margin: 22px 0 0; }   /* the door to /physics/ */
 @media (max-width: 600px) {
   .air__head { padding: 12px 14px; }
   .air__table th, .air__table td { padding: 10px 14px; }
