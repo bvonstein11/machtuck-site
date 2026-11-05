@@ -25,8 +25,8 @@
   <link rel="preload" href="/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/assets/img/sky-2560.webp" as="image" media="(min-width: 1281px)">
   <link rel="preload" href="/assets/img/sky-1280.webp" as="image" media="(max-width: 1280px)">
-  <link rel="stylesheet" href="/assets/site.css?v=52e662fd">
-  <link rel="stylesheet" href="/drop/drop.css?v=52e662fd">
+  <link rel="stylesheet" href="/assets/site.css?v=98e0e2c5">
+  <link rel="stylesheet" href="/drop/drop.css?v=98e0e2c5">
   <script>
     // Boarding: arriving from another site opens on the shipboard network, which assets/site.js draws. Nothing is
     // stored in the browser (the privacy page promises that): a reload, Back, or a link from this site skips it. This
@@ -41,16 +41,16 @@
       }
     } catch (error) { /* no boarding screen */ }
   </script>
-  <script src="/assets/ship.js?v=52e662fd" defer></script>
-  <script src="/assets/site.js?v=52e662fd" defer></script>
-  <script src="/drop/drop.js?v=52e662fd" defer></script>
-  <script src="/assets/patch.js?v=52e662fd" defer></script>
-  <script src="/assets/patchmaker.js?v=52e662fd" defer></script>
-  <script src="/assets/front.js?v=52e662fd" defer></script>
-  <script src="/assets/loadouts.js?v=52e662fd" defer></script>
-  <script src="/assets/bench.js?v=52e662fd" defer></script>
-  <script src="/assets/valor.js?v=52e662fd" defer></script>
-  <script src="/assets/story.js?v=52e662fd" defer></script>
+  <script src="/assets/ship.js?v=98e0e2c5" defer></script>
+  <script src="/assets/site.js?v=98e0e2c5" defer></script>
+  <script src="/drop/drop.js?v=98e0e2c5" defer></script>
+  <script src="/assets/patch.js?v=98e0e2c5" defer></script>
+  <script src="/assets/patchmaker.js?v=98e0e2c5" defer></script>
+  <script src="/assets/front.js?v=98e0e2c5" defer></script>
+  <script src="/assets/loadouts.js?v=98e0e2c5" defer></script>
+  <script src="/assets/bench.js?v=98e0e2c5" defer></script>
+  <script src="/assets/valor.js?v=98e0e2c5" defer></script>
+  <script src="/assets/story.js?v=98e0e2c5" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -193,7 +193,7 @@
       </div>
     </section>
 
-    <!-- THE STORY: how we got here, as story cards (assets/story.js). Twelve full-screen cards run from Earth's failure to
+    <!-- THE STORY: how we got here, as story cards (assets/story.js). Thirteen full-screen cards run from Earth's failure to
          the ship's clock today, each a picture, a date and a line or two. They play on their own while on screen; a tap, a
          swipe or an arrow key moves through them, and a hold pauses. The last card sends a message from where the Archive
          is now. The words follow the approved Script v3, and the Archive's numbers are ship.js's. The pictures from the ground are
@@ -205,32 +205,40 @@
         <p class="eyebrow" data-reveal>The story so far</p>
         <h2 data-reveal>How we got here.</h2>
       </div>
-      <div class="story__stage" data-story-stage tabindex="0" role="region" aria-roledescription="story" aria-label="How we got here, in twelve cards">
+      <div class="story__stage" data-story-stage tabindex="0" role="region" aria-roledescription="story" aria-label="How we got here, in thirteen cards">
         <canvas class="story__canvas" aria-hidden="true"></canvas>
         <ol class="story__cards">
-          <li class="story__card" data-card="earth" data-scene="earth">
+          <li class="story__card" data-card="earth" style="--focus: 50% 40%; --focus-p: 24% 42%; --z0: 1.1; --z1: 1.0">
+            <div class="story__art"><img src="/assets/img/story-earth-1280.webp" srcset="/assets/img/story-earth-1280.webp 1280w, /assets/img/story-earth-2560.webp 2560w" sizes="(max-aspect-ratio: 1/1) 330vw, 100vw" alt="Earth from orbit, its oceans shrunk and its land scorched under dust storms, the sun breaking over its edge" width="1280" height="720" loading="lazy" decoding="async"></div>
             <div class="story__words"><p class="story__when">Aug 3289</p><h3>Earth was failing.</h3><p>There was no saving it, so there was a plan: send probes to the nearest stars at half the speed of light, and find a new home.</p></div>
           </li>
-          <li class="story__card" data-card="answer" data-scene="answer">
+          <li class="story__card" data-card="answer" style="--focus: 50% 50%; --focus-p: 72% 52%; --z0: 1.1; --z1: 1.0">
+            <div class="story__art"><img src="/assets/img/story-centauri-1280.webp" srcset="/assets/img/story-centauri-1280.webp 1280w, /assets/img/story-centauri-2560.webp 2560w" sizes="(max-aspect-ratio: 1/1) 330vw, 100vw" alt="Alpha Centauri's two suns, and The Reach: snow across its north, jungle along a great river, desert to the east, lava in the south" width="1280" height="720" loading="lazy" decoding="async"></div>
             <div class="story__words"><p class="story__when">Mar 3304 · The first answer</p><h3>A world, <em>with water.</em></h3><p>Alpha Centauri, the closest star, more than four light-years away. Its report took more than four years to reach us, and Earth could not wait for a second.</p></div>
           </li>
-          <li class="story__card story__card--count" data-card="chosen" data-scene="chosen">
+          <li class="story__card story__card--count" data-card="chosen" style="--focus: 50% 40%; --focus-p: 50% 42%; --z0: 1.1; --z1: 1.0">
+            <div class="story__art"><img src="/assets/img/story-people-1280.webp" srcset="/assets/img/story-people-1280.webp 1280w, /assets/img/story-people-2560.webp 2560w" sizes="(max-aspect-ratio: 1/1) 330vw, 100vw" alt="Long lines of families seen from behind, walking through a vast hall toward a lit gangway" width="1280" height="720" loading="lazy" decoding="async"></div>
             <div class="story__words"><p class="story__when">The chosen</p><h3><span class="story__count" data-story-count>20,000</span> people.</h3><p>Picked for what they could do, to make the crossing on the Archive.</p></div>
           </li>
-          <li class="story__card" data-card="archive" style="--focus: 50% 50%; --focus-p: 66% 50%; --z0: 1.12; --z1: 1.02">
-            <div class="story__art"><img src="/assets/img/archive-1280.webp" srcset="/assets/img/archive-1280.webp 1280w, /assets/img/archive-full.webp 1915w" sizes="(max-aspect-ratio: 1/1) 420vw, 100vw" alt="The Archive between the stars, its spine lit in amber" width="1280" height="549" loading="lazy" decoding="async"></div>
+          <li class="story__card" data-card="advance" style="--focus: 62% 40%; --focus-p: 84% 38%; --z0: 1.1; --z1: 1.0">
+            <div class="story__art"><img src="/assets/img/story-advance-1280.webp" srcset="/assets/img/story-advance-1280.webp 1280w, /assets/img/story-advance-2560.webp 2560w" sizes="(max-aspect-ratio: 1/1) 330vw, 100vw" alt="A small ship pulling away from a dying Earth, its engine burning blue" width="1280" height="720" loading="lazy" decoding="async"></div>
+            <div class="story__words"><p class="story__when">3308 · The advance crew</p><h3>A small ship went first.</h3><p>A few hundred crew left two years ahead of the Archive, on a faster ship, to make a place for the rest of us.</p></div>
+          </li>
+          <li class="story__card" data-card="archive" style="--focus: 50% 36%; --focus-p: 58% 32%; --z0: 1.1; --z1: 1.0">
+            <div class="story__art"><img src="/assets/img/story-archive-1280.webp" srcset="/assets/img/story-archive-1280.webp 1280w, /assets/img/story-archive-2560.webp 2560w" sizes="(max-aspect-ratio: 1/1) 330vw, 100vw" alt="The Archive leaving Earth orbit, its drive burning a long blue plume above the dusty planet" width="1280" height="720" loading="lazy" decoding="async"></div>
             <div class="story__words"><p class="story__when">19 Jan 3310</p><h3>The Archive left Earth.</h3><p>Families came aboard with young children. It carried everything worth saving, and the memory of what went wrong.</p></div>
           </li>
-          <li class="story__card" data-card="crossing" style="--focus: 66% 44%; --focus-p: 62% 44%; --z0: 1.7; --z1: 1.5">
-            <div class="story__art"><img src="/assets/img/archive-1280.webp" srcset="/assets/img/archive-1280.webp 1280w, /assets/img/archive-full.webp 1915w" sizes="(max-aspect-ratio: 1/1) 420vw, 100vw" alt="Close on the Archive's great drum, its decks lit" width="1280" height="549" loading="lazy" decoding="async"></div>
+          <li class="story__card" data-card="crossing" style="--focus: 50% 45%; --focus-p: 56% 45%; --z0: 1.1; --z1: 1.0">
+            <div class="story__art"><img src="/assets/img/story-crossing-1280.webp" srcset="/assets/img/story-crossing-1280.webp 1280w, /assets/img/story-crossing-2560.webp 2560w" sizes="(max-aspect-ratio: 1/1) 330vw, 100vw" alt="A child seen from behind at a round window full of stars, a parent's hand on the child's shoulder" width="1280" height="720" loading="lazy" decoding="async"></div>
             <div class="story__words"><p class="story__when">More than thirty years</p><h3>We crossed awake.</h3><p>Children were born aboard who would never see Earth, and every deck trained for the work waiting on the ground.</p></div>
           </li>
-          <li class="story__card story__card--decks" data-card="decks" data-scene="decks">
+          <li class="story__card story__card--decks" data-card="decks" style="--focus: 50% 40%; --focus-p: 50% 34%; --z0: 1.1; --z1: 1.0">
+            <div class="story__art"><img src="/assets/img/story-decks-1280.webp" srcset="/assets/img/story-decks-1280.webp 1280w, /assets/img/story-decks-2560.webp 2560w" sizes="(max-aspect-ratio: 1/1) 330vw, 100vw" alt="Five decks inside the Archive's hull, stacked along its curve, each lit in its own colour" width="1280" height="720" loading="lazy" decoding="async"></div>
             <div class="story__words"><p class="story__when">Aboard the Archive</p><h3>Five mission groups.</h3><p>Each worked its own deck, called by the name of its department head. Those five names are the factions now.</p><div class="story__decks" role="list"><div role="listitem" style="--house:#D4A23C"><b>Groundworks</b><span>Valdron deck</span></div><div role="listitem" style="--house:#A075CC"><b>Habitat</b><span>Shenvong deck</span></div><div role="listitem" style="--house:#D5636B"><b>Survey</b><span>Kashiro deck</span></div><div role="listitem" style="--house:#4A90C2"><b>Forward Recon</b><span>Darvyn deck</span></div><div role="listitem" style="--house:#8FA83C"><b>General Labour</b><span>Gorvik deck</span></div></div></div>
           </li>
           <li class="story__card story__card--right story__card--sent" data-card="landed" style="--focus: 22% 68%; --origin: 0% 100%; --z0: 1.42; --z1: 1.28; --focus-p: 9% 68%; --origin-p: 50% 100%; --z0-p: 1.95; --z1-p: 1.8">
             <div class="story__art"><img src="/assets/img/reach-landing-1280.webp" srcset="/assets/img/reach-landing-1280.webp 1280w, /assets/img/reach-landing-2560.webp 2560w" sizes="(max-aspect-ratio: 1/1) 330vw, 100vw" alt="The advance crew's lander on open ground by the river, crew and cargo beside it, nothing built yet" width="1280" height="720" loading="lazy" decoding="async"></div><p class="story__stamp" aria-hidden="true">Sent home from The Reach</p>
-            <div class="story__words"><p class="story__when">Jul 3325 · The Reach</p><h3>The advance crew landed.</h3><p>A small, fast ship had left in 3308 with a few hundred crew, to make a place for the rest of us. They came down on open ground, with nothing built.</p></div>
+            <div class="story__words"><p class="story__when">Jul 3325 · The Reach</p><h3>The advance crew landed.</h3><p>Seventeen years after they left Earth, they came down on open ground, with nothing built.</p></div>
           </li>
           <li class="story__card story__card--right story__card--sent" data-card="signal" style="--focus: 22% 68%; --origin: 0% 100%; --z0: 1.42; --z1: 1.28; --focus-p: 9% 68%; --origin-p: 50% 100%; --z0-p: 1.95; --z1-p: 1.8">
             <div class="story__art"><img src="/assets/img/reach-camp-1280.webp" srcset="/assets/img/reach-camp-1280.webp 1280w, /assets/img/reach-camp-2560.webp 2560w" sizes="(max-aspect-ratio: 1/1) 330vw, 100vw" alt="The first camp: a row of shelters, solar panels and a tall mast with a light at its tip" width="1280" height="720" loading="lazy" decoding="async"></div><p class="story__stamp" aria-hidden="true">Sent home from The Reach</p>
@@ -238,10 +246,10 @@
           </li>
           <li class="story__card story__card--right story__card--sent story__card--grow" data-card="growth" style="--focus: 22% 68%; --origin: 0% 100%; --z0: 1.42; --z1: 1.28; --focus-p: 9% 68%; --origin-p: 50% 100%; --z0-p: 1.95; --z1-p: 1.8">
             <div class="story__art"><img src="/assets/img/reach-halfway-1280.webp" srcset="/assets/img/reach-halfway-1280.webp 1280w, /assets/img/reach-halfway-2560.webp 2560w" sizes="(max-aspect-ratio: 1/1) 330vw, 100vw" alt="The settlement half built: the first domes, a dome frame going up, the first fields" width="1280" height="720" loading="lazy" decoding="async"><img src="/assets/img/reach-map-1280.webp" srcset="/assets/img/reach-map-1280.webp 1280w, /assets/img/reach-map-2560.webp 2560w" sizes="(max-aspect-ratio: 1/1) 330vw, 100vw" alt="The settlement grown: domes, streets and fields at the river" width="1280" height="720" loading="lazy" decoding="async" class="story__late"></div><p class="story__stamp" aria-hidden="true">Sent home from The Reach</p>
-            <div class="story__words"><p class="story__when">3330 to 3337 · The Reach</p><h3>Year by year, it grew.</h3><p>Every picture they sent showed more: shelters, then domes, then fields, then streets.</p></div>
+            <div class="story__words"><p class="story__when">3330 to 3337 · The Reach</p><h3>Year by year, it grew.</h3><p>Every picture they sent showed more: shelters, then domes, then fields.</p></div>
           </li>
-          <li class="story__card story__card--right story__card--sent" data-card="supply" style="--focus: 22% 68%; --origin: 0% 100%; --z0: 1.42; --z1: 1.28; --focus-p: 9% 68%; --origin-p: 50% 100%; --z0-p: 1.95; --z1-p: 1.8">
-            <div class="story__art"><img src="/assets/img/reach-ship-1280.webp" srcset="/assets/img/reach-ship-1280.webp 1280w, /assets/img/reach-ship-2560.webp 2560w" sizes="(max-aspect-ratio: 1/1) 330vw, 100vw" alt="A supply ship from the Archive coming down onto the settlement's landing field" width="1280" height="720" loading="lazy" decoding="async"></div><p class="story__stamp" aria-hidden="true">Sent home from The Reach</p>
+          <li class="story__card story__card--sent" data-card="supply" style="--focus: 50% 36%; --focus-p: 44% 34%; --z0: 1.1; --z1: 1.0">
+            <div class="story__art"><img src="/assets/img/story-supply-1280.webp" srcset="/assets/img/story-supply-1280.webp 1280w, /assets/img/story-supply-2560.webp 2560w" sizes="(max-aspect-ratio: 1/1) 330vw, 100vw" alt="A supply ship from the Archive coming down at dusk over the settlement's domes, raising a cloud of dust" width="1280" height="720" loading="lazy" decoding="async"></div><p class="story__stamp" aria-hidden="true">Sent home from The Reach</p>
             <div class="story__words"><p class="story__when">Mar 3337</p><h3>We sent help ahead.</h3><p>A faster ship left the Archive with new materials, and young people to help and to learn. Children were born there, and every year we flew closer.</p></div>
           </li>
           <li class="story__card" data-card="silence" data-scene="silence">

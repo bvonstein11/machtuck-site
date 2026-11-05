@@ -299,6 +299,20 @@ h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
   .hero__shadow { left: auto; right: -30%; top: auto; bottom: 2%; width: 120%; height: 12%; }
   .hero__copy { left: var(--gutter); right: var(--gutter); top: calc(var(--top-height) + 5svh); width: auto; }
   .hero__title { max-width: 560px; }
+  /* 2026-11-04, from the phone review ("A little cramped", then "Move the button down and center the tag line don't
+     cover the mech"): three bands. The title, the line and the countdown are centred at the top, the VIGIL stands a
+     little smaller in the middle, and the two buttons sit side by side below its feet. `{CC}` the sizes. */
+  .hero__copy { bottom: calc(68px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; align-items: center; text-align: center; pointer-events: none; }
+  .hero__copy > * { pointer-events: auto; }
+  .hero__title { width: 100%; }
+  .hero__line { margin-top: 16px; }
+  .eta { margin-top: 20px; justify-content: center; }
+  .eta__label { text-align: left; }
+  .eta + .hero__actions, .hero__actions { margin-top: auto; }
+  .hero__actions { flex-wrap: nowrap; justify-content: center; gap: 10px; width: 100%; max-width: 420px; }
+  .hero__actions .btn { flex: 1 1 0; min-width: 0; min-height: 48px; padding: 0 10px; font-size: 0.7rem; letter-spacing: 0.14em; white-space: nowrap; }
+  .hero__vigil { right: -4%; bottom: 17%; height: 41%; }
+  .hero__shadow { bottom: 13.5%; height: 9%; }
 }
 
 /* ---------- sections ---------- */
