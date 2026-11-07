@@ -1621,3 +1621,22 @@ html.has-frontmap-full, html.has-frontmap-full body { overflow: hidden; }
   .bench__stats div { padding: 10px 8px; }
 }
 @media (prefers-reduced-motion: reduce) { .bench__loadout, .bench__paint, .bench__hint { transition: none; } }
+
+/* Every picture says Pre-Alpha (assets/prealpha.js adds the label). It sits top right unless the picture has something there. */
+.prealpha {
+  position: absolute; z-index: 5; top: 12px; right: 12px; padding: 4px 8px; pointer-events: none;
+  font-family: "B612 Mono", ui-monospace, monospace; font-size: 11px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92); background: rgba(6, 8, 12, 0.62); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+.prealpha--small { top: 6px; right: 6px; padding: 2px 5px; font-size: 9px; letter-spacing: 0.12em; }
+.bay > .prealpha { right: auto; left: 50%; transform: translateX(-50%); }
+.ord__art > .prealpha { top: auto; bottom: 4px; right: 4px; }
+.archive__view > .prealpha { top: auto; bottom: 26px; right: auto; left: 50%; transform: translateX(-50%); }
+.story__art > .prealpha { top: 66px; right: max(var(--gutter), 14px); }
+.stage__view > .prealpha { top: 18px; right: max(16px, 5vw); }
+.open > .prealpha { top: 142px; right: max(16px, 5vw); }
+.hero__stage > .prealpha { top: auto; bottom: 22px; right: var(--gutter); }
+@media (max-width: 899px) {
+  .archive__view > .prealpha { bottom: 44px; }
+  .open > .prealpha { top: 104px; }
+}

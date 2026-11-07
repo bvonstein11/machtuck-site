@@ -19,11 +19,12 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <link rel="stylesheet" href="/assets/site.css?v=f4face38">
-  <link rel="stylesheet" href="/physics/physics.css?v=f4face38">
-  <script src="/assets/ship.js?v=f4face38" defer></script>
-  <script src="/assets/site.js?v=f4face38" defer></script>
-  <script src="/physics/physics.js?v=f4face38" defer></script>
+  <link rel="stylesheet" href="/assets/site.css?v=10c90e80">
+  <link rel="stylesheet" href="/physics/physics.css?v=10c90e80">
+  <script src="/assets/ship.js?v=10c90e80" defer></script>
+  <script src="/assets/prealpha.js?v=10c90e80" defer></script>
+  <script src="/assets/site.js?v=10c90e80" defer></script>
+  <script src="/physics/physics.js?v=10c90e80" defer></script>
 </head>
 <body>
   <a class="skip" href="#physics">Skip to content</a>
@@ -132,7 +133,7 @@
         </div>
       </div>
       <div class="note">
-        <p class="note__say">One gravity runs the whole game: the DART-20's rounds drop by it, and the fifty-ton machine you are sitting in falls by it. It is Earth's because your body already knows it. Anything lighter only feels floaty.</p>
+        <p class="note__say">One gravity runs the whole game: the DART-20's rounds drop by it, and the fifty-ton machine you are sitting in falls by it. The Reach pulls about as hard as Earth does, so the game runs Earth's figure. Anything lighter only feels floaty.</p>
         <details class="sums">
           <summary>The arithmetic</summary>
           <p>Arrive at 6 m/s or slower, a drop of about 6 feet, and the legs take it. Every metre per second past that costs each leg 14 of its 150, so an unpowered drop from 47 feet takes both legs off.</p>
@@ -163,7 +164,8 @@
             <div><dt>Best flight</dt><dd data-out="best">—</dd></div>
           </dl>
           <div class="gauge" data-heat style="--v: 0"><span>Reactor heat</span><b data-out="heat">0</b><i aria-hidden="true"></i></div>
-          <div class="tank"><span>Tank <b data-out="tank">30.0 s</b></span><span class="tank__lights" aria-hidden="true"><i data-light class="is-on"></i><i data-light class="is-on"></i><i data-light class="is-on"></i><i data-light class="is-on"></i><i data-light class="is-on"></i><i data-light class="is-on"></i></span><span>Legs <b data-out="legs">150 of 150</b></span></div>
+          <div class="lamps" data-lamps data-band="normal"><span class="lamps__name">Landing lights</span><span class="lamps__row" aria-hidden="true"><i data-light class="is-on"></i><i data-light class="is-on"></i><i data-light class="is-on"></i><i data-light class="is-on"></i><i data-light class="is-on"></i><i data-light class="is-on"></i></span><span class="lamps__say" aria-live="polite" data-out="lamps">You can fly down</span></div>
+          <div class="tank"><span>Tank <b data-out="tank">30.0 s</b></span><span>Legs <b data-out="legs">150 of 150</b></span></div>
           <p class="verdict" aria-live="polite" data-out="verdict">Hold the button. Let go to come down.</p>
           <div class="row">
             <button class="chip" type="button" data-chip="flight-load" data-value="empty" aria-pressed="true">Empty</button>
@@ -174,12 +176,13 @@
         </div>
       </div>
       <div class="note">
-        <p class="note__say">The jets own the whole flight, and every second of thrust is paid for in heat and fuel. Hovering still burns. Fly hot, or fly the tank dry, and nothing catches you on the way down.</p>
+        <p class="note__say">The six lights are your landing: they read your radar altimeter against what is left in the tank. Climbing raises what you owe, and burning lowers what you have. Run out of lights, or overheat up there, and it is your legs.</p>
         <details class="sums">
           <summary>The arithmetic</summary>
           <p>The jets push the VIGIL up at 14 m/s, about 2,760 feet a minute. Once you leave the ground you keep the heading and speed you had at liftoff; this demo lifts off standing. The torso still turns, so you can fly over a fight and shoot down into its back.</p>
           <p>A flight-control governor caps the climb at 150 feet. Over the last 40 feet it bleeds the thrust away, so the VIGIL settles at its ceiling instead of striking it.</p>
           <p>Coming down, an auto-flare lights the jets at 16 feet and brakes you to a 4 m/s touchdown. It costs fuel and no heat, and it needs a tank with something in it and a reactor that is not overheated.</p>
+          <p>The lights price the trip down: what is left in the tank after flying down at 5 m/s and flaring at the bottom. They go out before the tank does. They promise a flown descent, so a good pilot can still cut the jets and let the flare catch them, for less gas than the lights charge.</p>
           <dl class="figs">
             <div><dt>The tank</dt><dd>30 s of thrust <span>one tank for each life; it does not refill</span></dd></div>
             <div><dt>Heat</dt><dd>+7 a second <span>the same heat the guns make, and thrust stops all cooling</span></dd></div>
@@ -455,7 +458,7 @@
             <div><dt>Sound speed</dt><dd data-out="c">343 m/s</dd></div>
           </dl>
           <div class="band" data-kept style="--cut: 0.3903">
-            <span>The air takes everything <b data-out="cut">Above 2.2 kHz</b></span>
+            <span>The air has halved everything <b data-out="cut">Above 2.2 kHz</b></span>
             <i aria-hidden="true"></i>
           </div>
           <div class="row">
@@ -478,7 +481,7 @@
           <summary>The arithmetic</summary>
           <div class="eq">
             <p><b>Speed of sound</b> = 331.3 × √(1 + T ÷ 273.15) m/s</p>
-            <p><b>What the air takes</b> ISO 9613-1, from frequency, temperature and humidity</p>
+            <p><b>What the air takes</b> ISO 9613-1, from frequency, temperature and humidity. The readout is where it has taken 6 dB, half the sound's strength</p>
           </div>
           <p>The report here is made in your browser to show the delay and the dulling; it is not the game's own recording.</p>
         </details>
@@ -521,7 +524,7 @@
             <div><dt>Orbit</dt><dd>1.24 AU <span>1.24 times Earth's distance from the Sun</span></dd></div>
             <div><dt>Year</dt><dd>481 Earth days <span>455 of its own days</span></dd></div>
             <div><dt>Axial tilt</dt><dd>21° <span>Earth's is 23.4°</span></dd></div>
-            <div><dt>Gravity</dt><dd>9.81 m/s² <span>1 g, Earth's own</span></dd></div>
+            <div><dt>Gravity</dt><dd>9.81 m/s² <span>about 1 g, so the game runs Earth's figure</span></dd></div>
             <div><dt>At MSL</dt><dd>29.92 inHg · 15 °C <span>1,013.2 hPa, the standard day</span></dd></div>
             <div><dt>With height</dt><dd>−1.98 °C per 1,000 ft <span>up to 36,089 ft</span></dd></div>
           </dl>

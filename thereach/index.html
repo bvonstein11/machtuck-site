@@ -25,8 +25,8 @@
   <link rel="preload" href="/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/assets/img/sky-2560.webp" as="image" media="(min-width: 1281px)">
   <link rel="preload" href="/assets/img/sky-1280.webp" as="image" media="(max-width: 1280px)">
-  <link rel="stylesheet" href="/assets/site.css?v=f4face38">
-  <link rel="stylesheet" href="/drop/drop.css?v=f4face38">
+  <link rel="stylesheet" href="/assets/site.css?v=10c90e80">
+  <link rel="stylesheet" href="/drop/drop.css?v=10c90e80">
   <script>
     // Boarding: arriving from another site opens on the shipboard network, which assets/site.js draws. Nothing is
     // stored in the browser (the privacy page promises that): a reload, Back, or a link from this site skips it. This
@@ -41,17 +41,18 @@
       }
     } catch (error) { /* no boarding screen */ }
   </script>
-  <script src="/assets/ship.js?v=f4face38" defer></script>
-  <script src="/assets/site.js?v=f4face38" defer></script>
-  <script src="/drop/drop.js?v=f4face38" defer></script>
-  <script src="/assets/patch.js?v=f4face38" defer></script>
-  <script src="/assets/patchmaker.js?v=f4face38" defer></script>
-  <script src="/assets/front.js?v=f4face38" defer></script>
-  <script src="/assets/loadouts.js?v=f4face38" defer></script>
-  <script src="/assets/bench.js?v=f4face38" defer></script>
-  <script src="/assets/valor.js?v=f4face38" defer></script>
-  <script src="/assets/story.js?v=f4face38" defer></script>
-  <script src="/assets/lands.js?v=f4face38" defer></script>
+  <script src="/assets/ship.js?v=10c90e80" defer></script>
+  <script src="/assets/prealpha.js?v=10c90e80" defer></script>
+  <script src="/assets/site.js?v=10c90e80" defer></script>
+  <script src="/drop/drop.js?v=10c90e80" defer></script>
+  <script src="/assets/patch.js?v=10c90e80" defer></script>
+  <script src="/assets/patchmaker.js?v=10c90e80" defer></script>
+  <script src="/assets/front.js?v=10c90e80" defer></script>
+  <script src="/assets/loadouts.js?v=10c90e80" defer></script>
+  <script src="/assets/bench.js?v=10c90e80" defer></script>
+  <script src="/assets/valor.js?v=10c90e80" defer></script>
+  <script src="/assets/story.js?v=10c90e80" defer></script>
+  <script src="/assets/lands.js?v=10c90e80" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -209,12 +210,12 @@
       <div class="story__stage" data-story-stage tabindex="0" role="region" aria-roledescription="story" aria-label="How we got here, in thirteen cards">
         <canvas class="story__canvas" aria-hidden="true"></canvas>
         <ol class="story__cards">
-          <li class="story__card" data-card="earth" style="--focus: 50% 40%; --focus-p: 24% 42%; --z0: 1.1; --z1: 1.0">
-            <div class="story__art"><img src="/assets/img/story-earth-1280.webp" srcset="/assets/img/story-earth-1280.webp 1280w, /assets/img/story-earth-2560.webp 2560w" sizes="(max-aspect-ratio: 1/1) 330vw, 100vw" alt="Earth from orbit, its oceans shrunk and its land scorched under dust storms, the sun breaking over its edge" width="1280" height="720" loading="lazy" decoding="async"></div>
+          <li class="story__card" data-card="earth" style="--focus: 50% 40%; --focus-p: 40% 42%; --z0: 1.1; --z1: 1.0">
+            <div class="story__art"><img src="/assets/img/story-earth-1280.webp" srcset="/assets/img/story-earth-1280.webp 1280w, /assets/img/story-earth-2560.webp 2560w" sizes="(max-aspect-ratio: 1/1) 330vw, 100vw" alt="Earth from orbit, the Americas scorched and its oceans shrunk under dust and smoke, the sun breaking over its edge" width="1280" height="720" loading="lazy" decoding="async"></div>
             <div class="story__words"><p class="story__when">Aug 3289</p><h3>Earth was failing.</h3><p>There was no saving it, so there was a plan: send probes to the nearest stars at half the speed of light, and find a new home.</p></div>
           </li>
           <li class="story__card" data-card="answer" style="--focus: 50% 50%; --focus-p: 72% 52%; --z0: 1.1; --z1: 1.0">
-            <div class="story__art"><img src="/assets/img/story-centauri-1280.webp" srcset="/assets/img/story-centauri-1280.webp 1280w, /assets/img/story-centauri-2560.webp 2560w" sizes="(max-aspect-ratio: 1/1) 330vw, 100vw" alt="Alpha Centauri's two suns, and The Reach: snow across its north, jungle along a great river, desert to the east, lava in the south" width="1280" height="720" loading="lazy" decoding="async"></div>
+            <div class="story__art"><img src="/assets/img/story-centauri-1280.webp" srcset="/assets/img/story-centauri-1280.webp 1280w, /assets/img/story-centauri-2560.webp 2560w" sizes="(max-aspect-ratio: 1/1) 330vw, 100vw" alt="The Reach from orbit under Alpha Centauri, its companion star a far orange point: snow across the north, jungle along a great river, desert to the east, lava in the south" width="1280" height="720" loading="lazy" decoding="async"></div>
             <div class="story__words"><p class="story__when">Mar 3304 · The first answer</p><h3>A world, <em>with water.</em></h3><p>Alpha Centauri, the closest star, more than four light-years away. Its report took more than four years to reach us, and Earth could not wait for a second.</p></div>
           </li>
           <li class="story__card story__card--count" data-card="chosen" style="--focus: 50% 40%; --focus-p: 50% 42%; --z0: 1.1; --z1: 1.0">

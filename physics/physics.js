@@ -19,6 +19,9 @@ const GAME = {
   "flareStartM": 5,
   "flareTouchdown": 4,
   "flareDecel": 210,
+  "safeSink": 5,
+  "jumpLights": 6,
+  "cautionLights": 2,
   "hotPop": 4,
   "heatShutdown": 100,
   "heatRecover": 60,
@@ -109,6 +112,17 @@ const Physics = (() => {
       : Math.max(GAME.overloadCoolingFloor, 1 - GAME.heatDegradeAtMow - GAME.overloadCoolingSlopePer100 * over);
     const drain = Math.max(1, operatingT / GAME.emptyT) * (1 + GAME.jetOverloadDrainPer100 * over);
     return { lf, speed, cooling, drain, ceilingM: GAME.serviceCeilingM / drain, climbS: 100 / (GAME.jetHeatPerSecond * drain) };
+  }
+
+  /**
+   * The six landing lights (JumpJetController.FuelRequiredToLand, Margin01, MarginLights): what is left in the tank once the trip
+   * down is paid for, flown at the safe sink rate with the flare that finishes it. Climbing raises what you owe; burning lowers what
+   * you have. A verdict, not a fuel gauge: they can go out with gas still in the tank.
+   */
+  function landingLights(f) {
+    const owed = (Math.max(0, f.h - GAME.flareStartM) / GAME.safeSink + GAME.flareStartM / GAME.flareTouchdown) * Math.max(1, f.w.drain);
+    const margin = Math.max(0, Math.min(1, (f.fuel - owed) / GAME.jetTankSeconds));
+    return Math.max(0, Math.min(GAME.jumpLights, Math.ceil(margin * GAME.jumpLights)));
   }
 
   /** A VIGIL on the ground with a full tank and a cold reactor, ready for flightStep. */
@@ -273,7 +287,7 @@ const Physics = (() => {
     return lo;
   }
 
-  return { FT, YD, MPH, LB_PER_T, loadOf, fall, weight, newFlight, flightStep, slope, wade, ram, knocked, drop, drift, hash01, system, air, density, speedOfSound, cutoff };
+  return { FT, YD, MPH, LB_PER_T, loadOf, fall, weight, newFlight, flightStep, landingLights, slope, wade, ram, knocked, drop, drift, hash01, system, air, density, speedOfSound, cutoff };
 })();
 
 // ---------- the page ----------
@@ -297,15 +311,72 @@ const Physics = (() => {
   const vigilFrame = degrees => picture(`/hangar/spin/base/vigil-${String(degrees).padStart(3, "0")}.webp`);
   const land = name => (window.innerWidth * (window.devicePixelRatio || 1) > 1400 ? `/assets/img/lands/${name}-2560.webp` : `/assets/img/lands/${name}-1280.webp`);
 
-  /** The turntable frame's figure stands 610 of its 640 px tall, feet on the bottom edge. */
-  function drawVigil(ctx, image, x, feetY, tall, tilt = 0, alpha = 1) {
-    if (!ready(image)) return;
+  /**
+   * The hangar lit the turntable frames, and a land does not. Multiplied by the land's light, with the ground's shade climbing the legs,
+   * the figure stops reading as pasted on. Its feet are found in the frame, because a turned frame stands a little above the bottom edge.
+   */
+  const LIGHT = { snow: "#a8bbdc", desert: "#efd2b4", jungle: "#c6ccc0", badlands: "#9fa0ad" };
+  const inLand = (image, place) => ({ image, light: LIGHT[place], figure: null, shape: null, alpha: null, feetGap: 0 });
+  const blank = size => { const c = document.createElement("canvas"); c.width = c.height = size; return c; };
+  function figureOf(source) {
+    if (!source.image) return ready(source) ? source : null;
+    if (source.figure) return source.figure;
+    if (!ready(source.image)) return null;
+    const c = blank(640), g = c.getContext("2d");
+    g.drawImage(source.image, 0, 0, 640, 640);
+    g.globalCompositeOperation = "multiply";
+    g.fillStyle = source.light; g.fillRect(0, 0, 640, 640);
+    const shade = g.createLinearGradient(0, 640, 0, 400);
+    shade.addColorStop(0, "#6a6a74"); shade.addColorStop(1, "#ffffff");
+    g.fillStyle = shade; g.fillRect(0, 0, 640, 640);
+    g.globalCompositeOperation = "destination-in";
+    g.drawImage(source.image, 0, 0, 640, 640);
+    const small = blank(160), read = small.getContext("2d", { willReadFrequently: true });
+    read.drawImage(source.image, 0, 0, 160, 160);
+    source.alpha = read.getImageData(0, 0, 160, 160).data;
+    const hasMetal = y => { for (let x = 0; x < 160; x++) if (source.alpha[(y * 160 + x) * 4 + 3] > 80) return true; return false; };
+    let lowest = 159;
+    while (lowest > 80 && !hasMetal(lowest)) lowest--;
+    source.feetGap = (159 - lowest) * 4;
+    return source.figure = c;
+  }
+  /** Is there metal at this share across and down the frame? A hit is a hit on the VIGIL, not on a box around it. */
+  function solidAt(source, across, down) {
+    if (!figureOf(source) || !source.alpha) return null;
+    const x = Math.floor(across * 160), y = Math.floor(down * 160);
+    if (x < 0 || y < 0 || x >= 160 || y >= 160) return false;
+    return source.alpha[(y * 160 + x) * 4 + 3] > 60;
+  }
+  /** The figure's outline thrown on the ground. Small on purpose: drawn large it comes out soft, as a shadow does, in every browser. */
+  function castShadow(ctx, source, x, groundY, tall, alpha, lean = 0.7) {
+    const figure = figureOf(source);
+    if (!figure || alpha <= 0) return;
+    if (!source.shape) {
+      const c = blank(48), g = c.getContext("2d");
+      g.drawImage(figure, 0, 0, 48, 48);
+      g.globalCompositeOperation = "source-in";
+      g.fillStyle = "#07080c"; g.fillRect(0, 0, 48, 48);
+      source.shape = c;
+    }
     const k = tall / 610;
     ctx.save();
-    ctx.translate(x, feetY);
+    ctx.translate(x, groundY);
+    ctx.transform(1, 0, lean, -0.17, 0, 0);
+    ctx.globalAlpha = alpha;
+    ctx.drawImage(source.shape, -320 * k, -640 * k, 640 * k, 640 * k);
+    ctx.restore();
+  }
+
+  /** The turntable frame's figure stands 610 of its 640 px tall. */
+  function drawVigil(ctx, image, x, feetY, tall, tilt = 0, alpha = 1) {
+    const figure = figureOf(image);
+    if (!figure) return;
+    const k = tall / 610;
+    ctx.save();
+    ctx.translate(x, feetY + (image.feetGap || 0) * k);
     if (tilt) ctx.rotate(tilt);
     ctx.globalAlpha = alpha;
-    ctx.drawImage(image, -320 * k, -640 * k, 640 * k, 640 * k);
+    ctx.drawImage(figure, -320 * k, -640 * k, 640 * k, 640 * k);
     ctx.restore();
   }
 
@@ -347,11 +418,15 @@ const Physics = (() => {
           if (p.life >= p.max) { puffs.splice(i, 1); continue; }
           p.x += p.vx * dt; p.y += p.vy * dt; p.vx *= 1 - 1.4 * dt; p.vy *= 1 - 1.4 * dt;
           const t = p.life / p.max, r = p.r * (0.6 + 1.5 * t);
-          const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
-          g.addColorStop(0, `rgba(${p.colour},${0.55 * (1 - t)})`);
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.scale(1, 0.42);
+          const g = ctx.createRadialGradient(0, 0, 0, 0, 0, r);
+          g.addColorStop(0, `rgba(${p.colour},${0.36 * (1 - t)})`);
           g.addColorStop(1, `rgba(${p.colour},0)`);
           ctx.fillStyle = g;
-          ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, 6.2832); ctx.fill();
+          ctx.beginPath(); ctx.arc(0, 0, r, 0, 6.2832); ctx.fill();
+          ctx.restore();
         }
       },
     };
@@ -457,11 +532,13 @@ const Physics = (() => {
       playing = true;
       canvas.width = 1280; canvas.height = Math.round(1280 * canvas.clientHeight / Math.max(1, canvas.clientWidth));
       canvas.classList.add("is-on");
-      const started = performance.now();
+      const started = performance.now(), seconds = 2.7;
       const step = now => {
-        const index = Math.max(0, Math.min(frames.length - 1, Math.floor((now - started) / 1000 * 9 / stride)));
+        const share = Math.max(0, Math.min(1, (now - started) / 1000 / seconds));
+        const at = (1 - Math.pow(1 - share, 1.5)) * (frames.length - 1), index = Math.floor(at), blend = at - index;
         cover(ctx, frames[index], canvas.width, canvas.height, 0.5, 0.5);
-        if (index < frames.length - 1) requestAnimationFrame(step);
+        if (blend > 0 && index < frames.length - 1) { ctx.globalAlpha = blend; cover(ctx, frames[index + 1], canvas.width, canvas.height, 0.5, 0.5); ctx.globalAlpha = 1; }
+        if (share < 1) requestAnimationFrame(step);
         else { playing = false; if (replay) replay.hidden = false; }
       };
       requestAnimationFrame(step);
@@ -562,7 +639,7 @@ const Physics = (() => {
 
   // ---------- 02 drop it ----------
   stage("fall", (root, s) => {
-    const { ctx } = s, mech = vigilFrame(345), puff = dust();
+    const { ctx } = s, mech = inLand(vigilFrame(345), "snow"), puff = dust();
     const rail = root.querySelector("[data-rail]"), range = root.querySelector('input[name="height"]');
     let heightFt = 30, y = heightFt * FT, v = 0, mode = "hang", zoom = 0, shake = 0, lost = false, first = !calm, wait = 1.1, held = false;
 
@@ -592,7 +669,7 @@ const Physics = (() => {
       root.classList.add("has-landed");
       shake = calm ? 0 : clamp(0.25 + leg / GAME.legHp * 0.3, 0, 0.55);
       const groundX = s.w >= 900 ? s.w * 0.42 : s.w * 0.6;
-      puff.add(groundX, s.h * 0.86, 14 + Math.round(26 * clamp(leg / GAME.legHp, 0, 1)), 150 + leg, "244,247,250", s.h / 620);
+      puff.add(groundX, s.h * 0.86, 12 + Math.round(22 * clamp(leg / GAME.legHp, 0, 1)), 170 + leg, "206,219,236", s.h / 760);
     }
     function release() {
       if (mode !== "hang") return;
@@ -628,7 +705,9 @@ const Physics = (() => {
       ctx.clearRect(0, 0, w, h);
       ctx.save();
       if (shake > 0) { shake -= dt; ctx.translate(Math.sin(shake * 90) * 3 * shake * 2, Math.cos(shake * 70) * 3 * shake * 2); }
-      shadow(ctx, x, gy, tall * 0.5, clamp(0.55 / (1 + shown * 0.09), 0.08, 0.55));
+      shadow(ctx, x, gy, tall * 0.34, clamp(0.62 / (1 + shown * 0.09), 0.08, 0.62));
+      castShadow(ctx, mech, x, gy, tall, clamp(0.42 - shown * 0.05, 0, 0.42));
+      puff.draw(ctx, dt);
       if (shown > 0.4) {
         ctx.strokeStyle = "rgba(255,255,255,.75)"; ctx.lineWidth = 2; ctx.setLineDash([6, 8]);
         ctx.beginPath(); ctx.moveTo(x + tall * 0.34, gy); ctx.lineTo(x + tall * 0.34, gy - shown * zoom); ctx.stroke();
@@ -637,7 +716,6 @@ const Physics = (() => {
         ctx.fillText(`${n(shown / FT)} ft`, x + tall * 0.34 + 8, gy - shown * zoom * 0.5);
       }
       drawVigil(ctx, mech, x, gy - shown * zoom + (lost ? tall * 0.06 : 0), tall, lost ? -0.07 : 0);
-      puff.draw(ctx, dt);
       ctx.restore();
       if (held && mode !== "hang") mode = "hang";
     };
@@ -645,8 +723,8 @@ const Physics = (() => {
 
   // ---------- 03 fly it ----------
   stage("flight", (root, s) => {
-    const { ctx } = s, mech = vigilFrame(345), puff = dust();
-    const button = root.querySelector("[data-jets]"), lights = [...root.querySelectorAll("[data-light]")];
+    const { ctx } = s, mech = inLand(vigilFrame(345), "desert"), puff = dust();
+    const button = root.querySelector("[data-jets]"), lights = [...root.querySelectorAll("[data-light]")], lamps = root.querySelector("[data-lamps]");
     const heatBar = root.querySelector("[data-heat]");
     let operatingT = GAME.emptyT, f = Physics.newFlight(operatingT);
     let input = false, auto = !calm, autoClock = 0, zoom = 0, accumulator = 0, trail = [], clock = 0, best = 0, flicker = 0, shake = 0;
@@ -746,24 +824,25 @@ const Physics = (() => {
         ctx.stroke();
       }
 
-      shadow(ctx, x, gy, tall * 0.5, clamp(0.55 / (1 + f.h * 0.09), 0.08, 0.55));
+      shadow(ctx, x, gy, tall * 0.34, clamp(0.62 / (1 + f.h * 0.09), 0.08, 0.62));
+      castShadow(ctx, mech, x, gy, tall, clamp(0.4 - f.h * 0.05, 0, 0.4));
+      puff.draw(ctx, dt);
       if (f.thrust || f.flaring) {
-        const length = tall * (f.flaring ? 0.42 : 0.3 + 0.28 * clamp(f.v / GAME.thrustSpeed, 0, 1)) * (1 + 0.14 * flicker);
+        const length = tall * (f.flaring ? 0.3 : 0.2 + 0.2 * clamp(f.v / GAME.thrustSpeed, 0, 1)) * (1 + 0.14 * flicker);
         ctx.save();
         ctx.globalCompositeOperation = "lighter";
         for (const side of [-0.1, 0.1]) {
           const px = x + side * tall, g = ctx.createLinearGradient(0, feet - tall * 0.04, 0, feet + length);
-          g.addColorStop(0, "rgba(255,250,235,.95)"); g.addColorStop(0.3, "rgba(255,190,110,.85)"); g.addColorStop(1, "rgba(255,110,40,0)");
+          g.addColorStop(0, "rgba(255,246,225,.8)"); g.addColorStop(0.3, "rgba(255,190,110,.5)"); g.addColorStop(1, "rgba(255,110,40,0)");
           ctx.fillStyle = g;
           ctx.beginPath();
-          ctx.moveTo(px - tall * 0.035, feet - tall * 0.04); ctx.lineTo(px + tall * 0.035, feet - tall * 0.04); ctx.lineTo(px, feet + length);
+          ctx.moveTo(px - tall * 0.03, feet - tall * 0.04); ctx.lineTo(px + tall * 0.03, feet - tall * 0.04); ctx.lineTo(px, feet + length);
           ctx.closePath(); ctx.fill();
         }
         ctx.restore();
         if (f.h < 18 && Math.random() < 0.5) puff.add(x + (Math.random() - 0.5) * tall * 0.6, gy, 1, 120, "226,178,134", h / 620);
       }
       drawVigil(ctx, mech, x, feet + (f.legs <= 0 ? tall * 0.06 : 0), tall, f.legs <= 0 ? -0.07 : 0);
-      puff.draw(ctx, dt);
       ctx.restore();
 
       put(root, "alt", `${n(f.h / FT)} ft`);
@@ -773,14 +852,17 @@ const Physics = (() => {
       heatBar.style.setProperty("--v", (Math.min(f.heat, 100) / 100).toFixed(3));
       root.classList.toggle("is-hot", f.heat >= 80 || f.latched);
       root.classList.toggle("is-thrust", f.thrust);
-      const lit = Math.ceil(f.fuel / GAME.jetTankSeconds * lights.length);
-      lights.forEach((light, i) => light.classList.toggle("is-on", i < lit));
+      const lit = Physics.landingLights(f);
+      lamps.dataset.band = lit <= 1 ? "none" : lit <= GAME.cautionLights ? "caution" : "normal";
+      const pulse = calm || lit !== 1 || now % 500 < 250;   // the last light flashes, at the game's two beats a second
+      lights.forEach((light, i) => light.classList.toggle("is-on", i < lit && pulse));
+      put(root, "lamps", lit === 0 ? "No margin. You cannot fly down from here" : lit === 1 ? "Last light. Get down now" : lit <= GAME.cautionLights ? "Thin. Start down" : "You can fly down");
     };
   });
 
   // ---------- 04 load it, then climb ----------
   stage("weight-inst", (root, s) => {
-    const { ctx } = s, puff = dust(), mech = vigilFrame(75), ghost = vigilFrame(75), backdrop = root.querySelector(".stage__bg img");
+    const { ctx } = s, puff = dust(), mech = inLand(vigilFrame(75), "desert"), ghost = inLand(vigilFrame(75), "desert"), backdrop = root.querySelector(".stage__bg img");
     const walk = root.querySelector("[data-walk]"), gradeInput = root.querySelector('input[name="grade"]');
     const gauge = root.querySelector("[data-gauge]");
     const tray = [...root.querySelectorAll("[data-part]")];
@@ -917,7 +999,7 @@ const Physics = (() => {
 
   // ---------- 05 wade it ----------
   stage("water", (root, s) => {
-    const { ctx } = s, mech = vigilFrame(75);
+    const { ctx } = s, mech = inLand(vigilFrame(75), "jungle");
     const rail = root.querySelector("[data-rail]"), range = root.querySelector('input[name="depth"]');
     let depth = 9, phase = 0, under = 0, flow = 0;
     function read() {
@@ -970,7 +1052,7 @@ const Physics = (() => {
 
   // ---------- 06 ram it ----------
   stage("ram", (root, s) => {
-    const { ctx } = s, puff = dust(), attackerFrame = vigilFrame(75), facing = vigilFrame(285), away = vigilFrame(105);
+    const { ctx } = s, puff = dust(), attackerFrame = inLand(vigilFrame(75), "snow"), facing = inLand(vigilFrame(285), "snow"), away = inLand(vigilFrame(105), "snow");
     const handle = root.querySelector("[data-pull]");
     const kit = GAME.emptyT + GAME.kitT;
     let charge = 40, mode = "ready", clock = 0, ax = 0, tx = 0, hit = null, pulling = false;
@@ -1092,7 +1174,7 @@ const Physics = (() => {
 
   // ---------- 07 fire it ----------
   stage("scope", (root, s) => {
-    const { ctx } = s, target = vigilFrame(285), small = vigilFrame(285), scene = picture(land("desert-4"));
+    const { ctx } = s, target = inLand(vigilFrame(0), "desert"), small = vigilFrame(285), scene = picture(land("desert-4"));
     const glass = root.querySelector("[data-glass]");
     let rangeYd = 1000, windMph = 10, aimX = 0, aimY = 0, shot = null, marks = [], hits = 0, shots = 0, phase = 0, driftPhase = 0;
     let lay = { cx: 0, cy: 0, R: 1, K: 1 };
@@ -1131,7 +1213,9 @@ const Physics = (() => {
     function settle(sh) {
       const tallMrad = GAME.standingM / sh.m * 1000;
       const x = sh.ax + sh.driftMrad, y = sh.ay - sh.dropMrad;   // relative to the VIGIL's centre, up positive
-      const inside = Math.abs(x) < tallMrad * 0.26 && Math.abs(y) < tallMrad * 0.5;
+      const across = (320 + x / tallMrad * 610) / 640, down = (640 - (target.feetGap || 0) - 305 - y / tallMrad * 610) / 640;
+      const solid = solidAt(target, across, down);
+      const inside = solid === null ? Math.abs(x) < tallMrad * 0.26 && Math.abs(y) < tallMrad * 0.5 : solid;
       if (inside) hits++;
       marks.push({ x, y, hit: inside, age: 0 });
       if (marks.length > 12) marks.shift();
@@ -1356,7 +1440,7 @@ const Physics = (() => {
 
   // ---------- 09 hear it ----------
   stage("sound-inst", (root, s) => {
-    const { ctx } = s, mech = vigilFrame(300);
+    const { ctx } = s, mech = inLand(vigilFrame(300), "badlands");
     const keptBand = root.querySelector("[data-kept]");
     let dist = 600, temp = 20, hum = 70, flash = 0, fired = -1, clock = 0, delay = 0, heard = false, audio = null, autoShown = false;
 
