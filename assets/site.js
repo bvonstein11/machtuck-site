@@ -205,18 +205,25 @@ if (!reducedMotion && layers.length) {
 
 for (const year of document.querySelectorAll("[data-year]")) year.textContent = String(new Date().getFullYear());
 
-// The factions: a select screen. Picking a house shows its creed and tints this section in its colour for this visit; nothing
-// is stored, as the privacy page promises, so every visit opens on the prompt. Torrath, the mercenary who swears to none
-// of them, clears it.
+// The factions: five answers and a mercenary. Picking a faction opens its plan and tints this section in its colour for this
+// visit; a second tap closes it. Nothing is stored, as the privacy page promises, so every visit opens with none picked.
 const pick = document.querySelector("[data-pick]");
 if (pick) {
-  // A house's colour stays inside the FACTIONS section; the rest of the site keeps its own amber.
+  // A faction's colour stays inside the FACTIONS section; the rest of the site keeps its own amber.
   const root = pick.closest(".factions") || pick;
-  const marks = [...pick.querySelectorAll(".pick__mark")];
+  const marks = [...pick.querySelectorAll(".pick__mark[aria-controls]")];
   const panels = [...pick.querySelectorAll("[data-panel]")];
+  const free = pick.querySelector(".pick__mark--free");
+  // CR-11: after a pick, the page's Join buttons read "Join the Discord as <faction>", Torrath included; the same invite, and
+  // the Discord's own onboarding gives the role. The bar's small button keeps its words, and closing a pick restores them.
+  const joins = [...document.querySelectorAll("main [data-discord]")];
+  const joinWords = joins.map((join) => join.textContent);
+  let chosen = null;   // null: none picked. "": Torrath, who swears to none of them.
   const choose = (house) => {
+    chosen = house;
     let accent = "";
-    for (const mark of marks) mark.setAttribute("aria-pressed", String(mark.dataset.house === house));
+    for (const mark of marks) mark.setAttribute("aria-expanded", String(mark.dataset.house === house));
+    free?.setAttribute("aria-pressed", String(house === ""));
     for (const panel of panels) {
       const shown = panel.dataset.panel === house;
       panel.classList.toggle("is-shown", shown);
@@ -229,19 +236,21 @@ if (pick) {
       root.style.removeProperty("--accent");
       delete root.dataset.faction;
     }
+    if (DISCORD_INVITE) joins.forEach((join, i) => {
+      const name = house === null ? "" : (house === "" ? "Torrath" : marks.find((mark) => mark.dataset.house === house)?.querySelector(".pick__name")?.textContent.trim());
+      join.textContent = name ? `Join the Discord as ${name}` : joinWords[i];
+    });
   };
-  pick.querySelector(".pick__panels").classList.add("is-live");
-  choose("");
+  pick.classList.add("is-live");
+  choose(null);
   // The colour fades only on a pick, never while the page first paints.
   requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add("can-tint")));
-  // CR-11: after a pick, the page's Join buttons read "Join the Discord as <house>", Torrath included; the same invite, and
-  // the Discord's own onboarding gives the role. The bar's small button keeps its words.
-  const joins = [...document.querySelectorAll("main [data-discord]")];
-  const nameOf = (house) => (house ? pick.querySelector(`[data-panel="${house}"] .house__name`)?.textContent.trim() : "Torrath");
-  for (const button of document.querySelectorAll("[data-house]")) button.addEventListener("click", () => {
-    choose(button.dataset.house);
-    const name = nameOf(button.dataset.house);
-    if (name && DISCORD_INVITE) for (const join of joins) join.textContent = `Join the Discord as ${name}`;
+  for (const button of [...marks, free]) button?.addEventListener("click", () => {
+    // A row closing above the one tapped would pull it out from under the finger: hold it where it was.
+    const before = button.getBoundingClientRect().top;
+    choose(chosen === button.dataset.house ? null : button.dataset.house);
+    const moved = button.getBoundingClientRect().top - before;
+    if (Math.abs(moved) > 1) window.scrollBy({ top: moved, behavior: "instant" });
   });
 }
 

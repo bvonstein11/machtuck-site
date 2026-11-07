@@ -18,15 +18,15 @@
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="/favicon.svg?v=3c2cae38" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png?v=3c2cae38" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
   <link rel="preload" href="/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/assets/img/sky-2560.webp" as="image" media="(min-width: 1281px)">
   <link rel="preload" href="/assets/img/sky-1280.webp" as="image" media="(max-width: 1280px)">
-  <link rel="stylesheet" href="/assets/site.css?v=61e7579e">
-  <link rel="stylesheet" href="/drop/drop.css?v=61e7579e">
+  <link rel="stylesheet" href="/assets/site.css?v=3c2cae38">
+  <link rel="stylesheet" href="/drop/drop.css?v=3c2cae38">
   <script>
     // Boarding: arriving from another site opens on the shipboard network, which assets/site.js draws. Nothing is
     // stored in the browser (the privacy page promises that): a reload, Back, or a link from this site skips it. This
@@ -41,19 +41,20 @@
       }
     } catch (error) { /* no boarding screen */ }
   </script>
-  <script src="/assets/ship.js?v=61e7579e" defer></script>
-  <script src="/assets/prealpha.js?v=61e7579e" defer></script>
-  <script src="/assets/crossing.js?v=61e7579e" defer></script>
-  <script src="/assets/site.js?v=61e7579e" defer></script>
-  <script src="/drop/drop.js?v=61e7579e" defer></script>
-  <script src="/assets/patch.js?v=61e7579e" defer></script>
-  <script src="/assets/patchmaker.js?v=61e7579e" defer></script>
-  <script src="/assets/front.js?v=61e7579e" defer></script>
-  <script src="/assets/loadouts.js?v=61e7579e" defer></script>
-  <script src="/assets/bench.js?v=61e7579e" defer></script>
-  <script src="/assets/valor.js?v=61e7579e" defer></script>
-  <script src="/assets/story.js?v=61e7579e" defer></script>
-  <script src="/assets/lands.js?v=61e7579e" defer></script>
+  <script src="/assets/ship.js?v=3c2cae38" defer></script>
+  <script src="/assets/prealpha.js?v=3c2cae38" defer></script>
+  <script src="/assets/crossing.js?v=3c2cae38" defer></script>
+  <script src="/assets/site.js?v=3c2cae38" defer></script>
+  <script src="/drop/drop.js?v=3c2cae38" defer></script>
+  <script src="/assets/patch.js?v=3c2cae38" defer></script>
+  <script src="/assets/patchmaker.js?v=3c2cae38" defer></script>
+  <script src="/assets/front.js?v=3c2cae38" defer></script>
+  <script src="/assets/loadouts.js?v=3c2cae38" defer></script>
+  <script src="/assets/bench.js?v=3c2cae38" defer></script>
+  <script src="/assets/valor.js?v=3c2cae38" defer></script>
+  <script src="/assets/ranks.js?v=3c2cae38" defer></script>
+  <script src="/assets/story.js?v=3c2cae38" defer></script>
+  <script src="/assets/lands.js?v=3c2cae38" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -316,74 +317,74 @@
         <p class="eyebrow" data-reveal>Aboard · Five factions</p>
         <h2 data-reveal>The ship split along its decks.</h2>
         <p class="lead factions__lead" data-reveal>When the signal stopped, each mission group closed ranks on its own deck, still called by the name of the department head Earth gave it. Every deck has its own answer to why Earth failed, and its own plan for the ground. Nobody was born into one; every member chose. And down in the bays, the building has already started.</p>
-        <div class="pick" data-pick data-reveal>
-          <div class="pick__marks" role="group" aria-label="Choose a faction">
-            <button class="pick__mark" type="button" aria-pressed="false" aria-controls="house-ksh" data-house="ksh" style="--house:#C8323C; --house-ink:#D5636B">
+        <p class="pick__prompt" data-reveal>Five answers to why Earth failed. Pick one.</p>
+        <div class="pick" data-pick data-reveal role="group" aria-label="Choose a faction">
+          <div class="pick__house" style="--house:#C8323C; --house-ink:#D5636B">
+            <button class="pick__mark" type="button" aria-expanded="false" aria-controls="house-ksh" data-house="ksh">
               <span class="pick__word">Honor</span>
               <span class="pick__name">Kashiro</span>
+              <span class="pick__answer">“We failed because we let small things go. Precision is honor.”</span>
             </button>
-            <button class="pick__mark" type="button" aria-pressed="false" aria-controls="house-vld" data-house="vld" style="--house:#D4A23C; --house-ink:#D4A23C">
-              <span class="pick__word">Dominion</span>
-              <span class="pick__name">Valdron</span>
-            </button>
-            <button class="pick__mark" type="button" aria-pressed="false" aria-controls="house-drv" data-house="drv" style="--house:#4A90C2; --house-ink:#4A90C2">
-              <span class="pick__word">Shadow</span>
-              <span class="pick__name">Darvyn</span>
-            </button>
-            <button class="pick__mark" type="button" aria-pressed="false" aria-controls="house-grv" data-house="grv" style="--house:#8FA83C; --house-ink:#8FA83C">
-              <span class="pick__word">Pack</span>
-              <span class="pick__name">Gorvik</span>
-            </button>
-            <button class="pick__mark" type="button" aria-pressed="false" aria-controls="house-shv" data-house="shv" style="--house:#8E5BC2; --house-ink:#A075CC">
-              <span class="pick__word">Foundation</span>
-              <span class="pick__name">Shenvong</span>
-            </button>
-          </div>
-          <div class="pick__panels" aria-live="polite">
-            <p class="pick__panel pick__prompt" data-panel="">Five answers to why Earth failed. Pick one.</p>
-            <article class="pick__panel" id="house-ksh" data-panel="ksh" data-accent="#D5636B" style="--house:#C8323C">
-              <p class="house__word">Honor</p>
-              <h3 class="house__name">Kashiro</h3>
+            <article class="pick__panel" id="house-ksh" data-panel="ksh" data-accent="#D5636B">
               <p class="house__deck">Kashiro deck · Survey</p>
-              <blockquote>“We failed because we let small things go. Precision is honor.”</blockquote>
-              <p>Honor that costs something real, chosen rather than inherited.</p>
+              <p class="house__line">Honor that costs something real, chosen rather than inherited.</p>
               <dl class="house__plan"><div><dt>When we land</dt><dd>Land in order and fly as one disciplined team under a strict chain of command. Disputes are settled by trial of combat.</dd></div><div><dt>In the bays</dt><dd>Kashiro Engineering Division is already building: precise, nothing decorative, nothing wasted. Built the way they fight.</dd></div></dl>
             </article>
-            <article class="pick__panel" id="house-vld" data-panel="vld" data-accent="#D4A23C" style="--house:#D4A23C">
-              <p class="house__word">Dominion</p>
-              <h3 class="house__name">Valdron</h3>
+          </div>
+          <div class="pick__house" style="--house:#D4A23C; --house-ink:#D4A23C">
+            <button class="pick__mark" type="button" aria-expanded="false" aria-controls="house-vld" data-house="vld">
+              <span class="pick__word">Dominion</span>
+              <span class="pick__name">Valdron</span>
+              <span class="pick__answer">“We failed because we were divided. Unity is survival.”</span>
+            </button>
+            <article class="pick__panel" id="house-vld" data-panel="vld" data-accent="#D4A23C">
               <p class="house__deck">Valdron deck · Groundworks</p>
-              <blockquote>“We failed because we were divided. Unity is survival.”</blockquote>
-              <p>Humanity needs one strong leader, they believe. Not cruel: convinced.</p>
+              <p class="house__line">Humanity needs one strong leader, they believe. Not cruel: convinced.</p>
               <dl class="house__plan"><div><dt>When we land</dt><dd>Come down in overwhelming force, machines and crews together, and hold every metre they take.</dd></div><div><dt>In the bays</dt><dd>Valdron Heavy Industries builds overbuilt and imposing, to project certainty. The advance never stops.</dd></div></dl>
             </article>
-            <article class="pick__panel" id="house-drv" data-panel="drv" data-accent="#4A90C2" style="--house:#4A90C2">
-              <p class="house__word">Shadow</p>
-              <h3 class="house__name">Darvyn</h3>
+          </div>
+          <div class="pick__house" style="--house:#4A90C2; --house-ink:#4A90C2">
+            <button class="pick__mark" type="button" aria-expanded="false" aria-controls="house-drv" data-house="drv">
+              <span class="pick__word">Shadow</span>
+              <span class="pick__name">Darvyn</span>
+              <span class="pick__answer">“We failed because we believed what we were told. Information is the only honest currency.”</span>
+            </button>
+            <article class="pick__panel" id="house-drv" data-panel="drv" data-accent="#4A90C2">
               <p class="house__deck">Darvyn deck · Forward Recon</p>
-              <blockquote>“We failed because we believed what we were told. Information is the only honest currency.”</blockquote>
-              <p>Realists who trust data over intentions.</p>
+              <p class="house__line">Realists who trust data over intentions.</p>
               <dl class="house__plan"><div><dt>When we land</dt><dd>Know the ground before anyone lands, then drop where nobody is looking. They would rather win before the battle starts.</dd></div><div><dt>In the bays</dt><dd>Darvyn Systems Collective builds for deception: no markings, weapons flush, one cold light.</dd></div></dl>
             </article>
-            <article class="pick__panel" id="house-grv" data-panel="grv" data-accent="#8FA83C" style="--house:#8FA83C">
-              <p class="house__word">Pack</p>
-              <h3 class="house__name">Gorvik</h3>
+          </div>
+          <div class="pick__house" style="--house:#8FA83C; --house-ink:#8FA83C">
+            <button class="pick__mark" type="button" aria-expanded="false" aria-controls="house-grv" data-house="grv">
+              <span class="pick__word">Pack</span>
+              <span class="pick__name">Gorvik</span>
+              <span class="pick__answer">“We failed because we each looked after our own. The pack eats first.”</span>
+            </button>
+            <article class="pick__panel" id="house-grv" data-panel="grv" data-accent="#8FA83C">
               <p class="house__deck">Gorvik deck · General Labour, “the Pool”</p>
-              <blockquote>“We failed because we each looked after our own. The pack eats first.”</blockquote>
-              <p>Tribalists who trust only the pilot beside them. Fiercely loyal inside the pack.</p>
+              <p class="house__line">Tribalists who trust only the pilot beside them. Fiercely loyal inside the pack.</p>
               <dl class="house__plan"><div><dt>When we land</dt><dd>Small packs and fast raids, back into cover before anyone can answer.</dd></div><div><dt>In the bays</dt><dd>Gorvik Fabrication builds from whatever there is, and no two come out alike. They don't build for show. They build survivors.</dd></div></dl>
             </article>
-            <article class="pick__panel" id="house-shv" data-panel="shv" data-accent="#A075CC" style="--house:#8E5BC2">
-              <p class="house__word">Foundation</p>
-              <h3 class="house__name">Shenvong</h3>
+          </div>
+          <div class="pick__house" style="--house:#8E5BC2; --house-ink:#A075CC">
+            <button class="pick__mark" type="button" aria-expanded="false" aria-controls="house-shv" data-house="shv">
+              <span class="pick__word">Foundation</span>
+              <span class="pick__name">Shenvong</span>
+              <span class="pick__answer">“We failed because we never built anything that could hold. What holds, saves.”</span>
+            </button>
+            <article class="pick__panel" id="house-shv" data-panel="shv" data-accent="#A075CC">
               <p class="house__deck">Shenvong deck · Habitat</p>
-              <blockquote>“We failed because we never built anything that could hold. What holds, saves.”</blockquote>
-              <p>Builders. They fight to make fighting unnecessary.</p>
+              <p class="house__line">Builders. They fight to make fighting unnecessary.</p>
               <dl class="house__plan"><div><dt>When we land</dt><dd>Dig in first, build walls that hold, and outlast everyone. They measure it by what still stands after they are gone.</dd></div><div><dt>In the bays</dt><dd>Shenvong Industrial Works builds the heaviest armour and the best cooling aboard, for the war after this one.</dd></div></dl>
             </article>
           </div>
+          <button class="pick__mark pick__mark--free" type="button" aria-pressed="false" data-house="" style="--house:#8b8a86; --house-ink:#c4c0b8">
+            <span class="pick__word">Mercenary</span>
+            <span class="pick__name">Torrath</span>
+            <span class="pick__answer">Or swear to none of them. Decline all five and you fly as a mercenary, and free.</span>
+          </button>
         </div>
-        <p class="factions__free" data-reveal>Or swear to none of them. Decline all five and you fly as <button class="pick__torrath" type="button" data-house="">Torrath</button>: a mercenary, and free.</p>
       </div>
     </section>
 
@@ -596,6 +597,49 @@
               <p>Eight medals and gold Valor wings, all earned in the game.</p>
             </figcaption>
           </figure>
+        </div>
+
+        <!-- RANK: the game's own insignia, every rank (assets/ranks.js), and the commission's own words (CommissionOffer in the game).
+             Without scripts the words stay. -->
+        <div class="ranks" id="ranks" data-reveal>
+          <p class="eyebrow">Rank · Twenty-two steps</p>
+          <h3 class="ranks__title">Rank is earned. A commission is accepted.</h3>
+          <p class="ranks__lead">Eleven enlisted ranks, Private to Sergeant Major. Eleven officer ranks, Second Lieutenant to General of the Faction. Promotion takes time served, hours flown and damage done, all three together. Rank carries on through every season, and the one way down is killing your own side.</p>
+          <div class="ranks__body">
+            <div class="ranks__ladder" data-ranks></div>
+            <div class="ranks__commission">
+              <p class="ranks__label">The commission</p>
+              <p>Sergeant Major is the top of the enlisted ranks, and the next step is a question. Keep serving until you've earned Second Lieutenant, and the game asks whether you want your commission.</p>
+              <p>Nobody can hand it to you. You accept by typing the words yourself. Defer and you stay a Sergeant Major, your service still counting, and the offer waits under Settings for as long as you like.</p>
+              <div class="offer" data-offer>
+                <div class="offer__screen" data-offer-screen="ask">
+                  <p class="offer__title">Congratulations</p>
+                  <p>You've earned a commission as an officer.</p>
+                  <p class="offer__ranks">Sergeant Major <span aria-hidden="true">→</span><span class="sr-only"> to </span> Second Lieutenant</p>
+                  <p>Would you like to accept your commission?</p>
+                  <div class="offer__controls" data-offer-controls hidden>
+                    <input class="offer__field" type="text" placeholder="TYPE  I ACCEPT" aria-label="Type I ACCEPT to accept your commission" autocomplete="off" autocapitalize="characters" spellcheck="false" data-offer-field>
+                    <div class="offer__buttons">
+                      <button class="btn btn--small" type="button" disabled data-offer-accept>Accept</button>
+                      <button class="btn btn--small btn--ghost" type="button" data-offer-defer>Defer</button>
+                    </div>
+                  </div>
+                  <p class="offer__small">If you do not accept, you will retain the rank of Sergeant Major.</p>
+                </div>
+                <div class="offer__screen" data-offer-screen="deferred" hidden>
+                  <p class="offer__title">Commission deferred</p>
+                  <p>You remain a Sergeant Major, and your service keeps counting.</p>
+                  <p>You can accept your commission at any time under Settings.</p>
+                  <div class="offer__buttons"><button class="btn btn--small" type="button" data-offer-back>Understood</button></div>
+                </div>
+                <div class="offer__screen" data-offer-screen="accepted" hidden>
+                  <p class="offer__title">Second Lieutenant</p>
+                  <p>One copper bar, and the bottom of the officer ranks.</p>
+                  <div class="offer__buttons"><button class="btn btn--small btn--ghost" type="button" data-offer-back>See the question again</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <ol class="pillars">
