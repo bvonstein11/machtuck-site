@@ -25,8 +25,8 @@
   <link rel="preload" href="/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/assets/img/sky-2560.webp" as="image" media="(min-width: 1281px)">
   <link rel="preload" href="/assets/img/sky-1280.webp" as="image" media="(max-width: 1280px)">
-  <link rel="stylesheet" href="/assets/site.css?v=10c90e80">
-  <link rel="stylesheet" href="/drop/drop.css?v=10c90e80">
+  <link rel="stylesheet" href="/assets/site.css?v=bd83ceb8">
+  <link rel="stylesheet" href="/drop/drop.css?v=bd83ceb8">
   <script>
     // Boarding: arriving from another site opens on the shipboard network, which assets/site.js draws. Nothing is
     // stored in the browser (the privacy page promises that): a reload, Back, or a link from this site skips it. This
@@ -41,18 +41,19 @@
       }
     } catch (error) { /* no boarding screen */ }
   </script>
-  <script src="/assets/ship.js?v=10c90e80" defer></script>
-  <script src="/assets/prealpha.js?v=10c90e80" defer></script>
-  <script src="/assets/site.js?v=10c90e80" defer></script>
-  <script src="/drop/drop.js?v=10c90e80" defer></script>
-  <script src="/assets/patch.js?v=10c90e80" defer></script>
-  <script src="/assets/patchmaker.js?v=10c90e80" defer></script>
-  <script src="/assets/front.js?v=10c90e80" defer></script>
-  <script src="/assets/loadouts.js?v=10c90e80" defer></script>
-  <script src="/assets/bench.js?v=10c90e80" defer></script>
-  <script src="/assets/valor.js?v=10c90e80" defer></script>
-  <script src="/assets/story.js?v=10c90e80" defer></script>
-  <script src="/assets/lands.js?v=10c90e80" defer></script>
+  <script src="/assets/ship.js?v=bd83ceb8" defer></script>
+  <script src="/assets/prealpha.js?v=bd83ceb8" defer></script>
+  <script src="/assets/crossing.js?v=bd83ceb8" defer></script>
+  <script src="/assets/site.js?v=bd83ceb8" defer></script>
+  <script src="/drop/drop.js?v=bd83ceb8" defer></script>
+  <script src="/assets/patch.js?v=bd83ceb8" defer></script>
+  <script src="/assets/patchmaker.js?v=bd83ceb8" defer></script>
+  <script src="/assets/front.js?v=bd83ceb8" defer></script>
+  <script src="/assets/loadouts.js?v=bd83ceb8" defer></script>
+  <script src="/assets/bench.js?v=bd83ceb8" defer></script>
+  <script src="/assets/valor.js?v=bd83ceb8" defer></script>
+  <script src="/assets/story.js?v=bd83ceb8" defer></script>
+  <script src="/assets/lands.js?v=bd83ceb8" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -170,7 +171,8 @@
         <p class="eyebrow" data-reveal>The Archive</p>
         <h2 data-reveal>Built to remember.</h2>
       </div>
-      <figure class="archive__view" data-reveal>
+      <figure class="archive__view crossing" id="crossing" data-crossing data-reveal>
+        <div class="crossing__stage">
         <picture>
           <source media="(min-width: 1281px)" srcset="/assets/img/archive-full.webp">
           <img src="/assets/img/archive-1280.webp" alt="The Archive between the stars: a long spine lined with amber radiator fins and empty docking cradles, a vast patched drum banded with lit windows, and a curved shield at its bow facing a distant golden star" width="1280" height="549" loading="lazy">
@@ -180,6 +182,35 @@
           <p class="archive__hud-date"><b>Earth date</b> <span data-ship-date>—</span></p>
           <p class="archive__hud-speed"><b>Speed</b> <span data-ship-speed>0.130 c</span></p>
           <p class="archive__hud-crossed"><b>Crossed</b> <span data-ship-crossed>—</span></p>
+        </div>
+        <div class="crossing__shade" aria-hidden="true"></div>
+        <div class="crossing__live">
+          <p class="crossing__state"><i></i>Archive · <span data-out="state">In transit</span></p>
+          <p class="crossing__date"><b>Earth date</b> <span data-out="date">—</span></p>
+          <div class="crossing__panel">
+            <div class="crossing__head">
+              <div class="crossing__words" data-out="words" aria-live="polite">
+                <p class="crossing__when" data-out="when">Now</p>
+                <h3 data-out="title">The Archive is still coming.</h3>
+                <p class="crossing__text"><span data-out="text"></span> <a data-out="watch" href="#logs" target="_blank" rel="noopener" hidden>Watch it</a></p>
+              </div>
+              <dl class="crossing__reads">
+                <div><dt>Crossed</dt><dd data-out="crossed">—</dd></div>
+                <div><dt>To go</dt><dd data-out="left">—</dd></div>
+                <div><dt>Speed</dt><dd data-out="speed">—</dd></div>
+                <div class="crossing__eta"><dt>Anticipated arrival</dt><dd>22 Oct 3342</dd><dd class="crossing__days" data-out="eta">—</dd></div>
+              </dl>
+            </div>
+            <canvas class="crossing__route" data-route aria-hidden="true"></canvas>
+            <input class="crossing__range" type="range" data-range aria-label="Move through the crossing">
+            <div class="crossing__controls">
+              <button class="crossing__button crossing__button--play" type="button" data-play><span>Play the crossing</span></button>
+              <button class="crossing__button" type="button" data-prev aria-label="Previous moment">‹</button>
+              <button class="crossing__button" type="button" data-next aria-label="Next moment">›</button>
+              <button class="crossing__button" type="button" data-now>Where it is now</button>
+            </div>
+          </div>
+        </div>
         </div>
       </figure>
       <div class="wrap archive__body">
@@ -252,7 +283,7 @@
           </li>
           <li class="story__card story__card--sent" data-card="supply" style="--focus: 50% 36%; --focus-p: 44% 34%; --z0: 1.1; --z1: 1.0">
             <div class="story__art"><img src="/assets/img/story-supply-1280.webp" srcset="/assets/img/story-supply-1280.webp 1280w, /assets/img/story-supply-2560.webp 2560w" sizes="(max-aspect-ratio: 1/1) 330vw, 100vw" alt="A supply ship from the Archive coming down at dusk over the settlement's domes, raising a cloud of dust" width="1280" height="720" loading="lazy" decoding="async"></div><p class="story__stamp" aria-hidden="true">Sent home from The Reach</p>
-            <div class="story__words"><p class="story__when">Mar 3337</p><h3>We sent help ahead.</h3><p>A faster ship left the Archive with new materials, and young people to help and to learn. Children were born there, and every year we flew closer.</p></div>
+            <div class="story__words"><p class="story__when">Oct 3330 to Mar 3337</p><h3>We sent help ahead.</h3><p>A faster ship left the Archive with new materials, and young people to help and to learn. Children were born there, and every year we flew closer.</p></div>
           </li>
           <li class="story__card" data-card="silence" data-scene="silence">
             <div class="story__words"><p class="story__when">Jun 3340</p><h3>Then the signal stopped.</h3><p>The logs didn't come anymore. Deck by deck, no one could agree on what it meant. That is when the fracture began.</p></div>

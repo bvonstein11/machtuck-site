@@ -13,7 +13,7 @@
   const NOT_A_PICTURE = ".bar__brand, .foot__brand, .doc-bar, .studio__mark, .hero__copy, .world__sky, .tiles, .land__thumbs, .upg__coin, .hero__shadow, [data-frontmap], [data-no-label], img[src*='wordmark'], img[src*='title'], img[src*='/mt-']";
 
   /** What holds a picture and its label, where the picture's parent would be too small or would move with it. */
-  const HOLDERS = ".hero__stage, .open, .stage__view, .archive__view, .story__art, .reach-map__frame, .land__shot, .pillars__art, .game__medals, .join__art, .bay, .lbay__bay, .piece__stage, .ord__art, .salv__frame, .salv__crate, figure, li";
+  const HOLDERS = ".crossing__stage, .hero__stage, .open, .stage__view, .archive__view, .story__art, .reach-map__frame, .land__shot, .pillars__art, .game__medals, .join__art, .bay, .lbay__bay, .piece__stage, .ord__art, .salv__frame, .salv__crate, figure, li";
 
   const seen = new WeakSet();
 

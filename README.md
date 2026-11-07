@@ -11,6 +11,7 @@ from the site itself, so a visit sends nothing to a third party.
 | `thereach/index.html` | The Reach: Unknown |
 | `404.html` | The page for an address that does not exist |
 | `assets/site.css`, `assets/site.js` | The look and the behaviour, shared by every page |
+| `assets/crossing.js` | The journey map on the Archive's picture: the story's beats, the ships and the signal on one clock, from `assets/ship.js`. `assets/voyage.js` is the older chart, no longer loaded |
 | `assets/prealpha.js` | Puts a Pre-Alpha label on every picture from one place, by the picture's size. A page with pictures loads it; `data-no-label` keeps a picture clean |
 | `assets/img/`, `assets/fonts/`, the icons | Made from the game's own art by `Tools/website/build_site_assets.py` in the game's repository; never edited by hand |
 | `assets/patch.js`, `assets/patchmaker.js` | The clan patch maker in the first pillar: a port of the game's own patch code, which `Tools/website/build_patch_library.py` checks against the game pixel for pixel, and the designer around it |

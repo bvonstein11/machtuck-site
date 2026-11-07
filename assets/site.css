@@ -1631,12 +1631,68 @@ html.has-frontmap-full, html.has-frontmap-full body { overflow: hidden; }
 .prealpha--small { top: 6px; right: 6px; padding: 2px 5px; font-size: 9px; letter-spacing: 0.12em; }
 .bay > .prealpha { right: auto; left: 50%; transform: translateX(-50%); }
 .ord__art > .prealpha { top: auto; bottom: 4px; right: 4px; }
-.archive__view > .prealpha { top: auto; bottom: 26px; right: auto; left: 50%; transform: translateX(-50%); }
+.crossing__stage > .prealpha { top: 40px; right: 16px; }
 .story__art > .prealpha { top: 66px; right: max(var(--gutter), 14px); }
 .stage__view > .prealpha { top: 18px; right: max(16px, 5vw); }
 .open > .prealpha { top: 142px; right: max(16px, 5vw); }
 .hero__stage > .prealpha { top: auto; bottom: 22px; right: var(--gutter); }
 @media (max-width: 899px) {
-  .archive__view > .prealpha { bottom: 44px; }
   .open > .prealpha { top: 104px; }
 }
+
+/* The Crossing: the journey map on the Archive's picture (assets/crossing.js). Without scripts it stays the picture and its readouts. */
+.crossing__stage { position: relative; }
+.crossing__stage .archive__hud { inset: 0; }
+.crossing__stage > .crossing__shade, .crossing__live, .crossing__art { display: none; }
+.crossing.is-live .crossing__stage { height: clamp(620px, 50vw, 720px); overflow: hidden; background: #05070b; box-shadow: 0 0 0 1px var(--line), 0 30px 80px rgba(0, 0, 0, 0.55); }
+.crossing.is-live picture { position: absolute; inset: 0; box-shadow: none; }
+.crossing.is-live picture img { height: 100%; object-fit: cover; object-position: 70% 50%; }
+.crossing.is-live .archive__hud p { display: none; }
+.crossing.is-live .crossing__art { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.9s ease; }
+.crossing.is-live .crossing__art.is-on { opacity: 1; }
+.crossing.is-live .crossing__art.is-dim { filter: brightness(0.32) saturate(0.5); }
+.crossing.is-live .crossing__shade { display: block; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(0deg, rgba(4, 6, 10, 0.97) 0, rgba(4, 6, 10, 0.9) 38%, rgba(4, 6, 10, 0.34) 62%, rgba(4, 6, 10, 0) 76%), linear-gradient(180deg, rgba(4, 6, 10, 0.78) 0, rgba(4, 6, 10, 0) 92px); }
+.crossing.is-live .crossing__live { display: block; position: absolute; inset: 0; pointer-events: none; }
+.crossing__state, .crossing__date { position: absolute; top: 16px; margin: 0; font: 400 0.72rem/1.3 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap; text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9); }
+.crossing__state { left: 18px; display: flex; align-items: center; gap: 8px; color: var(--accent); }
+.crossing__state i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+.crossing__date { right: 18px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.crossing__date b { font-weight: 400; color: var(--ink-dim); margin-right: 6px; }
+.crossing__panel { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 clamp(16px, 2.4vw, 32px) 16px; pointer-events: auto; }
+.crossing__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px 40px; }
+.crossing__words { flex: 1 1 380px; max-width: 640px; }
+.crossing__when { margin: 0 0 6px; color: var(--accent); font: 400 0.78rem/1.3 var(--font-mono); letter-spacing: 0.18em; text-transform: uppercase; }
+.crossing__words h3 { margin: 0 0 8px; font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.4rem); font-weight: 600; line-height: 1.02; letter-spacing: 0.005em; text-transform: uppercase; color: #fff; }
+.crossing__text { margin: 0; color: var(--ink); font-size: clamp(0.95rem, 1.2vw, 1.08rem); line-height: 1.5; min-height: 3em; }
+.crossing__text a { color: var(--accent); white-space: nowrap; }
+.crossing__reads { display: flex; flex-wrap: wrap; gap: 10px 26px; margin: 0; }
+.crossing__reads div { display: flex; flex-direction: column-reverse; }
+.crossing__reads dt { color: var(--ink-dim); font: 400 0.68rem/1.3 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; }
+.crossing__reads dd { margin: 0 0 4px; font-family: var(--font-display); font-size: clamp(1.5rem, 2.4vw, 2.2rem); font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; color: #fff; }
+.crossing__eta { flex-direction: column !important; }
+.crossing__eta dt { order: 1; }
+.crossing__eta dd { order: 2; margin: 4px 0 0; color: var(--accent); }
+.crossing__eta .crossing__days { order: 3; font: 400 0.72rem/1.3 var(--font-mono); letter-spacing: 0.08em; color: var(--ink); }
+.crossing__route { display: block; width: 100%; height: 170px; margin-top: 8px; cursor: ew-resize; touch-action: pan-y; }
+.crossing__range { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.crossing__range:focus-visible + .crossing__controls { outline: 2px solid var(--accent); outline-offset: 2px; }
+.crossing__controls { display: flex; flex-wrap: wrap; gap: 8px; }
+.crossing__button { min-height: 40px; padding: 0 14px; border: 1px solid rgba(232, 228, 220, 0.4); background: rgba(8, 10, 14, 0.7); color: var(--ink); font: 500 0.76rem/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
+.crossing__button:hover { border-color: var(--accent); color: #fff; }
+.crossing__button--play { background: var(--accent); border-color: var(--accent); color: #14100b; font-weight: 700; }
+.crossing__button--play:hover { color: #000; }
+@media (max-width: 760px) {
+  .crossing.is-live .crossing__stage { height: auto; min-height: 780px; }
+  .crossing.is-live picture, .crossing.is-live .crossing__art { bottom: auto; height: 310px; }
+  .crossing.is-live .crossing__shade { background: linear-gradient(180deg, rgba(4, 6, 10, 0.7) 0, rgba(4, 6, 10, 0) 70px, rgba(4, 6, 10, 0) 160px, rgba(4, 6, 10, 1) 300px); }
+  .crossing__date b { display: none; }
+  .crossing__state, .crossing__date { font-size: 0.62rem; letter-spacing: 0.08em; }
+  .crossing__words { flex-basis: 100%; }
+  .crossing__text { min-height: 4.5em; }
+  .crossing__reads { width: 100%; gap: 10px 20px; }
+  .crossing__route { height: 156px; }
+  .crossing__button { flex: 1 1 auto; }
+  .crossing__button--play { flex-basis: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .crossing.is-live .crossing__art { transition: none; } }

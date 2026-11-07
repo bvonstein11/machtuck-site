@@ -48,9 +48,17 @@ const Voyage = (() => {
     arrive: fractionalYear(new Date(orbitInStory)) - yearAtLaunch, cruise: 0.13, voyageYears: 32.63,
   };
 
-  /** The crossing's length in the voyage's own century (the stars have drawn closer since today's 4.34). Used only to
-   *  place the light-year marks on the chart; the site never prints it. */
+  /** The crossing's length in the voyage's own century (the stars have drawn closer since today's 4.34). */
   archive.lightYears = 4.25;
+
+  /** The other ships and the signal, on the same scale, for The Crossing. The advance crew's ship and the supply ship fly at a
+   *  quarter of light speed. The signal goes out once the crew has held the ground for three years, and light takes its own
+   *  time to cross: The Crossing's check holds these two pairs to each other. */
+  const ships = {
+    advance: { leave: 18.52, land: 35.88 },
+    signal: { on: 38.88, heard: 40.56, lastSent: 50.49, lastHeard: 50.80 },
+    supply: { leave: 41.10, land: 47.51 },
+  };
 
   /** One gravity, in metres per second squared, and the units the departure view measures in. */
   const gravity = 9.80665;
@@ -170,6 +178,6 @@ const Voyage = (() => {
     return Math.min(archive.voyageYears, Math.max(0, y - archive.coast));
   }
 
-  return { probe, archive, arrivesAt, logs, now, shipNow, voyageTime, dateAt, dayStamp, monthYear, stamp, phaseAt, departureDistanceAU,
+  return { probe, archive, ships, arrivesAt, logs, now, shipNow, voyageTime, dateAt, dayStamp, monthYear, stamp, phaseAt, departureDistanceAU,
     speedAt, progressAt, voyageYearAt };
 })();
