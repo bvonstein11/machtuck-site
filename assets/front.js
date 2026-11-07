@@ -1,5 +1,5 @@
 /* The Front in MOVE THE FRONT: the game's war table, live in the page. The map plate is raised into relief by the game's
-   own bake, each house's ground is one tinted region, a glowing line runs where two houses meet, and the week's
+   own bake (the same file /front/ draws: ridged crests read from the painting's own light), each house's ground is one tinted region, a glowing line runs where two houses meet, and the week's
    battlegrounds pulse. It handles like a globe viewer: drag the ground to move it, Shift- or right-drag to turn and tilt,
    scroll toward a point to zoom there; on a phone two fingers move it in the page and one finger moves it full screen.
    Past the plate's edges everything lies in shadow. The board is the opening war, every house on its home ground: no live war
@@ -17,7 +17,11 @@
   const HOUSES = [[200, 50, 60], [212, 162, 60], [74, 144, 194], [99, 217, 122], [142, 91, 194]];
   const MAP_W = 2200, MAP_H = 1200, FIELD = 0.85, WORLD = 0.01, RELIEF = 0.95, SQ3 = 1.7320508;
   const W = MAP_W * WORLD, D = MAP_H * WORLD, GROUND = 0.25 * RELIEF;   // the plate in world units; the plane a hand holds
-  const COLS = 200, ROWS = 110;                       // the plate's relief mesh: 22,000 vertices, the game's phone budget
+  // The plate's relief mesh: 22,000 vertices on a phone, the game's phone budget; the light reads the bake at its own
+  // resolution, so a crest is as sharp as the bake whatever the mesh.
+  const COLS = touch ? 200 : 300, ROWS = touch ? 110 : 164;
+  // The painting's sun, up and to the right of the picture (FrontDiorama.SunDirection): 38° north of east, 51° high.
+  const SUN = [0.496, 0.777, 0.387];
   // The land past the plate's edge, in world units out from it: a few rings of widening steps, so the mesh stays small.
   const BEYOND = [0.25, 0.6, 1.1, 1.8, 2.8, 4.2, 6.2, 9, 13, 19];
   const TILT = 35, TILT_MIN = 8, TILT_MAX = 72, FOV = 30, ZOOM_MIN = 0.8, ZOOM_MAX = 6, DEG = Math.PI / 180;
@@ -59,7 +63,7 @@
   const FS = `#version 300 es
     precision highp float; precision highp int;
     in vec2 vUv; in vec3 vNormal; in float vDist; out vec4 outColor;
-    uniform sampler2D uPlate, uRelief; uniform highp sampler2D uLookup, uState;
+    uniform sampler2D uPlate, uHeight, uLava; uniform highp sampler2D uLookup, uState;
     uniform vec4 uLayout;   // radius, centre x, centre y, time
     uniform vec4 uRange;    // q0, r0, q span, r span
     uniform vec2 uFog;      // where the distance haze begins and where it is whole
@@ -76,6 +80,7 @@
     vec4 state(int id, int row) { return texelFetch(uState, ivec2(id, row), 0); }
     int houseOf(int id) { return id < 0 ? -2 : int(state(id, 0).a * 255.0 + 0.5) - 1; }
     float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+    float ht(vec2 uv) { return texture(uHeight, vec2(uv.x, 1.0 - uv.y)).r; }   // the bake's row 0 is the plate's top
     float noise(vec2 p) { vec2 i = floor(p), f = fract(p), u = f * f * (3.0 - 2.0 * f);
       return mix(mix(hash(i), hash(i + vec2(1, 0)), u.x), mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), u.x), u.y); }
     void main() {
@@ -85,7 +90,12 @@
       vec2 inUv = clamp(vUv, 0.0, 1.0), inset = 3.0 / vec2(textureSize(uPlate, 0));
       float rim = min(min(vUv.x, 1.0 - vUv.x), min(vUv.y, 1.0 - vUv.y) * ${MAP_H}.0 / ${MAP_W}.0);   // plate widths to the edge, < 0 past it
       vec3 col = texture(uPlate, mix(inset, 1.0 - inset, inUv)).rgb;
-      col *= 0.62 + 0.55 * clamp(dot(normalize(vNormal), normalize(vec3(-0.45, 0.8, 0.4))), 0.0, 1.0);
+      // The slope over the game's own step (FrontDiorama.BuildMesh, 480 × 262 on a desktop), so the light here is the war
+      // table's: a finer step reads every crest steeper and darkens the whole map.
+      vec2 e = vec2(1.0 / 479.0, 1.0 / 261.0);
+      float sx = (ht(inUv + vec2(e.x, 0.0)) - ht(inUv - vec2(e.x, 0.0))) * ${RELIEF.toFixed(4)} / (2.0 * e.x * ${W.toFixed(4)});
+      float sz = (ht(inUv + vec2(0.0, e.y)) - ht(inUv - vec2(0.0, e.y))) * ${RELIEF.toFixed(4)} / (2.0 * e.y * ${D.toFixed(4)});
+      col *= 0.62 + 0.55 * clamp(dot(normalize(vec3(-sx, 1.0, -sz)), vec3(${SUN.join(", ")})), 0.0, 1.0);
       vec2 c = vUv * vec2(3.2, 1.75) + t * 0.012 * vec2(1.0, 0.35);
       col *= 1.0 - 0.2 * smoothstep(0.48, 0.82, noise(c) * 0.65 + noise(c * 2.3 + 7.1) * 0.35);
       float R = uLayout.x;
@@ -125,8 +135,8 @@
           col = mix(col, vec3(1.0, 0.55, 0.2) * 1.5, clamp(ring * 0.9 + pin * 0.85, 0.0, 1.0));
         }
       } else col *= 0.84;
-      vec2 relief = texture(uRelief, inUv).rg;
-      col += relief.g * vec3(1.0, 0.32, 0.06) * (0.6 + 0.4 * sin(t * 1.4 + vUv.x * 23.0 + vUv.y * 11.0));
+      float lava = texture(uLava, vec2(inUv.x, 1.0 - inUv.y)).r;
+      col += lava * vec3(1.0, 0.32, 0.06) * (0.6 + 0.4 * sin(t * 1.4 + vUv.x * 23.0 + vUv.y * 11.0));
       col = mix(col, SHADOW, smoothstep(uFog.x, uFog.y, vDist));   // the far distance, when tilted toward the horizon
       outColor = vec4(mix(SHADOW, col, smoothstep(0.0, 0.035, rim)), 1.0);
     }`;
@@ -148,16 +158,16 @@
     return p;
   }
 
-  // ── the relief mesh, from the bake's red channel, on a dark plain that runs out to the horizon ──────────────────
+  // ── the relief mesh, from the bake's heights, on a dark plain that runs out to the horizon ───────────────────────
   function mesh(relief) {
-    const w = relief.width, h = relief.height, px = relief.data;
+    const w = relief.w, h = relief.h, px = relief.heights;
     const sample = (u, v) => {   // bilinear, u right, v up; the image's row 0 is the plate's top
       // two texels in from the bake's edges, which read low, so the plate's rim has no trench
       const iu = 2 / (w - 1), iv = 2 / (h - 1);
       const x = (iu + (1 - 2 * iu) * Math.min(Math.max(u, 0), 1)) * (w - 1), y = (1 - iv - (1 - 2 * iv) * Math.min(Math.max(v, 0), 1)) * (h - 1);
-      const x0 = Math.min(x | 0, w - 2), y0 = Math.min(y | 0, h - 2), fx = x - x0, fy = y - y0, i = (y0 * w + x0) * 4;
-      const a = px[i] + (px[i + 4] - px[i]) * fx, b = px[i + w * 4] + (px[i + w * 4 + 4] - px[i + w * 4]) * fx;
-      return (a + (b - a) * fy) / 255 * RELIEF;
+      const x0 = Math.min(x | 0, w - 2), y0 = Math.min(y | 0, h - 2), fx = x - x0, fy = y - y0, i = y0 * w + x0;
+      const a = px[i] + (px[i + 1] - px[i]) * fx, b = px[i + w] + (px[i + w + 1] - px[i + w]) * fx;
+      return (a + (b - a) * fy) / 65535 * RELIEF;
     };
     // Off the plate the ground sinks within a unit or so to a flat plain, which the shader leaves in shadow.
     const height = (u, v) => {
@@ -205,6 +215,16 @@
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     const aniso = gl.getExtension("EXT_texture_filter_anisotropic");
     if (mips && aniso) gl.texParameterf(gl.TEXTURE_2D, aniso.TEXTURE_MAX_ANISOTROPY_EXT, 8);
+    return t;
+  }
+
+  // One channel of the bake, rows as stored (row 0 the plate's top), filtered: the heights (R16F) and the lava mask (R8).
+  function channel(unit, internal, type, data, w, h) {
+    const t = gl.createTexture(); gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, t);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false); gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+    gl.texImage2D(gl.TEXTURE_2D, 0, internal, w, h, 0, gl.RED, type, data);
+    for (const [k, v] of [[gl.TEXTURE_MIN_FILTER, gl.LINEAR], [gl.TEXTURE_MAG_FILTER, gl.LINEAR], [gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE], [gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE]]) gl.texParameteri(gl.TEXTURE_2D, k, v);
+    gl.pixelStorei(gl.UNPACK_ALIGNMENT, 4);
     return t;
   }
 
@@ -469,16 +489,24 @@
     started = true;
     const load = (src) => new Promise((ok, fail) => { const i = new Image(); i.onload = () => ok(i); i.onerror = fail; i.src = BASE + src; });
     try {
-      const [plate, relief, board] = await Promise.all([load("plate.webp"), load("relief.png"),
+      const [plate, packed, board] = await Promise.all([load("plate.webp"),
+        fetch(BASE + "relief.bin").then((r) => { if (!r.ok) throw new Error("relief " + r.status); return r.arrayBuffer(); }),
         fetch(BASE + "board.json").then((r) => r.json())]);
-      const c2 = document.createElement("canvas"); c2.width = relief.width; c2.height = relief.height;
-      const g2 = c2.getContext("2d", { willReadFrequently: true }); g2.drawImage(relief, 0, 0);
-      const reliefPx = g2.getImageData(0, 0, c2.width, c2.height);
+      // The game's bake, gzipped: 'VFH1', width, height, uint16 heights, uint8 lava mask. A server may already have unzipped
+      // it on the way, so only gzip's own bytes go through the unzipper.
+      let raw = new Uint8Array(packed);
+      if (raw[0] === 0x1f && raw[1] === 0x8b) raw = new Uint8Array(await new Response(new Blob([raw]).stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer());
+      if (String.fromCharCode(raw[0], raw[1], raw[2], raw[3]) !== "VFH1") throw new Error("the relief is not a VFH1 bake");
+      const head = new DataView(raw.buffer, raw.byteOffset, 12), bw = head.getInt32(4, true), bh = head.getInt32(8, true);
+      const reliefPx = { w: bw, h: bh, heights: new Uint16Array(raw.buffer.slice(raw.byteOffset + 12, raw.byteOffset + 12 + bw * bh * 2)) };
+      const lavaMask = raw.slice(12 + bw * bh * 2, 12 + bw * bh * 3);
       const hexes = board.hexes, L = layOut(hexes), fights = battlegrounds(hexes);
       const prog = program(); gl.useProgram(prog);
       const terrain = mesh(reliefPx);
       texture(0, plate, 0, 0, false, true);
-      texture(1, relief, 0, 0, false, false);
+      const hf = new Float32Array(bw * bh); for (let i = 0; i < hf.length; i++) hf[i] = reliefPx.heights[i] / 65535;
+      channel(1, gl.R16F, gl.FLOAT, hf, bw, bh);
+      channel(5, gl.R8, gl.UNSIGNED_BYTE, lavaMask, bw, bh);
       const lookup = new Uint8Array(L.qs * L.rs * 4);
       hexes.forEach(([q, r], i) => { lookup[((r - L.r0) * L.qs + (q - L.q0)) * 4] = i + 1; });
       texture(2, lookup, L.qs, L.rs, true, false);
@@ -486,7 +514,7 @@
       hexes.forEach(([, , h], i) => { state.set([...HOUSES[h], h + 1], i * 4); });
       fights.forEach((i) => { state[(128 + i) * 4] = 255; });
       texture(3, state, 128, 2, true, false);
-      for (const [name, unit] of [["uPlate", 0], ["uRelief", 1], ["uLookup", 2], ["uState", 3]]) gl.uniform1i(gl.getUniformLocation(prog, name), unit);
+      for (const [name, unit] of [["uPlate", 0], ["uHeight", 1], ["uLookup", 2], ["uState", 3], ["uLava", 5]]) gl.uniform1i(gl.getUniformLocation(prog, name), unit);
       gl.uniform4f(gl.getUniformLocation(prog, "uRange"), L.q0, L.r0, L.qs, L.rs);
       const uLayout = gl.getUniformLocation(prog, "uLayout"), uViewProj = gl.getUniformLocation(prog, "uViewProj");
       const uEye = gl.getUniformLocation(prog, "uEye"), uFog = gl.getUniformLocation(prog, "uFog");
