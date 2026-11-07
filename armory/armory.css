@@ -24,7 +24,7 @@
 .mark.is-far { opacity: 0.42; transform: scale(0.82); }
 .mark.is-on { background: #fff; transform: scale(1.22); box-shadow: 0 0 0 4px var(--accent), 0 0 22px rgba(255, 190, 120, 0.9); }
 .kit__words { position: absolute; z-index: 3; left: var(--gutter); top: clamp(16px, 4vh, 44px); max-width: min(31vw, 520px); pointer-events: none; }
-.kit__words .eyebrow { color: var(--warm); margin: 0; }
+.kit__words .eyebrow { color: #fff; margin: 0; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 1px 10px rgba(0, 0, 0, 0.9); }
 .kit h1 { font-family: var(--font-display); font-size: clamp(3.8rem, 7.2vw, 7.6rem); line-height: 0.88; letter-spacing: 0; text-transform: uppercase; color: #fff; margin: 8px 0 10px; text-shadow: 0 4px 40px rgba(20, 8, 0, 0.7); }
 .kit__lead { margin: 0; font-size: clamp(1.1rem, 1.6vw, 1.42rem); line-height: 1.28; font-weight: 600; color: #fff; text-shadow: 0 2px 14px rgba(0, 0, 0, 0.85); }
 .kit__scene > .prealpha { top: auto; bottom: 14px; right: var(--gutter); }
@@ -34,7 +34,7 @@
 .slots { position: absolute; z-index: 4; right: var(--gutter); top: clamp(14px, 3vh, 30px); width: clamp(230px, 22vw, 320px); margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
 .slot { position: relative; display: grid; grid-template-columns: 76px minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 8px; align-items: center; width: 100%; min-height: 72px; padding: 5px 12px 5px 6px; border: 1px solid var(--glass-line); background: var(--glass); color: #fff; font-family: var(--font); text-align: left; cursor: pointer; touch-action: manipulation; }
 .slot img { grid-row: 1 / 3; width: 76px; height: 57px; object-fit: contain; }
-.slot__num { position: absolute; left: -9px; top: -7px; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font-family: var(--font-display); font-weight: 600; font-size: 0.95rem; }
+.slot__num { position: absolute; z-index: 1; left: -9px; top: -7px; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font-family: var(--font-display); font-weight: 600; font-size: 0.95rem; }
 .slot__where { align-self: end; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(255, 244, 232, 0.84); }
 .slot__name { align-self: start; font-family: var(--font-display); font-size: 1.32rem; line-height: 1.05; font-weight: 600; letter-spacing: 0.01em; }
 .slot:hover { background: rgba(60, 40, 24, 0.84); }
@@ -92,7 +92,7 @@
 .kicker { margin: 0; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.75); }
 .kicker b { color: var(--warm); font-weight: 400; margin-right: 6px; }
 .stage__head h2, .crate h2 { font-family: var(--font-display); font-size: clamp(3rem, 8.4vw, 7.4rem); line-height: 0.94; text-transform: uppercase; color: #fff; margin: 2px 0 4px; letter-spacing: 0; text-shadow: 0 3px 34px rgba(0, 0, 0, 0.5); }
-.stage__do { margin: 0; max-width: 34em; font-size: clamp(1.02rem, 1.5vw, 1.3rem); line-height: 1.3; color: #fff; font-weight: 600; text-shadow: 0 1px 12px rgba(0, 0, 0, 0.85); }
+.stage__do { margin: 0; max-width: 34em; font-size: clamp(1.02rem, 1.5vw, 1.3rem); line-height: 1.3; color: #fff; font-weight: 600; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 1px 14px rgba(0, 0, 0, 0.85); }
 
 .dock { position: absolute; z-index: 5; right: var(--gutter); bottom: clamp(16px, 3vh, 30px); width: min(420px, 32vw); display: flex; flex-direction: column; gap: 8px; }
 @media (min-width: 900px) { .stage--tray > .stage__view { height: clamp(520px, calc(100svh - var(--top-height) - var(--tray)), 880px); } }   /* the picture, its picker and its trigger on one screen */
@@ -174,7 +174,7 @@
 .stage[data-biome="volcanic"] .salv > img { filter: url(#land-volcanic); }
 .stage[data-biome="volcanic"] .stage__bg img { filter: brightness(1.6) saturate(1.08); }   /* the badlands' storm is too dark for a page that should feel lit */
 .stage[data-biome="jungle"] .stage__bg img { filter: brightness(1.4) saturate(1.1); }
-.salv { position: absolute; z-index: 2; left: 46%; bottom: 1%; height: 90%; aspect-ratio: 1; transform: translateX(-50%); }
+.salv { position: absolute; z-index: 2; left: 50%; bottom: 1%; height: 90%; aspect-ratio: 1; transform: translateX(-50%); }
 .salv > img { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .zone { position: absolute; left: var(--x); top: var(--y); width: var(--w); height: var(--h); padding: 0; border: 0; background: transparent; cursor: crosshair; touch-action: pan-y; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
 .zone:hover, .zone:focus-visible, .zone.is-hit { background: rgba(255, 200, 140, 0.2); outline: 1px solid rgba(255, 220, 180, 0.72); outline-offset: -1px; }
@@ -184,7 +184,11 @@
 .zone__chip i { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.86); background: rgba(40, 20, 12, 0.72); color: #fff; font-style: normal; font-weight: 600; }
 .stage__view--salvage { container-type: size; }
 .stage__view--salvage .stage__head { right: auto; }
-.stage__view--salvage .stage__do { max-width: 23vw; }
+@media (min-width: 900px) { .stage__view--salvage .stage__do { max-width: 23vw; } }
+/* A squarer window: a smaller VIGIL, a little left, or the title meets its pod and the dock covers its arm. */
+@media (min-width: 900px) and (max-width: 1199px) {
+  .salv { left: 47%; height: 82%; }
+}
 .salv::before { content: ""; position: absolute; left: 12%; right: 12%; bottom: -1%; height: 13%; background: radial-gradient(closest-side, rgba(6, 4, 2, 0.72), rgba(6, 4, 2, 0.3) 62%, rgba(6, 4, 2, 0)); pointer-events: none; }
 .bank { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px; margin: 0; padding: 0; list-style: none; background: var(--glass-line); border: 1px solid var(--glass-line); }
 .bank li { position: relative; display: grid; grid-template-columns: 34px 1fr; column-gap: 4px; align-items: center; padding: 5px 6px 8px; background: var(--glass); color: #fff; min-width: 0; }
@@ -308,9 +312,9 @@
 /* ---------- a phone: the picture, then the controls under it ---------- */
 @media (max-width: 899px) {
   .kit__view { height: auto; }
-  .kit__scene { position: relative; inset: auto; height: clamp(440px, 62svh, 640px); }
-  .kit__bay { bottom: calc(6cqh - var(--pw) * 1.125 * 0.266); }
-  .kit__mech { --size: min(73cqh, 104cqw); bottom: calc(6cqh - var(--size) * 0.03); }
+  .kit__scene { position: relative; inset: auto; height: clamp(480px, 62svh, 640px); }
+  .kit__bay { bottom: calc(8cqh - var(--pw) * 1.125 * 0.266); }
+  .kit__mech { --size: min(70cqh, 104cqw); bottom: calc(8cqh - var(--size) * 0.03); }
   .kit__words { right: var(--gutter); max-width: none; top: 12px; }
   .kit h1 { font-size: clamp(3.2rem, 15vw, 5rem); margin: 4px 0 4px; }
   .kit__lead { font-size: 1rem; }
@@ -330,18 +334,21 @@
   .stage__view--fire { height: clamp(330px, 44svh, 520px); }
   .stage__view--reach { height: clamp(400px, 52svh, 560px); }
   .reach__target, .reach__tag { left: 50%; }
-  .stage__view--salvage { height: clamp(430px, 60svh, 640px); }
+  .stage__view--salvage { height: clamp(470px, 60svh, 640px); }
   .stage__view--climb { height: clamp(340px, 46svh, 520px); }
   .dock { position: static; width: auto; padding: 12px 16px 14px; background: linear-gradient(180deg, rgba(8, 6, 4, 0.42), rgba(8, 6, 4, 0.14)); }
   .stage__head h2 { font-size: clamp(2.8rem, 13vw, 4.4rem); }
   .stage__do { font-size: 1rem; max-width: none; }
   .stage--tray > .tray { height: auto; overflow: visible; }
-  .fire__target { left: 0; top: 34%; bottom: auto; height: 28%; }
+  .fire__target { left: 0; top: 40%; bottom: auto; height: 28%; }
   .kit__scene > .prealpha { top: 8px; bottom: auto; right: 10px; }
+  .kit__hint { left: 0; right: 0; bottom: 5px; padding: 0 var(--gutter); transform: none; text-align: center; line-height: 1.25; white-space: normal; }
+  .sheet > summary { position: relative; padding-right: calc(var(--gutter) + 26px); }
+  .sheet > summary::after { position: absolute; right: var(--gutter); top: 14px; margin: 0; }
   .fire__gun { left: auto; right: -2%; top: auto; bottom: 2%; width: 78%; }
   .stage__view--salvage .stage__head { right: var(--gutter); max-width: none; }
-  .salv { left: 50%; top: auto; bottom: 0; height: 76%; }
-  .climb__gun { left: auto; right: 2%; top: auto; bottom: 0; width: 76%; }
+  .salv { left: 50%; top: auto; bottom: 0; height: 72%; }
+  .climb__gun { left: auto; right: 2%; top: auto; bottom: 0; width: min(76%, 430px); }
   .climb__mk { font-size: clamp(2.6rem, 12vw, 3.6rem); top: 34px; right: 16px; }
   .lineup .chip { padding: 0 8px; font-size: 0.86rem; }
   .note { grid-template-columns: minmax(0, 1fr); padding: 16px; }
@@ -360,6 +367,10 @@
   .modules { grid-template-columns: 1fr 1fr; }
   .upg__row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .upg__lead { grid-column: 1 / -1; }
+}
+
+@media (max-width: 359px) {
+  .part b { white-space: normal; line-height: 1.1; text-align: center; }
 }
 
 .stage:has(input:focus-visible) .hill input::-webkit-slider-thumb { outline: 3px solid #fff; }
