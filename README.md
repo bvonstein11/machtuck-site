@@ -20,6 +20,8 @@ from the site itself, so a visit sends nothing to a third party.
 | `assets/valor.js` | The Valor wings in the third pillar: the game's seven wings (`assets/img/valor/`) on a stage that climbs them under the game's Ranked rules |
 | `armory/` | The Armory: what the VIGIL carries, to handle. It opens on the VIGIL as the Command Hub stands it, its five hardpoints marked and following it as it turns, with all twelve pieces to bolt on, each fit looked up in the Hangar's export. Then every gun on a held trigger with its heat, a target to drag out of range, an enemy to break for salvage, the daily crate and the Mk ladder; every entry in full behind the last fold. `armory/armory.js` keeps every number in one `GAME` block; `python3 -I Tools/website/armory_check.py` reads them back from the game, and `node Tools/website/armory_layout_check.mjs` checks nothing is cut off, covered or lying on a figure at eighteen window sizes |
 | `physics/` | The Physics: the game's rules to play with, each chapter a full-width picture with a demo on it. Drop a VIGIL, fly its jets until the heat runs out, load it and walk it up a hill until it slips and stalls, raise water round it, ram with it, fire a DART-20 that falls and drifts, see a far shot before you hear it, run The Reach's day against the war's clock, watch the game's pressure systems cross the war map, read density altitude, race the Archive's cruise to the Moon. Every game number the demos use is in one block, `GAME`, at the top of `physics/physics.js`; `Tools/website/physics_check.py` reads each back from the game's code, recomputes the readouts the page types for readers without scripts, checks the game figures in the prose, and fails on any that has drifted. Run it whenever the jets, heat, weight, slopes, water, collisions, a gun's ballistics, the weather or the sound model is retuned. `Physics.flightStep` is a hand port of the jets' and the reactor's update: the check reads its constants, not its logic, so reread both when either moves. The world's own figures (`WORLD`: the day, the voyage) are the setting's and are checked by hand. The VIGIL is drawn from the Hangar's turntable frames, never mirrored, so the hex pod and the sensor block stay on their shoulders. The small weapon pictures are in `assets/img/physics/`, cut from the Armory's by `Tools/website/build_site_assets.py` |
+| `community-terms/` | The Community Terms, built around the ideas clause, whose words change only with the studio's say-so |
+| `welcome/` | Where Kit sends a pilot after the closed beta form: thanks, and the Discord invite. Linked from nowhere on the site, and not indexed |
 | `CNAME` | Tells GitHub Pages the site's address |
 
 **The clan patch maker** stores nothing. A design is its patch code (`1.` and twelve values joined by dots, written in
@@ -32,6 +34,17 @@ season back to Rookie. Change them in `assets/valor.js` only when the game's `Va
 
 **The Discord buttons** read one line at the top of `assets/site.js`, `DISCORD_INVITE`. While it is empty they say
 "Discord opening soon" and lead nowhere.
+
+**The switches** are the lines at the top of `assets/site.js`. All of them start off, and everything they control stays hidden:
+
+| Line | What it does when set |
+|---|---|
+| `SIGNUP_FORM` | The closed beta request appears: the hero's button, the bar's button, the pinned bar on phones and the form in JOIN. A plain POST to Kit, with no script from Kit. See the steps below before setting it |
+| `STEAM_WISHLIST` | The "Wishlist on Steam" button appears in JOIN |
+| `PILOT_COUNT` | The real sign-up total from Kit, by hand. Shown above the form once it passes `PILOT_COUNT_SHOWN_ABOVE` (100). Never an estimate; Kit's API key never goes in the page |
+| `LATEST_CLIPS` | The latest clips strip appears above STUDIO, showing the first four. A clip is a poster on this site and a link out; nothing loads from another site |
+
+**Turning on the closed beta request.** The privacy page and the Community Terms go live first. Then, in Kit, on the form: custom fields `requested_callsign`, `faction` and `source` exist; the confirmation email is off until the studio's postal address is in Kit's footer, since Kit must send nothing before then; the after-subscribing action redirects to `https://machtuck.com/welcome/`; Invisible reCAPTCHA is off, because a plain POST carries no token. Send one real test, delete the test subscriber, and only then set `SIGNUP_FORM`. A link may name its source with `?src=tiktok`, which is read as the form goes, cleaned to a short plain word, sent as `source`, and never stored. The form's callsign is a request: nothing on this site reserves one.
 
 **Aboard the Archive.** Arriving from another site opens on the shipboard network for about two seconds (a short script in
 the head of `thereach/index.html` decides, `assets/site.js` draws it; not on a reload, Back, or a link from this site,

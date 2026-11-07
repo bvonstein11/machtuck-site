@@ -1343,16 +1343,78 @@ a.log__frame:hover { box-shadow: 0 0 0 1px var(--accent); }
 .join__inner { position: relative; }
 .join h2 { max-width: none; font-size: clamp(2.6rem, 6.4vw, 5.2rem); }
 .join .lead { max-width: 620px; margin: 26px 0 36px; color: var(--ink-dim); }
-.signup { max-width: 520px; margin-top: 40px; }
-.signup label { display: block; margin-bottom: 10px; color: var(--ink-dim); font: 400 0.72rem/1.3 var(--font-mono); letter-spacing: 0.2em; text-transform: uppercase; }
-.signup__row { display: flex; gap: 10px; }
-.signup input {
-  flex: 1; min-width: 0; min-height: 48px; padding: 0 16px;
-  border: 0; box-shadow: inset 0 0 0 1px var(--line); background: rgba(232, 228, 220, 0.04); color: var(--ink); font: inherit;
+.join__doors { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* the closed beta request: hidden until SIGNUP_FORM in site.js names the form */
+.request {
+  position: relative; max-width: 640px; margin: 0 0 40px; padding: clamp(20px, 3vw, 32px);
+  background: rgba(7, 9, 13, 0.78); box-shadow: inset 0 0 0 1px var(--line);
+  scroll-margin-top: calc(var(--top-height) + 16px);
 }
-.signup input:focus { outline: none; box-shadow: inset 0 0 0 1px var(--accent); }
-.signup__note { margin: 10px 0 0; color: var(--ink-faint); font-size: 0.82rem; }
+.request h3 { font-family: var(--font-display); font-size: clamp(1.7rem, 3.2vw, 2.3rem); line-height: 1; letter-spacing: 0.01em; }
+.request__intro { margin: 10px 0 20px; color: var(--ink-dim); font-size: 0.98rem; }
+.request__count { margin: 0 0 14px; color: var(--accent); font: 400 0.72rem/1.4 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; }
+.request__count b { font-weight: 400; color: var(--ink); }
+.signup__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.signup__field--wide { grid-column: 1 / -1; }
+@media (max-width: 560px) { .signup__grid { grid-template-columns: 1fr; } }
+.signup__field label { display: block; margin-bottom: 8px; color: var(--ink-dim); font: 400 0.72rem/1.3 var(--font-mono); letter-spacing: 0.16em; text-transform: uppercase; }
+.signup__field label span { color: var(--ink-faint); }
+.signup__field input, .signup__field select {
+  display: block; width: 100%; min-width: 0; min-height: 48px; padding: 0 14px;
+  border: 0; border-radius: 0; box-shadow: inset 0 0 0 1px var(--line); background-color: rgba(232, 228, 220, 0.04); color: var(--ink); font: inherit;
+  -webkit-appearance: none; appearance: none;
+}
+.signup__field input:focus, .signup__field select:focus { outline: none; box-shadow: inset 0 0 0 2px var(--accent); }
+#signup-callsign { text-transform: uppercase; }
+.signup__field select {
+  padding-right: 36px; background-repeat: no-repeat; background-position: right 14px center; background-size: 12px 8px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23aaa59c' stroke-width='1.6'/%3E%3C/svg%3E");
+}
+.signup__field select option { background: var(--bg-raise); color: var(--ink); }
+.signup__hint { margin: 6px 0 0; color: var(--ink-faint); font-size: 0.78rem; line-height: 1.4; }
+.signup__age { display: flex; align-items: center; gap: 12px; min-height: 44px; margin: 14px 0; color: var(--ink); cursor: pointer; }
+.signup__age input { flex: none; width: 20px; height: 20px; margin: 0; accent-color: var(--accent); }
+.signup .btn { width: 100%; cursor: pointer; border: 0; }
+@media (max-width: 560px) { .signup .btn { min-height: 54px; padding: 0 10px; font-size: 0.8rem; letter-spacing: 0.14em; } }
+.signup__note { margin: 10px 0 0; color: var(--ink-faint); font-size: 0.82rem; line-height: 1.45; }
 .signup__note a { color: var(--ink-dim); }
+
+/* the pinned bar: phones only, and only once site.js has raised it */
+.pin {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 45;
+  padding: 10px var(--gutter) calc(10px + env(safe-area-inset-bottom));
+  background: rgba(7, 9, 13, 0.94); box-shadow: 0 -1px 0 var(--line);
+  transform: translateY(100%); visibility: hidden; transition: transform 0.25s ease, visibility 0s 0.25s;
+}
+.pin.is-up { transform: none; visibility: visible; transition: transform 0.25s ease; }
+.pin .btn { width: 100%; min-height: 46px; padding: 0 8px; font-size: 0.78rem; letter-spacing: 0.14em; white-space: nowrap; }
+@media (min-width: 761px) { .pin { display: none; } }
+
+/* the hero and the bar with the request on: the long label takes its own width, and a phone shows it alone (the menu and
+   JOIN keep the Discord door); the full bar swaps its Discord button for the short label, the menu shows both */
+.has-signup .hero__actions .btn { flex: 0 1 auto; }
+@media (max-aspect-ratio: 5/4) { .has-signup .hero__actions .btn { flex: 1 1 auto; padding: 0 12px; } }
+@media (max-width: 560px) {
+  .has-signup .hero__actions [data-discord] { display: none; }
+  .has-signup .hero__actions [data-signup-cta] { flex: 1 1 100%; font-size: 0.78rem; }
+}
+@media (min-width: 1221px) { .has-signup .bar__nav [data-discord] { display: none; } }
+
+/* the latest clips: a strip, hidden while its list is empty */
+.clips { border-top: 1px solid var(--line); }
+.clips__list {
+  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(200px, 1fr); gap: 16px;
+  margin: 28px 0 0; padding: 0 0 8px; list-style: none; overflow-x: auto; scroll-snap-type: x proximity;
+}
+.clips__list li { scroll-snap-align: start; }
+.clip { position: relative; display: block; aspect-ratio: 9 / 16; overflow: hidden; background: var(--bg-raise); box-shadow: inset 0 0 0 1px var(--line); text-decoration: none; }
+.clip img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.clip:hover img { transform: scale(1.03); }
+.clip::after { content: ""; position: absolute; inset: 45% 0 0; background: linear-gradient(to bottom, transparent, rgba(4, 6, 10, 0.92)); pointer-events: none; }
+.clip__where, .clip__title { position: absolute; left: 14px; right: 14px; z-index: 1; }
+.clip__where { bottom: 62px; color: var(--accent); font: 400 0.66rem/1.3 var(--font-mono); letter-spacing: 0.18em; text-transform: uppercase; }
+.clip__title { bottom: 14px; height: 44px; overflow: hidden; color: var(--ink); font-size: 0.92rem; line-height: 22px; }
 
 /* footer */
 .foot { padding: 48px 0 calc(48px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); }
@@ -1390,6 +1452,17 @@ a.log__frame:hover { box-shadow: 0 0 0 1px var(--accent); }
 .doc .lead { margin: 26px 0 8px; color: var(--ink); }
 .doc a { color: var(--accent); }
 .doc__date { color: var(--ink-faint); font-size: 0.8rem; }
+.doc a.btn { color: var(--accent-ink); }
+.doc a.btn--ghost { color: var(--ink); }
+.doc code { font: 400 0.86em/1 var(--font-mono); color: var(--ink); }
+.doc__list { margin: 0 0 1em; padding-left: 1.1em; color: var(--ink-dim); }
+.doc__list li { margin-bottom: 6px; }
+/* the ideas clause, set apart from the page around it */
+.clause { margin: 28px 0 8px; padding: clamp(18px, 3vw, 28px); background: var(--bg-raise); box-shadow: inset 2px 0 0 var(--accent), inset 0 0 0 1px var(--line); }
+.clause p { margin: 0; color: var(--ink); }
+.clause strong { font-weight: 600; }
+.welcome__door { margin: 28px 0 34px; }
+@media (max-width: 480px) { .welcome__door .btn { width: 100%; padding: 0 12px; } }
 
 /* ---------- boarding: the shipboard network, on the first page of a visit ---------- */
 html.is-boarding::after { content: ""; position: fixed; inset: 0; z-index: 300; background: #04060a; }
@@ -1415,22 +1488,53 @@ html.is-boarding::after { content: ""; position: fixed; inset: 0; z-index: 300; 
 .boarding.is-on .boarding__panel p:nth-child(5) { transition-delay: 0.9s; }
 
 /* ---------- the press kit ---------- */
-.presskit { max-width: 980px; }
+.presskit { max-width: 1080px; }
+.presskit h2 { margin: 60px 0 14px; font-family: var(--font-display); font-size: clamp(1.8rem, 3.4vw, 2.5rem); line-height: 1; letter-spacing: 0.01em; }
+.presskit__hero { margin: 26px 0 0; box-shadow: inset 0 0 0 1px var(--line); }
+.presskit__hero img { width: 100%; }
+.presskit__actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 22px 0 0; }
+.presskit__size { font-weight: 400; letter-spacing: 0.1em; opacity: 0.75; font-size: 0.82em; margin-left: 2px; }
+@media (max-width: 480px) { .presskit__actions .btn { width: 100%; padding: 0 12px; font-size: 0.8rem; letter-spacing: 0.14em; } }
+.presskit__index { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 24px 0 0; padding: 12px 0; border-block: 1px solid var(--line); }
+.doc .presskit__index a { color: var(--ink-dim); text-decoration: none; font: 600 0.7rem/1.7 var(--font); letter-spacing: 0.16em; text-transform: uppercase; }
+.doc .presskit__index a:hover { color: var(--ink); }
+.presskit section { scroll-margin-top: 12px; }
 /* Each fact draws its own border, so a short last row leaves no grey gap. */
-.presskit__facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); margin: 18px 1px 0 0; }
-.presskit__facts div { display: flex; flex-direction: column-reverse; gap: 6px; margin: 0 -1px -1px 0; padding: 16px 18px; border: 1px solid var(--line); }
+.presskit__facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); margin: 18px 1px 0 0; }
+.presskit__facts div { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 6px; margin: 0 -1px -1px 0; padding: 16px 18px; border: 1px solid var(--line); }
 .presskit__facts dt { color: var(--ink-faint); font: 400 0.66rem/1.3 var(--font-mono); letter-spacing: 0.18em; text-transform: uppercase; }
 .presskit__facts dd { margin: 0; color: var(--ink); }
-.presskit__list { padding-left: 1.1em; color: var(--ink-dim); }
-.presskit__list li { margin-bottom: 8px; }
-.presskit__list b { color: var(--ink); font-weight: 600; }
-.presskit__art { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; margin: 18px 0 8px; padding: 0; list-style: none; }
+.presskit__blurb { position: relative; margin: 14px 0 0; padding: 18px 20px; box-shadow: inset 0 0 0 1px var(--line); }
+.presskit__blurb h3 { margin: 0 0 10px; padding-right: 76px; color: var(--accent); font: 400 0.7rem/1.6 var(--font-mono); letter-spacing: 0.18em; }
+.presskit__blurb p:last-child { margin-bottom: 0; }
+.presskit__copy {
+  position: absolute; right: 12px; top: 12px; min-height: 30px; padding: 0 12px;
+  background: none; border: 0; box-shadow: inset 0 0 0 1px var(--line); color: var(--ink-dim); cursor: pointer;
+  font: 600 0.66rem/1 var(--font); letter-spacing: 0.14em; text-transform: uppercase;
+}
+.presskit__copy:hover { color: var(--ink); }
+.presskit__features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin: 18px 0 0; padding: 0; list-style: none; }
+.presskit__features li { padding: 18px 20px; background: var(--bg-raise); box-shadow: inset 0 0 0 1px var(--line); color: var(--ink-dim); font-size: 0.98rem; }
+.presskit__features b { display: block; margin-bottom: 6px; color: var(--ink); font: 600 1.25rem/1.1 var(--font-display); letter-spacing: 0.02em; text-transform: uppercase; }
+.presskit__see { margin-top: 16px; }
+.presskit__art { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); grid-auto-flow: dense; gap: 16px; margin: 18px 0 8px; padding: 0; list-style: none; }
 .presskit__art li { margin: 0; }
-.presskit__art a { display: grid; place-items: center; aspect-ratio: 4 / 3; overflow: hidden; background: var(--bg-raise); box-shadow: inset 0 0 0 1px var(--line); }
-.presskit__art img { width: 100%; height: 100%; object-fit: cover; }
-.presskit__logos a { padding: 18px; }
-.presskit__logos img, .presskit__art .is-wide img { object-fit: contain; }
-.presskit__art p { margin: 8px 0 0; color: var(--ink-faint); font: 400 0.66rem/1.3 var(--font-mono); letter-spacing: 0.12em; text-transform: uppercase; }
+.presskit__art .is-wide { grid-column: span 2; }
+@media (max-width: 560px) { .presskit__art { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } }
+/* The picture sits absolutely in its frame: a percentage height in an aspect-ratio box reads as auto, and a tall picture
+   then overflowed and showed only its middle. */
+.presskit__art a { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--bg-raise); box-shadow: inset 0 0 0 1px var(--line); }
+.presskit__art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.presskit__art .is-wide img { object-fit: contain; }
+.presskit__logos img { inset: 18px; width: calc(100% - 36px); height: calc(100% - 36px); object-fit: contain; }
+.presskit__art p { margin: 8px 0 0; color: var(--ink-faint); font: 400 0.66rem/1.4 var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase; }
+.presskit__trailer { margin: 18px 0 8px; max-width: 720px; }
+.presskit__trailer a { display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--bg-raise); box-shadow: inset 0 0 0 1px var(--line); }
+.presskit__trailer img { width: 100%; height: 100%; object-fit: cover; }
+.presskit__trailer p { margin: 8px 0 0; color: var(--ink-faint); font: 400 0.66rem/1.4 var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase; }
+.presskit__creators { margin-top: 60px; padding: clamp(20px, 3vw, 36px); background: radial-gradient(ellipse at 15% 0%, rgba(224, 137, 62, 0.13), transparent 62%); box-shadow: inset 0 0 0 1px var(--line); }
+.presskit__creators h2 { margin-top: 0; }
+.doc .presskit__creators .lead { margin: 0 0 8px; }
 
 /* ---------- motion: off when the visitor asks for less ---------- */
 [data-reveal] { opacity: 0; transform: translateY(22px); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1); }
@@ -1636,6 +1740,7 @@ html.has-frontmap-full, html.has-frontmap-full body { overflow: hidden; }
 .stage__view > .prealpha { top: 18px; right: max(16px, 5vw); }
 .open > .prealpha { top: 142px; right: max(16px, 5vw); }
 .hero__stage > .prealpha { top: auto; bottom: 22px; right: var(--gutter); }
+.join__art > .prealpha { right: 18%; } /* the picture runs off the window's edge, and the label must not */
 @media (max-width: 899px) {
   .open > .prealpha { top: 104px; }
 }

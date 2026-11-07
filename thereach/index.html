@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>The Reach: Unknown · Mach Tuck Games</title>
-  <meta name="description" content="A persistent mech war, fought from a first-person cockpit. Join one of five factions or fly alone as a Torrath mercenary, and every match you fight moves a front that never resets.">
+  <meta name="description" content="A persistent mech war, fought from a first-person cockpit. Join one of five factions or fly alone as a Torrath mercenary, and every match you fight moves a front all pilots share.">
   <link rel="canonical" href="https://machtuck.com/thereach/">
   <meta name="theme-color" content="#07090d">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Mach Tuck Games">
   <meta property="og:title" content="The Reach: Unknown">
-  <meta property="og:description" content="A persistent mech war. Five factions, one world, and a war that never ends.">
+  <meta property="og:description" content="A persistent mech war. Five factions, one world, and every match moves the front.">
   <meta property="og:url" content="https://machtuck.com/thereach/">
   <meta property="og:image" content="https://machtuck.com/assets/img/share-card.jpg">
   <meta property="og:image:width" content="1200">
@@ -25,8 +25,8 @@
   <link rel="preload" href="/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/assets/img/sky-2560.webp" as="image" media="(min-width: 1281px)">
   <link rel="preload" href="/assets/img/sky-1280.webp" as="image" media="(max-width: 1280px)">
-  <link rel="stylesheet" href="/assets/site.css?v=8074f27a">
-  <link rel="stylesheet" href="/drop/drop.css?v=8074f27a">
+  <link rel="stylesheet" href="/assets/site.css?v=1db89a81">
+  <link rel="stylesheet" href="/drop/drop.css?v=1db89a81">
   <script>
     // Boarding: arriving from another site opens on the shipboard network, which assets/site.js draws. Nothing is
     // stored in the browser (the privacy page promises that): a reload, Back, or a link from this site skips it. This
@@ -41,19 +41,19 @@
       }
     } catch (error) { /* no boarding screen */ }
   </script>
-  <script src="/assets/ship.js?v=8074f27a" defer></script>
-  <script src="/assets/prealpha.js?v=8074f27a" defer></script>
-  <script src="/assets/crossing.js?v=8074f27a" defer></script>
-  <script src="/assets/site.js?v=8074f27a" defer></script>
-  <script src="/drop/drop.js?v=8074f27a" defer></script>
-  <script src="/assets/patch.js?v=8074f27a" defer></script>
-  <script src="/assets/patchmaker.js?v=8074f27a" defer></script>
-  <script src="/assets/front.js?v=8074f27a" defer></script>
-  <script src="/assets/loadouts.js?v=8074f27a" defer></script>
-  <script src="/assets/bench.js?v=8074f27a" defer></script>
-  <script src="/assets/valor.js?v=8074f27a" defer></script>
-  <script src="/assets/story.js?v=8074f27a" defer></script>
-  <script src="/assets/lands.js?v=8074f27a" defer></script>
+  <script src="/assets/ship.js?v=1db89a81" defer></script>
+  <script src="/assets/prealpha.js?v=1db89a81" defer></script>
+  <script src="/assets/crossing.js?v=1db89a81" defer></script>
+  <script src="/assets/site.js?v=1db89a81" defer></script>
+  <script src="/drop/drop.js?v=1db89a81" defer></script>
+  <script src="/assets/patch.js?v=1db89a81" defer></script>
+  <script src="/assets/patchmaker.js?v=1db89a81" defer></script>
+  <script src="/assets/front.js?v=1db89a81" defer></script>
+  <script src="/assets/loadouts.js?v=1db89a81" defer></script>
+  <script src="/assets/bench.js?v=1db89a81" defer></script>
+  <script src="/assets/valor.js?v=1db89a81" defer></script>
+  <script src="/assets/story.js?v=1db89a81" defer></script>
+  <script src="/assets/lands.js?v=1db89a81" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -84,6 +84,9 @@
       <a href="/armory/">The Armory</a>
       <a href="/physics/">The Physics</a>
       <a href="#studio">Studio</a>
+      <!-- The closed beta request's short label keeps the nav inside its measured breakpoints (about two characters narrower
+           than the Discord button it replaces in the full bar; the menu shows both). -->
+      <a class="btn btn--small" data-signup-cta href="#request" hidden>Request access</a>
       <a class="btn btn--small" data-discord href="#join">Join the Discord</a>
     </nav>
     <button class="bar__menu" type="button" aria-expanded="false" aria-controls="site-nav" data-menu>
@@ -135,8 +138,9 @@
             </p>
           </div>
           <div class="hero__actions">
+            <a class="btn" data-signup-cta href="#request" hidden>Request closed beta access</a>
             <a class="btn" data-discord href="#join">Join the Discord</a>
-            <a class="btn btn--ghost" href="#game">Explore the game</a>
+            <a class="btn btn--ghost" data-hero-explore href="#game">Explore the game</a>
           </div>
         </div>
       </div>
@@ -580,7 +584,7 @@
             <h2 data-reveal>Every match moves the war.</h2>
             <div class="game__lead" data-reveal>
               <p class="lead">You are a mech pilot with a faction, a rank and a clan that counts on you. What you do tonight is still on the map tomorrow.</p>
-              <p>The front line never resets.</p>
+              <p>Every pilot fights on the same front line.</p>
             </div>
           </div>
 
@@ -661,6 +665,15 @@
       </div>
     </section>
 
+    <!-- LATEST CLIPS: hidden until LATEST_CLIPS in assets/site.js has something in it, so it cannot look stale. -->
+    <section class="section clips" id="clips" aria-labelledby="clips-title" data-clips hidden>
+      <div class="wrap">
+        <p class="eyebrow">From the cockpit</p>
+        <h2 id="clips-title">Latest clips</h2>
+        <ul class="clips__list" data-clips-list></ul>
+      </div>
+    </section>
+
     <!-- STUDIO -->
     <section class="section studio" id="studio" data-section>
       <div class="wrap studio__grid">
@@ -684,22 +697,56 @@
         <p class="eyebrow" data-reveal>Join</p>
         <h2 data-reveal>When we reach orbit,<br> the war begins.</h2>
         <p class="lead" data-reveal>The Archive reaches orbit the day open beta begins. Until then, the pilots gather on Discord.</p>
-        <div data-reveal>
-          <a class="btn btn--large" data-discord href="#join">Join the Discord</a>
+        <!-- The closed beta request posts straight to Kit, with no script from Kit on this page, and has no address to post
+             to until SIGNUP_FORM in assets/site.js names the form. The callsign is a request: nothing here reserves one. The
+             field names are Kit's custom-field keys; the rules for a callsign are the game's (1-16 letters, digits, - or _). -->
+        <div class="request" id="request" data-request hidden>
+          <p class="request__count" data-pilot-count hidden><b></b> pilots have asked for closed beta access</p>
+          <h3>Request closed beta access</h3>
+          <p class="request__intro">Closed beta on Windows and Mac. We'll email you when invitations go out, and send news about The Reach until then.</p>
+          <form class="signup" data-signup method="post">
+            <div class="signup__grid">
+              <div class="signup__field signup__field--wide">
+                <label for="signup-email">Email</label>
+                <input id="signup-email" type="email" name="email_address" autocomplete="email" placeholder="you@example.com" required>
+              </div>
+              <div class="signup__field">
+                <label for="signup-callsign">Requested callsign</label>
+                <input id="signup-callsign" type="text" name="fields[requested_callsign]" maxlength="16" pattern="[A-Za-z0-9_\-]{1,16}" title="Up to 16 letters, numbers, - or _" autocomplete="off" autocapitalize="characters" spellcheck="false" required>
+                <p class="signup__hint">A request, not a reservation. Up to 16 letters, numbers, - or _.</p>
+              </div>
+              <div class="signup__field">
+                <label for="signup-faction">Faction <span>(optional)</span></label>
+                <select id="signup-faction" name="fields[faction]">
+                  <option value="">No preference</option>
+                  <option>Kashiro</option>
+                  <option>Valdron</option>
+                  <option>Darvyn</option>
+                  <option>Gorvik</option>
+                  <option>Shenvong</option>
+                  <option>Torrath</option>
+                </select>
+              </div>
+            </div>
+            <input type="hidden" name="fields[source]" value="">
+            <label class="signup__age"><input type="checkbox" required> <span>I'm 13 or older</span></label>
+            <button class="btn btn--large" type="submit">Request closed beta access</button>
+            <p class="signup__note">By signing up you agree to our <a href="/community-terms/">Community Terms</a></p>
+            <p class="signup__note">Your details go to Kit, the service we send email with, and every email has an unsubscribe link. <a href="/privacy/">Privacy</a></p>
+          </form>
         </div>
-        <!-- The email sign-up posts straight to Kit, with no script from Kit on this page. It stays hidden until
-             SIGNUP_FORM in assets/site.js names the form, and the privacy page describes it. -->
-        <form class="signup" data-signup method="post" target="_blank" hidden>
-          <label for="signup-email">Or get the news by email</label>
-          <div class="signup__row">
-            <input id="signup-email" type="email" name="email_address" autocomplete="email" placeholder="you@example.com" required>
-            <button class="btn btn--ghost" type="submit">Sign up</button>
-          </div>
-          <p class="signup__note">Your address goes to Kit, the service we send email with. News about The Reach only, and every email has an unsubscribe link. <a href="/privacy/">Privacy</a></p>
-        </form>
+        <div class="join__doors" data-reveal>
+          <a class="btn btn--large" data-discord href="#join">Join the Discord</a>
+          <a class="btn btn--large btn--ghost" data-steam hidden>Wishlist on Steam</a>
+        </div>
       </div>
     </section>
   </main>
+
+  <!-- The pinned bar on phones: part of the closed beta request, hidden with it. -->
+  <div class="pin" data-pin hidden>
+    <a class="btn" href="#request">Request closed beta access</a>
+  </div>
 
   <footer class="foot">
     <div class="wrap foot__inner">
@@ -712,6 +759,7 @@
           <a href="/presskit/">Press kit</a>
           <a href="/privacy/">Privacy</a>
           <a href="/terms/">Terms</a>
+          <a href="/community-terms/">Community Terms</a>
         </nav>
         <p>© <span data-year>2026</span> Mach Tuck Games LLC</p>
         <p>The Reach: Unknown™ and the MT shield are trademarks of Mach Tuck Games LLC.</p>

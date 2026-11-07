@@ -1,5 +1,7 @@
 // machtuck.com — the page's small amount of behaviour: the ship's strip, the bar, the menu, the rail, the reveals,
-// the parallax, the faction pick, and the Discord door. No libraries, no tracking, nothing sent anywhere.
+// the parallax, the faction pick, the Discord door and the closed beta request. No libraries and no tracking. The one thing
+// this site ever sends anywhere is the closed beta form, when a visitor sends it. The switches below are the only lines to
+// change by hand; the README's "The switches" says when.
 
 /**
  * The Discord invite every "Join the Discord" button opens. Empty until the server exists: the buttons then say
@@ -9,10 +11,31 @@
 const DISCORD_INVITE = "https://discord.gg/akCxskKStX";
 
 /**
- * The Kit form the email sign-up sends to: the form's number, from its embed code in Kit. Empty until the form exists,
- * and the sign-up stays hidden while it is; the privacy page must describe the sign-up before this is filled in.
+ * The Kit form the closed beta request sends to: the form's number, from its embed code in Kit. While this is empty every
+ * part of the request stays hidden (the hero's and the bar's buttons, the phones' pinned bar, the form in JOIN) and nothing
+ * can be sent. The privacy page must describe the form, and Kit's own settings must be done, before this is filled in.
  */
 const SIGNUP_FORM = "";
+
+/** The game's Steam page. Empty hides the wishlist button in JOIN; paste the page's address the day it exists. */
+const STEAM_WISHLIST = "";
+
+/**
+ * How many pilots have asked for closed beta access: the real total from Kit, typed here by hand. It stays hidden until it
+ * passes PILOT_COUNT_SHOWN_ABOVE, and it sits inside the form's block, so it never shows without the form. Real sign-ups
+ * only, never an estimate. Kit's API key never goes in this page.
+ */
+const PILOT_COUNT = 0;
+const PILOT_COUNT_SHOWN_ABOVE = 100;
+
+/**
+ * The latest clips strip in the game's page, newest first; the first LATEST_CLIPS_SHOWN are drawn. While the list is empty
+ * the strip is hidden, so it can never look stale. Each entry is
+ *   { url: "https://...", title: "What it shows", where: "TikTok", poster: "/assets/img/clips/name.webp" }
+ * A clip is a picture on this site and a link out: no video player and nothing else from another site loads here.
+ */
+const LATEST_CLIPS = [];
+const LATEST_CLIPS_SHOWN = 4;
 
 document.documentElement.classList.remove("no-js");
 
@@ -31,31 +54,102 @@ for (const link of document.querySelectorAll("[data-discord]")) {
   }
 }
 
-// The email sign-up: shown only once a Kit form is named above. It posts to Kit in a new tab; nothing loads from Kit.
+// The closed beta request: shown only once a Kit form is named above. It is a plain POST to Kit, with no script from Kit on
+// the page, in this tab; Kit then sends the pilot on to /welcome/ (a setting on the form in Kit), which hands over the Discord
+// invite. The one ask takes the lead: the hero's Discord button steps back a rank and "Explore the game" steps aside.
 const signup = document.querySelector("[data-signup]");
 if (signup && SIGNUP_FORM) {
   signup.action = `https://app.kit.com/forms/${SIGNUP_FORM}/subscriptions`;
-  signup.hidden = false;
+  document.documentElement.classList.add("has-signup");
+  for (const part of document.querySelectorAll("[data-request], [data-signup-cta], [data-pin]")) part.hidden = false;
+  document.querySelector(".hero__actions [data-discord]")?.classList.add("btn--ghost");
+  document.querySelector(".join__doors [data-discord]")?.classList.add("btn--ghost");
+  const heroExplore = document.querySelector("[data-hero-explore]");
+  if (heroExplore) heroExplore.hidden = true;
+
+  const callsign = signup.elements["fields[requested_callsign]"];
+  const cleanCallsign = () => { callsign.value = callsign.value.trim().toUpperCase(); };
+  callsign.addEventListener("change", cleanCallsign);
+  // Where the visitor came from is read from the address here, as the form goes, and goes nowhere but into the form: nothing
+  // is kept in the browser, as the privacy page promises. A value that is not a plain short word (an address pasted into a
+  // link, say) is dropped, not sent.
+  signup.addEventListener("submit", () => {
+    cleanCallsign();
+    const source = (new URLSearchParams(location.search).get("src") || "").trim().toLowerCase();
+    signup.elements["fields[source]"].value = /^[a-z0-9_-]{1,32}$/.test(source) ? source : "";
+  });
+
+  // The pinned bar on phones: up once the hero's own button has scrolled away, and down again from the form on, so it never
+  // covers the form or the footer.
+  const pin = document.querySelector("[data-pin]");
+  const heroAsk = document.querySelector(".hero__actions [data-signup-cta]");
+  const request = document.querySelector("[data-request]");
+  if (pin && heroAsk && request) {
+    let pastHero = false;
+    let atForm = false;
+    const placePin = () => pin.classList.toggle("is-up", pastHero && !atForm);
+    new IntersectionObserver(([entry]) => {
+      pastHero = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+      placePin();
+    }).observe(heroAsk);
+    new IntersectionObserver(([entry]) => {
+      atForm = entry.isIntersecting || entry.boundingClientRect.top < 0;
+      placePin();
+    }).observe(request);
+  }
+
+  const pilots = document.querySelector("[data-pilot-count]");
+  if (pilots && PILOT_COUNT > PILOT_COUNT_SHOWN_ABOVE) {
+    pilots.querySelector("b").textContent = PILOT_COUNT.toLocaleString("en-US");
+    pilots.hidden = false;
+  }
 }
 
-// The bar turns solid once the hero has scrolled past, so the links stay readable over the sections below.
-const bar = document.querySelector("[data-bar]");
-const updateBar = () => bar.classList.toggle("is-solid", window.scrollY > 40);
-updateBar();
-window.addEventListener("scroll", updateBar, { passive: true });
+// The Steam wishlist button: hidden until the store page is named above.
+if (STEAM_WISHLIST) {
+  for (const link of document.querySelectorAll("[data-steam]")) {
+    Object.assign(link, { href: STEAM_WISHLIST, target: "_blank", rel: "noopener", hidden: false });
+  }
+}
 
-// The phone menu: one button, closed by a choice, by Escape, or by a tap outside it.
-const menuButton = document.querySelector("[data-menu]");
-const nav = document.getElementById("site-nav");
-const setMenu = (open) => {
-  menuButton.setAttribute("aria-expanded", String(open));
-  nav.classList.toggle("is-open", open);
-  bar.classList.toggle("is-open", open);
-};
-menuButton.addEventListener("click", () => setMenu(menuButton.getAttribute("aria-expanded") !== "true"));
-nav.addEventListener("click", (event) => { if (event.target.closest("a")) setMenu(false); });
-document.addEventListener("keydown", (event) => { if (event.key === "Escape") setMenu(false); });
-document.addEventListener("click", (event) => { if (!bar.contains(event.target)) setMenu(false); });
+// The latest clips: hidden until the list above has something in it.
+const clips = document.querySelector("[data-clips]");
+if (clips && LATEST_CLIPS.length) {
+  const list = clips.querySelector("[data-clips-list]");
+  for (const clip of LATEST_CLIPS.slice(0, LATEST_CLIPS_SHOWN)) {
+    const item = document.createElement("li");
+    const link = Object.assign(document.createElement("a"), { className: "clip", href: clip.url, target: "_blank", rel: "noopener" });
+    const poster = Object.assign(document.createElement("img"), { src: clip.poster, alt: "", loading: "lazy" });
+    const where = Object.assign(document.createElement("span"), { className: "clip__where", textContent: clip.where || "" });
+    const title = Object.assign(document.createElement("span"), { className: "clip__title", textContent: clip.title || "" });
+    link.append(poster, where, title);
+    item.append(link);
+    list.append(item);
+  }
+  clips.hidden = false;
+}
+
+// The bar turns solid once the hero has scrolled past, so the links stay readable over the sections below. The plain pages
+// that load this file for their Discord button have no bar.
+const bar = document.querySelector("[data-bar]");
+if (bar) {
+  const updateBar = () => bar.classList.toggle("is-solid", window.scrollY > 40);
+  updateBar();
+  window.addEventListener("scroll", updateBar, { passive: true });
+
+  // The phone menu: one button, closed by a choice, by Escape, or by a tap outside it.
+  const menuButton = document.querySelector("[data-menu]");
+  const nav = document.getElementById("site-nav");
+  const setMenu = (open) => {
+    menuButton.setAttribute("aria-expanded", String(open));
+    nav.classList.toggle("is-open", open);
+    bar.classList.toggle("is-open", open);
+  };
+  menuButton.addEventListener("click", () => setMenu(menuButton.getAttribute("aria-expanded") !== "true"));
+  nav.addEventListener("click", (event) => { if (event.target.closest("a")) setMenu(false); });
+  document.addEventListener("keydown", (event) => { if (event.key === "Escape") setMenu(false); });
+  document.addEventListener("click", (event) => { if (!bar.contains(event.target)) setMenu(false); });
+}
 
 // The rail marks the section that fills the middle of the screen.
 const railLinks = new Map([...document.querySelectorAll("[data-rail-for]")].map((link) => [link.dataset.railFor, link]));
