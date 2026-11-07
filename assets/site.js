@@ -15,7 +15,7 @@ const DISCORD_INVITE = "https://discord.gg/akCxskKStX";
  * part of the request stays hidden (the hero's and the bar's buttons, the phones' pinned bar, the form in JOIN) and nothing
  * can be sent. The privacy page must describe the form, and Kit's own settings must be done, before this is filled in.
  */
-const SIGNUP_FORM = "";
+const SIGNUP_FORM = "10158135";
 
 /** The game's Steam page. Empty hides the wishlist button in JOIN; paste the page's address the day it exists. */
 const STEAM_WISHLIST = "";
