@@ -19,12 +19,12 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <link rel="stylesheet" href="/assets/site.css?v=bd83ceb8">
-  <link rel="stylesheet" href="/armory/armory.css?v=bd83ceb8">
-  <script src="/assets/ship.js?v=bd83ceb8" defer></script>
-  <script src="/assets/prealpha.js?v=bd83ceb8" defer></script>
-  <script src="/assets/site.js?v=bd83ceb8" defer></script>
-  <script src="/armory/armory.js?v=bd83ceb8" defer></script>
+  <link rel="stylesheet" href="/assets/site.css?v=cc90d15c">
+  <link rel="stylesheet" href="/armory/armory.css?v=cc90d15c">
+  <script src="/assets/ship.js?v=cc90d15c" defer></script>
+  <script src="/assets/prealpha.js?v=cc90d15c" defer></script>
+  <script src="/assets/site.js?v=cc90d15c" defer></script>
+  <script src="/armory/armory.js?v=cc90d15c" defer></script>
 </head>
 <body>
   <a class="skip" href="#armory">Skip to content</a>
@@ -58,136 +58,322 @@
     </button>
   </header>
 
-  <!-- The Armory: what the VIGIL can carry and how each piece fights. The figures are the game's own, for a weapon at Mk I:
-       range, damage, heat and rounds from each weapon's script (the indirect pair's blast from IndirectWeaponCatalog), and the
-       weights from /hangar/hangar-data.json. Tools/website/armory_check.py reads them back from the game and fails on any
-       that has drifted. The pictures are the game's Ordnance strip renders (Tools/website/build_site_assets.py). -->
-  <main class="armory" id="armory">
-    <div class="wrap">
-      <header class="armory__head">
-        <p class="eyebrow">VX-21 VIGIL · Pre-alpha</p>
-        <h1>The Armory</h1>
-        <p class="lead">Everything the <span class="nw">VX-21 VIGIL</span> can carry into a fight: six guns for its arms, a rocket pod or a mortar for its shoulder, and four modules for its centre torso. Every figure here is the game's own.</p>
-      </header>
+  <!-- The Armory: what the VIGIL carries, to handle. The demos run the game's own numbers (armory.js, whose GAME block
+       Tools/website/armory_check.py reads back from the game); the fits are looked up in /hangar/hangar-data.json, which the
+       game writes. Every typed figure is what its demo shows at its starting position, so the page reads right without
+       scripts, and the fold at the end holds every piece in full. The pictures are the game's: its Ordnance renders, its
+       salvage art, its turntable film of the VIGIL, and its lands. -->
+  <main class="armo" id="armory">
+    <!-- Each land's light on a VIGIL standing in it, the same four as The Physics, so a figure does not read as pasted on. -->
+    <svg class="sr" aria-hidden="true" width="0" height="0"><defs>
+      <filter id="land-desert" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.937 0 0 0 0  0 0.824 0 0 0  0 0 0.706 0 0  0 0 0 1 0"/></filter>
+      <filter id="land-snow" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.659 0 0 0 0  0 0.733 0 0 0  0 0 0.863 0 0  0 0 0 1 0"/></filter>
+      <filter id="land-jungle" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.776 0 0 0 0  0 0.8 0 0 0  0 0 0.753 0 0  0 0 0 1 0"/></filter>
+      <filter id="land-volcanic" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.624 0 0 0 0  0 0.627 0 0 0  0 0 0.678 0 0  0 0 0 1 0"/></filter>
+    </defs></svg>
 
-      <!-- The loadout bay: the VIGIL as the Command Hub stands it, on the hub's own bay and platform (the Hangar's turntable
-           frame at 20 degrees and its bay cut, /hangar/), with its five hardpoints and what a new pilot's VIGIL carries on
-           them. The marks sit on the frame in its own percentages; armory.js draws the lines to them on a wide screen. -->
-      <section class="lbay" id="loadout" aria-labelledby="lbay-title">
-        <h2 class="sr" id="lbay-title">The VIGIL's hardpoints</h2>
-        <div class="lbay__grid" data-lbay>
-          <ol class="lbay__slots lbay__slots--left">
-          <li><a class="hp" href="#ordnance" data-slot="shoulder" data-accepts="shoulder">
-            <span class="hp__num">1</span><span class="hp__label">Shoulder bay</span>
-            <span class="hp__art"><img src="/assets/img/armory/volley-6.webp" alt="" width="1080" height="810" decoding="async"></span>
-            <span class="hp__name">VOLLEY-6</span><span class="hp__note">or the BREACH-275 mortar</span>
-          </a></li>
-          <li><a class="hp" href="#ordnance" data-slot="ra" data-accepts="arm">
-            <span class="hp__num">2</span><span class="hp__label">Right arm</span>
-            <span class="hp__art"><img src="/assets/img/armory/pulse-50.webp" alt="" width="1080" height="810" decoding="async"></span>
-            <span class="hp__name">PULSE-50</span><span class="hp__note">any of the six arm guns</span>
-          </a></li>
-          </ol>
-          <figure class="lbay__stage">
-            <div class="lbay__view">
-            <div class="lbay__bay">
-              <img class="lbay__plate" src="/hangar/bay/plate.webp" alt="" width="1280" height="1440">
-              <i class="lbay__shadow" aria-hidden="true"></i>
-              <div class="lbay__mech">
-                <img src="/hangar/spin/base/vigil-020.webp" alt="The VX-21 VIGIL on the Command Hub's platform, its five hardpoints marked" width="640" height="640">
-                <span class="lbay__mark" data-mark="shoulder" data-accepts="shoulder" style="--x: 27.3%; --y: 15.3%">1</span>
-                <span class="lbay__mark" data-mark="ra" data-accepts="arm" style="--x: 26.3%; --y: 41.4%">2</span>
-                <span class="lbay__mark" data-mark="lau" data-accepts="arm" style="--x: 71.6%; --y: 30.5%">3</span>
-                <span class="lbay__mark" data-mark="lal" data-accepts="arm" style="--x: 74.7%; --y: 45.3%">4</span>
-                <span class="lbay__mark" data-mark="ct" data-accepts="torso" style="--x: 49.7%; --y: 35.2%">5</span>
-              </div>
-            </div>
-            </div>
-            <figcaption>A new pilot's VIGIL on the Command Hub's platform, carrying the four weapons every pilot starts with. Tap a hardpoint to see what fits it.</figcaption>
-          </figure>
-          <ol class="lbay__slots lbay__slots--right">
-          <li><a class="hp" href="#ordnance" data-slot="lau" data-accepts="arm">
-            <span class="hp__num">3</span><span class="hp__label">Left arm, upper</span>
-            <span class="hp__art"><img src="/assets/img/armory/chain-30.webp" alt="" width="1080" height="810" decoding="async"></span>
-            <span class="hp__name">CHAIN-30</span><span class="hp__note">any of the six arm guns</span>
-          </a></li>
-          <li><a class="hp" href="#ordnance" data-slot="lal" data-accepts="arm">
-            <span class="hp__num">4</span><span class="hp__label">Left arm, lower</span>
-            <span class="hp__art"><img src="/assets/img/armory/slug-250.webp" alt="" width="1080" height="810" decoding="async"></span>
-            <span class="hp__name">SLUG-250</span><span class="hp__note">any of the six arm guns</span>
-          </a></li>
-          <li><a class="hp hp--ct" href="#ordnance" data-slot="ct" data-accepts="torso">
-            <span class="hp__num">5</span><span class="hp__label">Centre torso</span>
-            <span class="hp__mods"><img src="/assets/img/armory/jump-jets.webp" alt="" width="720" height="720"><img src="/assets/img/armory/reactor-cooling.webp" alt="" width="720" height="720"><img src="/assets/img/armory/ct-armor.webp" alt="" width="720" height="720"><img src="/assets/img/armory/overboost.webp" alt="" width="720" height="720"></span>
-            <span class="hp__name">Empty</span><span class="hp__note">a fifth slot, earned with Marks: one module</span>
-          </a></li>
-          </ol>
-          <svg class="lbay__lines" aria-hidden="true" data-lbay-lines></svg>
+
+    <!-- The fitting bay: the VIGIL as the Command Hub stands it, its five hardpoints marked. A mark follows its hardpoint as
+         the VIGIL turns. The picture is always a new pilot's kit: a fit changes the cards and the gauges, not the mech. -->
+    <header class="kit" id="fit" data-kit>
+      <div class="kit__view">
+        <div class="kit__scene" data-kit-scene>
+          <div class="kit__bay" data-kit-bay>
+            <img class="kit__plate" src="/hangar/bay/plate.webp" alt="" width="1280" height="1440" fetchpriority="high">
+            <i class="kit__shadow" aria-hidden="true"></i>
+          </div>
+          <div class="kit__mech">
+            <img data-frame src="/assets/img/armory/vigil-020.webp" alt="The VX-21 VIGIL on the Command Hub's platform, its five hardpoints marked" width="1280" height="1280" fetchpriority="high" draggable="false">
+            <button class="mark" type="button" data-mark="shoulder" style="--x: 26.5%; --y: 15.5%" aria-label="Hardpoint 1, the shoulder">1</button>
+            <button class="mark" type="button" data-mark="ra" style="--x: 25.7%; --y: 41%" aria-label="Hardpoint 2, the right arm">2</button>
+            <button class="mark" type="button" data-mark="lau" style="--x: 73.5%; --y: 31%" aria-label="Hardpoint 3, the left arm, upper">3</button>
+            <button class="mark" type="button" data-mark="lal" style="--x: 75.6%; --y: 45%" aria-label="Hardpoint 4, the left arm, lower">4</button>
+            <button class="mark" type="button" data-mark="ct" style="--x: 52.7%; --y: 33%" aria-label="Hardpoint 5, the centre torso">5</button>
+          </div>
+          <div class="kit__words">
+            <p class="eyebrow">VX-21 VIGIL · Pre-alpha</p>
+            <h1>The Armory</h1>
+            <p class="kit__lead">Five hardpoints. Twelve pieces. Tap a number, bolt something on.</p>
+          </div>
+          <p class="kit__hint">Drag to turn it. It carries a new pilot's kit; your fit is on the cards.</p>
+          <label class="sr">Turn the VIGIL <input type="range" name="turn" min="0" max="359" step="1" value="20"></label>
         </div>
-      </section>
 
-      <!-- The ordnance strip, as the Command Hub's ORDNANCE opens it: every piece, filtered by where it goes. Each card opens its
-           own entry below. -->
-      <section class="ord" id="ordnance" aria-labelledby="ord-title">
-        <header class="armory__section-head ord__head">
-          <div>
-            <p class="armory__kicker">Ordnance</p>
-            <h2 id="ord-title">Twelve pieces</h2>
-          </div>
-          <div class="ord__tabs" role="group" aria-label="Show" data-ord-tabs hidden>
-            <button type="button" aria-pressed="true" data-filter="all">All <span>12</span></button>
-            <button type="button" aria-pressed="false" data-filter="arm">Arm <span>6</span></button>
-            <button type="button" aria-pressed="false" data-filter="shoulder">Shoulder <span>2</span></button>
-            <button type="button" aria-pressed="false" data-filter="torso">Centre torso <span>4</span></button>
-          </div>
-        </header>
-        <ul class="ord__grid" data-ord>
-          <li class="ord__card" data-mount="arm"><a href="#pulse-50"><span class="ord__art"><img src="/assets/img/armory/pulse-50.webp" alt="" width="1080" height="810" loading="lazy" decoding="async"></span><span class="ord__kind">Arm · Energy beam</span><span class="ord__name">PULSE-50</span><span class="ord__meta"><span>275 yd</span><span>5,000 lb</span></span><span class="ord__tag">Starts with it</span></a></li>
-          <li class="ord__card" data-mount="arm"><a href="#chain-30"><span class="ord__art"><img src="/assets/img/armory/chain-30.webp" alt="" width="1080" height="810" loading="lazy" decoding="async"></span><span class="ord__kind">Arm · 30&nbsp;mm autocannon</span><span class="ord__name">CHAIN-30</span><span class="ord__meta"><span>150 yd</span><span>7,600 lb</span></span><span class="ord__tag">Starts with it</span></a></li>
-          <li class="ord__card" data-mount="arm"><a href="#slug-250"><span class="ord__art"><img src="/assets/img/armory/slug-250.webp" alt="" width="1080" height="810" loading="lazy" decoding="async"></span><span class="ord__kind">Arm · 250&nbsp;mm cannon</span><span class="ord__name">SLUG-250</span><span class="ord__meta"><span>200 yd</span><span>8,400 lb</span></span><span class="ord__tag">Starts with it</span></a></li>
-          <li class="ord__card" data-mount="arm"><a href="#dart-20"><span class="ord__art"><img src="/assets/img/armory/dart-20.webp" alt="" width="1080" height="810" loading="lazy" decoding="async"></span><span class="ord__kind">Arm · 20&nbsp;mm rifle</span><span class="ord__name">DART-20</span><span class="ord__meta"><span>1,000 yd</span><span>5,600 lb</span></span><span class="ord__tag is-earned">25,000 Marks</span></a></li>
-          <li class="ord__card" data-mount="arm"><a href="#thump-82"><span class="ord__art"><img src="/assets/img/armory/thump-82.webp" alt="" width="1080" height="810" loading="lazy" decoding="async"></span><span class="ord__kind">Arm · 82&nbsp;mm grenades</span><span class="ord__name">THUMP-82</span><span class="ord__meta"><span>175 yd</span><span>5,200 lb</span></span><span class="ord__tag is-earned">25,000 Marks</span></a></li>
-          <li class="ord__card" data-mount="arm"><a href="#spike-90"><span class="ord__art"><img src="/assets/img/armory/spike-90.webp" alt="" width="1080" height="810" loading="lazy" decoding="async"></span><span class="ord__kind">Arm · 90&nbsp;mm railgun</span><span class="ord__name">SPIKE-90</span><span class="ord__meta"><span>650 yd</span><span>9,000 lb</span></span><span class="ord__tag is-earned">25,000 Marks</span></a></li>
-          <li class="ord__card" data-mount="shoulder"><a href="#volley-6"><span class="ord__art"><img src="/assets/img/armory/volley-6.webp" alt="" width="1080" height="810" loading="lazy" decoding="async"></span><span class="ord__kind">Shoulder · Rocket pod</span><span class="ord__name">VOLLEY-6</span><span class="ord__meta"><span>425 yd</span><span>4,200 lb</span></span><span class="ord__tag">Starts with it</span></a></li>
-          <li class="ord__card" data-mount="shoulder"><a href="#breach-275"><span class="ord__art"><img src="/assets/img/armory/breach-275.webp" alt="" width="1080" height="810" loading="lazy" decoding="async"></span><span class="ord__kind">Shoulder · 275&nbsp;mm mortar</span><span class="ord__name">BREACH-275</span><span class="ord__meta"><span>600 yd</span><span>7,800 lb</span></span><span class="ord__tag is-earned">25,000 Marks</span></a></li>
-          <li class="ord__card ord__card--mod" data-mount="torso"><a href="#jump-jets"><span class="ord__art"><img src="/assets/img/armory/jump-jets.webp" alt="" width="720" height="720" loading="lazy" decoding="async"></span><span class="ord__kind">Centre torso · Module</span><span class="ord__name">Jump jets</span><span class="ord__meta"><span>Module</span><span>6,000 lb</span></span><span class="ord__tag is-earned">Marks</span></a></li>
-          <li class="ord__card ord__card--mod" data-mount="torso"><a href="#reactor-cooling"><span class="ord__art"><img src="/assets/img/armory/reactor-cooling.webp" alt="" width="720" height="720" loading="lazy" decoding="async"></span><span class="ord__kind">Centre torso · Module</span><span class="ord__name">Reactor cooling</span><span class="ord__meta"><span>Module</span><span>4,000 lb</span></span><span class="ord__tag is-earned">Marks</span></a></li>
-          <li class="ord__card ord__card--mod" data-mount="torso"><a href="#ct-armor"><span class="ord__art"><img src="/assets/img/armory/ct-armor.webp" alt="" width="720" height="720" loading="lazy" decoding="async"></span><span class="ord__kind">Centre torso · Module</span><span class="ord__name">CT armor</span><span class="ord__meta"><span>Module</span><span>8,000 lb</span></span><span class="ord__tag is-earned">Marks</span></a></li>
-          <li class="ord__card ord__card--mod" data-mount="torso"><a href="#overboost"><span class="ord__art"><img src="/assets/img/armory/overboost.webp" alt="" width="720" height="720" loading="lazy" decoding="async"></span><span class="ord__kind">Centre torso · Module</span><span class="ord__name">Overboost</span><span class="ord__meta"><span>Module</span><span>3,000 lb</span></span><span class="ord__tag is-earned">Marks</span></a></li>
-        </ul>
-      </section>
-
-      <!-- The range ladder: each bar runs to the weapon's effective range, the farthest it can hurt a target. -->
-      <section class="reach" aria-labelledby="reach-title">
-        <header class="armory__section-head">
-          <p class="armory__kicker">Effective range</p>
-          <h2 id="reach-title">Who reaches whom</h2>
-          <p class="armory__intro">The farthest each weapon can hurt a target, in yards. Past it a round does nothing. Tap a weapon to read it.</p>
-        </header>
-        <ol class="ladder">
-          <li class="ladder__row" style="--yd: 1000"><a href="#dart-20"><span class="ladder__name">DART-20</span><span class="ladder__track"><i class="ladder__bar"></i></span><span class="ladder__yd">1,000 yd</span></a></li>
-          <li class="ladder__row" style="--yd: 650"><a href="#spike-90"><span class="ladder__name">SPIKE-90</span><span class="ladder__track"><i class="ladder__bar"></i></span><span class="ladder__yd">650 yd</span></a></li>
-          <li class="ladder__row is-shoulder" style="--yd: 600"><a href="#breach-275"><span class="ladder__name">BREACH-275</span><span class="ladder__track"><i class="ladder__bar"></i></span><span class="ladder__yd">600 yd</span></a></li>
-          <li class="ladder__row is-shoulder" style="--yd: 425"><a href="#volley-6"><span class="ladder__name">VOLLEY-6</span><span class="ladder__track"><i class="ladder__bar"></i></span><span class="ladder__yd">425 yd</span></a></li>
-          <li class="ladder__row" style="--yd: 275"><a href="#pulse-50"><span class="ladder__name">PULSE-50</span><span class="ladder__track"><i class="ladder__bar"></i></span><span class="ladder__yd">275 yd</span></a></li>
-          <li class="ladder__row" style="--yd: 200"><a href="#slug-250"><span class="ladder__name">SLUG-250</span><span class="ladder__track"><i class="ladder__bar"></i></span><span class="ladder__yd">200 yd</span></a></li>
-          <li class="ladder__row" style="--yd: 175"><a href="#thump-82"><span class="ladder__name">THUMP-82</span><span class="ladder__track"><i class="ladder__bar"></i></span><span class="ladder__yd">175 yd</span></a></li>
-          <li class="ladder__row" style="--yd: 150"><a href="#chain-30"><span class="ladder__name">CHAIN-30</span><span class="ladder__track"><i class="ladder__bar"></i></span><span class="ladder__yd">150 yd</span></a></li>
+        <ol class="slots" data-slots>
+          <li><button class="slot" type="button" data-slot="shoulder" aria-pressed="false"><span class="slot__num">1</span><img src="/assets/img/physics/volley-6.webp" alt="" width="360" height="270"><span class="slot__where">Shoulder</span><b class="slot__name">VOLLEY-6</b></button></li>
+          <li><button class="slot" type="button" data-slot="ra" aria-pressed="false"><span class="slot__num">2</span><img src="/assets/img/physics/pulse-50.webp" alt="" width="360" height="270"><span class="slot__where">Right arm</span><b class="slot__name">PULSE-50</b></button></li>
+          <li><button class="slot" type="button" data-slot="lau" aria-pressed="false"><span class="slot__num">3</span><img src="/assets/img/physics/chain-30.webp" alt="" width="360" height="270"><span class="slot__where">Left arm, upper</span><b class="slot__name">CHAIN-30</b></button></li>
+          <li><button class="slot" type="button" data-slot="lal" aria-pressed="false"><span class="slot__num">4</span><img src="/assets/img/physics/slug-250.webp" alt="" width="360" height="270"><span class="slot__where">Left arm, lower</span><b class="slot__name">SLUG-250</b></button></li>
+          <li><button class="slot slot--empty" type="button" data-slot="ct" aria-pressed="false"><span class="slot__num">5</span><img src="/assets/img/physics/jump-jets.webp" alt="" width="360" height="270"><span class="slot__where">Centre torso</span><b class="slot__name">Empty</b></button></li>
         </ol>
-        <div class="ladder__foot">
-          <p class="ladder__axis" aria-hidden="true"><span>0</span><span>250</span><span>500</span><span>750</span><span>1,000</span></p>
-          <p class="ladder__key"><span class="ladder__swatch"></span>Arm <span class="ladder__swatch ladder__swatch--shoulder"></span>Shoulder</p>
+
+        <div class="kit__read">
+          <dl class="hud hud--three">
+            <div><dt>Weight</dt><dd data-g="weight">101,200 lb</dd></div>
+            <div><dt>Top speed</dt><dd data-g="speed">40 mph</dd></div>
+            <div><dt>Cooling</dt><dd data-g="cooling">70%</dd></div>
+          </dl>
+          <i class="load" aria-hidden="true" data-g-load style="--v: 0.595"></i>
+          <p class="verdict" aria-live="polite" data-g="say">A new pilot's kit: 83.3% of its carrying capacity.</p>
+          <a class="kit__go" data-hangar href="/hangar/#fit=PULSE-50,CHAIN-30,SLUG-250,VOLLEY-6,">Take this fit to the Hangar</a>
         </div>
-      </section>
+      </div>
 
-      <!-- The arms: six guns. -->
-      <section class="rack" id="arms" aria-labelledby="arms-title">
-        <header class="armory__section-head">
-          <p class="armory__kicker">Arms · Direct fire</p>
-          <h2 id="arms-title">Six guns, three hardpoints</h2>
-          <p class="armory__intro">The right arm carries one, the left arm two. Fit any three that are yours, and switch between them in the fight: managing heat across your guns is part of the skill.</p>
-        </header>
+      <div class="tray tray--kit">
+        <div class="tray__parts" data-tray>
+          <button class="part" type="button" aria-pressed="true" data-part="PULSE-50" data-mount="arm"><img src="/assets/img/physics/pulse-50.webp" alt="" width="360" height="270" loading="lazy"><b>PULSE-50</b><span>275 yd</span><span>5,000 lb</span><small>Starts with it</small></button>
+          <button class="part" type="button" aria-pressed="true" data-part="CHAIN-30" data-mount="arm"><img src="/assets/img/physics/chain-30.webp" alt="" width="360" height="270" loading="lazy"><b>CHAIN-30</b><span>150 yd</span><span>7,600 lb</span><small>Starts with it</small></button>
+          <button class="part" type="button" aria-pressed="true" data-part="SLUG-250" data-mount="arm"><img src="/assets/img/physics/slug-250.webp" alt="" width="360" height="270" loading="lazy"><b>SLUG-250</b><span>200 yd</span><span>8,400 lb</span><small>Starts with it</small></button>
+          <button class="part" type="button" aria-pressed="false" data-part="DART-20" data-mount="arm"><img src="/assets/img/physics/dart-20.webp" alt="" width="360" height="270" loading="lazy"><b>DART-20</b><span>1,000 yd</span><span>5,600 lb</span><small class="is-earned">25,000 Marks</small></button>
+          <button class="part" type="button" aria-pressed="false" data-part="THUMP-82" data-mount="arm"><img src="/assets/img/physics/thump-82.webp" alt="" width="360" height="270" loading="lazy"><b>THUMP-82</b><span>175 yd</span><span>5,200 lb</span><small class="is-earned">25,000 Marks</small></button>
+          <button class="part" type="button" aria-pressed="false" data-part="SPIKE-90" data-mount="arm"><img src="/assets/img/physics/spike-90.webp" alt="" width="360" height="270" loading="lazy"><b>SPIKE-90</b><span>650 yd</span><span>9,000 lb</span><small class="is-earned">25,000 Marks</small></button>
+          <button class="part" type="button" aria-pressed="true" data-part="VOLLEY-6" data-mount="shoulder"><img src="/assets/img/physics/volley-6.webp" alt="" width="360" height="270" loading="lazy"><b>VOLLEY-6</b><span>425 yd</span><span>4,200 lb</span><small>Starts with it</small></button>
+          <button class="part" type="button" aria-pressed="false" data-part="BREACH-275" data-mount="shoulder"><img src="/assets/img/physics/breach-275.webp" alt="" width="360" height="270" loading="lazy"><b>BREACH-275</b><span>600 yd</span><span>7,800 lb</span><small class="is-earned">25,000 Marks</small></button>
+          <button class="part part--mod" type="button" aria-pressed="false" data-part="JumpJets" data-mount="torso"><img src="/assets/img/physics/jump-jets.webp" alt="" width="360" height="270" loading="lazy"><b>Jump jets</b><span>Module</span><span>6,000 lb</span><small class="is-earned">Marks</small></button>
+          <button class="part part--mod" type="button" aria-pressed="false" data-part="HeatSinks" data-mount="torso"><img src="/assets/img/physics/reactor-cooling.webp" alt="" width="360" height="270" loading="lazy"><b>Reactor cooling</b><span>Module</span><span>4,000 lb</span><small class="is-earned">Marks</small></button>
+          <button class="part part--mod" type="button" aria-pressed="false" data-part="ArmorModule" data-mount="torso"><img src="/assets/img/physics/ct-armor.webp" alt="" width="360" height="270" loading="lazy"><b>CT armor</b><span>Module</span><span>8,000 lb</span><small class="is-earned">Marks</small></button>
+          <button class="part part--mod" type="button" aria-pressed="false" data-part="SpeedBoost" data-mount="torso"><img src="/assets/img/physics/overboost.webp" alt="" width="360" height="270" loading="lazy"><b>Overboost</b><span>Module</span><span>3,000 lb</span><small class="is-earned">Marks</small></button>
+        </div>
+      </div>
+    </header>
 
+    <nav class="tiles" aria-label="On this page">
+      <a href="#fire"><img src="/assets/img/lands/desert-1-480.webp" alt="" loading="lazy" width="480" height="270"><b>Fire it</b><span>Eight guns, one needle</span></a>
+      <a href="#reach"><img src="/assets/img/lands/snow-3-480.webp" alt="" loading="lazy" width="480" height="270"><b>Reach it</b><span>Who touches whom</span></a>
+      <a href="#salvage"><img src="/assets/img/lands/jungle-1-480.webp" alt="" loading="lazy" width="480" height="270"><b>Break it</b><span>What a hit pays</span></a>
+      <a href="#crate"><img src="/assets/img/lands/badlands-1-480.webp" alt="" loading="lazy" width="480" height="270"><b>Open it</b><span>The daily crate</span></a>
+      <a href="#upgrades"><img src="/assets/img/lands/snow-1-480.webp" alt="" loading="lazy" width="480" height="270"><b>Climb it</b><span>Mk I to Mk IV</span></a>
+      <a href="#every"><img src="/assets/img/lands/desert-3-480.webp" alt="" loading="lazy" width="480" height="270"><b>Read it</b><span>Every piece in full</span></a>
+    </nav>
+
+    <!-- Fire it: every gun's own cadence, ammunition and heat, with HeatManager's cooling and HeatTape's shutdown, run on a held
+         trigger. The typed readouts are CHAIN-30's, cold and full. The rounds' flight is drawn for the eye. -->
+    <section class="bay" id="fire" style="--tone: 142, 82, 46" aria-labelledby="fire-title">
+      <div class="stage stage--tray" data-fire data-state="ready">
+        <div class="stage__view stage__view--fire">
+          <div class="stage__bg"><img src="/assets/img/lands/desert-4-1280.webp" srcset="/assets/img/lands/desert-4-1280.webp 1280w, /assets/img/lands/desert-4-2560.webp 2560w" sizes="100vw" alt="Red dunes and mesas under an evening sky, from the game." width="2560" height="1440" loading="lazy" decoding="async"></div>
+          <div class="fire__target"><img src="/hangar/spin/base/vigil-345.webp" alt="A VIGIL stands far down the range facing you, the target." width="640" height="640" loading="lazy" decoding="async" draggable="false"></div>
+          <img class="fire__gun" data-gun-art src="/assets/img/armory/chain-30.webp" alt="The CHAIN-30, the gun in your hands." width="1080" height="810" loading="lazy" decoding="async" draggable="false">
+          <canvas data-main aria-hidden="true"></canvas>
+          <i class="fire__hot" aria-hidden="true"></i>
+          <div class="stage__head">
+            <p class="kicker"><b>01</b> The guns</p>
+            <h2 id="fire-title">Fire it</h2>
+            <p class="stage__do">Pick a gun. Hold the trigger. Watch the needle.</p>
+          </div>
+        </div>
+        <div class="tray tray--guns"><div class="tray__parts tray__parts--eight" data-guns></div></div>
+        <div class="dock">
+          <div class="gauge" data-gauge style="--v: 0"><span>Heat</span><small data-out="flow">−9.45 a second</small><b data-out="heat">0</b><i></i></div>
+          <button class="act" type="button" data-trigger>Hold to fire</button>
+          <dl class="hud hud--three">
+            <div><dt>Damage dealt</dt><dd data-out="dealt">0</dd></div>
+            <div><dt>Rounds</dt><dd data-out="rounds">1,174</dd></div>
+            <div><dt>Next shot</dt><dd data-out="next">Ready</dd></div>
+          </dl>
+          <dl class="hud hud--four">
+            <div><dt>Reach</dt><dd data-out="reach">150 yd</dd></div>
+            <div><dt data-out="hit-label">A round</dt><dd data-out="hit">0.8</dd></div>
+            <div><dt data-out="burn-label">Heat a round</dt><dd data-out="burn">+0.3</dd></div>
+            <div><dt>Weight</dt><dd data-out="lb">7,600 lb</dd></div>
+          </dl>
+          <p class="verdict" aria-live="polite" data-out="verdict">Sixty-five rounds a second. One barely marks the paint; the stream takes a mech apart. Fire it in bursts.</p>
+          <div class="row" role="group" aria-label="What the VIGIL is doing">
+            <button class="chip" type="button" data-stance="stand" aria-pressed="true">Standing</button>
+            <button class="chip" type="button" data-stance="walk" aria-pressed="false">Walking</button>
+            <button class="chip" type="button" data-stance="run" aria-pressed="false">Flat out</button>
+            <button class="chip chip--quiet" type="button" data-new-fight>New fight</button>
+          </div>
+        </div>
+      </div>
+      <div class="note">
+        <p class="note__say">Heat is the other magazine. At 100 the VIGIL shuts down. It sheds heat fastest standing still, slower on the move, and flat out it builds. The heavier your fit, the less it sheds, so the cooling here is the fit you chose up top.</p>
+        <details class="sums">
+          <summary>The arithmetic</summary>
+          <p>Standing sheds 13.5 heat a second, walking 6, each times your fit's cooling. Flat out, in the top fifth of the speed range, sheds nothing and builds more the faster you run.</p>
+          <p>At 100 the VIGIL brakes to a stop, up to 5 seconds, then heat falls to 50 over 5 seconds. The guns come back under 60, 4 seconds into that fall.</p>
+          <p>Damage counts every round landing. In a fight the wind, the drop and your aim take their share: <a href="/physics/#ballistics">The Physics</a> flies them.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- Reach it: each bar runs to the weapon's effective range, the farthest it can hurt a target. The rows are typed in that
+         order and the chips re-rank them by the other figures. The target shrinks into the picture for the eye, not to scale. -->
+    <section class="bay" id="reach" style="--tone: 70, 104, 144" aria-labelledby="reach-title">
+      <div class="stage" data-reach>
+        <div class="stage__view stage__view--reach" data-reach-view>
+          <div class="stage__bg"><img src="/assets/img/lands/snow-3-1280.webp" srcset="/assets/img/lands/snow-3-1280.webp 1280w, /assets/img/lands/snow-3-2560.webp 2560w" sizes="100vw" alt="A snowfield and pines running to a white range, from the game." width="2560" height="1440" loading="lazy" decoding="async"></div>
+          <div class="reach__target" data-reach-target style="--feet: 56.4%; --tall: 23.4%"><img src="/hangar/spin/base/vigil-345.webp" alt="A VIGIL on the snowfield facing you, the target." width="640" height="640" loading="lazy" decoding="async" draggable="false"></div>
+          <span class="reach__tag" data-reach-tag style="--feet: 56.4%; --tall: 23.4%"><output data-out="yd-tag">150 yd</output></span>
+          <div class="stage__head">
+            <p class="kicker"><b>02</b> Effective range</p>
+            <h2 id="reach-title">Reach it</h2>
+            <p class="stage__do">Drag the target back. Who can still touch it?</p>
+          </div>
+          <label class="hill hill--reach"><span>Target at <output data-out="yd">150 yd</output></span><input type="range" name="yards" min="50" max="1100" step="5" value="150" aria-label="How far away the target stands, in yards"></label>
+        </div>
+        <div class="lineup">
+        <div class="lineup__head">
+          <p class="verdict" aria-live="polite" data-out="reach-say">At 150 yd, all eight still hurt it. Past its range a round does nothing.</p>
+          <div class="row" role="group" aria-label="Rank them by">
+            <button class="chip" type="button" data-rank="reach" aria-pressed="true">Reach</button>
+            <button class="chip" type="button" data-rank="hit" aria-pressed="false">One hit</button>
+            <button class="chip" type="button" data-rank="ten" aria-pressed="false">Ten seconds</button>
+            <button class="chip" type="button" data-rank="heat" aria-pressed="false">Heat</button>
+            <button class="chip" type="button" data-rank="lb" aria-pressed="false">Weight</button>
+          </div>
+        </div>
+        <ol class="ladder" data-ladder>
+          <li class="gun" data-gun="DART-20" style="--at: 1"><img src="/assets/img/physics/dart-20.webp" alt="" width="360" height="270" loading="lazy"><b class="gun__name">DART-20</b><span class="gun__run"><i></i></span><span class="gun__off">1,000 yd</span></li>
+          <li class="gun" data-gun="SPIKE-90" style="--at: 0.65"><img src="/assets/img/physics/spike-90.webp" alt="" width="360" height="270" loading="lazy"><b class="gun__name">SPIKE-90</b><span class="gun__run"><i></i></span><span class="gun__off">650 yd</span></li>
+          <li class="gun" data-gun="BREACH-275" style="--at: 0.6"><img src="/assets/img/physics/breach-275.webp" alt="" width="360" height="270" loading="lazy"><b class="gun__name">BREACH-275</b><span class="gun__run"><i></i></span><span class="gun__off">600 yd</span></li>
+          <li class="gun" data-gun="VOLLEY-6" style="--at: 0.425"><img src="/assets/img/physics/volley-6.webp" alt="" width="360" height="270" loading="lazy"><b class="gun__name">VOLLEY-6</b><span class="gun__run"><i></i></span><span class="gun__off">425 yd</span></li>
+          <li class="gun" data-gun="PULSE-50" style="--at: 0.275"><img src="/assets/img/physics/pulse-50.webp" alt="" width="360" height="270" loading="lazy"><b class="gun__name">PULSE-50</b><span class="gun__run"><i></i></span><span class="gun__off">275 yd</span></li>
+          <li class="gun" data-gun="SLUG-250" style="--at: 0.2"><img src="/assets/img/physics/slug-250.webp" alt="" width="360" height="270" loading="lazy"><b class="gun__name">SLUG-250</b><span class="gun__run"><i></i></span><span class="gun__off">200 yd</span></li>
+          <li class="gun" data-gun="THUMP-82" style="--at: 0.175"><img src="/assets/img/physics/thump-82.webp" alt="" width="360" height="270" loading="lazy"><b class="gun__name">THUMP-82</b><span class="gun__run"><i></i></span><span class="gun__off">175 yd</span></li>
+          <li class="gun" data-gun="CHAIN-30" style="--at: 0.15"><img src="/assets/img/physics/chain-30.webp" alt="" width="360" height="270" loading="lazy"><b class="gun__name">CHAIN-30</b><span class="gun__run"><i></i></span><span class="gun__off">150 yd</span></li>
+        </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Break it: SalvageRules.SplitFor and Award, on a VIGIL carrying the fit chosen up top. The hit zones sit on the turntable's
+         own frames, in their percentages. One tap is 100 damage, the demo's step; the rate and the shares are the game's. -->
+    <section class="bay" id="salvage" style="--tone: 58, 82, 56" aria-labelledby="salvage-title">
+      <div class="stage" data-salvage data-biome="jungle">
+        <div class="stage__view stage__view--salvage">
+          <div class="stage__bg"><img data-biome-art src="/assets/img/lands/jungle-3-1280.webp" srcset="/assets/img/lands/jungle-3-1280.webp 1280w, /assets/img/lands/jungle-3-2560.webp 2560w" sizes="100vw" alt="Green jungle under a low grey sky, from the game." width="2560" height="1440" loading="lazy" decoding="async"></div>
+          <div class="salv" data-salv>
+            <img data-salv-art src="/assets/img/armory/vigil-000.webp" alt="An enemy VIGIL from the front, each part of it marked with the salvage it pays." width="1280" height="1280" loading="lazy" decoding="async" draggable="false">
+          </div>
+          <canvas data-main aria-hidden="true"></canvas>
+          <div class="stage__head">
+            <p class="kicker"><b>03</b> Salvage</p>
+            <h2 id="salvage-title">Break it</h2>
+            <p class="stage__do">You salvage what you destroy. Tap where you hit it; hold to keep firing.</p>
+          </div>
+        </div>
+        <div class="dock">
+          <ul class="bank" data-bank>
+            <li data-part="autoloader-parts"><img src="/assets/img/armory/salvage/autoloader-parts.webp" alt="" width="256" height="256" loading="lazy"><b data-n>0</b><span>Autoloader Parts</span><i></i></li>
+            <li data-part="focusing-optics"><img src="/assets/img/armory/salvage/focusing-optics.webp" alt="" width="256" height="256" loading="lazy"><b data-n>0</b><span>Focusing Optics</span><i></i></li>
+            <li data-part="warhead-casings"><img src="/assets/img/armory/salvage/warhead-casings.webp" alt="" width="256" height="256" loading="lazy"><b data-n>0</b><span>Warhead Casings</span><i></i></li>
+            <li data-part="armor-plating"><img src="/assets/img/armory/salvage/armor-plating.webp" alt="" width="256" height="256" loading="lazy"><b data-n>0</b><span>Armor Plating</span><i></i></li>
+            <li data-part="servo-actuators"><img src="/assets/img/armory/salvage/servo-actuators.webp" alt="" width="256" height="256" loading="lazy"><b data-n>0</b><span>Servo Actuators</span><i></i></li>
+            <li data-part="coolant-cells"><img src="/assets/img/armory/salvage/coolant-cells.webp" alt="" width="256" height="256" loading="lazy"><b data-n>0</b><span>Coolant Cells</span><i></i></li>
+            <li data-part="airframe-members"><img src="/assets/img/armory/salvage/airframe-members.webp" alt="" width="256" height="256" loading="lazy"><b data-n>0</b><span>Airframe Members</span><i></i></li>
+            <li class="is-wild" data-part="power-cells"><img src="/assets/img/armory/salvage/power-cells.webp" alt="" width="256" height="256" loading="lazy"><b data-n>0</b><span>Power Cells</span><i></i></li>
+          </ul>
+          <dl class="hud hud--three">
+            <div><dt>Damage in</dt><dd data-out="into">0</dd></div>
+            <div><dt>Parts home</dt><dd data-out="home">0</dd></div>
+            <div><dt>Paid nothing</dt><dd data-out="unpaid">0</dd></div>
+          </dl>
+          <p class="verdict" aria-live="polite" data-out="salvage-say">Every 500 damage is one part: 70% the part you hit, 30% the wildcard. No roll, no luck.</p>
+          <div class="row" role="group" aria-label="Which side of it you are hitting">
+            <button class="chip" type="button" data-face="front" aria-pressed="true">From the front</button>
+            <button class="chip" type="button" data-face="rear" aria-pressed="false">From behind</button>
+          </div>
+          <div class="row" role="group" aria-label="The battlefield, which tilts the wildcard">
+            <button class="chip" type="button" data-land="snow" aria-pressed="false">Snow</button>
+            <button class="chip" type="button" data-land="desert" aria-pressed="false">Desert</button>
+            <button class="chip" type="button" data-land="jungle" aria-pressed="true">Jungle</button>
+            <button class="chip" type="button" data-land="volcanic" aria-pressed="false">Volcanic</button>
+          </div>
+        </div>
+      </div>
+      <div class="note">
+        <p class="note__say">Arms pay the parts of the guns riding them, and this VIGIL carries the fit you chose up top. Side torsos pay Coolant Cells. The centre torso pays Armor Plating from the front and Focusing Optics from behind. Legs and the pelvis pay nothing.</p>
+        <details class="sums">
+          <summary>The arithmetic</summary>
+          <p>A centre-torso hit on a VIGIL with a module fitted pays half to the module's own part. The shoulder pod rides the right arm.</p>
+          <p>The wildcard is Power Cells, and the battlefield turns a third of it into its own part: Armor Plating and Warhead Casings in snow, Focusing Optics in desert, Servo Actuators in jungle, Coolant Cells on volcanic ground. The total never changes.</p>
+          <ul class="points">
+            <li><b>Autoloader Parts</b> build <span class="nw">PULSE-50</span> and <span class="nw">CHAIN-30</span> upgrades.</li>
+            <li><b>Focusing Optics</b> build <span class="nw">DART-20</span> upgrades.</li>
+            <li><b>Warhead Casings</b> build the other five weapons' upgrades.</li>
+            <li><b>Armor Plating</b> buys the VIGIL's armour and CT armor.</li>
+            <li><b>Servo Actuators</b> buy the VIGIL's speed and overboost.</li>
+            <li><b>Coolant Cells</b> buy the VIGIL's cooling and reactor cooling.</li>
+            <li><b>Airframe Members</b> buy jump jets.</li>
+            <li><b>Power Cells</b> stand in for any part you are short of, two cells for one part.</li>
+          </ul>
+        </details>
+      </div>
+    </section>
+
+    <!-- Open it: SalvageRules' daily crate. The typed odds are the base table; the script moves them with the parts brought home
+         above (CrateOddsFor, NudgeFor) and rolls CrateGrade in the browser. -->
+    <section class="crate" id="crate" aria-labelledby="crate-title" data-crate>
+      <figure class="crate__art"><img data-crate-art src="/assets/img/armory/salvage-crate.webp" alt="A salvage crate, its lid open on parts." width="640" height="468" loading="lazy" decoding="async"></figure>
+      <div class="crate__odds">
+        <p class="kicker"><b>04</b> The daily crate</p>
+        <h2 id="crate-title">Open it</h2>
+        <ol class="grades" data-grades>
+          <li data-grade="1" style="--p: 0.6"><span class="pips" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="sr">Grade 1</span><span class="grades__bar"><i></i></span><b data-p>60%</b><small><span data-cells>1</span> cell</small></li>
+          <li data-grade="2" style="--p: 0.25"><span class="pips" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span><span class="sr">Grade 2</span><span class="grades__bar"><i></i></span><b data-p>25%</b><small><span data-cells>2</span> cells</small></li>
+          <li data-grade="3" style="--p: 0.1"><span class="pips" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span><span class="sr">Grade 3</span><span class="grades__bar"><i></i></span><b data-p>10%</b><small><span data-cells>3</span> cells</small></li>
+          <li data-grade="4" style="--p: 0.04"><span class="pips" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="sr">Grade 4</span><span class="grades__bar"><i></i></span><b data-p>4%</b><small><span data-cells>5</span> cells</small></li>
+          <li data-grade="5" style="--p: 0.01"><span class="pips" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="sr">Grade 5</span><span class="grades__bar"><i></i></span><b data-p>1%</b><small><span data-cells>10</span> cells</small></li>
+        </ol>
+      </div>
+      <div class="crate__do">
+        <p class="verdict" aria-live="polite" data-out="crate-say">Once a day a crate fills the gaps with Power Cells. A strong match lifts the top two grades; a weak one closes them.</p>
+        <button class="act" type="button" data-crate-open>Open the crate</button>
+      </div>
+    </section>
+
+    <!-- Climb it: WeaponUpgradeConfig's ladder and SalvageRules' part counts, for each gun. -->
+    <section class="bay" id="upgrades" style="--tone: 96, 66, 44" aria-labelledby="upg-title">
+      <div class="stage stage--tray" data-climb>
+        <div class="stage__view stage__view--climb">
+          <div class="climb__bay" aria-hidden="true"><img src="/hangar/bay/plate.webp" alt="" width="1280" height="1440" loading="lazy" decoding="async"></div>
+          <img class="climb__gun" data-climb-art src="/assets/img/armory/slug-250.webp" alt="The SLUG-250, the gun on the bench." width="1080" height="810" loading="lazy" decoding="async" draggable="false">
+          <div class="stage__head">
+            <p class="kicker"><b>05</b> Upgrades</p>
+            <h2 id="upg-title">Climb it</h2>
+            <p class="stage__do">Pick a gun. Take it up the ladder.</p>
+          </div>
+          <p class="climb__mk" data-out="mk-big" aria-hidden="true">Mk I</p>
+        </div>
+        <div class="tray tray--guns"><div class="tray__parts tray__parts--eight" data-climb-guns></div></div>
+        <div class="dock">
+          <div class="rungs" role="group" aria-label="Mark">
+            <button class="rung" type="button" data-mk="1" aria-pressed="true">Mk I</button>
+            <button class="rung" type="button" data-mk="2" aria-pressed="false">Mk II</button>
+            <button class="rung" type="button" data-mk="3" aria-pressed="false">Mk III</button>
+            <button class="rung" type="button" data-mk="4" aria-pressed="false">Mk IV</button>
+          </div>
+          <div class="gain" style="--v: 0.8777">
+            <span data-out="gain-label">Damage a shot</span>
+            <b data-out="gain">60</b>
+            <small data-out="gain-delta">Where every gun starts</small>
+            <i></i>
+          </div>
+          <ul class="bill">
+            <li><img src="/assets/img/armory/marks.webp" alt="" width="128" height="128" loading="lazy"><b data-out="bill-marks">0</b><span>Marks</span></li>
+            <li><img data-out-art="bill-part" src="/assets/img/armory/salvage/warhead-casings.webp" alt="" width="256" height="256" loading="lazy"><b data-out="bill-parts">0</b><span data-out="bill-part-name">Warhead Casings</span></li>
+            <li><b data-out="bill-hours">0</b><span>flight hours</span></li>
+            <li><b data-out="bill-dealt">0</b><span>damage with it</span></li>
+          </ul>
+          <p class="verdict" aria-live="polite" data-out="climb-say">Four guns come with every VIGIL. The other four are earned for 25,000 Marks each, once. You qualify for a step by flying it, then pay.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="end">
+      <p class="end__line">Six guns, two pieces of ordnance, four modules. Now fit yours.</p>
+      <div class="end__buttons">
+        <a class="btn btn--large" data-hangar href="/hangar/#fit=PULSE-50,CHAIN-30,SLUG-250,VOLLEY-6,">Take this fit to the Hangar</a>
+        <a class="btn btn--large btn--ghost" href="/physics/">The Physics</a>
+      </div>
+      <p class="end__source">Every figure is the game's own, for a weapon at Mk&nbsp;I. <span class="nw">Pre-alpha</span>: they move as the game is tuned.</p>
+    </section>
+
+    <!-- Every piece, in full: open by default so it reads without scripts, folded by armory.js. -->
+    <details class="sheet" id="every" open>
+      <summary><span>Every piece, in full</span><small>Eight weapons, four modules, the upgrade path</small></summary>
+      <div class="sheet__body">
         <article class="piece" id="pulse-50" aria-labelledby="pulse-50-name">
           <div class="piece__stage" data-num="50"><img src="/assets/img/armory/pulse-50.webp" alt="The PULSE-50 energy gun on the VIGIL's forearm" width="1080" height="810" decoding="async"></div>
           <div class="piece__body">
@@ -206,7 +392,6 @@
             <p class="piece__foot"><span><b>Wind</b> never moves it</span><span><b>Mk II–IV</b> less heat a shot</span><a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,SLUG-250,VOLLEY-6,">Fit it in the Hangar</a></p>
           </div>
         </article>
-
         <article class="piece" id="chain-30" aria-labelledby="chain-30-name">
           <div class="piece__stage" data-num="30"><img src="/assets/img/armory/chain-30.webp" alt="The CHAIN-30 autocannon and its ammunition belt on the VIGIL's forearm" width="1080" height="810" loading="lazy" decoding="async"></div>
           <div class="piece__body">
@@ -225,7 +410,6 @@
             <p class="piece__foot"><span><b>Wind</b> drifts it</span><span><b>Mk II–IV</b> less heat a round</span><a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,SLUG-250,VOLLEY-6,">Fit it in the Hangar</a></p>
           </div>
         </article>
-
         <article class="piece" id="slug-250" aria-labelledby="slug-250-name">
           <div class="piece__stage" data-num="250"><img src="/assets/img/armory/slug-250.webp" alt="The SLUG-250 cannon on the VIGIL's forearm" width="1080" height="810" loading="lazy" decoding="async"></div>
           <div class="piece__body">
@@ -244,7 +428,6 @@
             <p class="piece__foot"><span><b>Wind</b> drifts it</span><span><b>Mk II–IV</b> more damage</span><a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,SLUG-250,VOLLEY-6,">Fit it in the Hangar</a></p>
           </div>
         </article>
-
         <article class="piece" id="dart-20" aria-labelledby="dart-20-name">
           <div class="piece__stage" data-num="20"><img src="/assets/img/armory/dart-20.webp" alt="The DART-20 rifle and its scope on the VIGIL's forearm" width="1080" height="810" loading="lazy" decoding="async"></div>
           <div class="piece__body">
@@ -263,7 +446,6 @@
             <p class="piece__foot"><span><b>Wind</b> drifts it most</span><span><b>Mk II–IV</b> longer reach</span><a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,DART-20,VOLLEY-6,">Fit it in the Hangar</a></p>
           </div>
         </article>
-
         <article class="piece" id="thump-82" aria-labelledby="thump-82-name">
           <div class="piece__stage" data-num="82"><img src="/assets/img/armory/thump-82.webp" alt="The THUMP-82 grenade launcher and its drum on the VIGIL's forearm" width="1080" height="810" loading="lazy" decoding="async"></div>
           <div class="piece__body">
@@ -282,7 +464,6 @@
             <p class="piece__foot"><span><b>Wind</b> drifts it</span><span><b>Mk II–IV</b> more damage</span><a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,THUMP-82,VOLLEY-6,">Fit it in the Hangar</a></p>
           </div>
         </article>
-
         <article class="piece" id="spike-90" aria-labelledby="spike-90-name">
           <div class="piece__stage" data-num="90"><img src="/assets/img/armory/spike-90.webp" alt="The SPIKE-90 railgun's twin rails on the VIGIL's forearm" width="1080" height="810" loading="lazy" decoding="async"></div>
           <div class="piece__body">
@@ -301,16 +482,6 @@
             <p class="piece__foot"><span><b>Wind</b> never moves it</span><span><b>Mk II–IV</b> more damage</span><a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,SPIKE-90,VOLLEY-6,">Fit it in the Hangar</a></p>
           </div>
         </article>
-      </section>
-
-      <!-- The shoulder: one bay, two pieces of ordnance. -->
-      <section class="rack" id="shoulder" aria-labelledby="shoulder-title">
-        <header class="armory__section-head">
-          <p class="armory__kicker">Shoulder · Ordnance</p>
-          <h2 id="shoulder-title">One bay, two choices</h2>
-          <p class="armory__intro">The shoulder takes one piece of ordnance per drop. The rocket pod is where every VIGIL starts; the mortar takes its place.</p>
-        </header>
-
         <article class="piece" id="volley-6" aria-labelledby="volley-6-name">
           <div class="piece__stage" data-num="6"><img src="/assets/img/armory/volley-6.webp" alt="The VOLLEY-6 rocket pod, six rockets in its tubes" width="1080" height="810" loading="lazy" decoding="async"></div>
           <div class="piece__body">
@@ -329,7 +500,6 @@
             <p class="piece__foot"><span><b>Wind</b> drifts it</span><span><b>Mk II–IV</b> more damage</span><a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,SLUG-250,VOLLEY-6,">Fit it in the Hangar</a></p>
           </div>
         </article>
-
         <article class="piece" id="breach-275" aria-labelledby="breach-275-name">
           <div class="piece__stage" data-num="275"><img src="/assets/img/armory/breach-275.webp" alt="The BREACH-275 siege mortar on its shoulder mount" width="1080" height="810" loading="lazy" decoding="async"></div>
           <div class="piece__body">
@@ -348,15 +518,6 @@
             <p class="piece__foot"><span><b>Wind</b> drifts it</span><span><b>Mk II–IV</b> more damage</span><a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,SLUG-250,BREACH-275,">Fit it in the Hangar</a></p>
           </div>
         </article>
-      </section>
-
-      <!-- The centre torso: four modules. Their two figures are rows of the Hangar's export, on the starting loadout. -->
-      <section class="rack" id="torso" aria-labelledby="torso-title">
-        <header class="armory__section-head">
-          <p class="armory__kicker">Centre torso · Modules</p>
-          <h2 id="torso-title">The fifth slot</h2>
-          <p class="armory__intro">Earn the centre-torso slot with Marks and it takes one module. Each is earned with Marks too, and each one's weight counts against everything else you carry.</p>
-        </header>
         <ul class="modules">
           <li class="module" id="jump-jets">
             <span class="module__art"><img src="/assets/img/armory/jump-jets.webp" alt="The jump jets module, its thrust nozzle glowing" width="720" height="720" loading="lazy" decoding="async"></span>
@@ -387,36 +548,6 @@
             <a class="piece__fit" href="/hangar/#fit=PULSE-50,CHAIN-30,SLUG-250,VOLLEY-6,SpeedBoost">Fit it in the Hangar</a>
           </li>
         </ul>
-      </section>
-
-      <!-- Heat: what each pull of the trigger adds, against the 100 that shuts the VIGIL down. The bars run to 20. -->
-      <section class="heat" id="heat" aria-labelledby="heat-title">
-        <div class="heat__text">
-          <p class="armory__kicker">Heat</p>
-          <h2 id="heat-title">Heat is the other magazine</h2>
-          <p>Every weapon here makes heat, and at 100 the VIGIL shuts down. Heat bleeds away fastest when you stand still, slower on the move, and not at all at a run, and a heavier VIGIL sheds less of it. So a fight has a rhythm: fire, move, cool, and switch to a cooler gun before the needle gets there.</p>
-        </div>
-        <ol class="heatbars" aria-label="Heat each shot adds">
-          <li style="--h: 18"><span class="heatbars__name">SPIKE-90</span><span class="heatbars__track"><i></i></span><span class="heatbars__v">+18</span></li>
-          <li style="--h: 16"><span class="heatbars__name">BREACH-275</span><span class="heatbars__track"><i></i></span><span class="heatbars__v">+16</span></li>
-          <li style="--h: 12"><span class="heatbars__name">DART-20</span><span class="heatbars__track"><i></i></span><span class="heatbars__v">+12</span></li>
-          <li style="--h: 12"><span class="heatbars__name">VOLLEY-6</span><span class="heatbars__track"><i></i></span><span class="heatbars__v">+12 <small>a salvo</small></span></li>
-          <li style="--h: 10"><span class="heatbars__name">SLUG-250</span><span class="heatbars__track"><i></i></span><span class="heatbars__v">+10</span></li>
-          <li style="--h: 8"><span class="heatbars__name">THUMP-82</span><span class="heatbars__track"><i></i></span><span class="heatbars__v">+8</span></li>
-          <li style="--h: 6"><span class="heatbars__name">PULSE-50</span><span class="heatbars__track"><i></i></span><span class="heatbars__v">+6</span></li>
-          <li class="is-held" style="--h: 19.5"><span class="heatbars__name">CHAIN-30</span><span class="heatbars__track"><i></i></span><span class="heatbars__v">+19.5 <small>a second held</small></span></li>
-        </ol>
-      </section>
-
-      <!-- The upgrade path: each weapon's Mk steps, what a step costs in Marks and in the weapon's own salvage part, and what it
-           improves. Fees from WeaponUpgradeConfig.WeaponMarkCost, parts from SalvageRules.PartsForRung, the improvement from
-           WeaponUpgradeConfig's two curves; each weapon's part from SalvageRules.ForWeapon. -->
-      <section class="upg" id="upgrades" aria-labelledby="upg-title">
-        <header class="armory__section-head">
-          <p class="armory__kicker">Upgrades</p>
-          <h2 id="upg-title">Mk I to Mk IV</h2>
-          <p class="armory__intro">Four weapons come with every VIGIL. The other four are earned for 25,000 Marks each, once, and are yours on any VIGIL you fly. Then every weapon climbs from Mk&nbsp;I in three steps: you qualify for each by flying it, and pay in Marks and in the salvage part the weapon is built from.</p>
-        </header>
         <div class="upg__table">
           <div class="upg__row upg__row--cost">
             <div class="upg__lead"><img class="upg__coin" src="/assets/img/armory/marks.webp" alt="" loading="lazy"><span class="upg__lead-title">What a step costs</span></div>
@@ -444,70 +575,8 @@
           </div>
         </div>
         <p class="upg__note">A step costs its own fee: Mk&nbsp;IV is 3,500 Marks and 12 parts on top of the steps before it. Short of a part? Power Cells stand in for it, at a worse rate.</p>
-      </section>
-
-      <!-- Salvage: what a hit pays, from SalvageRules.SplitFor (arms pay their weapons' parts, side torsos Coolant Cells, the centre
-           torso Armor Plating in front and Focusing Optics behind, a fitted module its own part, legs and pelvis nothing) and
-           Award (70% the part hit, 30% the wildcard). The chips sit on the front-on turntable frame in its own percentages. -->
-      <section class="salv" id="salvage" aria-labelledby="salv-title">
-        <header class="armory__section-head">
-          <p class="armory__kicker">Salvage</p>
-          <h2 id="salv-title">You salvage what you destroy</h2>
-          <p class="armory__intro">Every point of damage you put into an enemy's arms and torsos comes home as parts, and parts pay for upgrades. There is no roll: the more you break, the more you bring back.</p>
-        </header>
-        <div class="salv__grid">
-          <figure class="salv__mech">
-            <div class="salv__frame">
-              <img src="/hangar/spin/base/vigil-000.webp" alt="The VX-21 VIGIL from the front, each part of it marked with the salvage it pays" width="640" height="640" loading="lazy">
-              <span class="salv__chip" style="--x: 26.6%; --y: 39.1%"><img src="/assets/img/armory/salvage/autoloader-parts.webp" alt=""><img src="/assets/img/armory/salvage/warhead-casings.webp" alt=""></span>
-              <span class="salv__chip" style="--x: 73.4%; --y: 39.8%"><img src="/assets/img/armory/salvage/autoloader-parts.webp" alt=""><img src="/assets/img/armory/salvage/warhead-casings.webp" alt=""></span>
-              <span class="salv__chip" style="--x: 37.2%; --y: 28.9%"><img src="/assets/img/armory/salvage/coolant-cells.webp" alt=""></span>
-              <span class="salv__chip" style="--x: 60.2%; --y: 28.1%"><img src="/assets/img/armory/salvage/coolant-cells.webp" alt=""></span>
-              <span class="salv__chip" style="--x: 48.4%; --y: 33.5%"><img src="/assets/img/armory/salvage/armor-plating.webp" alt=""></span>
-              <span class="salv__chip is-none" style="--x: 49.7%; --y: 46.5%">×</span>
-              <span class="salv__chip is-none" style="--x: 35.2%; --y: 66%">×</span>
-              <span class="salv__chip is-none" style="--x: 64.5%; --y: 66%">×</span>
-            </div>
-            <figcaption>A new pilot's VIGIL: each arm carries two weapons, so each pays two parts.</figcaption>
-          </figure>
-          <ul class="salv__zones">
-            <li><span class="salv__icons"><img src="/assets/img/armory/salvage/autoloader-parts.webp" alt=""><img src="/assets/img/armory/salvage/focusing-optics.webp" alt=""><img src="/assets/img/armory/salvage/warhead-casings.webp" alt=""></span><span><b>Arms</b> pay the parts of the weapons riding them: the shoulder pod rides the right arm.</span></li>
-            <li><span class="salv__icons"><img src="/assets/img/armory/salvage/coolant-cells.webp" alt=""></span><span><b>Side torsos</b> pay Coolant Cells.</span></li>
-            <li><span class="salv__icons"><img src="/assets/img/armory/salvage/armor-plating.webp" alt=""><img src="/assets/img/armory/salvage/focusing-optics.webp" alt=""></span><span><b>The centre torso</b> pays Armor Plating from the front and Focusing Optics from behind.</span></li>
-            <li><span class="salv__icons"><img src="/assets/img/armory/salvage/airframe-members.webp" alt=""><img src="/assets/img/armory/salvage/servo-actuators.webp" alt=""></span><span><b>A fitted module</b> adds its own part to a centre-torso hit.</span></li>
-            <li class="is-none"><span class="salv__icons"><i>×</i></span><span><b>Legs and the pelvis</b> pay nothing.</span></li>
-          </ul>
-        </div>
-        <div class="salv__split">
-          <div class="salv__share" style="--w: 70%"><b>70%</b><span>is the part you hit</span></div>
-          <div class="salv__share is-wild" style="--w: 30%"><b>30%</b><span>is the wildcard</span></div>
-        </div>
-        <p class="salv__split-note">The wildcard is Power Cells, which stand in for any part, with a share turned into the battlefield's own part.</p>
-        <ul class="salv__parts">
-          <li><img src="/assets/img/armory/salvage/autoloader-parts.webp" alt="" loading="lazy"><b>Autoloader Parts</b><span><span class="nw">PULSE-50</span> and <span class="nw">CHAIN-30</span> upgrades</span></li>
-          <li><img src="/assets/img/armory/salvage/focusing-optics.webp" alt="" loading="lazy"><b>Focusing Optics</b><span><span class="nw">DART-20</span> upgrades</span></li>
-          <li><img src="/assets/img/armory/salvage/warhead-casings.webp" alt="" loading="lazy"><b>Warhead Casings</b><span>upgrades for the other five weapons</span></li>
-          <li><img src="/assets/img/armory/salvage/armor-plating.webp" alt="" loading="lazy"><b>Armor Plating</b><span>the VIGIL's armour, and CT armor</span></li>
-          <li><img src="/assets/img/armory/salvage/servo-actuators.webp" alt="" loading="lazy"><b>Servo Actuators</b><span>the VIGIL's speed, and overboost</span></li>
-          <li><img src="/assets/img/armory/salvage/coolant-cells.webp" alt="" loading="lazy"><b>Coolant Cells</b><span>the VIGIL's cooling, and reactor cooling</span></li>
-          <li><img src="/assets/img/armory/salvage/airframe-members.webp" alt="" loading="lazy"><b>Airframe Members</b><span>jump jets</span></li>
-          <li><img src="/assets/img/armory/salvage/power-cells.webp" alt="" loading="lazy"><b>Power Cells</b><span>any part you are short of, at a worse rate</span></li>
-        </ul>
-        <div class="salv__crate">
-          <img src="/assets/img/armory/salvage-crate.webp" alt="A salvage crate, its lid open on parts" width="640" height="468" loading="lazy">
-          <div>
-            <h3>The daily crate</h3>
-            <p>Once a day a salvage crate fills the gaps with Power Cells, graded one to five. A strong match raises your odds of the top grades.</p>
-          </div>
-        </div>
-      </section>
-
-      <div class="armory__end">
-        <p class="armory__end-line">Six guns, two pieces of ordnance, four modules. Now fit yours.</p>
-        <a class="btn btn--large" href="/hangar/">Open the Hangar</a>
       </div>
-      <p class="armory__source">Every figure is the game's own, for a weapon at Mk&nbsp;I. <span class="nw">Pre-alpha</span>: they move as the game is tuned.</p>
-    </div>
+    </details>
   </main>
 
   <footer class="foot">
