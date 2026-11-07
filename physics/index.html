@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>The Physics · The Reach: Unknown</title>
-  <meta name="description" content="The physics of The Reach and of the game: Earth's gravity, a standard atmosphere, real falls, jump jets that pay for their climb, weight that reaches everything, slopes, collisions, ballistic drop, wind, weather, sound and the crossing at 0.130 c. Every figure is the game's own.">
+  <meta name="description" content="The physics of The Reach and of the game, to play with: drop a VIGIL, fly its jump jets until the heat runs out, load it until it slips on a hill, fire a round that falls and drifts, see a far shot before you hear it. Every figure is the game's own.">
   <link rel="canonical" href="https://machtuck.com/physics/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Mach Tuck Games">
   <meta property="og:title" content="The Physics · The Reach: Unknown">
-  <meta property="og:description" content="Nothing on The Reach floats, and nothing is faked. Every rule the game runs on, with its own numbers.">
+  <meta property="og:description" content="Nothing on The Reach floats, and nothing is faked. Drop it, fly it, load it, ram it, fire it, on the numbers the game runs with.">
   <meta property="og:url" content="https://machtuck.com/physics/">
   <meta property="og:image" content="https://machtuck.com/assets/img/share-card.jpg">
   <meta property="og:image:width" content="1200">
@@ -19,11 +19,11 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <link rel="stylesheet" href="/assets/site.css?v=8620960b">
-  <link rel="stylesheet" href="/physics/physics.css?v=8620960b">
-  <script src="/assets/ship.js?v=8620960b" defer></script>
-  <script src="/assets/site.js?v=8620960b" defer></script>
-  <script src="/physics/physics.js?v=8620960b" defer></script>
+  <link rel="stylesheet" href="/assets/site.css?v=f4face38">
+  <link rel="stylesheet" href="/physics/physics.css?v=f4face38">
+  <script src="/assets/ship.js?v=f4face38" defer></script>
+  <script src="/assets/site.js?v=f4face38" defer></script>
+  <script src="/physics/physics.js?v=f4face38" defer></script>
 </head>
 <body>
   <a class="skip" href="#physics">Skip to content</a>
@@ -57,181 +57,210 @@
     </button>
   </header>
 
-  <!-- The Physics: the rules The Reach and the game run on. Each instrument runs the game's own arithmetic (physics.js, whose
-       GAME block Tools/website/physics_check.py reads back from the game's code); its typed readouts are what it shows at its
-       starting position, so the page reads right without scripts. The world's figures are the setting's, not code's. -->
+  <!-- The Physics: the rules The Reach and the game run on, to play with. Each demo runs the game's own arithmetic (physics.js,
+       whose GAME block Tools/website/physics_check.py reads back from the game's code); its typed readouts are what it shows at
+       its starting position, so the page reads right without scripts. The world's figures are the setting's, not code's. -->
   <main class="phys" id="physics">
-    <div class="wrap">
-      <header class="phys__head">
+
+    <!-- The opening: the game's own film of the drop, frames 46 to 60 of /drop/. The picture is its last frame. -->
+    <header class="open" id="top">
+      <img class="open__picture" src="/drop/frames/drop-060.webp" alt="A VIGIL stands at the foot of a red mesa in the settling dust of its landing." width="1920" height="1044" fetchpriority="high">
+      <canvas class="open__film" aria-hidden="true"></canvas>
+      <div class="open__words">
         <p class="eyebrow">The Reach · Pre-alpha</p>
         <h1>The Physics</h1>
-        <p class="lead">Nothing on The Reach floats, and nothing is faked. Gravity, air, sound, weight and momentum run on real-world arithmetic. Here is every rule we built in, with the numbers the game uses.</p>
-      </header>
-
+        <p class="open__lead">Nothing on The Reach floats, and nothing is faked. Don't read about it. Drop it, fly it, load it, ram it, fire it.</p>
+        <button class="chip chip--quiet" type="button" data-replay hidden>Land it again</button>
+      </div>
       <dl class="consts">
         <div><dt>Gravity</dt><dd>9.81 <small>m/s²</small></dd></div>
-        <div><dt>Standard pressure</dt><dd>29.92 <small>inHg</small></dd></div>
-        <div><dt>Sound, at 20 °C</dt><dd>343 <small>m/s</small></dd></div>
+        <div><dt>Pressure</dt><dd>29.92 <small>inHg</small></dd></div>
+        <div><dt>Sound, 20 °C</dt><dd>343 <small>m/s</small></dd></div>
         <div><dt>A day</dt><dd>25.4 <small>hours</small></dd></div>
         <div><dt>A year</dt><dd>481 <small>Earth days</small></dd></div>
         <div><dt>The crossing</dt><dd>0.130 <small>c</small></dd></div>
       </dl>
+    </header>
 
-      <nav class="toc" aria-label="Chapters">
-        <ol>
-          <li><a href="#world"><b>01</b>The world</a></li>
-          <li><a href="#gravity"><b>02</b>Gravity</a></li>
-          <li><a href="#flight"><b>03</b>Flight</a></li>
-          <li><a href="#weight"><b>04</b>Weight</a></li>
-          <li><a href="#ground"><b>05</b>Ground and water</a></li>
-          <li><a href="#collisions"><b>06</b>Collisions</a></li>
-          <li><a href="#ballistics"><b>07</b>Ballistics</a></li>
-          <li><a href="#weather"><b>08</b>Weather</a></li>
-          <li><a href="#sound"><b>09</b>Sound</a></li>
-          <li><a href="#thin-air"><b>10</b>Thin air</a></li>
-          <li><a href="#crossing"><b>11</b>The crossing</a></li>
-        </ol>
-      </nav>
+    <nav class="tiles" aria-label="Chapters">
+      <a href="#gravity"><img src="/assets/img/lands/snow-4-480.webp" alt="" loading="lazy" width="480" height="270"><b>Drop it</b><span>Gravity</span></a>
+      <a href="#flight"><img src="/drop/frames/drop-053.webp" alt="" loading="lazy" width="480" height="261"><b>Fly it</b><span>Jump jets</span></a>
+      <a href="#weight"><img src="/assets/img/lands/desert-3-480.webp" alt="" loading="lazy" width="480" height="270"><b>Load it</b><span>Weight and slopes</span></a>
+      <a href="#water"><img src="/assets/img/lands/jungle-3-480.webp" alt="" loading="lazy" width="480" height="270"><b>Wade it</b><span>Water</span></a>
+      <a href="#collisions"><img src="/assets/img/lands/snow-3-480.webp" alt="" loading="lazy" width="480" height="270"><b>Ram it</b><span>Collisions</span></a>
+      <a href="#ballistics"><img src="/assets/img/lands/desert-2-480.webp" alt="" loading="lazy" width="480" height="270"><b>Fire it</b><span>Drop and wind</span></a>
+      <a href="#sound"><img src="/assets/img/lands/badlands-3-480.webp" alt="" loading="lazy" width="480" height="270"><b>Hear it</b><span>Sound</span></a>
+      <a href="#world"><img src="/assets/img/lands/desert-1-480.webp" alt="" loading="lazy" width="480" height="270"><b>Run a day</b><span>The world</span></a>
+      <a href="#weather"><img src="/assets/img/pillars/pillar-front.webp" alt="" loading="lazy" width="480" height="270"><b>Watch a storm</b><span>Weather</span></a>
+      <a href="#thin-air"><img src="/assets/img/lands/snow-1-480.webp" alt="" loading="lazy" width="480" height="270"><b>Go high</b><span>Thin air</span></a>
+      <a href="#crossing"><img src="/assets/img/story-crossing-1280.webp" alt="" loading="lazy" width="480" height="270"><b>Cross it</b><span>0.130 c</span></a>
+    </nav>
 
-      <!-- 01 The world: the setting's physical constants. -->
-      <section class="chap" id="world" aria-labelledby="world-title">
-        <div class="chap__text">
-          <p class="chap__kicker"><b>01</b> The world</p>
-          <h2 id="world-title">An Earth-like world, by the numbers</h2>
-          <p>The Reach orbits Alpha Centauri A, a star a little heavier than the Sun, from a little farther out than Earth sits from ours. Its pull is Earth's own, and its air rests on the same standard atmosphere pilots fly by on Earth.</p>
-          <p>Heights are in feet above MSL: Mean Standard Level, the surveyed surface on which that standard atmosphere is defined. Pressure keeps rising below it, so a basin can sit below zero.</p>
-          <p>The day is 25.4 hours long. The war keeps Earth's 24-hour clock anyway, on a world that does not keep it, and nobody aboard is going to fix that.</p>
-          <a class="chap__go" href="/thereach/#world">What the air is made of</a>
+    <!-- 02 Gravity: one value for everything, and what a fall costs (JumpJetController's landing). True scale: the ground and
+         the VIGIL share one metre, the camera only draws back to keep both in frame. -->
+    <section class="bay" id="gravity" style="--tone: 74, 104, 140" aria-labelledby="gravity-title">
+      <div class="stage" id="fall" data-state="hard" style="--h: 0.1875; --leg: 0.6901">
+        <div class="stage__view">
+          <div class="stage__bg"><img src="/assets/img/lands/snow-4-1280.webp" srcset="/assets/img/lands/snow-4-1280.webp 1280w, /assets/img/lands/snow-4-2560.webp 2560w" sizes="100vw" alt="Snowfields and dark pines below a high range, from the game." width="2560" height="1440" loading="lazy" decoding="async"></div>
+          <canvas data-main aria-hidden="true"></canvas>
+          <div class="stage__head">
+            <p class="kicker"><b>01</b> Gravity</p>
+            <h2 id="gravity-title">Drop it</h2>
+            <p class="stage__do">Pull the rail up. Let go.</p>
+          </div>
+          <div class="lift" data-rail aria-hidden="true">
+            <i class="lift__track"></i><i class="lift__fill"></i><i class="lift__knob"></i>
+            <span class="lift__mark" style="--at: 0.0375">6 ft</span>
+            <span class="lift__mark lift__mark--bad" style="--at: 0.2938">47 ft</span>
+            <span class="lift__mark" style="--at: 0.9375">150 ft</span>
+          </div>
         </div>
-        <figure class="inst inst--card">
-          <figcaption class="inst__head"><p class="inst__title"><i aria-hidden="true"></i>The Reach</p><p class="inst__sub">Planetary survey</p></figcaption>
-          <dl class="figs">
-            <div><dt>Star</dt><dd>Alpha Centauri A <span>about 1.1 times the Sun's mass</span></dd></div>
-            <div><dt>Orbit</dt><dd>1.24 AU <span>1.24 times Earth's distance from the Sun</span></dd></div>
-            <div><dt>Year</dt><dd>481 Earth days <span>455 of its own days</span></dd></div>
-            <div><dt>Day</dt><dd>25.4 hours</dd></div>
-            <div><dt>Axial tilt</dt><dd>21° <span>Earth's is 23.4°</span></dd></div>
-            <div><dt>Gravity</dt><dd>9.81 m/s² <span>1 g, Earth's own</span></dd></div>
-            <div><dt>At MSL</dt><dd>29.92 inHg · 15 °C <span>1,013.2 hPa, the standard day</span></dd></div>
-            <div><dt>With height</dt><dd>−1.98 °C per 1,000 ft <span>up to 36,089 ft</span></dd></div>
+        <div class="dock">
+          <label class="sr">Drop height <input type="range" name="height" min="0" max="160" step="1" value="30"></label>
+          <dl class="hud">
+            <div><dt>From</dt><dd data-out="height">30 ft</dd></div>
+            <div><dt>Arrives at</dt><dd><span data-out="speed">30 mph</span> <small data-out="speed-ms">13.4 m/s</small></dd></div>
+            <div class="hud__wide"><dt>Each leg takes</dt><dd data-out="leg">104 of 150</dd><i class="meter meter--leg" aria-hidden="true"></i></div>
           </dl>
-        </figure>
-      </section>
-
-      <!-- 02 Gravity: one value for everything, and what a fall costs (JumpJetController's landing). -->
-      <section class="chap" id="gravity" aria-labelledby="gravity-title">
-        <div class="chap__text">
-          <p class="chap__kicker"><b>02</b> Gravity</p>
-          <h2 id="gravity-title">One gravity, for everything</h2>
-          <p>One gravity runs the whole game, 9.81 metres per second squared: the DART-20's rounds drop by it, and the fifty-ton machine you are sitting in falls by it. It is Earth's gravity because your body already knows it. Anything lighter only feels floaty, and nobody can tell you why.</p>
-          <p>So a fall is a real fall. Arrive at 6 m/s or slower, a drop of about 6 feet, and the legs take it. Every metre per second past that costs each leg 14 of its 150, so an unpowered drop from 47 feet takes both legs off.</p>
+          <p class="verdict" aria-live="polite" data-out="verdict">A hard landing. Both legs take it.</p>
+          <div class="row">
+            <button class="chip" type="button" data-chip="height" data-value="6">6 ft</button>
+            <button class="chip" type="button" data-chip="height" data-value="47">47 ft</button>
+            <button class="chip" type="button" data-chip="height" data-value="150">150 ft</button>
+            <button class="act act--small" type="button" data-drop>Drop</button>
+          </div>
+        </div>
+      </div>
+      <div class="note">
+        <p class="note__say">One gravity runs the whole game: the DART-20's rounds drop by it, and the fifty-ton machine you are sitting in falls by it. It is Earth's because your body already knows it. Anything lighter only feels floaty.</p>
+        <details class="sums">
+          <summary>The arithmetic</summary>
+          <p>Arrive at 6 m/s or slower, a drop of about 6 feet, and the legs take it. Every metre per second past that costs each leg 14 of its 150, so an unpowered drop from 47 feet takes both legs off.</p>
           <div class="eq">
             <p><b>Arrival speed</b> = √(2 × g × height)</p>
             <p><b>Each leg takes</b> (arrival speed − 6 m/s) × 14</p>
           </div>
-        </div>
-        <figure class="inst" id="fall" data-state="hard" style="--h: 0.1875; --leg: 0.6901">
-          <figcaption class="inst__head"><p class="inst__title"><i aria-hidden="true"></i>Unpowered fall</p><p class="inst__sub">No fuel, or a reactor too hot to fire the jets</p></figcaption>
-          <div class="fall">
-            <div class="tape" aria-hidden="true">
-              <span class="tape__mark" style="--at: 0.0375"><b>6 ft</b><span>soft</span></span>
-              <span class="tape__mark tape__mark--bad" style="--at: 0.2938"><b>47 ft</b><span>both legs</span></span>
-              <span class="tape__mark" style="--at: 0.9375"><b>150 ft</b><span>jet ceiling</span></span>
-              <i class="tape__fill"></i>
-              <i class="tape__you"></i>
-            </div>
-            <div class="fall__read">
-              <label class="slider"><span>Height <output data-out="height">30 ft</output></span>
-                <input type="range" name="height" min="0" max="160" step="1" value="30"></label>
-              <dl class="readouts">
-                <div><dt>Arrives at</dt><dd><b data-out="speed">30 mph</b> <span data-out="speed-ms">13.4 m/s</span></dd></div>
-                <div><dt>Each leg</dt><dd><b data-out="leg">104 of 150</b></dd></div>
-              </dl>
-              <div class="legbar" aria-hidden="true"><i></i></div>
-              <p class="inst__verdict" data-out="verdict">A hard landing. Both legs take it.</p>
-            </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- 03 Flight: the jump jets, flown. Physics.flightStep is JumpJetController's Update and HeatManager's cooling for a standing liftoff. -->
+    <section class="bay" id="flight" data-state="ready" style="--tone: 142, 82, 46" aria-labelledby="flight-title">
+      <div class="stage">
+        <div class="stage__view">
+          <div class="stage__bg"><img src="/assets/img/lands/desert-4-1280.webp" srcset="/assets/img/lands/desert-4-1280.webp 1280w, /assets/img/lands/desert-4-2560.webp 2560w" sizes="100vw" alt="Red dunes and mesas under an evening sky, from the game." width="2560" height="1440" loading="lazy" decoding="async"></div>
+          <canvas data-main aria-hidden="true"></canvas>
+          <div class="stage__head">
+            <p class="kicker"><b>02</b> Flight</p>
+            <h2 id="flight-title">Fly it</h2>
+            <p class="stage__do">Hold the jets. Stay up as long as you dare.</p>
           </div>
-        </figure>
-      </section>
-
-      <!-- 03 Flight: the jump jets' envelope (JumpJetController). The profile is the jets' own model run at empty weight:
-           a 14 m/s climb, the fade over the top 27% to the ceiling, a hover, then release under 9.81 and the auto-flare. -->
-      <section class="chap chap--wide" id="flight" aria-labelledby="flight-title">
-        <div class="chap__text">
-          <p class="chap__kicker"><b>03</b> Flight</p>
-          <h2 id="flight-title">Jump jets: a climb you pay for</h2>
-          <p>The jets push the VIGIL up at 14 m/s, about 2,760 feet a minute, and they own the whole flight. Once you leave the ground you keep the heading and speed you had at liftoff, and the legs cannot steer you. Run and jump, and you arc up and forward. The torso still turns, so you can fly over a fight and shoot down into its back.</p>
-          <p>A flight-control governor caps the climb at 150 feet. Over the last 40 feet it bleeds the thrust away, so the VIGIL settles at its ceiling instead of striking it. Holding there hovers, and still burns.</p>
-          <p>Coming down, an auto-flare lights the jets at 16 feet and brakes you to a 4 m/s touchdown. It needs fuel and a reactor that is not overheated. Fly hot, or fly the tank dry, and you arrive at whatever speed gravity gave you.</p>
         </div>
-        <figure class="inst inst--wide inst--split">
-          <figcaption class="inst__head"><p class="inst__title"><i aria-hidden="true"></i>One flight, empty weight</p><p class="inst__sub">Height against time, from the jets' own model</p></figcaption>
-          <svg class="profile" viewBox="0 0 640 300" role="img" aria-label="A jump-jet flight: a straight climb at 14 metres a second, a soft approach to the 150-foot ceiling, a hover, then a fall that the auto-flare catches at 16 feet for a 4 metre-a-second touchdown.">
-            <g class="profile__grid">
-              <line x1="56" y1="262" x2="616" y2="262"/><line x1="56" y1="197.2" x2="616" y2="197.2"/><line x1="56" y1="132.3" x2="616" y2="132.3"/>
-              <text x="48" y="265">0</text><text x="48" y="200">50</text><text x="48" y="135">100</text><text x="48" y="70.5">150 ft</text>
-              <text x="56" y="284" class="profile__x">0 s</text><text x="157.8" y="284" class="profile__x">2</text><text x="259.6" y="284" class="profile__x">4</text><text x="361.5" y="284" class="profile__x">6</text><text x="463.3" y="284" class="profile__x">8</text><text x="565.1" y="284" class="profile__x">10</text>
-            </g>
-            <line class="profile__limit" x1="56" y1="67.5" x2="616" y2="67.5"/>
-            <line class="profile__limit profile__limit--flare" x1="56" y1="240.7" x2="616" y2="240.7"/>
-            <rect class="profile__fade" x="56" y="67.5" width="560" height="52"/>
-            <path class="profile__path" d="M56.0,261.7 L180.7,115.9 L187.9,108.7 L195.2,102.3 L203.1,96.7 L211.5,91.6 L225.5,85.1 L241.1,79.9 L258.6,75.8 L279.0,72.7 L302.1,70.6 L330.1,69.1 L412.6,67.7 L420.5,68.3 L428.1,69.7 L436.0,72.2 L443.9,75.7 L451.6,80.0 L459.5,85.5 L467.3,92.0 L475.2,99.4 L485.7,110.9 L496.4,124.4 L506.8,139.4 L517.5,156.5 L527.4,174.1 L537.3,193.3 L548.3,216.2 L559.7,242.3 L562.3,246.6 L564.8,248.7 L604.8,262.0"/>
-            <circle class="profile__dot" cx="559.7" cy="242.3" r="4"/>
-            <text class="profile__note" x="122" y="200">Climb, 14 m/s</text>
-            <text class="profile__note profile__note--wide" x="62" y="90">Fade: the last 40 ft</text>
-            <text class="profile__note profile__note--accent" x="62" y="58">Service ceiling, 150 ft</text>
-            <text class="profile__note profile__note--wide" x="318" y="58">Hover: still burning</text>
-            <text class="profile__note" x="508" y="172" text-anchor="end">Release: falls at 1 g</text>
-            <text class="profile__note profile__note--accent" x="548" y="232" text-anchor="end">Auto-flare, 16 ft</text>
-            <text class="profile__note profile__note--wide" x="612" y="234" text-anchor="end">4 m/s</text>
-          </svg>
-          <dl class="figs figs--side">
-            <div><dt>The tank</dt><dd>30 s of thrust <span>one tank for each life; it does not refill</span></dd></div>
-            <div><dt>Heat</dt><dd>+7 a second <span>the same heat the guns make</span></dd></div>
-            <div><dt>Six lights</dt><dd>Landing margin <span>fuel left once the trip down is paid for</span></dd></div>
-            <div><dt>Weight</dt><dd>Lower and shorter <span>the heavier you fly, the lower the ceiling and the faster the burn</span></dd></div>
+        <div class="dock">
+          <dl class="hud hud--three">
+            <div><dt>Height</dt><dd data-out="alt">0 ft</dd></div>
+            <div><dt>Ceiling</dt><dd data-out="ceiling">150 ft</dd></div>
+            <div><dt>Best flight</dt><dd data-out="best">—</dd></div>
           </dl>
-        </figure>
-      </section>
+          <div class="gauge" data-heat style="--v: 0"><span>Reactor heat</span><b data-out="heat">0</b><i aria-hidden="true"></i></div>
+          <div class="tank"><span>Tank <b data-out="tank">30.0 s</b></span><span class="tank__lights" aria-hidden="true"><i data-light class="is-on"></i><i data-light class="is-on"></i><i data-light class="is-on"></i><i data-light class="is-on"></i><i data-light class="is-on"></i><i data-light class="is-on"></i></span><span>Legs <b data-out="legs">150 of 150</b></span></div>
+          <p class="verdict" aria-live="polite" data-out="verdict">Hold the button. Let go to come down.</p>
+          <div class="row">
+            <button class="chip" type="button" data-chip="flight-load" data-value="empty" aria-pressed="true">Empty</button>
+            <button class="chip" type="button" data-chip="flight-load" data-value="kit">Starter kit, jets</button>
+            <button class="chip chip--quiet" type="button" data-life>New life</button>
+          </div>
+          <button class="act" type="button" data-jets>Hold for jets <small>or the F key</small></button>
+        </div>
+      </div>
+      <div class="note">
+        <p class="note__say">The jets own the whole flight, and every second of thrust is paid for in heat and fuel. Hovering still burns. Fly hot, or fly the tank dry, and nothing catches you on the way down.</p>
+        <details class="sums">
+          <summary>The arithmetic</summary>
+          <p>The jets push the VIGIL up at 14 m/s, about 2,760 feet a minute. Once you leave the ground you keep the heading and speed you had at liftoff; this demo lifts off standing. The torso still turns, so you can fly over a fight and shoot down into its back.</p>
+          <p>A flight-control governor caps the climb at 150 feet. Over the last 40 feet it bleeds the thrust away, so the VIGIL settles at its ceiling instead of striking it.</p>
+          <p>Coming down, an auto-flare lights the jets at 16 feet and brakes you to a 4 m/s touchdown. It costs fuel and no heat, and it needs a tank with something in it and a reactor that is not overheated.</p>
+          <dl class="figs">
+            <div><dt>The tank</dt><dd>30 s of thrust <span>one tank for each life; it does not refill</span></dd></div>
+            <div><dt>Heat</dt><dd>+7 a second <span>the same heat the guns make, and thrust stops all cooling</span></dd></div>
+            <div><dt>This load</dt><dd data-out="burn">+7.0 a second</dd></div>
+            <div><dt>Overheats in</dt><dd data-out="hover">14.3 s</dd></div>
+          </dl>
+        </details>
+      </div>
+    </section>
 
-      <!-- 04 Weight: GrossWeight's couplings, live. The meters run from the GAME block at the slider's weight. -->
-      <section class="chap" id="weight" aria-labelledby="weight-title">
-        <div class="chap__text">
-          <p class="chap__kicker"><b>04</b> Weight</p>
-          <h2 id="weight-title">Every pound costs you</h2>
-          <p>An empty VIGIL weighs 76,000 lb. Loaded to its maximum operating weight it is 106,240 lb, and you can load it past that. Weight is not a number on a card: it reaches into everything the machine does.</p>
+    <!-- 04 Weight and slopes: GrossWeight's couplings and SlopeBands, felt. The load is whatever is fitted to the five hardpoints. -->
+    <section class="bay" id="weight" style="--tone: 128, 74, 40" aria-labelledby="weight-title">
+      <div class="stage" id="weight-inst" data-state="slow">
+        <div class="stage__top">
+        <div class="stage__view">
+          <div class="stage__bg"><img src="/assets/img/lands/desert-3-1280.webp" srcset="/assets/img/lands/desert-3-1280.webp 1280w, /assets/img/lands/desert-3-2560.webp 2560w" sizes="100vw" alt="A red canyon floor from the game." width="2560" height="1440" loading="lazy" decoding="async"></div>
+          <canvas data-main aria-hidden="true"></canvas>
+          <div class="stage__head">
+            <p class="kicker"><b>03</b> Weight and slopes</p>
+            <h2 id="weight-title">Load it. Climb.</h2>
+            <p class="stage__do">Bolt on weapons. Tilt the hill. Hold walk.</p>
+          </div>
+          <p class="stamp" data-out="band" aria-hidden="true">Slow</p>
+        </div>
+        <div class="dock">
+          <div class="scale" data-gauge style="--v: 0.595">
+            <p class="scale__big"><span data-out="lb">101,200 lb</span> <small data-out="load">83% of its payload</small></p>
+            <i class="scale__bar" aria-hidden="true"></i>
+          </div>
+          <dl class="hud hud--four">
+            <div><dt>Top speed</dt><dd data-out="speed">40.0 mph</dd></div>
+            <div><dt>Cooling</dt><dd data-out="cooling">70%</dd></div>
+            <div><dt>Jet ceiling</dt><dd data-out="ceiling">113 ft</dd></div>
+            <div><dt>Jets hot in</dt><dd data-out="climb">10.7 s</dd></div>
+          </dl>
+          <div id="slope">
+            <label class="hill"><span>Hill <b data-out="grade">20°</b></span>
+              <input type="range" name="grade" min="0" max="70" step="1" value="20"></label>
+            <dl class="hud hud--three">
+              <div><dt>On this hill</dt><dd data-out="hill-speed">29.2 mph</dd></div>
+              <div><dt>Right now</dt><dd data-out="live">0.0 mph</dd></div>
+              <div><dt>Climbed</dt><dd data-out="climbed">0 ft</dd></div>
+            </dl>
+            <p class="verdict" aria-live="polite" data-out="note">73% of its 40 mph on the flat.</p>
+          </div>
+          <button class="act" type="button" data-walk>Hold to walk</button>
+        </div>
+        </div>
+        <div class="tray" role="group" aria-label="What the VIGIL carries">
+          <div class="row tray__kits">
+            <button class="chip" type="button" data-chip="kit" data-value="">Strip it</button>
+            <button class="chip" type="button" data-chip="kit" data-value="PULSE-50,CHAIN-30,SLUG-250,VOLLEY-6" aria-pressed="true">Starter kit</button>
+            <button class="chip" type="button" data-chip="kit" data-value="CHAIN-30,SLUG-250,SPIKE-90,BREACH-275,ArmorModule">Overloaded</button>
+          </div>
+          <div class="tray__parts">
+            <button class="part" type="button" data-part="PULSE-50" data-slot="arm" aria-pressed="true"><img src="/assets/img/physics/pulse-50.webp" alt="" loading="lazy" width="320" height="240"><b>PULSE-50</b><span data-lb></span></button>
+            <button class="part" type="button" data-part="CHAIN-30" data-slot="arm" aria-pressed="true"><img src="/assets/img/physics/chain-30.webp" alt="" loading="lazy" width="320" height="240"><b>CHAIN-30</b><span data-lb></span></button>
+            <button class="part" type="button" data-part="SLUG-250" data-slot="arm" aria-pressed="true"><img src="/assets/img/physics/slug-250.webp" alt="" loading="lazy" width="320" height="240"><b>SLUG-250</b><span data-lb></span></button>
+            <button class="part" type="button" data-part="DART-20" data-slot="arm" aria-pressed="false"><img src="/assets/img/physics/dart-20.webp" alt="" loading="lazy" width="320" height="240"><b>DART-20</b><span data-lb></span></button>
+            <button class="part" type="button" data-part="THUMP-82" data-slot="arm" aria-pressed="false"><img src="/assets/img/physics/thump-82.webp" alt="" loading="lazy" width="320" height="240"><b>THUMP-82</b><span data-lb></span></button>
+            <button class="part" type="button" data-part="SPIKE-90" data-slot="arm" aria-pressed="false"><img src="/assets/img/physics/spike-90.webp" alt="" loading="lazy" width="320" height="240"><b>SPIKE-90</b><span data-lb></span></button>
+            <button class="part" type="button" data-part="VOLLEY-6" data-slot="shoulder" aria-pressed="true"><img src="/assets/img/physics/volley-6.webp" alt="" loading="lazy" width="320" height="240"><b>VOLLEY-6</b><span data-lb></span></button>
+            <button class="part" type="button" data-part="BREACH-275" data-slot="shoulder" aria-pressed="false"><img src="/assets/img/physics/breach-275.webp" alt="" loading="lazy" width="320" height="240"><b>BREACH-275</b><span data-lb></span></button>
+            <button class="part" type="button" data-part="JumpJets" data-slot="module" aria-pressed="false"><img src="/assets/img/physics/jump-jets.webp" alt="" loading="lazy" width="320" height="320"><b>Jump jets</b><span data-lb></span></button>
+            <button class="part" type="button" data-part="ArmorModule" data-slot="module" aria-pressed="false"><img src="/assets/img/physics/ct-armor.webp" alt="" loading="lazy" width="320" height="320"><b>CT armor</b><span data-lb></span></button>
+            <button class="part" type="button" data-part="HeatSinks" data-slot="module" aria-pressed="false"><img src="/assets/img/physics/reactor-cooling.webp" alt="" loading="lazy" width="320" height="320"><b>Cooling</b><span data-lb></span></button>
+            <button class="part" type="button" data-part="SpeedBoost" data-slot="module" aria-pressed="false"><img src="/assets/img/physics/overboost.webp" alt="" loading="lazy" width="320" height="320"><b>Overboost</b><span data-lb></span></button>
+          </div>
+        </div>
+      </div>
+      <div class="note">
+        <p class="note__say">Weight is not a number on a card. It reaches into speed, cooling and flight, and every step on a hill lifts the whole machine. The faint VIGIL is the same machine, empty, on the same hill.</p>
+        <details class="sums">
+          <summary>The arithmetic</summary>
+          <p>An empty VIGIL weighs 76,000 lb. Loaded to its maximum operating weight it is 106,240 lb, and you can load it past that outside Ranked.</p>
           <ul class="points">
             <li><b>Speed.</b> Top speed slides from 45 mph empty to 39 at maximum weight. Past it, each extra percent of payload costs another 0.28 mph.</li>
             <li><b>Cooling.</b> A heavier machine sheds heat worse, and the loss grows with the square of the load: 70% of its cooling with the starter kit, 57% at maximum weight.</li>
-            <li><b>Flight.</b> The jets lift what you weigh against the empty machine. Heavier burns fuel and heat faster and tops out lower: 102 ft for the starter kit with jets fitted.</li>
+            <li><b>Flight.</b> The jets lift what you weigh against the empty machine: 102 ft for the starter kit with jets fitted. The jets are a centre-torso module that weighs 6,000 lb itself.</li>
             <li><b>Inertia.</b> From a standstill it takes about two and a half seconds to reach full speed, and a second and a half to stop.</li>
-          </ul>
-        </div>
-        <figure class="inst" id="weight-inst" data-state="legal" style="--speed: 0.8889; --cooling: 0.7; --ceiling: 0.751; --climb: 0.751">
-          <figcaption class="inst__head"><p class="inst__title"><i aria-hidden="true"></i>Weight and balance</p><p class="inst__sub">A VIGIL at any weight, outside Ranked</p></figcaption>
-          <label class="slider"><span>Operating weight <output data-out="lb">101,200 lb</output></span>
-            <input type="range" name="lb" min="76000" max="114000" step="200" value="101200" list="weight-marks"></label>
-          <datalist id="weight-marks"><option value="101200"></option><option value="106240"></option></datalist>
-          <p class="slider__marks" aria-hidden="true"><span style="--at: 0.6632">Starter kit</span><span style="--at: 0.7958">Max</span></p>
-          <p class="inst__load" data-out="load">83% of its payload</p>
-          <dl class="meters">
-            <div style="--v: var(--speed)"><dt>Top speed</dt><dd data-out="speed">40.0 mph</dd><i></i></div>
-            <div style="--v: var(--cooling)"><dt>Cooling</dt><dd data-out="cooling">70%</dd><i></i></div>
-            <div style="--v: var(--ceiling)"><dt>Jet ceiling</dt><dd data-out="ceiling">113 ft</dd><i></i></div>
-            <div style="--v: var(--climb)"><dt>One climb, from cold</dt><dd data-out="climb">10.7 s</dd><i></i></div>
-          </dl>
-          <p class="inst__note">The jets are a centre-torso module that weighs 6,000 lb itself. The ceiling and climb are for a VIGIL of this weight flying them.</p>
-        </figure>
-      </section>
-
-      <!-- 05 Ground and water: SlopeBands (SLOW, SLIP, STALL) and ArenaWater's wading limit. -->
-      <section class="chap" id="ground" aria-labelledby="ground-title">
-        <div class="chap__text">
-          <p class="chap__kicker"><b>05</b> Ground and water</p>
-          <h2 id="ground-title">Slow, slip, stall</h2>
-          <p>Hills slow you the way they slow anything heavy: every step lifts the whole machine. Gentle ground costs little and steep ground costs a lot, and load makes it worse. Each band warns you of the next.</p>
-          <ul class="points">
-            <li><b>Slow.</b> Below 45°, speed falls with the slope. Steeper is slower, and heavier is slower still.</li>
+            <li><b>Slow.</b> Below 45°, speed falls with the slope, and heavier is slower still. Sampled 6 metres in front of the feet.</li>
             <li><b>Slip.</b> From 45° the feet lose their grip. Push on and you slide back at 2.5 m/s. Let go and you stop.</li>
             <li><b>Stall.</b> At 65° the legs cannot reach the next step. It is a wall, and weight does not move it.</li>
           </ul>
@@ -239,240 +268,391 @@
             <p><b>Speed on a slope</b> = flat speed ÷ (1 + k × sin(slope)<sup>2.5</sup>)</p>
             <p><b>k</b> = 3.5 + 2.3 × the share of payload carried</p>
           </div>
-          <h3 class="chap__sub">Wading</h3>
-          <p>Water drags on the legs, and drag climbs with the cube of your speed, so the deeper it is the slower you wade: about 16 mph a metre deep, 13 at two metres, 10 at four, and 8 at nine, waist deep. Go wholly under for ten seconds and the VIGIL is lost.</p>
-          <div class="eq"><p><b>Wading speed</b> = ∛(400 ÷ depth in metres) m/s</p></div>
-        </div>
-        <figure class="inst" id="slope" data-state="slow" style="--grade: 20">
-          <figcaption class="inst__head"><p class="inst__title"><i aria-hidden="true"></i>The slope ahead</p><p class="inst__sub">Sampled 6 metres in front of the feet</p></figcaption>
-          <svg class="hill" viewBox="0 0 300 210" aria-hidden="true">
-            <line class="hill__flat" x1="24" y1="190" x2="290" y2="190"/>
-            <g class="hill__rays">
-              <line x1="24" y1="190" x2="151.3" y2="62.7"/><text x="156" y="60">Slip 45°</text>
-              <line x1="24" y1="190" x2="100.1" y2="26.9"/><text x="105" y="24">Stall 65°</text>
-            </g>
-            <path class="hill__arc" d="M70,190 A46,46 0 0 0 67.2,174.3"/>
-            <g class="hill__ground" transform="rotate(-20 24 190)">
-              <line x1="24" y1="190" x2="214" y2="190"/>
-              <circle cx="134" cy="182" r="7"/>
-            </g>
-          </svg>
-          <fieldset class="loads">
-            <legend>Load</legend>
-            <label><input type="radio" name="load" value="0"> Empty</label>
-            <label><input type="radio" name="load" value="12.6" checked> Starter kit</label>
-            <label><input type="radio" name="load" value="15.12"> Maximum</label>
-          </fieldset>
-          <label class="slider"><span>Slope <output data-out="grade">20°</output></span>
-            <input type="range" name="grade" min="0" max="70" step="1" value="20"></label>
-          <dl class="readouts">
-            <div><dt>Band</dt><dd><b data-out="band">Slow</b></dd></div>
-            <div><dt>Speed</dt><dd><b data-out="speed">29.2 mph</b></dd></div>
-          </dl>
-          <p class="inst__verdict" data-out="note">73% of its 40 mph on the flat.</p>
-        </figure>
-      </section>
+        </details>
+      </div>
+    </section>
 
-      <!-- 06 Collisions: RamDamage and KnockdownState, resolved by the server for every mech. -->
-      <section class="chap" id="collisions" aria-labelledby="collisions-title">
-        <div class="chap__text">
-          <p class="chap__kicker"><b>06</b> Collisions</p>
-          <h2 id="collisions-title">Fifty tons, moving</h2>
-          <p>Mechs collide like the heavy machines they are, and the server settles every collision the same way for every pilot. A ram's damage comes from the energy of the collision itself: the closing speed squared, times the two machines' reduced mass. Both mechs take it, and the lighter one takes more.</p>
+    <!-- 05 Water: ArenaWater's wading limit and drowning clock. -->
+    <section class="bay" id="water" style="--tone: 24, 96, 104; --h: 0.375" aria-labelledby="water-title">
+      <div class="stage stage--short">
+        <div class="stage__view">
+          <div class="stage__bg"><img src="/assets/img/lands/jungle-3-1280.webp" srcset="/assets/img/lands/jungle-3-1280.webp 1280w, /assets/img/lands/jungle-3-2560.webp 2560w" sizes="100vw" alt="A jungle valley and a winding river under cloud, from the game." width="2560" height="1440" loading="lazy" decoding="async"></div>
+          <canvas data-main aria-hidden="true"></canvas>
+          <div class="stage__head">
+            <p class="kicker"><b>04</b> Water</p>
+            <h2 id="water-title">Wade it</h2>
+            <p class="stage__do">Raise the water.</p>
+          </div>
+          <div class="lift lift--water" data-rail aria-hidden="true"><i class="lift__track"></i><i class="lift__fill"></i><i class="lift__knob"></i>
+            <span class="lift__mark" style="--at: 0.0417">1 m</span>
+            <span class="lift__mark" style="--at: 0.375">9 m</span>
+            <span class="lift__mark lift__mark--bad" style="--at: 0.7938">Under</span>
+          </div>
+        </div>
+        <div class="dock">
+          <label class="sr">Water depth <input type="range" name="depth" min="0" max="24" step="0.5" value="9"></label>
+          <dl class="hud hud--three">
+            <div><dt>Depth</dt><dd data-out="depth">9.0 m</dd></div>
+            <div><dt>Wading speed</dt><dd data-out="wade">8 mph</dd></div>
+            <div><dt>Air left</dt><dd data-out="under">10 s, once it is under</dd></div>
+          </dl>
+        </div>
+      </div>
+      <div class="note">
+        <p class="note__say">Water drags on the legs, and drag climbs with the cube of your speed, so the deeper it is the slower you wade: about 16 mph a metre deep, 13 at two metres, 10 at four, and 8 at nine, waist deep. Go wholly under for ten seconds and the VIGIL is lost.</p>
+        <details class="sums">
+          <summary>The arithmetic</summary>
+          <div class="eq"><p><b>Wading speed</b> = ∛(400 ÷ depth in metres) m/s</p></div>
+        </details>
+      </div>
+    </section>
+
+    <!-- 06 Collisions: RamDamage and KnockdownState, resolved by the server for every mech. -->
+    <section class="bay" id="collisions" style="--tone: 72, 92, 118" aria-labelledby="collisions-title">
+      <div class="stage" id="ram" data-state="ready">
+        <div class="stage__view">
+          <div class="stage__bg"><img src="/assets/img/lands/snow-3-1280.webp" srcset="/assets/img/lands/snow-3-1280.webp 1280w, /assets/img/lands/snow-3-2560.webp 2560w" sizes="100vw" alt="Wide snow highlands and pine forest under a pale sky, from the game." width="2560" height="1440" loading="lazy" decoding="async"></div>
+          <canvas data-main aria-hidden="true"></canvas>
+          <button class="pull" type="button" data-pull aria-label="Pull the attacking VIGIL back to set its charge, then let go"><span>Pull me back</span></button>
+          <div class="stage__head">
+            <p class="kicker"><b>05</b> Collisions</p>
+            <h2 id="collisions-title">Ram it</h2>
+            <p class="stage__do">Pull the near VIGIL back. Let go.</p>
+          </div>
+        </div>
+        <div class="dock">
+          <dl class="hud">
+            <div><dt>Your charge</dt><dd data-out="charge">40 mph</dd></div>
+            <div><dt>Closing</dt><dd data-out="closing">40 mph</dd></div>
+            <div><dt>You take</dt><dd data-out="yours">61 of 200</dd></div>
+            <div><dt>It takes</dt><dd data-out="theirs">61 of 200</dd></div>
+          </dl>
+          <p class="verdict" aria-live="polite" data-out="verdict">Knocked down. Two seconds to stand, then two when nothing can put it down again.</p>
+          <div class="row">
+            <button class="chip" type="button" data-chip="ram-target" data-value="stand" aria-pressed="true">It stands</button>
+            <button class="chip" type="button" data-chip="ram-target" data-value="behind">From behind</button>
+            <button class="chip" type="button" data-chip="ram-target" data-value="light">It's empty</button>
+            <button class="chip" type="button" data-chip="ram-target" data-value="charge">It charges too</button>
+          </div>
+          <div class="row">
+            <button class="chip" type="button" data-chip="ram-speed" data-value="5">5 mph</button>
+            <button class="chip" type="button" data-chip="ram-speed" data-value="20">20</button>
+            <button class="chip" type="button" data-chip="ram-speed" data-value="40" aria-pressed="true">40</button>
+            <button class="act act--small" type="button" data-charge>Charge</button>
+          </div>
+        </div>
+      </div>
+      <div class="note">
+        <p class="note__say">The server settles every collision the same way for every pilot. Damage comes from the energy of the hit: twice the speed, four times the damage, and both machines pay.</p>
+        <details class="sums">
+          <summary>The arithmetic</summary>
           <div class="eq">
             <p><b>Reduced mass</b> = m₁ × m₂ ÷ (m₁ + m₂)</p>
             <p><b>Ram damage</b> ∝ reduced mass × closing speed², split by the other mech's share of the weight</p>
           </div>
           <ul class="points">
+            <li><b>Two starter-kit VIGILs, one standing.</b> 15 to each at 20 mph, 61 to each at 40. The front plate is 200.</li>
             <li><b>A shove is a shove.</b> Below 3 m/s of closing speed, about 7 mph, nothing is damaged.</li>
             <li><b>Behind is worse.</b> A ram from behind lands on the rear plate, 150 points against the front's 200.</li>
             <li><b>Momentum knocks you down.</b> Measured along the line of contact: if the other mech's is half again yours, you go over. A mech standing still has none, so any real charge puts it down.</li>
             <li><b>Getting up.</b> Two seconds down and standing, then two seconds when nothing can knock you over again.</li>
             <li><b>Teammates push.</b> They never damage you and never knock you down.</li>
           </ul>
-        </div>
-        <figure class="inst inst--card">
-          <figcaption class="inst__head"><p class="inst__title"><i aria-hidden="true"></i>Worked example</p><p class="inst__sub">Two starter-kit VIGILs, 101,200 lb each, one standing still</p></figcaption>
-          <dl class="figs">
-            <div><dt>At 20 mph</dt><dd>15 to each <span>centre torso, front plate of 200</span></dd></div>
-            <div><dt>At 40 mph</dt><dd>61 to each <span>twice the speed, four times the damage</span></dd></div>
-            <div><dt>The standing one</dt><dd>Knocked down <span>it had no momentum to meet the charge with</span></dd></div>
-            <div><dt>A lighter one</dt><dd>Takes more <span>each side's share is the other's weight over the total</span></dd></div>
-          </dl>
-        </figure>
-      </section>
+        </details>
+      </div>
+    </section>
 
-      <!-- 07 Ballistics: DART-20's gravity drop (Ballistics), the wind table (WindBallistics), the lobbed rounds. -->
-      <section class="chap" id="ballistics" aria-labelledby="ballistics-title">
-        <div class="chap__text">
-          <p class="chap__kicker"><b>07</b> Ballistics</p>
-          <h2 id="ballistics-title">Rounds that fall, and drift</h2>
-          <p>The DART-20 is the long gun, and its rounds obey gravity. They leave the muzzle at 330 m/s and are zeroed at 300 metres, 328 yards. Past that they drop below your line of sight, so at range you hold over, walking the target up the scope's ladder: about two ticks at 1,000 yards.</p>
+    <!-- 07 Ballistics: DART-20's gravity drop (Ballistics) and the wind (WindBallistics). The sight is a diagram, not the game's reticle. -->
+    <section class="bay" id="ballistics" style="--tone: 120, 78, 46" aria-labelledby="ballistics-title">
+      <div class="stage" id="scope">
+        <div class="stage__view stage__view--scope">
+          <div class="stage__bg"><img src="/assets/img/lands/desert-2-1280.webp" srcset="/assets/img/lands/desert-2-1280.webp 1280w, /assets/img/lands/desert-2-2560.webp 2560w" sizes="100vw" alt="The VIGIL's cockpit, looking out over the red desert." width="2560" height="1440" loading="lazy" decoding="async"></div>
+          <canvas data-main aria-hidden="true"></canvas>
+          <div class="glass" data-glass tabindex="0" role="application" aria-label="DART-20 sight. Arrow keys lay it; Enter fires."></div>
+          <div class="stage__head">
+            <p class="kicker"><b>06</b> Ballistics</p>
+            <h2 id="ballistics-title">Fire it</h2>
+            <p class="stage__do">Lay the sight high. Lead the wind. Fire.</p>
+          </div>
+        </div>
+        <div class="dock">
+          <dl class="hud hud--four">
+            <div><dt>Falls</dt><dd data-out="drop">83 ft low</dd></div>
+            <div><dt>Hold</dt><dd data-out="hold">1.95 ticks over</dd></div>
+            <div><dt>Wind</dt><dd data-out="drift">12 ft downwind</dd></div>
+            <div><dt>Hits</dt><dd data-out="tally">0 of 0</dd></div>
+          </dl>
+          <p class="verdict" aria-live="polite" data-out="verdict">Drag the picture to lay the sight, then fire.</p>
+          <div class="row">
+            <button class="chip" type="button" data-chip="scope-range" data-value="328">328 yd</button>
+            <button class="chip" type="button" data-chip="scope-range" data-value="500">500</button>
+            <button class="chip" type="button" data-chip="scope-range" data-value="800">800</button>
+            <button class="chip" type="button" data-chip="scope-range" data-value="1000" aria-pressed="true">1,000</button>
+          </div>
+          <div class="row">
+            <button class="chip" type="button" data-chip="scope-wind" data-value="0">Calm</button>
+            <button class="chip" type="button" data-chip="scope-wind" data-value="10" aria-pressed="true">10 mph</button>
+            <button class="chip" type="button" data-chip="scope-wind" data-value="20">20</button>
+            <button class="chip" type="button" data-chip="scope-wind" data-value="30">30</button>
+          </div>
+          <button class="act" type="button" data-fire>Fire the DART-20</button>
+        </div>
+      </div>
+      <div class="note">
+        <p class="note__say">The long gun's rounds obey gravity and the wind. The AI pilots fight under the same physics: when they miss, it is their aim, never different rules.</p>
+        <details class="sums">
+          <summary>The arithmetic</summary>
+          <p>DART-20 rounds leave the muzzle at 330 m/s and are zeroed at 300 metres, 328 yards. Past that they drop below your line of sight, so at range you hold over, walking the target up the scope's ladder: about two ticks at 1,000 yards. One tick on the ladder is 14.2 milliradians.</p>
           <div class="eq">
             <p><b>Drop</b> = ½ × g × R × (R − Z) ÷ v²</p>
             <p>R the range, Z the zero, v the muzzle velocity</p>
           </div>
-          <p>Crosswind pushes every round that spends time in the air. It turns a fast round by a fixed angle, so the miss grows with range, and a lobbed shell drifts for its whole flight. A headwind or a tailwind does nothing sideways.</p>
-          <p>The AI pilots fight under the same physics. Their rounds drop and drift like yours, and they hold over by the same numbers. When they miss, it is their aim, never different rules.</p>
+          <p>Crosswind turns a fast round by a fixed angle, so the miss grows with range. A headwind or a tailwind does nothing sideways.</p>
+          <p>In the game a DART-20 shot is settled the moment you fire. Here the round flies at its muzzle velocity so you can watch it; the drop and the drift are the same numbers. The sight is a diagram, not the game's reticle, and the side view stretches height so the arc can be seen.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- The wind on all eight: each weapon's drift at its farthest effective range (lobbed: over its flight), from WindBallistics. -->
+    <section class="wind" id="drift-table" aria-labelledby="drift-title">
+      <div class="wind__head">
+        <h3 id="drift-title">One wind, eight guns</h3>
+        <label class="hill hill--wind"><span>Crosswind <output data-out="wind">20 mph</output></span>
+          <input type="range" name="wind" min="0" max="40" step="1" value="20"></label>
+      </div>
+      <div class="wind__field" data-streaks style="--wind: 20">
+        <div class="gun" data-row style="--at: 0.48"><img src="/assets/img/physics/dart-20.webp" alt="" loading="lazy" width="320" height="240"><div class="gun__name"><b>DART-20</b><span>Ballistic, the lightest round: drifts the most, at 1,000 yd</span></div><div class="gun__run"><i></i></div><div class="gun__off" data-gun="DART-20">24 ft</div></div>
+        <div class="gun" data-row style="--at: 0.36"><img src="/assets/img/physics/breach-275.webp" alt="" loading="lazy" width="320" height="240"><div class="gun__name"><b>BREACH-275</b><span>Lobbed, 3 seconds in the air</span></div><div class="gun__run"><i></i></div><div class="gun__off" data-gun="BREACH-275">18 ft</div></div>
+        <div class="gun" data-row style="--at: 0.152"><img src="/assets/img/physics/thump-82.webp" alt="" loading="lazy" width="320" height="240"><div class="gun__name"><b>THUMP-82</b><span>Lobbed, 1.3 seconds in the air</span></div><div class="gun__run"><i></i></div><div class="gun__off" data-gun="THUMP-82">7.6 ft</div></div>
+        <div class="gun" data-row style="--at: 0.114"><img src="/assets/img/physics/volley-6.webp" alt="" loading="lazy" width="320" height="240"><div class="gun__name"><b>VOLLEY-6</b><span>Unguided rockets, at 425 yd</span></div><div class="gun__run"><i></i></div><div class="gun__off" data-gun="VOLLEY-6">5.7 ft</div></div>
+        <div class="gun" data-row style="--at: 0.048"><img src="/assets/img/physics/chain-30.webp" alt="" loading="lazy" width="320" height="240"><div class="gun__name"><b>CHAIN-30</b><span>Ballistic, at 150 yd</span></div><div class="gun__run"><i></i></div><div class="gun__off" data-gun="CHAIN-30">2.4 ft</div></div>
+        <div class="gun" data-row style="--at: 0.032"><img src="/assets/img/physics/slug-250.webp" alt="" loading="lazy" width="320" height="240"><div class="gun__name"><b>SLUG-250</b><span>Ballistic, the heaviest round, at 200 yd</span></div><div class="gun__run"><i></i></div><div class="gun__off" data-gun="SLUG-250">1.6 ft</div></div>
+        <div class="gun" data-row style="--at: 0"><img src="/assets/img/physics/spike-90.webp" alt="" loading="lazy" width="320" height="240"><div class="gun__name"><b>SPIKE-90</b><span>A railgun: no flight time for the wind to work on</span></div><div class="gun__run"><i></i></div><div class="gun__off" data-gun="SPIKE-90">None</div></div>
+        <div class="gun" data-row style="--at: 0"><img src="/assets/img/physics/pulse-50.webp" alt="" loading="lazy" width="320" height="240"><div class="gun__name"><b>PULSE-50</b><span>A beam</span></div><div class="gun__run"><i></i></div><div class="gun__off" data-gun="PULSE-50">None</div></div>
+      </div>
+      <p class="wind__foot">The mortars commit at the trigger. A THUMP-82 or BREACH-275 shell flies to the ground point you aimed at and does not track. Nothing warns the target but the shell itself.</p>
+    </section>
+
+    <!-- 09 Sound: AirAcoustics, heard. The delay is distance over the speed of sound; the dulling is ISO 9613-1. Sound only on a click. -->
+    <section class="bay" id="sound" style="--tone: 118, 56, 44" aria-labelledby="sound-title">
+      <div class="stage" id="sound-inst">
+        <div class="stage__view">
+          <div class="stage__bg stage__bg--lift"><img src="/assets/img/lands/badlands-3-1280.webp" srcset="/assets/img/lands/badlands-3-1280.webp 1280w, /assets/img/lands/badlands-3-2560.webp 2560w" sizes="100vw" alt="Lava fields glowing under storm cloud in the Volcanic Badlands, from the game." width="2560" height="1440" loading="lazy" decoding="async"></div>
+          <canvas data-main aria-hidden="true"></canvas>
+          <div class="stage__head">
+            <p class="kicker"><b>07</b> Sound</p>
+            <h2 id="sound-title">Hear it late</h2>
+            <p class="stage__do">Sound on. Drag it nearer or farther. Fire.</p>
+          </div>
         </div>
-        <figure class="inst" id="scope">
-          <figcaption class="inst__head"><p class="inst__title"><i aria-hidden="true"></i>DART-20 · the hold</p><p class="inst__sub">Where a round aimed dead centre lands. A diagram, not the game's reticle</p></figcaption>
-          <svg class="scope" viewBox="0 0 300 300" aria-hidden="true">
-            <defs><clipPath id="scope-clip"><circle cx="150" cy="150" r="138"/></clipPath></defs>
-            <circle class="scope__glass" cx="150" cy="150" r="138"/>
-            <g clip-path="url(#scope-clip)">
-              <line class="scope__hair" x1="12" y1="150" x2="288" y2="150"/><line class="scope__hair" x1="150" y1="12" x2="150" y2="288"/>
-              <g class="scope__ladder">
-                <line x1="138" y1="184" x2="162" y2="184"/><line x1="134" y1="218" x2="166" y2="218"/><line x1="130" y1="252" x2="170" y2="252"/><line x1="126" y1="286" x2="174" y2="286"/>
-                <text x="176" y="187">1</text><text x="180" y="221">2</text><text x="184" y="255">3</text>
-                <line x1="184" y1="146" x2="184" y2="154"/><line x1="218" y1="146" x2="218" y2="154"/><line x1="116" y1="146" x2="116" y2="154"/><line x1="82" y1="146" x2="82" y2="154"/>
-              </g>
-              <g class="scope__hit" transform="translate(9.6 66.3)"><circle cx="150" cy="150" r="9"/><circle cx="150" cy="150" r="3"/></g>
-            </g>
-            <circle class="scope__rim" cx="150" cy="150" r="138"/>
-          </svg>
-          <label class="slider"><span>Range <output data-out="range">1,000 yd</output></span>
-            <input type="range" name="range" min="100" max="1000" step="10" value="1000"></label>
-          <label class="slider"><span>Crosswind from the left <output data-out="wind">10 mph</output></span>
-            <input type="range" name="wind" min="0" max="30" step="1" value="10"></label>
-          <dl class="readouts readouts--three">
-            <div><dt>Drop</dt><dd><b data-out="drop">83 ft low</b></dd></div>
-            <div><dt>Hold</dt><dd><b data-out="hold">1.95 ticks over</b></dd></div>
-            <div><dt>Wind</dt><dd><b data-out="drift">12 ft downwind</b></dd></div>
+        <div class="dock">
+          <dl class="hud hud--three">
+            <div><dt>Distance</dt><dd data-out="dist">600 m · 656 yd</dd></div>
+            <div><dt>Heard after</dt><dd data-out="delay">1.75 s</dd></div>
+            <div><dt>On the clock</dt><dd data-out="count">0.00 s</dd></div>
+            <div><dt>Air</dt><dd><span data-out="temp">20 °C · 68 °F</span></dd></div>
+            <div><dt>Humidity</dt><dd data-out="hum">70%</dd></div>
+            <div><dt>Sound speed</dt><dd data-out="c">343 m/s</dd></div>
           </dl>
-          <p class="inst__note">One tick on the ladder is 14.2 milliradians.</p>
-        </figure>
-      </section>
+          <div class="band" data-kept style="--cut: 0.3903">
+            <span>The air takes everything <b data-out="cut">Above 2.2 kHz</b></span>
+            <i aria-hidden="true"></i>
+          </div>
+          <div class="row">
+            <button class="chip" type="button" data-chip="dist" data-value="50">50 m</button>
+            <button class="chip" type="button" data-chip="dist" data-value="300">300</button>
+            <button class="chip" type="button" data-chip="dist" data-value="600" aria-pressed="true">600</button>
+            <button class="chip" type="button" data-chip="dist" data-value="2000">2,000</button>
+          </div>
+          <div class="row">
+            <button class="chip" type="button" data-chip="air" data-value="45,12">Hot, dry desert</button>
+            <button class="chip" type="button" data-chip="air" data-value="20,70" aria-pressed="true">Mild</button>
+            <button class="chip" type="button" data-chip="air" data-value="2,95">Cold, wet storm</button>
+          </div>
+          <button class="act" type="button" data-fire>Fire, and listen</button>
+        </div>
+      </div>
+      <div class="note">
+        <p class="note__say">Light is there at once. Sound crosses the air at about 343 m/s, and the air soaks up the high notes on the way, so a far shot arrives as a dull thud rather than a crack. A hot dry desert and a cold wet storm sound different at range, because they are.</p>
+        <details class="sums">
+          <summary>The arithmetic</summary>
+          <div class="eq">
+            <p><b>Speed of sound</b> = 331.3 × √(1 + T ÷ 273.15) m/s</p>
+            <p><b>What the air takes</b> ISO 9613-1, from frequency, temperature and humidity</p>
+          </div>
+          <p>The report here is made in your browser to show the delay and the dulling; it is not the game's own recording.</p>
+        </details>
+      </div>
+    </section>
 
-      <!-- The wind table: each weapon's drift at its farthest effective range (lobbed: over its flight), from WindBallistics. -->
-      <section class="drift" id="drift-table" aria-labelledby="drift-title">
-        <header class="drift__head">
-          <h3 id="drift-title">What the wind does to each weapon</h3>
-          <label class="slider slider--inline"><span>Crosswind <output data-out="wind">20 mph</output></span>
-            <input type="range" name="wind" min="0" max="40" step="1" value="20"></label>
-        </header>
-        <table class="drift__table">
-          <thead><tr><th scope="col">Weapon</th><th scope="col">How it flies</th><th scope="col">Off target</th></tr></thead>
-          <tbody>
-            <tr><th scope="row">DART-20</th><td>Ballistic, the lightest round: drifts the most, at 1,000 yd</td><td data-gun="DART-20">24 ft</td></tr>
-            <tr><th scope="row">BREACH-275</th><td>Lobbed, 3 seconds in the air</td><td data-gun="BREACH-275">18 ft</td></tr>
-            <tr><th scope="row">THUMP-82</th><td>Lobbed, 1.3 seconds in the air</td><td data-gun="THUMP-82">7.6 ft</td></tr>
-            <tr><th scope="row">VOLLEY-6</th><td>Unguided rockets, at 425 yd</td><td data-gun="VOLLEY-6">5.7 ft</td></tr>
-            <tr><th scope="row">CHAIN-30</th><td>Ballistic, at 150 yd</td><td data-gun="CHAIN-30">2.4 ft</td></tr>
-            <tr><th scope="row">SLUG-250</th><td>Ballistic, the heaviest round, at 200 yd</td><td data-gun="SLUG-250">1.6 ft</td></tr>
-            <tr><th scope="row">SPIKE-90</th><td>A railgun: no flight time for the wind to work on</td><td data-gun="SPIKE-90">None</td></tr>
-            <tr><th scope="row">PULSE-50</th><td>A beam</td><td data-gun="PULSE-50">None</td></tr>
-          </tbody>
-        </table>
-        <p class="drift__foot">The mortars commit at the trigger. A THUMP-82 or BREACH-275 shell flies to the ground point you aimed at and does not track. Nothing warns the target but the shell itself.</p>
-      </section>
+    <!-- 01 The world: the setting's physical constants, and its day against the war's clock. -->
+    <section class="bay" id="world" style="--tone: 56, 76, 130" aria-labelledby="world-title">
+      <div class="stage">
+        <div class="stage__view">
+          <div class="stage__bg"><img src="/assets/img/lands/desert-1-1280.webp" srcset="/assets/img/lands/desert-1-1280.webp 1280w, /assets/img/lands/desert-1-2560.webp 2560w" sizes="100vw" alt="A VIGIL stands in red dunes under a clear sky, from the game." width="2560" height="1440" loading="lazy" decoding="async"></div>
+          <canvas data-main aria-hidden="true"></canvas>
+          <div class="stage__head">
+            <p class="kicker"><b>08</b> The world</p>
+            <h2 id="world-title">Run a day</h2>
+            <p class="stage__do">Drag the sky sideways.</p>
+          </div>
+        </div>
+        <div class="dock">
+          <dl class="hud">
+            <div><dt>Day</dt><dd data-out="day">1</dd></div>
+            <div><dt>The Reach's clock</dt><dd data-out="local">9.5 of 25.4 h</dd></div>
+            <div><dt>The war's clock</dt><dd data-out="war">15:30</dd></div>
+            <div><dt>Noon, on the war's clock</dt><dd data-out="noon">18:42</dd></div>
+          </dl>
+          <div class="clocks" aria-hidden="true">
+            <div class="clocks__row"><span>The Reach</span><i class="clocks__day" data-local-at style="--at: .374"></i></div>
+            <div class="clocks__row"><span>The war</span><i class="clocks__war" data-war-at style="--at: .646"></i></div>
+          </div>
+          <button class="act act--small" type="button" data-fast>Run 17 days, until they meet again</button>
+        </div>
+      </div>
+      <div class="note">
+        <p class="note__say">The day is 25.4 hours long. The war keeps Earth's 24-hour clock anyway, on a world that does not keep it, and nobody aboard is going to fix that.</p>
+        <details class="sums">
+          <summary>The survey</summary>
+          <p>The Reach orbits Alpha Centauri A, a star a little heavier than the Sun, from a little farther out than Earth sits from ours. Heights are in feet above MSL: Mean Standard Level, the surveyed surface on which the standard atmosphere is defined. Pressure keeps rising below it, so a basin can sit below zero.</p>
+          <dl class="figs">
+            <div><dt>Star</dt><dd>Alpha Centauri A <span>about 1.1 times the Sun's mass</span></dd></div>
+            <div><dt>Orbit</dt><dd>1.24 AU <span>1.24 times Earth's distance from the Sun</span></dd></div>
+            <div><dt>Year</dt><dd>481 Earth days <span>455 of its own days</span></dd></div>
+            <div><dt>Axial tilt</dt><dd>21° <span>Earth's is 23.4°</span></dd></div>
+            <div><dt>Gravity</dt><dd>9.81 m/s² <span>1 g, Earth's own</span></dd></div>
+            <div><dt>At MSL</dt><dd>29.92 inHg · 15 °C <span>1,013.2 hPa, the standard day</span></dd></div>
+            <div><dt>With height</dt><dd>−1.98 °C per 1,000 ft <span>up to 36,089 ft</span></dd></div>
+          </dl>
+          <p>The light here is drawn on a picture from the game, at the equinox. The game's sky does not run this clock in a battle.</p>
+          <a class="chap__go" href="/thereach/#world">What the air is made of</a>
+        </details>
+      </div>
+    </section>
 
-      <!-- 08 Weather: FrontPressure's moving pressure systems on the war map. -->
-      <section class="chap" id="weather" aria-labelledby="weather-title">
-        <div class="chap__text">
-          <p class="chap__kicker"><b>08</b> Weather</p>
-          <h2 id="weather-title">Weather that moves</h2>
-          <p>Weather on the war map is not rolled grid by grid. Four pressure systems at a time cross the map from west to east, each about 240 km across, so one storm lies over five or six grids at once and takes five days to cross. The map is about 650 by 500 km, its grids 50 km apart.</p>
+    <!-- 08 Weather: FrontPressure's moving pressure systems on the war map, run from its own formula with one season's seed. -->
+    <section class="bay" id="weather" style="--tone: 48, 70, 118" aria-labelledby="weather-title">
+      <div class="stage">
+        <div class="stage__view">
+          <div class="stage__bg"><img src="/assets/front/plate.webp" alt="The war map of The Reach, from the Front's own table." width="1600" height="873" loading="lazy" decoding="async"></div>
+          <canvas data-field aria-hidden="true"></canvas>
+          <canvas data-main aria-hidden="true"></canvas>
+          <div class="stage__head">
+            <p class="kicker"><b>09</b> Weather</p>
+            <h2 id="weather-title">Watch a storm cross</h2>
+            <p class="stage__do">Drag sideways to run time. Tap to read the air.</p>
+          </div>
+        </div>
+        <div class="dock">
+          <dl class="hud">
+            <div><dt>Altimeter</dt><dd data-out="altimeter">29.92 inHg</dd></div>
+            <div><dt>Wind here</dt><dd data-out="wind">6 mph from 270°</dd></div>
+            <div><dt>Cooled by the low</dt><dd data-out="cool">None</dd></div>
+            <div><dt>The clock</dt><dd data-out="lived">Day 125.0</dd></div>
+          </dl>
+        </div>
+      </div>
+      <div class="note">
+        <p class="note__say">Weather on the war map is not rolled grid by grid. One storm lies over five or six grids at once and takes days to cross, and every pilot sees the same sky, because the systems are worked out from the clock every machine shares.</p>
+        <details class="sums">
+          <summary>The arithmetic</summary>
+          <p>Four pressure systems at a time cross the map from west to east, each about 240 km across, and each takes five days to cross. The map is about 650 by 500 km, its grids 50 km apart.</p>
           <ul class="points">
             <li><b>Pressure.</b> A low drops the altimeter by 0.30 to 0.90 inHg. A high raises it by 0.15 to 0.45.</li>
             <li><b>Wind.</b> It turns counter-clockwise round a low and clockwise round a high, strongest on the slope between, up to 26 mph on top of a steady 6 mph westerly.</li>
             <li><b>Temperature.</b> It follows the season and the hour. A passing low cools the air by up to 14 °F and damps the swing between day and night, the way cloud does.</li>
             <li><b>Rain, snow, fog.</b> Rain or snow is the temperature's call. Fog forms in calm air in the early morning and burns off by nine.</li>
-            <li><b>One sky.</b> The systems are worked out from the clock every machine shares, so every pilot sees the same weather, and a battle on the Front flies its grid's.</li>
           </ul>
-        </div>
-        <figure class="inst inst--card">
-          <figcaption class="inst__head"><p class="inst__title"><i aria-hidden="true"></i>The war map's air</p><p class="inst__sub">A low and a high, drifting east</p></figcaption>
-          <svg class="wx" viewBox="0 0 520 320" role="img" aria-label="A low-pressure system with winds turning counter-clockwise round it and a high with winds turning clockwise, both drifting from west to east across the map.">
-            <defs>
-              <marker id="wx-head" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="wx__head" d="M0,0 L10,5 L0,10 z"/></marker>
-              <marker id="wx-head-low" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="wx__head wx__head--low" d="M0,0 L10,5 L0,10 z"/></marker>
-            </defs>
-            <rect class="wx__map" x="8" y="8" width="504" height="304" rx="2"/>
-            <g class="wx__grid"><line x1="8" y1="84" x2="512" y2="84"/><line x1="8" y1="160" x2="512" y2="160"/><line x1="8" y1="236" x2="512" y2="236"/><line x1="134" y1="8" x2="134" y2="312"/><line x1="260" y1="8" x2="260" y2="312"/><line x1="386" y1="8" x2="386" y2="312"/></g>
-            <circle class="wx__reach wx__reach--low" cx="176" cy="164" r="104"/>
-            <circle class="wx__reach" cx="392" cy="122" r="84"/>
-            <g class="wx__flow wx__flow--low" marker-end="url(#wx-head-low)">
-              <path d="M235.2,185.5 A63,63 0 0 0 216.5,115.7"/>
-              <path d="M165.1,102.0 A63,63 0 0 0 114.0,153.1"/>
-              <path d="M127.7,204.5 A63,63 0 0 0 197.5,223.2"/>
-            </g>
-            <g class="wx__flow" marker-end="url(#wx-head)">
-              <path d="M417.0,78.7 A50,50 0 0 1 441.2,130.7"/>
-              <path d="M342.0,122.0 A50,50 0 0 1 374.9,75.0"/>
-              <path d="M417.0,165.3 A50,50 0 0 1 359.9,160.3"/>
-            </g>
-            <text class="wx__sym wx__sym--low" x="176" y="176">L</text>
-            <text class="wx__sym" x="392" y="134">H</text>
-            <text class="wx__label" x="176" y="200">29.32 inHg</text>
-            <text class="wx__label" x="392" y="158">30.22 inHg</text>
-            <path class="wx__drift" d="M150,292 L370,292" marker-end="url(#wx-head)"/>
-            <text class="wx__label wx__label--drift" x="260" y="284">Drifting west to east · 5 days to cross</text>
-            <text class="wx__compass" x="22" y="297">W</text><text class="wx__compass" x="498" y="297">E</text>
-          </svg>
-        </figure>
-      </section>
+          <p>The motes are drawn far faster than the wind, or a storm would not seem to move at this scale. The systems shown are one season's by the game's formula, not today's.</p>
+        </details>
+      </div>
+    </section>
 
-      <!-- 09 Sound: AirAcoustics, run live. The delay is distance over the speed of sound; the dulling is ISO 9613-1. -->
-      <section class="chap" id="sound" aria-labelledby="sound-title">
-        <div class="chap__text">
-          <p class="chap__kicker"><b>09</b> Sound</p>
-          <h2 id="sound-title">Seen first, heard later</h2>
-          <p>Sound crosses the air at about 343 m/s, faster when it is warm and slower when it is cold. So a gun 600 metres away is seen first and heard almost two seconds later.</p>
-          <p>The air also soaks up the high notes over distance, more in dry or cold air, so a far shot arrives as a dull thud rather than a crack. A hot dry desert and a cold wet storm sound different at range, because they are.</p>
-          <div class="eq">
-            <p><b>Speed of sound</b> = 331.3 × √(1 + T ÷ 273.15) m/s</p>
-            <p><b>What the air takes</b> ISO 9613-1, from frequency, temperature and humidity</p>
+    <!-- 10 Thin air: FrontPressure works out every grid's pressure and density altitude now; nothing in the cockpit reads
+         them yet, and the page says so. The basin is an example: −1,002 ft at 29.92 gives −3,040 at 0 °C, +2,960 at 50 °C. -->
+    <section class="bay" id="thin-air" style="--tone: 88, 112, 140" aria-labelledby="thin-title">
+      <div class="stage stage--short">
+        <div class="stage__view">
+          <div class="stage__bg"><img src="/assets/img/lands/snow-1-1280.webp" srcset="/assets/img/lands/snow-1-1280.webp 1280w, /assets/img/lands/snow-1-2560.webp 2560w" sizes="100vw" alt="A VIGIL stands on a snowfield below white peaks, from the game." width="2560" height="1440" loading="lazy" decoding="async"></div>
+          <canvas data-main aria-hidden="true"></canvas>
+          <div class="stage__head">
+            <p class="kicker"><b>10</b> Thin air <span class="soon">Modelled now · coming to the cockpit</span></p>
+            <h2 id="thin-title">Go high</h2>
+            <p class="stage__do">Move the pin: higher, hotter, thinner.</p>
           </div>
         </div>
-        <figure class="inst" id="sound-inst" style="--cut: 0.3903">
-          <figcaption class="inst__head"><p class="inst__title"><i aria-hidden="true"></i>A shot at range</p><p class="inst__sub">What reaches your cockpit, and when</p></figcaption>
-          <label class="slider"><span>Distance <output data-out="dist">600 m · 656 yd</output></span>
-            <input type="range" name="dist" min="50" max="2000" step="10" value="600"></label>
-          <label class="slider"><span>Air temperature <output data-out="temp">20 °C · 68 °F</output></span>
-            <input type="range" name="temp" min="-20" max="50" step="1" value="20"></label>
-          <label class="slider"><span>Humidity <output data-out="hum">70%</output></span>
-            <input type="range" name="hum" min="10" max="100" step="1" value="70"></label>
-          <dl class="readouts readouts--three">
-            <div><dt>Sound speed</dt><dd><b data-out="c">343 m/s</b></dd></div>
-            <div><dt>Heard after</dt><dd><b data-out="delay">1.75 s</b></dd></div>
-            <div><dt>Lost</dt><dd><b data-out="cut">Above 2.2 kHz</b></dd></div>
+        <div class="dock">
+          <div class="pad" data-pad tabindex="0" role="application" aria-label="Elevation and temperature. Arrow keys move the pin.">
+            <span class="pad__axis pad__axis--y">Higher</span><span class="pad__axis pad__axis--x">Hotter</span>
+            <i class="pad__puck" data-puck style="left: 100%; top: 81.3%"></i>
+          </div>
+          <dl class="hud hud--three">
+            <div><dt>Standing at</dt><dd data-out="elev">−1,002 ft</dd></div>
+            <div><dt>Air</dt><dd data-out="temp">50 °C</dd></div>
+            <div><dt>Flying at</dt><dd data-out="da">+2,960 ft</dd></div>
           </dl>
-          <div class="band" aria-hidden="true">
-            <i class="band__kept"></i>
-            <p class="band__axis"><span style="--at: 0">500 Hz</span><span style="--at: 0.1832">1 kHz</span><span style="--at: 0.4252">2.5 kHz</span><span style="--at: 0.6083">5 kHz</span><span style="--at: 0.7915">10 kHz</span><span style="--at: 1">22 kHz</span></p>
+          <p class="verdict" aria-live="polite" data-out="say">This air behaves 3,962 ft higher than you stand.</p>
+          <div class="row">
+            <button class="chip" type="button" data-chip="place" data-value="-1002,0">Basin, winter</button>
+            <button class="chip" type="button" data-chip="place" data-value="-1002,50" aria-pressed="true">Basin, summer</button>
+            <button class="chip" type="button" data-chip="place" data-value="9000,30">High, hot</button>
           </div>
-        </figure>
-      </section>
-
-      <!-- 10 Thin air: FrontPressure works out every grid's pressure and density altitude now; nothing in the cockpit reads
-           them yet, and the page says so. The basin is an example: −1,002 ft at 29.92 gives −3,040 at 0 °C, +2,960 at 50 °C. -->
-      <section class="chap chap--soon" id="thin-air" aria-labelledby="thin-title">
-        <div class="chap__text">
-          <p class="chap__kicker"><b>10</b> Thin air <span class="soon">Modelled now · coming to the cockpit</span></p>
-          <h2 id="thin-title">Hot and high</h2>
-          <p>Every grid on the war map already knows its air: its pressure, its temperature, and from those its density altitude, worked out the way pilots work it out. Density altitude is how high the air behaves, whatever height you are standing at.</p>
-          <p>When it reaches the cockpit, thin air will cut the jets' thrust, make cooling worse and lower the weight you can carry. The machine that is a rocket on a cold morning low in a valley comes up short on a hot afternoon up high, so the best loadout depends on where you are dropping this week.</p>
         </div>
-        <figure class="inst inst--card">
-          <figcaption class="inst__head"><p class="inst__title"><i aria-hidden="true"></i>A desert basin</p><p class="inst__sub">1,000 ft below MSL, on a standard-pressure day</p></figcaption>
+      </div>
+      <div class="note">
+        <p class="note__say">Every grid on the war map already knows its air. When that reaches the cockpit, thin air will cut the jets' thrust, make cooling worse and lower the weight you can carry, so the best loadout depends on where you are dropping this week.</p>
+        <details class="sums">
+          <summary>The arithmetic</summary>
           <div class="eq eq--tight">
             <p><b>Pressure altitude</b> = elevation + (29.92 − altimeter) × 1,000 ft</p>
             <p><b>Density altitude</b> = pressure altitude + 120 × (air temperature − standard) ft</p>
           </div>
           <dl class="figs">
-            <div><dt>Winter, 0 °C</dt><dd>−3,040 ft <span>thick air: the basin pays</span></dd></div>
-            <div><dt>Summer, 50 °C</dt><dd>+2,960 ft <span>standing below MSL, flying more than half a mile up</span></dd></div>
+            <div><dt>A desert basin, winter, 0 °C</dt><dd>−3,040 ft <span>1,000 ft below MSL: thick air, and the basin pays</span></dd></div>
+            <div><dt>The same basin, summer, 50 °C</dt><dd>+2,960 ft <span>standing below MSL, flying more than half a mile up</span></dd></div>
           </dl>
-        </figure>
-      </section>
+          <p>Worked on a standard-pressure day. The motes are a picture of the idea, not a measured density.</p>
+        </details>
+      </div>
+    </section>
 
-      <!-- 11 The crossing: the Archive's voyage. Earth-frame figures, as everywhere on the site. -->
-      <section class="chap chap--wide" id="crossing" aria-labelledby="crossing-title">
-        <div class="chap__text">
-          <p class="chap__kicker"><b>11</b> The crossing</p>
-          <h2 id="crossing-title">Thirty-two years at 0.130 c</h2>
-          <p>The Archive left Earth on a burn at one gravity for 46 days, which took it to 0.130 of the speed of light: about 39,000 km a second, Earth to the Moon in ten seconds. Then its engines went quiet. The coast lasts 32 and a half years, and a second burn at one gravity, 46 days again, brings it into orbit over The Reach.</p>
+    <!-- 11 The crossing: the Archive's voyage. Earth-frame figures, as everywhere on the site. -->
+    <section class="bay" id="crossing" style="--tone: 120, 84, 44" aria-labelledby="crossing-title">
+      <div class="stage">
+        <div class="stage__top">
+        <div class="stage__view stage__view--crossing">
+          <div class="stage__bg"><img src="/assets/img/story-crossing-1280.webp" srcset="/assets/img/story-crossing-1280.webp 1280w, /assets/img/story-crossing-2560.webp 2560w" sizes="100vw" alt="A child and a parent at a porthole aboard the Archive, the stars beyond." width="2560" height="1440" loading="lazy" decoding="async"></div>
+          <div class="stage__head">
+            <p class="kicker"><b>11</b> The crossing</p>
+            <h2 id="crossing-title">Thirty-two years at 0.130 c</h2>
+            <p class="stage__do">Slide the ship. Then race it to the Moon.</p>
+          </div>
+        </div>
+        <div class="dock">
+          <dl class="hud">
+            <div><dt>Now</dt><dd data-out="phase">Coast, engines quiet</dd></div>
+            <div><dt>Speed</dt><dd><span data-out="speed">0.130 c</span> <small data-out="kms">38,973 km/s</small></dd></div>
+            <div><dt>From Earth</dt><dd data-out="years">16.4 years out</dd></div>
+            <div><dt>Clocks aboard run behind by</dt><dd data-out="behind">50 days</dd></div>
+          </dl>
+          <label class="voyage-track"><span class="sr">Where the ship is on the voyage</span>
+            <input type="range" name="voyage" min="0" max="1000" step="1" value="500"></label>
+          <p class="trip__ends" aria-hidden="true"><span>Earth</span><span>Coast</span><span>Orbit over The Reach</span></p>
+        </div>
+        </div>
+        <div class="dash">
+          <canvas data-main aria-hidden="true"></canvas>
+          <div class="dash__words">
+            <button class="act act--small" type="button" data-go>Earth to the Moon, now</button>
+            <p><b data-out="dash">9.9 s</b> <span class="dash__there">There. You just crossed 384,400 km at cruise.</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="note">
+        <p class="note__say">The Archive burned at one gravity for 46 days, then its engines went quiet. The coast lasts 32 and a half years, and a second burn, 46 days again, brings it into orbit over The Reach.</p>
+        <details class="sums">
+          <summary>The arithmetic</summary>
           <ul class="points">
             <li><b>Why 46 days.</b> At one gravity, reaching 0.130 c takes 46.3 days of burn by relativity's own arithmetic.</li>
             <li><b>Slower clocks.</b> At that speed time aboard runs 0.85% slower than on Earth. Every date the Archive keeps is Earth's.</li>
@@ -482,26 +662,18 @@
             <p><b>Burn time</b> = (c ÷ g) × artanh(v ÷ c)</p>
             <p><b>Relative speed</b> = (u − v) ÷ (1 − uv ÷ c²)</p>
           </div>
-        </div>
-        <figure class="inst inst--wide">
-          <figcaption class="inst__head"><p class="inst__title"><i aria-hidden="true"></i>Earth to orbit</p><p class="inst__sub">The burns are drawn wider than they are: together they are under 1% of the trip</p></figcaption>
-          <div class="trip" role="img" aria-label="The voyage: a 46-day burn at one gravity, a coast of 32 and a half years at 0.130 of light speed, and a 46-day braking burn into orbit, across 4.25 light-years.">
-            <div class="trip__seg trip__seg--burn"><span>1 g · 46 days</span></div>
-            <div class="trip__seg trip__seg--coast"><span>Coast at 0.130 c · 32.5 years</span></div>
-            <div class="trip__seg trip__seg--burn"><span>1 g · 46 days</span></div>
-          </div>
-          <p class="trip__ends" aria-hidden="true"><span>Earth</span><span>4.25 light-years</span><span>Orbit over The Reach</span></p>
-        </figure>
-      </section>
-
-      <div class="phys__end">
-        <p class="phys__end-line">The numbers are on the page. The weight is in the cockpit.</p>
-        <div class="phys__end-buttons">
-          <a class="btn btn--large" href="/hangar/">Open the Hangar</a>
-          <a class="btn btn--large btn--ghost" href="/armory/">The Armory</a>
-        </div>
+          <p>The track draws each burn far wider than it is: together they are under 1% of the trip.</p>
+        </details>
       </div>
-      <p class="phys__source">Every game figure here is the one the game runs with. <span class="nw">Pre-alpha</span>: they move as the game is tuned.</p>
+    </section>
+
+    <div class="end">
+      <p class="end__line">The numbers are on the page. The weight is in the cockpit.</p>
+      <div class="end__buttons">
+        <a class="btn btn--large" href="/hangar/">Open the Hangar</a>
+        <a class="btn btn--large btn--ghost" href="/armory/">The Armory</a>
+      </div>
+      <p class="end__source">Every game figure here is the one the game runs with. <span class="nw">Pre-alpha</span>: they move as the game is tuned. The pictures of the land are from the game; the porthole is not.</p>
     </div>
   </main>
 
