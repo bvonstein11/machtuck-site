@@ -16,6 +16,7 @@ const GAME = {
   "fadeFraction": 0.2668,
   "jetHeatPerSecond": 7,
   "jetTankSeconds": 30,
+  "jetGroundRefill": 0.4,
   "flareStartM": 5,
   "flareTouchdown": 4,
   "flareDecel": 210,
@@ -141,6 +142,7 @@ const Physics = (() => {
   function flightStep(f, dt, input) {
     const drain = f.w.drain, canThrust = () => f.fuel > 0 && !f.latched, wasAir = f.air;
     if (f.legs <= 0) input = false;   // both legs gone: it can turn and shoot, and it will not fly again this life
+    if (f.legs > 0 && !f.air && !input) f.fuel = Math.min(GAME.jetTankSeconds, f.fuel + GAME.jetGroundRefill * dt);   // GroundRefill: on the ground and not thrusting, at any weight; a legless mech does not refill
     f.spent = input && (f.spent || (!canThrust() && wasAir));
     const commanded = input && !f.spent;
     f.thrust = false; f.flaring = false; f.landed = null;
