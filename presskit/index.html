@@ -4,13 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Press kit · The Reach: Unknown</title>
-  <meta name="description" content="Fact sheet, descriptions, art and logos for The Reach: Unknown, a persistent first-person mech war from Mach Tuck Games.">
+  <meta name="description" content="Fact sheet, descriptions, features, key art and logos for The Reach: Unknown, a persistent first-person mech war from Mach Tuck Games. Creators: stream, record and monetise freely.">
   <link rel="canonical" href="https://machtuck.com/presskit/">
   <meta name="theme-color" content="#07090d">
-  <link rel="icon" href="/favicon.svg?v=bbf04369" type="image/svg+xml">
-  <link rel="icon" href="/favicon-32.png?v=bbf04369" sizes="32x32" type="image/png">
-  <link rel="stylesheet" href="/assets/site.css?v=bbf04369">
-  <script src="/assets/prealpha.js?v=bbf04369" defer></script>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Mach Tuck Games">
+  <meta property="og:title" content="Press kit · The Reach: Unknown">
+  <meta property="og:description" content="Fact sheet, descriptions, key art and logos. Creators: stream, record and monetise freely.">
+  <meta property="og:url" content="https://machtuck.com/presskit/">
+  <meta property="og:image" content="https://machtuck.com/assets/img/share-card.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.svg?v=fca0b5de" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png?v=fca0b5de" sizes="32x32" type="image/png">
+  <link rel="stylesheet" href="/assets/site.css?v=fca0b5de">
+  <script src="/assets/site.js?v=fca0b5de" defer></script>
+  <script src="/assets/prealpha.js?v=fca0b5de" defer></script>
+  <script src="/presskit/presskit.js?v=fca0b5de" defer></script>
 </head>
 <body class="doc-page">
   <header class="doc-bar">
@@ -21,65 +30,145 @@
     <a class="doc-bar__back" href="/thereach/">Back to The Reach</a>
   </header>
 
-  <!-- The press kit: what a journalist or creator needs on one page. Every word comes from the game's own page, so the
-       two never disagree; the pictures are the site's own files. -->
+  <!-- The press kit: what a journalist or a creator needs on one page. The sections marked data-sheet are also the text of
+       the zip's README.txt: Tools/website/build_press_kit.py reads them from here, so the two cannot disagree. That script
+       also makes every file in presskit/files/ and the zip. -->
   <main class="doc wrap presskit">
     <p class="eyebrow">Press kit</p>
     <h1>The Reach: Unknown</h1>
-    <p class="doc__date">Last updated 3 November 2026</p>
+    <p class="doc__date">Last updated 7 November 2026</p>
 
-    <p class="lead">Everything you need to write about The Reach: Unknown. Use any of it, and ask us for anything that is not here.</p>
+    <p class="lead">A persistent mech war, fought from the cockpit. Everything you need to write about it or make videos of it is here. Use any of it, and ask us for anything that is not.</p>
 
-    <h2>Fact sheet</h2>
-    <dl class="presskit__facts">
-      <div><dt>Developer</dt><dd>Mach Tuck Games LLC, an independent studio</dd></div>
-      <div><dt>Game</dt><dd>The Reach: Unknown</dd></div>
-      <div><dt>Genre</dt><dd>Persistent, first-person mech war, online</dd></div>
-      <div><dt>Platforms</dt><dd>Windows and Mac on Steam, in closed beta first; iOS and Android to follow</dd></div>
-      <div><dt>Price</dt><dd>To be announced</dd></div>
-      <div><dt>Website</dt><dd><a href="/thereach/">machtuck.com</a></dd></div>
-      <div><dt>Community</dt><dd><a href="/thereach/#join">Discord, joined from the game's page</a></dd></div>
-      <div><dt>Press contact</dt><dd><a href="mailto:support@machtuck.com">support@machtuck.com</a></dd></div>
-    </dl>
+    <figure class="presskit__hero">
+      <img src="/assets/img/share-card.jpg" alt="Key art: the VX-21 VIGIL on a ridge at night beside the title" width="1200" height="630">
+    </figure>
 
-    <h2>In one line</h2>
-    <p>A persistent mech war: join one of five factions or fly alone as a Torrath mercenary, and every match you fight moves a front all pilots share.</p>
+    <p class="presskit__actions">
+      <a class="btn btn--large" href="/presskit/the-reach-unknown-press-kit.zip" download>Download everything<span class="presskit__size" data-zip-size>zip, 13 MB</span></a>
+      <a class="btn btn--large btn--ghost" href="#creators">For creators</a>
+    </p>
 
-    <h2>Short description</h2>
-    <p>The Reach: Unknown is a persistent, first-person mech war. Pilots join one of five factions, or fly alone as a Torrath mercenary, and fight for ground on The Reach, the first home humanity has found since Earth failed. Every win and every loss shifts a front line that all pilots share, and clans of up to fifty pilots hold what they take.</p>
+    <nav class="presskit__index" aria-label="On this page">
+      <a href="#facts">Fact sheet</a>
+      <a href="#descriptions">Descriptions</a>
+      <a href="#features">Features</a>
+      <a href="#media">Trailer and screenshots</a>
+      <a href="#art">Art</a>
+      <a href="#logos">Logos</a>
+      <a href="#creators">Creators</a>
+      <a href="#contact">Contact</a>
+    </nav>
 
-    <h2>The setting</h2>
-    <p>Earth was failing. An evacuation sent a probe to the nearest star, then a small crew to go ahead, then the Archive: a moving city of about twenty thousand people on a crossing of 32.63 years. The crew sent ahead landed, built a settlement and called home. Then the signal stopped. Five factions were born aboard during the crossing, each with its own answer to why Earth failed, and each means to claim the new world.</p>
+    <section id="facts" data-sheet>
+      <h2>Fact sheet</h2>
+      <dl class="presskit__facts">
+        <div><dt>Studio</dt><dd>Mach Tuck Games LLC, an independent studio</dd></div>
+        <div><dt>Game</dt><dd>The Reach: Unknown</dd></div>
+        <div><dt>Genre</dt><dd>Persistent, first-person mech war, online</dd></div>
+        <div><dt>Status</dt><dd>In development</dd></div>
+        <div><dt>Platforms</dt><dd>Windows and Mac on Steam, in closed beta first; iOS and Android to follow</dd></div>
+        <div><dt>Price</dt><dd>Closed beta: free, through Steam Playtest. Open beta: $19.99 on Steam, in Early Access. Phone pricing later.</dd></div>
+        <div><dt>Release date</dt><dd>To be announced</dd></div>
+        <div><dt>Website</dt><dd><a href="/thereach/">machtuck.com/thereach</a></dd></div>
+        <div><dt>Press contact</dt><dd><a href="mailto:support@machtuck.com">support@machtuck.com</a></dd></div>
+      </dl>
+    </section>
 
-    <h2>Key features</h2>
-    <ul class="presskit__list">
-      <li><b>Fly for a clan.</b> Up to fifty pilots under one banner, who remember who showed up.</li>
-      <li><b>Move the front.</b> Every win and every loss shifts it on a map all pilots share.</li>
-      <li><b>Honor counts.</b> How you fight counts, not only whether you win, and your rank carries from season to season.</li>
-      <li><b>Feel the weight.</b> Every fight is first person, from a full cockpit. Mechs have mass, and every loadout has a price.</li>
-    </ul>
+    <section id="descriptions" data-sheet>
+      <h2>Descriptions</h2>
 
-    <h2>Art</h2>
-    <p>Select a picture to open the full file. Larger originals are available on request. Some of these pictures were made with AI tools, as our <a href="/art/">Art &amp; AI</a> page explains.</p>
-    <ul class="presskit__art">
-      <li class="is-wide"><a href="/assets/img/share-card.jpg"><img src="/assets/img/share-card.jpg" alt="Key art: the VX-21 VIGIL on a ridge at night beside the title" width="1200" height="630" loading="lazy"></a><p>Key art · 1200 × 630</p></li>
-      <li class="is-wide"><a href="/assets/img/archive-full.webp"><img src="/assets/img/archive-1280.webp" alt="The Archive between the stars" width="1280" height="549" loading="lazy"></a><p>The Archive · 1915 × 821</p></li>
-      <li><a href="/assets/img/reach-map-2560.webp"><img src="/assets/img/reach-map-1280.webp" alt="An aerial view of The Reach" width="1280" height="720" loading="lazy"></a><p>The Reach · 2560 × 1440</p></li>
-      <li><a href="/assets/img/vigil.webp"><img src="/assets/img/vigil.webp" alt="The VX-21 VIGIL, on a transparent background" width="974" height="1500" loading="lazy"></a><p>The VX-21 VIGIL · transparent</p></li>
-      <li class="is-wide"><a href="/assets/img/vigil-paints.webp"><img src="/assets/img/vigil-paints.webp" alt="The VX-21 VIGIL as the game draws it, in four paints side by side: base, tiger stripe, desert and snow" width="2278" height="1101" loading="lazy"></a><p>The VIGIL in four paints · in-game · transparent</p></li>
-    </ul>
+      <div class="presskit__blurb">
+        <h3>One line</h3>
+        <button class="presskit__copy" type="button" data-copy="press-line" hidden>Copy</button>
+        <p id="press-line">A persistent mech war: join one of five factions or fly alone as a Torrath mercenary, and every match you fight moves a front all pilots share.</p>
+      </div>
 
-    <h2>Logos</h2>
-    <ul class="presskit__art presskit__logos">
-      <li><a href="/assets/img/title.webp"><img src="/assets/img/title.webp" alt="The Reach: Unknown title" width="1600" height="455" loading="lazy"></a><p>Title · transparent</p></li>
-      <li><a href="/assets/img/the-reach-wordmark.svg"><img src="/assets/img/the-reach-wordmark.svg" alt="The Reach: Unknown wordmark" width="220" height="58" loading="lazy"></a><p>Wordmark · SVG</p></li>
-      <li><a href="/assets/img/mt-mark.webp"><img src="/assets/img/mt-mark.webp" alt="The Mach Tuck Games shield" width="418" height="477" loading="lazy"></a><p>MT shield · transparent</p></li>
-      <li><a href="/assets/img/mt-monogram.svg"><img src="/assets/img/mt-monogram.svg" alt="The Mach Tuck Games monogram" width="26" height="30" loading="lazy"></a><p>MT monogram · SVG</p></li>
-    </ul>
-    <p>The Reach: Unknown™ and the MT shield are trademarks of Mach Tuck Games LLC. Please use the logos as they are, without changes.</p>
+      <div class="presskit__blurb">
+        <h3>Short</h3>
+        <button class="presskit__copy" type="button" data-copy="press-short" hidden>Copy</button>
+        <p id="press-short">The Reach: Unknown is a persistent, first-person mech war. Pilots join one of five factions, or fly alone as a Torrath mercenary, and fight for ground on The Reach, the first home humanity has found since Earth failed. Every win and every loss shifts a front line that all pilots share, and clans of up to fifty pilots hold what they take.</p>
+      </div>
 
-    <h2>Contact</h2>
-    <p>Press, creators and partners: <a href="mailto:support@machtuck.com">support@machtuck.com</a>.</p>
+      <div class="presskit__blurb">
+        <h3>Long</h3>
+        <button class="presskit__copy" type="button" data-copy="press-long" hidden>Copy</button>
+        <div id="press-long">
+          <p>Earth was failing. An evacuation sent a probe to the nearest star, then a small crew to go ahead, then the Archive: a moving city of about twenty thousand people on a crossing of 32.63 years. The crew sent ahead landed on The Reach, built a settlement and called home. Then the logs stopped coming. Five factions were born aboard during the crossing, each with its own answer to why Earth failed, and each means to claim the new world.</p>
+          <p>The Reach: Unknown is the war that follows, fought from a full first-person cockpit. Mechs have mass, and every loadout has a price. Pilots join one of five factions or fly alone as a Torrath mercenary, and every win and every loss shifts a front line that all of them share. Clans of up to fifty pilots hold what they take. How you fight counts, not only whether you win, and your rank carries from season to season.</p>
+          <p>The game is in development at Mach Tuck Games, an independent studio, for Windows and Mac on Steam, with iOS and Android to follow. One world, one war, built to run for years.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" data-sheet>
+      <h2>Features</h2>
+      <ul class="presskit__features">
+        <li><b>Move the front.</b> Every win and every loss shifts it on a map all pilots share. The Front opens as its own event after the closed beta begins.</li>
+        <li><b>Feel the weight.</b> Every fight is first person, from a full cockpit. Mechs have mass, and every loadout has a price.</li>
+        <li><b>Honor counts.</b> How you fight counts, not only whether you win, and your rank carries from season to season.</li>
+        <li><b>Fly for a clan.</b> Up to fifty pilots under one banner, who remember who showed up.</li>
+        <li><b>Five factions, or none.</b> Five decks of the Archive, each with its own answer to why Earth failed, or fly alone as a Torrath mercenary.</li>
+        <li><b>A world built to last.</b> One world, one war, built to run for years, in snow, jungle, desert and volcanic badlands.</li>
+      </ul>
+      <p class="presskit__see">See it for yourself: <a href="/hangar/">The Hangar</a>, <a href="/armory/">The Armory</a>, <a href="/physics/">The Physics</a>.</p>
+    </section>
+
+    <!-- The two slots: presskit.js fills them from its lists, and this note steps aside when either has something in it. -->
+    <section id="media">
+      <h2>Trailer and screenshots</h2>
+      <p data-press-waiting>A trailer and new screenshots from the current build go here as they are captured. Until then, the pictures marked "from the game" under Art are the game's own frames, and we can send more on request.</p>
+      <div class="presskit__trailer" data-press-trailer hidden></div>
+      <ul class="presskit__art" data-press-shots hidden></ul>
+    </section>
+
+    <section id="art">
+      <h2>Art</h2>
+      <p>Select a picture to download the full file. Some of these pictures were made with AI tools, as our <a href="/art/">Art &amp; AI</a> page explains. The game is in pre-alpha, so every picture says so, on this page and in the file. Please leave the label on.</p>
+      <ul class="presskit__art">
+        <li class="is-wide"><a href="/presskit/files/the-reach-unknown-key-art-2560x1440.jpg" download><img src="/assets/img/share-card.jpg" alt="Key art: the VX-21 VIGIL on a ridge at night beside the title" width="1200" height="630" loading="lazy"></a><p>Key art · JPG · 2560 × 1440</p></li>
+        <li class="is-wide"><a href="/presskit/files/the-reach-unknown-key-art-clean-2560x1440.jpg" download><img src="/presskit/key-art-clean-1280.webp" alt="Key art without the title: the VX-21 VIGIL on a ridge at night" width="1280" height="720" loading="lazy"></a><p>Key art, no title · JPG · 2560 × 1440</p></li>
+        <li><a href="/presskit/files/the-archive-1915x821.jpg" download><img src="/assets/img/archive-1280.webp" alt="The Archive between the stars" width="1280" height="549" loading="lazy"></a><p>The Archive · JPG · 1915 × 821</p></li>
+        <li><a href="/presskit/files/the-decks-of-the-archive-2560x1440.jpg" download><img src="/assets/img/story-decks-1280.webp" alt="The Archive's five decks, one above the other, each in its faction's colour" width="1280" height="720" loading="lazy"></a><p>The five decks · JPG · 2560 × 1440</p></li>
+        <li><a href="/presskit/files/the-reach-from-above-2560x1440.jpg" download><img src="/assets/img/reach-map-1280.webp" alt="An aerial view of The Reach" width="1280" height="720" loading="lazy"></a><p>The Reach from above · JPG · 2560 × 1440</p></li>
+        <li><a href="/presskit/files/the-reach-from-orbit-2560x1440.jpg" download><img src="/assets/img/story-centauri-1280.webp" alt="The Reach seen from orbit beside its star" width="1280" height="720" loading="lazy"></a><p>The Reach from orbit · JPG · 2560 × 1440</p></li>
+        <li><a href="/presskit/files/the-settlement-2560x1440.jpg" download><img src="/assets/img/lands/settlement-2-1280.webp" alt="The settlement on The Reach: glass domes and habitat modules on green ground" width="1280" height="720" loading="lazy"></a><p>The settlement · drawn in the game's engine · JPG · 2560 × 1440</p></li>
+        <li class="is-wide"><a href="/presskit/files/vx-21-vigil-four-paints-transparent.png" download><img src="/assets/img/vigil-paints.webp" alt="The VX-21 VIGIL as the game draws it, in four paints side by side: base, tiger stripe, desert and snow" width="2278" height="1101" loading="lazy"></a><p>The VIGIL in four paints · from the game · PNG, transparent</p></li>
+        <li class="is-wide"><a href="/presskit/files/vx-21-vigil-transparent.png" download><img src="/assets/img/vigil.webp" alt="The VX-21 VIGIL, on a transparent background" width="974" height="1500" loading="lazy"></a><p>The VX-21 VIGIL · PNG, transparent · 974 × 1500</p></li>
+        <li><a href="/presskit/files/in-game-snow-highlands-2560x1440.jpg" download><img src="/assets/img/lands/snow-1-1280.webp" alt="The VIGIL in the Snow Highlands" width="1280" height="720" loading="lazy"></a><p>Snow Highlands · from the game · JPG</p></li>
+        <li><a href="/presskit/files/in-game-arid-desert-2560x1440.jpg" download><img src="/assets/img/lands/desert-1-1280.webp" alt="The VIGIL in the Arid Desert" width="1280" height="720" loading="lazy"></a><p>Arid Desert · from the game · JPG</p></li>
+        <li><a href="/presskit/files/in-game-dense-jungle-2560x1440.jpg" download><img src="/assets/img/lands/jungle-1-1280.webp" alt="The VIGIL in the Dense Jungle" width="1280" height="720" loading="lazy"></a><p>Dense Jungle · from the game · JPG</p></li>
+        <li><a href="/presskit/files/in-game-volcanic-badlands-2560x1440.jpg" download><img src="/assets/img/lands/badlands-1-1280.webp" alt="The VIGIL in the Volcanic Badlands, with the volcano erupting behind it" width="1280" height="720" loading="lazy"></a><p>Volcanic Badlands · from the game · JPG</p></li>
+      </ul>
+    </section>
+
+    <section id="logos">
+      <h2>Logos</h2>
+      <ul class="presskit__art presskit__logos">
+        <li><a href="/presskit/files/the-reach-unknown-title-transparent.png" download><img src="/assets/img/title.webp" alt="The Reach: Unknown title" width="1600" height="455" loading="lazy"></a><p>Title · PNG, transparent · 1600 × 455</p></li>
+        <li><a href="/presskit/files/the-reach-unknown-wordmark.svg" download><img src="/assets/img/the-reach-wordmark.svg" alt="The Reach: Unknown wordmark" width="220" height="58" loading="lazy"></a><p>Wordmark · SVG</p></li>
+        <li><a href="/presskit/files/mach-tuck-games-shield-transparent.png" download><img src="/assets/img/mt-mark.webp" alt="The Mach Tuck Games shield" width="418" height="477" loading="lazy"></a><p>MT shield · PNG, transparent · 418 × 477</p></li>
+        <li><a href="/presskit/files/mach-tuck-games-monogram.svg" download><img src="/assets/img/mt-monogram.svg" alt="The Mach Tuck Games monogram" width="26" height="30" loading="lazy"></a><p>MT monogram · SVG</p></li>
+      </ul>
+      <p>The Reach: Unknown™ and the MT shield are trademarks of Mach Tuck Games LLC. Please use the logos as they are, without changes.</p>
+    </section>
+
+    <section id="creators" class="presskit__creators" data-sheet>
+      <h2>For creators</h2>
+      <p class="lead">Stream, record and monetise The Reach: Unknown freely. There is no embargo and no NDA.</p>
+      <ul class="presskit__features">
+        <li><b>Show anything.</b> What you see in the game is yours to show, whenever you like.</li>
+        <li><b>Keep what you earn.</b> Monetise your streams and videos however your platform allows.</li>
+        <li><b>Use this kit.</b> Everything on this page is free to use in your thumbnails, overlays and videos.</li>
+        <li><b>Keys come later.</b> Closed beta keys will come through Steam Playtest. Write to us and tell us where you post.</li>
+      </ul>
+    </section>
+
+    <section id="contact" data-sheet>
+      <h2>Contact</h2>
+      <p>Press, creators and partners: <a href="mailto:support@machtuck.com">support@machtuck.com</a>.</p>
+      <p class="presskit__see">Meet the pilots: <a data-discord href="/thereach/#join">our Discord</a>.</p>
+    </section>
   </main>
 
   <footer class="foot">
