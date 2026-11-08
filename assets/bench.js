@@ -20,11 +20,14 @@
   ];
   // 360 frames, one a degree, turned at thirty a second as in the Hangar (until 2026-11-05: 72 frames five degrees apart,
   // stepped eight times a second, which read choppy).
-  const FRAMES = 360, COARSE = 5, PER_SECOND = 30, STEP_MS = 5200, TWEEN_MS = 650;
+  const FRAMES = 360, COARSE = 5, PER_SECOND = 30, STEP_MS = 5200, TWEEN_MS = 650, BETWEEN_AT_ONCE = 8;
   const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  // On a phone, or with data saving on, the bench steps through loadouts only and a paint loads when it is tapped:
-  // each paint's frames are about 3 MB, too much to fetch unasked over a phone's data. There it keeps to every fifth degree.
-  const thrifty = Boolean(navigator.connection && navigator.connection.saveData) || window.matchMedia("(max-width: 700px)").matches;
+  // On a phone, or with data saving on, the bench steps through loadouts only and a paint loads when it is tapped: a paint
+  // is 13 to 18 MB, too much to fetch unasked over a phone's data. With data saving on it keeps to every fifth degree.
+  // 2026-11-08, from the phone review ("have the vigil rotate more smoothly"): a phone had kept to every fifth degree too,
+  // five-degree jumps six times a second. It now turns a degree at a time, as a big screen does (fetchBetween says how).
+  const dataSaver = Boolean(navigator.connection && navigator.connection.saveData);
+  const thrifty = dataSaver || window.matchMedia("(max-width: 700px)").matches;
   const frameSrc = (paint, i) => `/hangar/spin/${paint}/vigil-${String(i).padStart(3, "0")}.webp`;
   const fmt = (n) => Math.round(n).toLocaleString("en-US");
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
@@ -33,19 +36,23 @@
   // paint is shown once its first 72 have settled ──────────────────────────────────────────────────────────────────
   // Settled, not all loaded: one frame lost on a phone's connection must not keep a paint off the bench for good. The
   // turn shows the nearest frame that did arrive; a listener hears how much of the first pass has come in, for the
-  // swatch's ring.
+  // swatch's ring. Each frame is held once fetched, as in the Hangar: one nothing holds can drop out of the browser's memory,
+  // and the turn then waits on a reload to show it.
   const FIRST = FRAMES / COARSE;
   const loaded = new Map();
   const loadPaint = (paint, onProgress) => {
     if (!loaded.has(paint)) {
-      const set = { ready: new Array(FRAMES).fill(false), settled: 0, listeners: [] };
+      const set = { images: [], asked: new Array(FRAMES).fill(false), ready: new Array(FRAMES).fill(false), settled: 0, listeners: [] };
       const fetchFrame = (i, settle) => {
+        set.asked[i] = true;
         const img = new Image();
         img.decoding = "async";
         img.onload = () => { set.ready[i] = true; settle(); };
         img.onerror = () => settle();
         img.src = frameSrc(paint, i);
+        set.images.push(img);
       };
+      set.fetchFrame = fetchFrame;
       set.done = new Promise((resolve) => {
         for (let i = 0; i < FRAMES; i += COARSE) {
           fetchFrame(i, () => {
@@ -89,6 +96,7 @@
     const picture = el("img");
     picture.alt = "";
     picture.draggable = false;
+    picture.decoding = "sync";   // a turn's frame goes up whole, on the refresh it was asked for
     picture.width = 640; picture.height = 640;
     const floor = el("div", "bench__floor");
     const hint = el("div", "bench__hint", "Drag to turn");
@@ -165,7 +173,30 @@
     let frame = 0, paintAt = 0, loadoutAt = 0, playing = !calm, inView = false;
     let turnRaf = 0, stepTimer = 0, resumeTimer = 0, tween = 0, tweenEnd = 0, shownLb = shown[0].row.operatingLb;
 
-    const drawFrame = () => { picture.src = frameSrc(PAINTS[paintAt].id, nearestReady(PAINTS[paintAt].id, frame)); };
+    let drawn = "";
+    const drawFrame = () => {
+      const want = frameSrc(PAINTS[paintAt].id, nearestReady(PAINTS[paintAt].id, frame));
+      if (want !== drawn) { picture.src = want; drawn = want; }   // a frame already up is not asked for again
+    };
+    // A phone's degrees between, for the paint on show only: a few at a time, ahead of the turn first, and only while the
+    // bench is on screen, so a visitor pays for what they stay to watch (a paint's other 288 frames are 10 to 15 MB). Ahead
+    // by as far as the turn goes in the time the last frame took to come: on a slow connection a frame asked for right in
+    // front of the turn lands behind it, and the first revolution stays at five degrees. Asking for reduced motion, nothing
+    // turns until a hand does, so nothing more is fetched until then.
+    let betweenWanted = thrifty && !dataSaver && !calm, betweenFlying = 0, betweenMs = 0;
+    const fetchBetween = () => {
+      if (!betweenWanted || !inView || document.hidden) return;
+      const set = loaded.get(PAINTS[paintAt].id);
+      while (set && betweenFlying < BETWEEN_AT_ONCE) {
+        const ahead = frame + Math.ceil((betweenMs * PER_SECOND) / 1000);
+        let next = -1;
+        for (let k = 0; k < FRAMES && next < 0; k++) if (!set.asked[(ahead + k) % FRAMES]) next = (ahead + k) % FRAMES;
+        if (next < 0) return;
+        betweenFlying++;
+        const asked = performance.now();
+        set.fetchFrame(next, () => { betweenFlying--; betweenMs = performance.now() - asked; fetchBetween(); });
+      }
+    };
     const describe = () => {
       turntable.setAttribute("aria-label", `The VX-21 VIGIL in ${PAINTS[paintAt].label.toLowerCase()} paint, ${shown[loadoutAt].label.toLowerCase()} loadout. Drag, or use the arrow keys, to turn it.`);
     };
@@ -240,6 +271,7 @@
         stage.style.setProperty("--paint", `url("/hangar/spin/swatch-${PAINTS[i].id}.webp")`);
         drawFrame();
         describe();
+        fetchBetween();
       }, settle);
     }
 
@@ -295,6 +327,7 @@
       if (e.target.closest(".bench__paints")) return;
       takeHold();
       clearTimeout(resumeTimer);
+      if (thrifty && !dataSaver && !betweenWanted) { betweenWanted = true; fetchBetween(); }
       dragFrom = { x: e.clientX, frame };
       spin();
       turntable.setPointerCapture(e.pointerId);
@@ -327,8 +360,9 @@
       inView = entries[entries.length - 1].intersectionRatio >= 0.35;
       spin();
       step();
+      fetchBetween();
     }, { threshold: [0, 0.35, 0.7] });
-    document.addEventListener("visibilitychange", () => { spin(); step(); });
+    document.addEventListener("visibilitychange", () => { spin(); step(); fetchBetween(); });
 
     return {
       stage,
