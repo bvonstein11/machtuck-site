@@ -1467,13 +1467,22 @@ a.log__frame:hover { box-shadow: 0 0 0 1px var(--accent); }
 .pin .btn { width: 100%; min-height: 46px; padding: 0 8px; font-size: 0.78rem; letter-spacing: 0.14em; white-space: nowrap; }
 @media (min-width: 761px) { .pin { display: none; } }
 
-/* the hero and the bar with the request on: the long label takes its own width, and a phone shows it alone (the menu and
-   JOIN keep the Discord door); the full bar swaps its Discord button for the short label, the menu shows both */
+/* the hero and the bar with the request on: the long label takes its own width; the full bar swaps its Discord button for
+   the short label, the menu shows both. 2026-11-07, from the phone review ("add the grey join the discord button under the
+   closed beta request"): a phone stacks the request over the grey Discord button. The pair drops 16px nearer the Pre-Alpha
+   label, and the VIGIL and its shadow give up the rest of the second row (36px) at the feet, so neither button covers the
+   mech. `{CC}` the sizes. */
 .has-signup .hero__actions .btn { flex: 0 1 auto; }
 @media (max-aspect-ratio: 5/4) { .has-signup .hero__actions .btn { flex: 1 1 auto; padding: 0 12px; } }
 @media (max-width: 560px) {
-  .has-signup .hero__actions [data-discord] { display: none; }
+  .has-signup .hero__actions { flex-wrap: wrap; gap: 8px; }
   .has-signup .hero__actions [data-signup-cta] { flex: 1 1 100%; font-size: 0.78rem; }
+  .has-signup .hero__actions [data-discord] { flex: 1 1 100%; min-height: 44px; }
+}
+@media (max-width: 560px) and (max-aspect-ratio: 5/4) {
+  .has-signup .hero__copy { bottom: calc(52px + env(safe-area-inset-bottom, 0px)); }
+  .has-signup .hero__vigil { bottom: calc(17% + 36px); height: calc(41% - 36px); }
+  .has-signup .hero__shadow { bottom: calc(13.5% + 36px); }
 }
 @media (min-width: 1221px) { .has-signup .bar__nav [data-discord] { display: none; } }
 
