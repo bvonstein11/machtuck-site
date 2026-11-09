@@ -61,7 +61,7 @@
 .part[hidden] { display: none; }
 .part img { width: 100%; max-width: 110px; aspect-ratio: 4 / 3; object-fit: contain; }
 .part--mod img { border-radius: 2px; }
-.part b { font-family: var(--font-mono); font-weight: 400; font-size: 0.66rem; letter-spacing: 0; white-space: nowrap; }
+.part b { font-family: var(--font-mono); font-weight: 400; font-size: 0.66rem; letter-spacing: 0; line-height: 1.1; text-align: center; }   /* may wrap: "Reactor cooling" is wider than its tile at several widths */
 .part span { font-family: var(--font-mono); font-size: 0.6rem; line-height: 1.25; color: rgba(255, 244, 232, 0.84); white-space: nowrap; }
 .part small { font-size: 0.66rem; line-height: 1.2; color: rgba(255, 244, 232, 0.8); white-space: nowrap; }
 .part small.is-earned { color: var(--warm); }
@@ -367,10 +367,6 @@
   .modules { grid-template-columns: 1fr 1fr; }
   .upg__row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .upg__lead { grid-column: 1 / -1; }
-}
-
-@media (max-width: 359px) {
-  .part b { white-space: normal; line-height: 1.1; text-align: center; }
 }
 
 .stage:has(input:focus-visible) .hill input::-webkit-slider-thumb { outline: 3px solid #fff; }

@@ -474,6 +474,12 @@ const Physics = (() => {
     }));
   }
 
+  /** Where the dock begins on a wide stage: physics.css's width and the site's gutter. */
+  const dockLeftAt = w => w - Math.min(420, w * 0.34) - Math.max(16, Math.min(72, w * 0.05));
+
+  /** Where a stage's words end, in its canvas's coordinates, so what is drawn can stay under them. */
+  const wordsEnd = root => { const head = root.querySelector(".stage__head"); return head ? head.offsetTop + head.offsetHeight : 0; };
+
   /**
    * Starts a demo when it comes near the screen, runs it only while it is on screen, and keeps its canvas the size of its box.
    * build(root, surface) returns a frame(dt, now) function. surface.maxWidth caps the backing store of full-picture canvases.
@@ -810,7 +816,7 @@ const Physics = (() => {
       const band = ctx.createLinearGradient(0, ceilingY, 0, ceilingY + GAME.serviceCeilingM * GAME.fadeFraction / f.w.drain * zoom);
       band.addColorStop(0, "rgba(255,190,110,.32)"); band.addColorStop(1, "rgba(255,190,110,0)");
       ctx.fillStyle = band; ctx.fillRect(0, ceilingY, w, GAME.serviceCeilingM * GAME.fadeFraction / f.w.drain * zoom);
-      const labelX = w >= 900 ? w - Math.min(420, w * 0.34) - Math.max(16, Math.min(72, w * 0.05)) - 14 : w - 14;
+      const labelX = w >= 900 ? dockLeftAt(w) - 14 : w - 14;
       ctx.font = "600 13px 'B612 Mono', monospace"; ctx.textAlign = "right";
       ctx.fillStyle = "#ffd9a8"; ctx.fillRect(0, ceilingY - 1, w, 2);
       ctx.fillText(`Ceiling ${n(f.w.ceilingM / FT)} ft`, labelX, ceilingY - 8);
@@ -1019,7 +1025,7 @@ const Physics = (() => {
 
     return (dt, now) => {
       const { w, h } = s, gy = h * 0.92, x = w >= 900 ? w * 0.42 : w * 0.6;
-      const tall = Math.min(h * 0.66, w >= 900 ? 1e9 : w * 1.1), pxm = tall / GAME.standingM;
+      const tall = Math.min(h * 0.66, w >= 900 ? 1e9 : w * 1.1, gy - wordsEnd(root) - 4), pxm = tall / GAME.standingM;
       const limit = Physics.wade(depth);
       if (depth > GAME.standingM) under += dt; else under = 0;
       put(root, "under", depth > GAME.standingM ? (under >= GAME.drownS ? "Lost" : `${n(GAME.drownS - under, 1)} s`) : `${n(GAME.drownS)} s, once it is under`);
@@ -1161,10 +1167,13 @@ const Physics = (() => {
       puff.draw(ctx, dt);
       if (hit && hit.r.b > 0 && clock < 2.2) {
         const lift = calm ? 0 : clock * 26, fade = clamp(2.2 - clock, 0, 1);
-        ctx.font = `600 ${clamp(l.tall * 0.14, 28, 64)}px 'Barlow Condensed', sans-serif`;
+        const size = clamp(l.tall * 0.14, 28, 64), numberY = Math.max(wordsEnd(root) + size * 0.8 + 4, l.gy - l.tall * 1.02 - lift);
+        ctx.font = `600 ${size}px 'Barlow Condensed', sans-serif`;
         ctx.textAlign = "center"; ctx.globalAlpha = fade;
-        ctx.fillStyle = "#ffcf9e"; ctx.fillText(`−${n(hit.r.a)}`, ax, l.gy - l.tall * 1.02 - lift);
-        ctx.fillStyle = "#ff9f7a"; ctx.fillText(`−${n(hit.r.b)}`, tx, l.gy - l.tall * 1.02 - lift);
+        ctx.lineWidth = 5; ctx.lineJoin = "round"; ctx.strokeStyle = "rgba(10,12,18,.82)";
+        ctx.strokeText(`−${n(hit.r.a)}`, ax, numberY); ctx.strokeText(`−${n(hit.r.b)}`, tx, numberY);
+        ctx.fillStyle = "#ffcf9e"; ctx.fillText(`−${n(hit.r.a)}`, ax, numberY);
+        ctx.fillStyle = "#ff9f7a"; ctx.fillText(`−${n(hit.r.b)}`, tx, numberY);
         ctx.globalAlpha = 1;
       }
       // the handle follows the attacker, so the thing you pull is the mech itself
@@ -1233,7 +1242,7 @@ const Physics = (() => {
     return dt => {
       const { w, h } = s, wide = w >= 900;
       const R = wide ? Math.min(h * 0.4, w * 0.24) : Math.min(w * 0.42, h * 0.3);
-      const cx = wide ? w * 0.4 : w * 0.5, cy = wide ? h * 0.5 : Math.min(h - R - 90, 128 + R);
+      const cx = wide ? dockLeftAt(w) - R - 14 : w * 0.5, cy = wide ? h * 0.56 : Math.min(h - R - 90, Math.max(128, wordsEnd(root) + 6) + R);
       const T = R / 4.2, K = T / GAME.tickMrad, m = rangeYd * YD;
       lay = { cx, cy, R, K };
       glass.style.width = glass.style.height = `${(R * 2).toFixed(0)}px`;
@@ -1619,7 +1628,7 @@ const Physics = (() => {
         if (dash >= seconds) { finished = true; root.classList.add("is-there"); }
       }
       ctx.clearRect(0, 0, w, h);
-      const y = h * 0.5, left = wide ? w * 0.06 : 22, right = w - (wide ? w * 0.06 : 22), span = right - left;
+      const y = h * (wide ? 0.5 : 0.66), left = wide ? w * 0.06 : 22, right = w - (wide ? w * 0.06 : 22), span = right - left;
       const scale = span / WORLD.earthMoonKm, earthR = Math.max(5, 6371 * scale), moonR = Math.max(2.5, 1737 * scale);
       ctx.fillStyle = "#fff";
       for (const [x, py, r] of stars) { ctx.globalAlpha = 0.2 + 0.5 * (r - 0.5); ctx.beginPath(); ctx.arc(x * w, py * h, r, 0, 6.2832); ctx.fill(); }
