@@ -269,5 +269,18 @@
   #ballistics .stage__do { max-width: 12em; }   /* two short lines, or the end of it lies on the glass */
 }
 
+/* the opening under 900 px: the picture is a band under the bar and the words start below the VIGIL's feet, so nothing lies on
+   it. The frame shows the VIGIL from 26% to 88% of its height, and 36.6% to 63% of its width (drop-060, 1920x1080).
+   The band is as tall as leaves about 260 px for the title, lead and button on the first screen, at least 56.25vw so the frame's
+   whole height shows and the feet are never cut, and at most 175vw so its width still holds the VIGIL with a margin. */
+@media (max-width: 899px) {
+  .open { --band: max(56.25vw, min(175vw, clamp(260px, calc((100svh - var(--top-height) - 260px) / 0.88), 640px)));
+    height: auto; justify-content: flex-start; padding-top: calc(var(--top-height) + var(--band) * 0.88 + 6px); }
+  .open__picture, .open__film { top: var(--top-height); bottom: auto; height: var(--band);
+    -webkit-mask-image: linear-gradient(180deg, #000 86%, transparent); mask-image: linear-gradient(180deg, #000 86%, transparent); }
+  .open__words { max-width: none; }
+  .open h1 { font-size: min(18vw, clamp(4.4rem, 11.4vw, 11rem)); }   /* one line down to 320 px */
+}
+
 #world canvas[data-main], #weather canvas[data-main], #sound-inst canvas[data-main] { cursor: ew-resize; }
 .stage:has(input[name="height"]:focus-visible) .lift__knob, .bay:has(input[name="depth"]:focus-visible) .lift__knob { outline: 3px solid #fff; outline-offset: 6px; }
