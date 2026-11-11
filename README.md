@@ -7,7 +7,8 @@ from the site itself, so a visit sends nothing to a third party.
 
 | Path | What it is |
 |---|---|
-| `index.html` | Sends machtuck.com to `/thereach/` |
+| `index.html` | Sends machtuck.com to `/thereach/`, and carries the studio's details for search engines (the same JSON-LD `Organization` as `/thereach/`) |
+| `robots.txt`, `sitemap.xml` | What search engines may read, and the list of pages they should. A page kept out of search says `noindex` in its own head and stays out of the sitemap (`/welcome/`, `/drop/`, the 404). A new public page needs its own `<url>` line. `python3 -I Tools/website/seo_check.py` checks the sitemap against the pages, and every listed page's title, description, canonical address, share tags, h1 and alt text, and the JSON-LD (which must also pass the social copy check); the publisher runs it and warns |
 | `thereach/index.html` | The Reach: Unknown |
 | `404.html` | The page for an address that does not exist |
 | `assets/site.css`, `assets/site.js` | The look and the behaviour, shared by every page |

@@ -1,0 +1,5 @@
+# machtuck.com: every page may be crawled. Pages kept out of search say noindex in their own head.
+User-agent: *
+Allow: /
+
+Sitemap: https://machtuck.com/sitemap.xml
