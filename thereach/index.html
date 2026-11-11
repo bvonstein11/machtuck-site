@@ -18,15 +18,15 @@
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="icon" href="/favicon.svg?v=748d9b58" type="image/svg+xml">
-  <link rel="icon" href="/favicon-32.png?v=748d9b58" sizes="32x32" type="image/png">
+  <link rel="icon" href="/favicon.svg?v=98a4aef7" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png?v=98a4aef7" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
   <link rel="preload" href="/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/assets/img/sky-2560.webp" as="image" media="(min-width: 1281px)">
   <link rel="preload" href="/assets/img/sky-1280.webp" as="image" media="(max-width: 1280px)">
-  <link rel="stylesheet" href="/assets/site.css?v=748d9b58">
-  <link rel="stylesheet" href="/drop/drop.css?v=748d9b58">
+  <link rel="stylesheet" href="/assets/site.css?v=98a4aef7">
+  <link rel="stylesheet" href="/drop/drop.css?v=98a4aef7">
   <script>
     // Boarding: arriving from another site opens on the shipboard network, which assets/site.js draws. Nothing is
     // stored in the browser (the privacy page promises that): a reload, Back, or a link from this site skips it. This
@@ -41,20 +41,20 @@
       }
     } catch (error) { /* no boarding screen */ }
   </script>
-  <script src="/assets/ship.js?v=748d9b58" defer></script>
-  <script src="/assets/prealpha.js?v=748d9b58" defer></script>
-  <script src="/assets/crossing.js?v=748d9b58" defer></script>
-  <script src="/assets/site.js?v=748d9b58" defer></script>
-  <script src="/drop/drop.js?v=748d9b58" defer></script>
-  <script src="/assets/patch.js?v=748d9b58" defer></script>
-  <script src="/assets/patchmaker.js?v=748d9b58" defer></script>
-  <script src="/assets/front.js?v=748d9b58" defer></script>
-  <script src="/assets/loadouts.js?v=748d9b58" defer></script>
-  <script src="/assets/bench.js?v=748d9b58" defer></script>
-  <script src="/assets/valor.js?v=748d9b58" defer></script>
-  <script src="/assets/ranks.js?v=748d9b58" defer></script>
-  <script src="/assets/story.js?v=748d9b58" defer></script>
-  <script src="/assets/lands.js?v=748d9b58" defer></script>
+  <script src="/assets/ship.js?v=98a4aef7" defer></script>
+  <script src="/assets/prealpha.js?v=98a4aef7" defer></script>
+  <script src="/assets/crossing.js?v=98a4aef7" defer></script>
+  <script src="/assets/site.js?v=98a4aef7" defer></script>
+  <script src="/drop/drop.js?v=98a4aef7" defer></script>
+  <script src="/assets/patch.js?v=98a4aef7" defer></script>
+  <script src="/assets/patchmaker.js?v=98a4aef7" defer></script>
+  <script src="/assets/front.js?v=98a4aef7" defer></script>
+  <script src="/assets/loadouts.js?v=98a4aef7" defer></script>
+  <script src="/assets/bench.js?v=98a4aef7" defer></script>
+  <script src="/assets/valor.js?v=98a4aef7" defer></script>
+  <script src="/assets/ranks.js?v=98a4aef7" defer></script>
+  <script src="/assets/story.js?v=98a4aef7" defer></script>
+  <script src="/assets/lands.js?v=98a4aef7" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -118,8 +118,11 @@
           <source media="(min-width: 1281px)" srcset="/assets/img/sky-2560.webp">
           <img src="/assets/img/sky-1280.webp" alt="" width="1280" height="720" fetchpriority="high">
         </picture>
-        <img class="hero__shadow" src="/assets/img/vigil-shadow.webp" alt="" width="1300" height="331" data-depth="0.18">
-        <img class="hero__vigil" src="/assets/img/vigil.webp" alt="The VX-21 VIGIL, a battle-worn grey mech, standing on a ridge at night" width="974" height="1500" data-depth="0.18">
+        <div class="hero__mech" data-depth="0.18">
+          <img class="hero__shadow" src="/assets/img/vigil-shadow.webp" alt="" width="1300" height="329">
+          <img class="hero__vigil" src="/assets/img/vigil.webp" alt="The VX-21 VIGIL, weathered and battle-worn, seen from behind on a ridge at night, its vents glowing" width="974" height="1500">
+          <img class="hero__dust" src="/assets/img/vigil-dust.webp" alt="" width="1400" height="329">
+        </div>
         <!-- 2026-11-04: the words scroll with the page, solid until they leave it. They had drifted at half speed under the
              hero's clipped edge and faded over the first half screen, so the buttons and the countdown were dim on a small scroll. -->
         <div class="hero__copy">
