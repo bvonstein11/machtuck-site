@@ -25,6 +25,7 @@ from the site itself, so a visit sends nothing to a third party.
 | `community-terms/` | The Community Terms, built around the ideas clause, whose words change only with the studio's say-so |
 | `welcome/` | Where Kit sends a pilot after the closed beta form: thanks, and the Discord invite. Linked from nowhere on the site, and not indexed |
 | `CNAME` | Tells GitHub Pages the site's address |
+| `google21a90d1ecf188117.html` | Proves to Google Search Console that the studio owns machtuck.com (the studio's Google account). Never delete or rename it: Google rechecks it, and without it Search Console stops showing the site's search data |
 
 **The clan patch maker** stores nothing. A design is its patch code (`1.` and twelve values joined by dots, written in
 `assets/patch.js`), which the visitor copies, shares as a link (`/thereach/#patch=<code>`) or pastes back in. The game
