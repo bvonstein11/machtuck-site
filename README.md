@@ -2,8 +2,10 @@
 
 The website of Mach Tuck Games. The address is machtuck.com; the bare address opens the game's page at `/thereach/`.
 
-Plain HTML, CSS and JavaScript, with no build step, no libraries, no cookies and no analytics. The fonts are served
-from the site itself, so a visit sends nothing to a third party.
+Plain HTML, CSS and JavaScript, with no build step, no libraries and no cookies. The fonts are served from the site
+itself. The one outside service a visit reaches is Cloudflare Web Analytics, which counts visits without cookies or browser
+storage (`CU-9`); its snippet sits just before `</body>` on every page, the same line everywhere, and a new page needs it
+too (`Tools/website/seo_check.py` checks). `/privacy/` says what it counts: change that page before changing the counter.
 
 | Path | What it is |
 |---|---|
