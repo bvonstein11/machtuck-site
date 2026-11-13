@@ -1,4 +1,4 @@
-/* The Front in MOVE THE FRONT: the game's war table, live in the page. The map plate is raised into relief by the game's
+/* The Front in THE FRONT: the game's war table, live in the page. The map plate is raised into relief by the game's
    own bake (the same file /front/ draws: ridged crests read from the painting's own light), each house's ground is one tinted region, a glowing line runs where two houses meet, and the week's
    battlegrounds pulse. It handles like a globe viewer: drag the ground to move it, Shift- or right-drag to turn and tilt,
    scroll toward a point to zoom there; on a phone two fingers move it in the page and one finger moves it full screen.

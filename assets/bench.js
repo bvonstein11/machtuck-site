@@ -1,4 +1,4 @@
-/* The loadout bench in FEEL THE WEIGHT: the game's VIGIL on a turntable, in its four paints, under four loadouts. Every
+/* The loadout bench in WEIGHT: the game's VIGIL on a turntable, in its four paints, under four loadouts. Every
    figure is a row of the Hangar's export (/hangar/hangar-data.json, written by the game's Vigil ▸ Website ▸ Export Hangar
    Data); this card looks a loadout up and computes nothing of its own. The bench steps through the loadouts and the paints
    by itself while it is on screen; a tap on either, or a drag on the mech, takes hold of it. Nothing is stored and nothing

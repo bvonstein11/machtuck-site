@@ -1,4 +1,4 @@
-/* The Valor wings in HONOR COUNTS: the seven wings of the game's Ranked ladder, Cadet to Ace, one at a time on a lit
+/* The Valor wings in RANK AND VALOR: the seven wings of the game's Ranked ladder, Cadet to Ace, one at a time on a lit
    stage. The stage climbs the ladder by itself, the Valor count rising series by series under the game's own rules
    (ValorProgression and the Ranked design: paid once per best of three, every wing a floor, a Cadet's loss halved,
    a new season back to Rookie). A tap on a rung stops the climb and shows that wing. Nothing is stored. */

@@ -1,4 +1,4 @@
-/* machtuck.com — the clan patch maker in THE GAME's first pillar, "Fly for a clan".
+/* machtuck.com — the clan patch maker in THE GAME's first pillar, "Clans".
    The game's own designer, on the page: the same pieces (assets/patch/, built from the game's library by
    Tools/website/build_patch_library.py), the same rules and the same stitching (assets/patch.js, a checked port of the
    game's code). Nothing is stored: the design lives in the page and in its patch code, which the pilot copies, shares as
