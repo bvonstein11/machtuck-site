@@ -10,10 +10,10 @@ const GAME = {
   "guns": {
     "PULSE-50": { "model": "charges", "mount": "arm", "rangeYd": 275, "damage": 15, "heat": 6, "weightLb": 5000, "rounds": 4, "between": 0.2, "recharge": 2 },
     "CHAIN-30": { "model": "stream", "mount": "arm", "rangeYd": 150, "damage": 0.8, "heat": 0.3, "weightLb": 7600, "rate": 65, "belt": 1174 },
-    "SLUG-250": { "model": "single", "mount": "arm", "rangeYd": 200, "damage": 60, "heat": 10, "weightLb": 8400, "rounds": 12, "between": 4 },
-    "DART-20": { "model": "single", "mount": "arm", "rangeYd": 1000, "damage": 45, "heat": 12, "weightLb": 5600, "rounds": 10, "between": 3.5 },
+    "SLUG-250": { "model": "single", "mount": "arm", "rangeYd": 200, "damage": 60, "heat": 10, "weightLb": 8400, "rounds": 18, "between": 4 },
+    "DART-20": { "model": "single", "mount": "arm", "rangeYd": 1000, "damage": 45, "heat": 12, "weightLb": 5600, "rounds": 20, "between": 3.5 },
     "THUMP-82": { "model": "magazine", "mount": "arm", "rangeYd": 175, "damage": 45, "heat": 8, "weightLb": 5200, "rounds": 10, "between": 1.2, "reload": 3, "flight": 1.3 },
-    "SPIKE-90": { "model": "single", "mount": "arm", "rangeYd": 650, "damage": 70, "heat": 18, "weightLb": 9000, "rounds": 3, "between": 10.5 },
+    "SPIKE-90": { "model": "single", "mount": "arm", "rangeYd": 650, "damage": 70, "heat": 18, "weightLb": 9000, "rounds": 8, "between": 10.5 },
     "VOLLEY-6": { "model": "salvo", "mount": "shoulder", "rangeYd": 425, "damage": 12, "heat": 12, "weightLb": 4200, "salvo": 6, "tubes": 18, "life": 36, "between": 6, "reload": 12, "ripple": 0.09 },
     "BREACH-275": { "model": "magazine", "mount": "shoulder", "rangeYd": 600, "damage": 80, "heat": 16, "weightLb": 7800, "rounds": 4, "between": 3, "reload": 8, "flight": 3 }
   },
@@ -495,10 +495,10 @@ const Armory = (() => {
   const LINES = {
     "PULSE-50": "The arsenal's one beam. It lands the instant you fire and the wind never touches it. Four charges, each back two seconds after it is spent.",
     "CHAIN-30": "Sixty-five rounds a second. One barely marks the paint; the stream takes a mech apart. Fire it in bursts.",
-    "SLUG-250": "One shell, one blow, four seconds to load the next. Twelve to a life, so every shot has to count.",
-    "DART-20": "The longest reach in the game. Hold over for the drop, hold off for the wind. Three and a half seconds between rounds, ten to a life.",
+    "SLUG-250": "One shell, one blow, four seconds to load the next, so every shot has to count. Eighteen to a life.",
+    "DART-20": "The longest reach in the game. Hold over for the drop, hold off for the wind. Three and a half seconds between rounds, twenty to a life.",
     "THUMP-82": "Pick a spot and lob it. Full damage at the center, a fifth at the edge of the blast, and it lands 1.3 seconds later.",
-    "SPIKE-90": "A tungsten dart with no warhead, only speed. Ten and a half seconds between shots, the most heat of any weapon, three to a life.",
+    "SPIKE-90": "A tungsten dart with no warhead, only speed. Ten and a half seconds between shots, the most heat of any weapon, eight to a life.",
     "VOLLEY-6": "Six rockets in under half a second, spreading as they fly. Three salvos empty the pod, and its one reload takes twelve seconds.",
     "BREACH-275": "Mark a spot and the shell comes down three seconds later. The target gets no warning on its screen, only the whistle.",
   };
