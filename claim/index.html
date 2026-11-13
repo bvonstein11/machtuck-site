@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Take your callsign into the game · The Reach: Unknown</title>
+  <meta name="description" content="Take the callsign you reserved on machtuck.com into The Reach: Unknown.">
+  <!-- Where the game's Service Record sends a pilot with a link code (CallsignCloud.LinkCode). Linked from the game, not the site. -->
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#07090d">
+  <link rel="icon" href="/favicon.svg?v=5a97ed98" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png?v=5a97ed98" sizes="32x32" type="image/png">
+  <link rel="stylesheet" href="/assets/site.css?v=5a97ed98">
+  <script src="/assets/site.js?v=5a97ed98" defer></script>
+</head>
+<body class="doc-page">
+  <header class="doc-bar">
+    <a class="bar__brand" href="/thereach/">
+      <img src="/assets/img/mt-monogram.svg" alt="" width="26" height="30">
+      <span>Mach Tuck <b>Games</b></span>
+    </a>
+    <a class="doc-bar__back" href="/thereach/">Back to The Reach</a>
+  </header>
+
+  <main class="doc wrap welcome">
+    <p class="eyebrow">Your callsign</p>
+    <h1>Take your callsign into the game</h1>
+    <p class="lead">Reserved a callsign here? Open the Service Record in the game, tap Reserved on machtuck.com?, and enter the code it shows below with your callsign and the email you reserved it with.</p>
+    <form class="signup" data-claim>
+      <div class="signup__grid">
+        <div class="signup__field">
+          <label for="claim-callsign">Callsign</label>
+          <input id="claim-callsign" type="text" name="callsign" maxlength="16" pattern="[A-Za-z0-9_\-]{1,16}" autocomplete="off" autocapitalize="characters" spellcheck="false" required>
+        </div>
+        <div class="signup__field">
+          <label for="claim-code">Link code</label>
+          <input id="claim-code" type="text" name="code" maxlength="8" autocomplete="off" autocapitalize="characters" spellcheck="false" required>
+        </div>
+        <div class="signup__field signup__field--wide">
+          <label for="claim-email">The email you reserved with</label>
+          <input id="claim-email" type="email" name="email" autocomplete="email" required>
+        </div>
+      </div>
+      <div class="signup__check" data-turnstile></div>
+      <p class="signup__status" data-claim-status role="status" aria-live="polite"></p>
+      <button class="btn btn--large" type="submit">Take it into the game</button>
+      <p class="signup__note">The code lasts 15 minutes. Your email is checked against your reservation and not kept. <a href="/privacy/">Privacy</a></p>
+    </form>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot__inner">
+      <a class="foot__brand" href="/thereach/" aria-label="Back to The Reach">
+        <img src="/assets/img/mt-monogram.svg" alt="" width="34" height="40">
+        <img class="foot__wordmark" src="/assets/img/the-reach-wordmark.svg" alt="The Reach: Unknown" width="220" height="58">
+      </a>
+      <div class="foot__small">
+        <nav class="foot__links" aria-label="Legal">
+          <a href="/presskit/">Press kit</a>
+          <a href="/privacy/">Privacy</a>
+          <a href="/terms/">Terms</a>
+          <a href="/community-terms/">Community Terms</a>
+        </nav>
+        <p>© 2026 Mach Tuck Games LLC</p>
+        <p>The Reach: Unknown™ and the MT shield are trademarks of Mach Tuck Games LLC.</p>
+      </div>
+    </div>
+  </footer>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "fb874bcc736946afa2fba913def29787"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

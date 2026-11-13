@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Privacy · Mach Tuck Games</title>
-  <meta name="description" content="What machtuck.com collects: only what you send through the closed beta form. No cookies, and visits are counted without knowing who you are.">
+  <meta name="description" content="What machtuck.com collects: only what you send through the closed beta form or the claim page. No cookies, and visits are counted without knowing who you are.">
   <link rel="canonical" href="https://machtuck.com/privacy/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Mach Tuck Games">
   <meta property="og:title" content="Privacy · Mach Tuck Games">
-  <meta property="og:description" content="What machtuck.com collects: only what you send through the closed beta form. No cookies, and visits are counted without knowing who you are.">
+  <meta property="og:description" content="What machtuck.com collects: only what you send through the closed beta form or the claim page. No cookies, and visits are counted without knowing who you are.">
   <meta property="og:url" content="https://machtuck.com/privacy/">
   <meta property="og:image" content="https://machtuck.com/assets/img/share-card.jpg">
   <meta property="og:image:width" content="1200">
@@ -19,9 +19,9 @@
   <meta name="twitter:site" content="@MachTuckGames">
   <meta name="twitter:image:alt" content="The Reach: Unknown title beside the VX-21 VIGIL mech on a ridge at dusk">
   <meta name="theme-color" content="#07090d">
-  <link rel="icon" href="/favicon.svg?v=fbfee474" type="image/svg+xml">
-  <link rel="icon" href="/favicon-32.png?v=fbfee474" sizes="32x32" type="image/png">
-  <link rel="stylesheet" href="/assets/site.css?v=fbfee474">
+  <link rel="icon" href="/favicon.svg?v=5a97ed98" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png?v=5a97ed98" sizes="32x32" type="image/png">
+  <link rel="stylesheet" href="/assets/site.css?v=5a97ed98">
 </head>
 <body class="doc-page">
   <header class="doc-bar">
@@ -37,7 +37,7 @@
     <h1>This site collects only what you send us</h1>
     <p class="doc__date">Last updated 12 November 2026</p>
 
-    <p class="lead">machtuck.com is run by Mach Tuck Games LLC. It has no accounts, and it counts visits without knowing who you are. The only personal information it can collect is what you type into our closed beta form, and only if you send it.</p>
+    <p class="lead">machtuck.com is run by Mach Tuck Games LLC. It has no accounts, and it counts visits without knowing who you are. The only personal information it can collect is what you type into our closed beta form or our claim page, and only if you send it.</p>
 
     <h2>No cookies</h2>
     <p>The site sets no cookies and stores nothing in your browser, so there is nothing to accept or decline.</p>
@@ -51,11 +51,14 @@
     <p>If you send the form, these go to Kit, the email service we use, and are kept on our list there:</p>
     <ul class="doc__list">
       <li>your email address;</li>
-      <li>the callsign you request, which is a request and not a reservation;</li>
+      <li>the callsign you reserve;</li>
       <li>your faction, if you choose one (it is optional);</li>
       <li>where you came from, if the link you followed says so. Some of our links name their source, such as <code>?src=tiktok</code> for a link from TikTok. We read that from the address only at the moment you send the form, and it is never stored in your browser.</li>
     </ul>
     <p>You must tick a box to say you are 13 or older before the form will send. The tick itself is not stored.</p>
+
+    <h2>Reserving your callsign</h2>
+    <p>So that no one else can take your callsign, the form first reserves it, before anything goes to Kit. It sends the callsign and your email address to our own small service on Cloudflare, which asks Unity Gaming Services, the service our game runs on, to hold the name. Unity keeps the callsign with a one-way code made from your email address, never the address itself, so the game can tell the name belongs to you and refuse it to anyone else; Cloudflare passes the request on and keeps nothing. When you start the form, the page also loads Cloudflare Turnstile, which checks that you're a person and not a script; Cloudflare sees your browser for that check and tells our service only whether it passed. Nothing from this is stored in your browser. To take a reserved callsign into the game, you enter it on our claim page with the same email and the short code the game shows you; the email is checked against the reservation and not kept.</p>
 
     <h2>What we use it for</h2>
     <p>To tell you when closed beta invitations go out, to send you news about The Reach, and to plan callsigns and factions for the closed beta. We never sell your details. We share them with no one except Kit, which holds them for us, unless the law requires it.</p>
