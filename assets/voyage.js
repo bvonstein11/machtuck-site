@@ -31,7 +31,7 @@ const PHASES = {
   departure: ["Departure burn.", "One gravity for 46 days, climbing out of the solar system."],
   cruise: ["Interstellar cruise.", "The engines are quiet. The Archive coasts at 0.130 of the speed of light, and everyone aboard is awake."],
   braking: ["Braking burn.", "Forty-six days at one gravity, to stop."],
-  approach: ["Final approach.", "A week over the last three million kilometres, at about five kilometres a second."],
+  approach: ["Final approach.", "A week over the last three million kilometers, at about five kilometers a second."],
   orbit: ["In orbit over The Reach.", "The Archive stays in orbit, and every drop to the surface starts here."],
 };
 

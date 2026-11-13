@@ -497,14 +497,14 @@ const Armory = (() => {
     "CHAIN-30": "Sixty-five rounds a second. One barely marks the paint; the stream takes a mech apart. Fire it in bursts.",
     "SLUG-250": "One shell, one blow, four seconds to load the next. Twelve to a life, so every shot has to count.",
     "DART-20": "The longest reach in the game. Hold over for the drop, hold off for the wind. Three and a half seconds between rounds, ten to a life.",
-    "THUMP-82": "Pick a spot and lob it. Full damage at the centre, a fifth at the edge of the blast, and it lands 1.3 seconds later.",
+    "THUMP-82": "Pick a spot and lob it. Full damage at the center, a fifth at the edge of the blast, and it lands 1.3 seconds later.",
     "SPIKE-90": "A tungsten dart with no warhead, only speed. Ten and a half seconds between shots, the most heat of any weapon, three to a life.",
     "VOLLEY-6": "Six rockets in under half a second, spreading as they fly. Three salvos empty the pod, and its one reload takes twelve seconds.",
     "BREACH-275": "Mark a spot and the shell comes down three seconds later. The target gets no warning on its screen, only the whistle.",
   };
   // Where each render's muzzle sits in its own picture.
   const MUZZLE = { "PULSE-50": [0.075, 0.71], "CHAIN-30": [0.2, 0.6], "SLUG-250": [0.135, 0.73], "DART-20": [0.135, 0.59], "THUMP-82": [0.185, 0.68], "SPIKE-90": [0.125, 0.8], "VOLLEY-6": [0.31, 0.44], "BREACH-275": [0.32, 0.13] };
-  const HIT_LABEL = { "CHAIN-30": "A round", "VOLLEY-6": "A rocket", "THUMP-82": "At the centre", "BREACH-275": "At the centre" };
+  const HIT_LABEL = { "CHAIN-30": "A round", "VOLLEY-6": "A rocket", "THUMP-82": "At the center", "BREACH-275": "At the center" };
   const BURN_LABEL = { "CHAIN-30": "Heat a round", "VOLLEY-6": "Heat a salvo" };
 
   stage($("[data-fire]"), (root, s) => {
@@ -828,9 +828,9 @@ const Armory = (() => {
     // On the front frame, in its own percent: the rear frame is read as these mirrored, because the VIGIL has turned round,
     // and the arm that was on the left is on the right. The art is never flipped.
     const FRONT = { RA: [18, 5, 13.5, 47, 74], LA: [67, 8, 14, 45, 68], RT: [31.5, 11, 9.5, 20, 58], LT: [57, 11, 10, 20, 58], CT: [41, 10, 16, 26, 72], PV: [39, 36, 21, 14, 50], RL: [26, 50, 18, 47, 34], LL: [55, 50, 18, 47, 34] };
-    const NAME = { RA: "The right arm", LA: "The left arm", RT: "The right side torso", LT: "The left side torso", CT: "The centre torso", PV: "The pelvis", RL: "The right leg", LL: "The left leg" };
+    const NAME = { RA: "The right arm", LA: "The left arm", RT: "The right side torso", LT: "The left side torso", CT: "The center torso", PV: "The pelvis", RL: "The right leg", LL: "The left leg" };
     const LANDS = { snow: "snow-4", desert: "desert-4", jungle: "jungle-3", volcanic: "badlands-4" };
-    const LAND_ALT = { snow: "Snowfields and dark pines below a high range, from the game.", desert: "Red dunes and mesas under an evening sky, from the game.", jungle: "Green jungle under a low grey sky, from the game.", volcanic: "A volcano smoking over black ground, from the game." };
+    const LAND_ALT = { snow: "Snowfields and dark pines below a high range, from the game.", desert: "Red dunes and mesas under an evening sky, from the game.", jungle: "Green jungle under a low gray sky, from the game.", volcanic: "A volcano smoking over black ground, from the game." };
     let face = "front", biome = "jungle", into = 0, unpaid = 0, home = 0;
     const sparks = [];
     const zones = new Map();
@@ -993,7 +993,7 @@ const Armory = (() => {
     const pick = gunPicker($("[data-climb-guns]", root), chosen, id => { chosen = id; pick(id); art.src = big(id); art.alt = `The ${id}, the gun on the bench.`; draw(); });
     function draw() {
       const at = Armory.atMark(chosen, mk), top = Armory.atMark(chosen, 4), bill = Armory.billTo(chosen, mk), part = GAME.salvage.partOfGun[chosen], g = GAME.guns[chosen];
-      const label = at.axis === "reach" ? "Reach" : at.axis === "heat" ? (g.model === "stream" ? "Heat a round" : "Heat a shot") : (HIT_LABEL[chosen] === "A rocket" ? "Damage a rocket" : HIT_LABEL[chosen] === "At the centre" ? "Damage at the centre" : "Damage a shot");
+      const label = at.axis === "reach" ? "Reach" : at.axis === "heat" ? (g.model === "stream" ? "Heat a round" : "Heat a shot") : (HIT_LABEL[chosen] === "A rocket" ? "Damage a rocket" : HIT_LABEL[chosen] === "At the center" ? "Damage at the center" : "Damage a shot");
       put(root, "gain-label", label);
       put(root, "gain", at.axis === "reach" ? `${n(at.value)} yd` : figure(at.value, at.axis === "heat" ? 3 : 1));
       put(root, "gain-delta", mk === 1 ? "Where every gun starts" : `${at.percent < 0 ? "−" : "+"}${figure(Math.abs(at.percent), 1)}% on Mk I`);

@@ -399,7 +399,7 @@
         field("jets-more").textContent = `of climb, to ${loadout.climbCeilingFt} ft`;
       } else {
         field("jets").textContent = "None";
-        field("jets-more").textContent = "fit them in the centre torso";
+        field("jets-more").textContent = "fit them in the center torso";
       }
       if (shownLb !== null && shownLb !== loadout.operatingLb) {   // a change shows its size for a moment, where it lands
         const delta = field("delta");

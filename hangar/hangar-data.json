@@ -38,7 +38,7 @@
     },
     {
       "id": "CT",
-      "label": "Centre torso",
+      "label": "Center torso",
       "accepts": "module",
       "default": ""
     }

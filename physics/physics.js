@@ -1086,7 +1086,7 @@ const Physics = (() => {
       hit = { r, down, killsThem };
       mode = "hit"; clock = 0;
       const verdict = r.b === 0 ? `A shove. Below ${n(GAME.ramMinClosing / MPH)} mph of closing speed nothing is damaged.`
-        : killsThem && killsYou ? "Both centre torsos gone. Neither pilot walks away."
+        : killsThem && killsYou ? "Both center torsos gone. Both mechs are destroyed."
         : killsThem ? "The plate is gone. That one is over."
         : down ? "Knocked down. Two seconds to stand, then two when nothing can put it down again."
         : "Damage on both. Their momentum met yours, so nobody goes over.";
@@ -1232,8 +1232,8 @@ const Physics = (() => {
       if (marks.length > 12) marks.shift();
       const offX = (x * sh.m / 1000) / FT, offY = (y * sh.m / 1000) / FT;
       put(root, "tally", `${n(hits)} of ${n(shots)}`);
-      const where = Math.abs(offX) < 1 && Math.abs(offY) < 1 ? "dead centre"
-        : `${n(Math.abs(offY))} ft ${offY < 0 ? "low" : "high"}, ${n(Math.abs(offX))} ft ${offX > 0 ? "downwind" : "upwind"} of its centre`;
+      const where = Math.abs(offX) < 1 && Math.abs(offY) < 1 ? "dead center"
+        : `${n(Math.abs(offY))} ft ${offY < 0 ? "low" : "high"}, ${n(Math.abs(offX))} ft ${offX > 0 ? "downwind" : "upwind"} of its center`;
       put(root, "verdict", inside ? `Hit: ${where}.` : `Miss: ${where}.`);
     }
     root.querySelector("[data-fire]").addEventListener("click", fire);

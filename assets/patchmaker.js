@@ -232,7 +232,7 @@
       row.append(el("p", "maker__label", "Split"), list);
       panel.append(row);
       if (n > 1) panel.append(chips(PIECES[design.pattern].map((label, i) => [i, label]), piece, (i) => { piece = i; drawControls(); }, "Piece"));
-      panel.append(swatches(PIECE_KEYS[piece], "Colour"));
+      panel.append(swatches(PIECE_KEYS[piece], "Color"));
     } else if (tab === "border") {
       panel.append(swatches("border", "Border thread"));
     } else if (tab === "emblem") {
