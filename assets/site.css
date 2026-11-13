@@ -1,7 +1,7 @@
 /* machtuck.com — one stylesheet for every page.
    Type: Barlow Condensed for headlines (it matches the condensed caps of the title), Barlow for reading and labels,
    B612 Mono (the cockpit's own face) for the ship's instruments and every changing number, and Cinzel for faction
-   names, as on the faction cards. The fonts are served from this site, so a visit sends nothing to a third party. */
+   names, as on the faction cards. The fonts are served from this site, so loading them sends nothing to a third party. */
 
 @font-face { font-family: "Barlow"; src: url("/assets/fonts/Barlow/Barlow-Regular.ttf") format("truetype"); font-weight: 400; font-style: normal; font-display: swap; }
 @font-face { font-family: "Barlow"; src: url("/assets/fonts/Barlow/Barlow-Italic.ttf") format("truetype"); font-weight: 400; font-style: italic; font-display: swap; }
