@@ -243,10 +243,11 @@ h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
 .hero__dust { position: absolute; left: 0; top: 72.356%; width: 100%; height: 20.259%; }
 .hero__copy { position: absolute; left: 24.39%; top: 55%; width: 40.46%; }
 .hero__title img { width: 100%; filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.6)); }
-/* The trademark sign sits at the top-right of REACH, whose letters end 95% across the title image and start 6% down. */
+/* The trademark sign follows the whole title, so it sits at the top-right of UNKNOWN, whose letters end 79.9% across
+   the title image and start 78.7% down; the right-hand rule begins at 83.3%, so the sign fits in the gap before it. */
 .hero__title { position: relative; }
 .hero__title::after {
-  content: "\2122"; position: absolute; left: 95.6%; top: 4%;
+  content: "\2122"; position: absolute; left: 80.4%; top: 76.7%;
   font-size: clamp(0.7rem, 1.1vw, 1.15rem); line-height: 1; color: var(--ink); text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
 }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(20px, 2.4vw, 34px); }
@@ -1522,10 +1523,12 @@ a.log__frame:hover { box-shadow: 0 0 0 1px var(--accent); }
 /* footer */
 .foot { padding: 48px 0 calc(48px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); }
 .foot__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 28px; }
-.foot__brand { display: flex; align-items: center; gap: 18px; text-decoration: none; }
+.foot__brand { position: relative; display: flex; align-items: center; gap: 18px; text-decoration: none; }
 .foot__brand img:first-child { width: 34px; }
 .foot__wordmark { width: 200px; opacity: 0.9; }
-.foot__brand::after { content: "\2122"; align-self: flex-start; margin-left: -14px; font-size: 0.625rem; line-height: 1; color: var(--ink-faint); }
+/* The trademark sign follows the whole title: just past UNKNOWN's last letter, which ends 80.8% across the 200 px
+   wordmark (after the 34 px monogram and the 18 px gap), raised to sit on the letters' top, 82.2% down its 52 px. */
+.foot__brand::after { content: "\2122"; position: absolute; left: calc(52px + 200px * 0.808 + 1px); top: 39px; font-size: 0.625rem; line-height: 1; color: var(--ink-faint); }
 .foot__small { color: var(--ink-faint); font-size: 0.75rem; text-align: right; }
 .foot__small p { margin: 0; }
 @media (max-width: 640px) { .foot__small { text-align: left; } }
