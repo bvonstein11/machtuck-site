@@ -19,15 +19,15 @@
   <meta name="twitter:site" content="@MachTuckGames">
   <meta name="twitter:image:alt" content="The Reach: Unknown title beside the VX-21 VIGIL mech on a ridge at dusk">
   <meta name="theme-color" content="#07090d">
-  <link rel="icon" href="/favicon.svg?v=3a7ae272" type="image/svg+xml">
-  <link rel="icon" href="/favicon-32.png?v=3a7ae272" sizes="32x32" type="image/png">
+  <link rel="icon" href="/favicon.svg?v=1d787625" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png?v=1d787625" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <link rel="stylesheet" href="/assets/site.css?v=3a7ae272">
-  <link rel="stylesheet" href="/physics/physics.css?v=3a7ae272">
-  <script src="/assets/ship.js?v=3a7ae272" defer></script>
-  <script src="/assets/prealpha.js?v=3a7ae272" defer></script>
-  <script src="/assets/site.js?v=3a7ae272" defer></script>
-  <script src="/physics/physics.js?v=3a7ae272" defer></script>
+  <link rel="stylesheet" href="/assets/site.css?v=1d787625">
+  <link rel="stylesheet" href="/physics/physics.css?v=1d787625">
+  <script src="/assets/ship.js?v=1d787625" defer></script>
+  <script src="/assets/prealpha.js?v=1d787625" defer></script>
+  <script src="/assets/site.js?v=1d787625" defer></script>
+  <script src="/physics/physics.js?v=1d787625" defer></script>
 </head>
 <body>
   <a class="skip" href="#physics">Skip to content</a>
@@ -383,8 +383,8 @@
         </div>
         <div class="dock">
           <dl class="hud hud--four">
-            <div><dt>Falls</dt><dd data-out="drop">83 ft low</dd></div>
-            <div><dt>Hold</dt><dd data-out="hold">1.95 ticks over</dd></div>
+            <div><dt>Falls</dt><dd data-out="drop">127 ft low</dd></div>
+            <div><dt>Hold</dt><dd data-out="hold">On bar 2</dd></div>
             <div><dt>Wind</dt><dd data-out="drift">12 ft downwind</dd></div>
             <div><dt>Hits</dt><dd data-out="tally">0 of 0</dd></div>
           </dl>
@@ -408,13 +408,13 @@
         <p class="note__say">The long gun's rounds obey gravity and the wind. The autopilots fight under the same physics: when they miss, it is their aim, never different rules.</p>
         <details class="sums">
           <summary>The arithmetic</summary>
-          <p>DART-20 rounds leave the muzzle at 330 m/s and are zeroed at 300 meters, 328 yards. Past that they drop below your line of sight, so at range you hold over, walking the target up the scope's ladder: about two ticks at 1,000 yards. One tick on the ladder is 14.2 milliradians.</p>
+          <p>DART-20 rounds leave the muzzle at 267 m/s and are zeroed at 300 meters, 328 yards. Past that they drop below your line of sight, so at range you hold over, walking the target up the scope's ladder: at 1,000 yards, put the second bar on the target. The ladder's first bar sits 31.2 milliradians below the center and the second 42.3.</p>
           <div class="eq">
             <p><b>Drop</b> = ½ × g × R × (R − Z) ÷ v²</p>
             <p>R the range, Z the zero, v the muzzle velocity</p>
           </div>
           <p>Crosswind turns a fast round by a fixed angle, so the miss grows with range. A headwind or a tailwind does nothing sideways.</p>
-          <p>In the game a DART-20 shot is settled the moment you fire. Here the round flies at its muzzle velocity so you can watch it; the drop and the drift are the same numbers. The sight is a diagram, not the game's reticle, and the side view stretches height so the arc can be seen.</p>
+          <p>In the game a DART-20 shot is settled the moment you fire. Here the round flies at its muzzle velocity so you can watch it; the drop and the drift are the same numbers. The sight is a diagram, not the game's reticle, though its three bars sit where the reticle's first three do, and the side view stretches height so the arc can be seen.</p>
         </details>
       </div>
     </section>

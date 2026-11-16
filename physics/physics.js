@@ -62,9 +62,11 @@ const GAME = {
   "immuneS": 2,
   "ctFront": 200,
   "ctRear": 150,
-  "dartMuzzle": 330,
+  "dartMuzzle": 267,
   "dartZeroM": 300,
-  "tickMrad": 14.2,
+  "scopeFovDeg": 22,
+  "ladderBar1H": 0.0803,
+  "ladderBar2H": 0.1089,
   "wind": { "DART-20": 0.0009, "CHAIN-30": 0.0006, "SLUG-250": 0.0003, "VOLLEY-6": 0.0005, "THUMP-82": 0.2, "BREACH-275": 0.2, "SPIKE-90": 0, "PULSE-50": 0 },
   "lobSeconds": { "THUMP-82": 1.3, "BREACH-275": 3 },
   "rangeM": { "DART-20": 914, "CHAIN-30": 137, "SLUG-250": 183, "VOLLEY-6": 389 },
@@ -216,6 +218,13 @@ const Physics = (() => {
              mrad: 1000 * 0.5 * GAME.gravity * (rangeM - GAME.dartZeroM) / v2 };
   }
 
+  /** The DART-20 reticle's ladder bar i (from 1), in mrad below the center. The art's bars are measured as shares of the
+   *  screen's height (DartScopeReadoutsSelfTest); DartScopeReadouts.FractionOfHeightBelowCentre turned round gives the angle. */
+  function ladderBar(i) {
+    const f = GAME.ladderBar1H + (i - 1) * (GAME.ladderBar2H - GAME.ladderBar1H);
+    return 1000 * Math.atan(2 * f * Math.tan(GAME.scopeFovDeg * Math.PI / 360));
+  }
+
   /** WindBallistics: a direct-fire round turns by factor × crosswind (rad); a lobbed one lands wind × time × factor off. */
   function drift(gun, rangeM, windMph) {
     const w = windMph * MPH, f = GAME.wind[gun] || 0;
@@ -289,7 +298,7 @@ const Physics = (() => {
     return lo;
   }
 
-  return { FT, YD, MPH, LB_PER_T, loadOf, fall, weight, newFlight, flightStep, landingLights, slope, wade, ram, knocked, drop, drift, hash01, system, air, density, speedOfSound, cutoff };
+  return { FT, YD, MPH, LB_PER_T, loadOf, fall, weight, newFlight, flightStep, landingLights, slope, wade, ram, knocked, drop, ladderBar, drift, hash01, system, air, density, speedOfSound, cutoff };
 })();
 
 // ---------- the page ----------
@@ -1189,16 +1198,21 @@ const Physics = (() => {
     const glass = root.querySelector("[data-glass]");
     let rangeYd = 1000, windMph = 10, aimX = 0, aimY = 0, shot = null, marks = [], hits = 0, shots = 0, phase = 0, driftPhase = 0;
     let lay = { cx: 0, cy: 0, R: 1, K: 1 };
+    const bar = Physics.ladderBar, gap = bar(2) - bar(1);   // the ladder's bars, and the angle between two
+    const holdText = mrad => {
+      const on = [1, 2, 3].find(i => Math.abs(mrad - bar(i)) < gap * 0.1);
+      return on ? `On bar ${on}` : `${n(Math.abs(mrad), 1)} mrad ${mrad > 0 ? "over" : "under"}`;
+    };
 
     function read() {
       const m = rangeYd * YD, d = Physics.drop(m);
       const driftM = Physics.drift("DART-20", m, windMph);
       put(root, "range", `${n(rangeYd)} yd`);
       put(root, "wind", `${n(windMph)} mph`);
-      const zeroed = Math.abs(d.mrad / GAME.tickMrad) < 0.02;   // within a fiftieth of a tick of the zero, nothing to hold
+      const zeroed = Math.abs(d.mrad) < gap * 0.02;   // within a fiftieth of a bar's gap of the zero, nothing to hold
       const ft = Math.abs(d.m / FT), shown = n(ft, ft < 10 ? 1 : 0);
       put(root, "drop", zeroed ? "On the line" : `${shown} ft ${d.m >= 0 ? "low" : "high"}`);
-      put(root, "hold", zeroed ? "None: zeroed here" : `${n(Math.abs(d.mrad) / GAME.tickMrad, 2)} ticks ${d.mrad > 0 ? "over" : "under"}`);
+      put(root, "hold", zeroed ? "None: zeroed here" : holdText(d.mrad));
       put(root, "drift", `${n(driftM / FT)} ft downwind`);
     }
     function reset() { aimX = 0; aimY = 0; marks = []; shot = null; put(root, "verdict", "Drag the picture to lay the sight, then fire."); read(); }
@@ -1208,7 +1222,7 @@ const Physics = (() => {
       move: (_, dx, dy) => { aimX = clamp(aimX - dx / lay.K, -70, 70); aimY = clamp(aimY + dy / lay.K, -70, 70); },
     });
     glass.addEventListener("keydown", e => {
-      const step = GAME.tickMrad / 10;
+      const step = gap / 10;
       if (e.key === "ArrowUp") aimY += step; else if (e.key === "ArrowDown") aimY -= step;
       else if (e.key === "ArrowLeft") aimX -= step; else if (e.key === "ArrowRight") aimX += step;
       else if (e.key === "Enter" || e.key === " ") fire(); else return;
@@ -1243,7 +1257,7 @@ const Physics = (() => {
       const { w, h } = s, wide = w >= 900;
       const R = wide ? Math.min(h * 0.4, w * 0.24) : Math.min(w * 0.42, h * 0.3);
       const cx = wide ? dockLeftAt(w) - R - 14 : w * 0.5, cy = wide ? h * 0.56 : Math.min(h - R - 90, Math.max(128, wordsEnd(root) + 6) + R);
-      const T = R / 4.2, K = T / GAME.tickMrad, m = rangeYd * YD;
+      const K = R / (bar(3) + gap / 2), T = gap * K, m = rangeYd * YD;   // the glass shows the third bar and half a gap more
       lay = { cx, cy, R, K };
       glass.style.width = glass.style.height = `${(R * 2).toFixed(0)}px`;
       glass.style.transform = `translate(${(cx - R).toFixed(1)}px, ${(cy - R).toFixed(1)}px)`;
@@ -1258,7 +1272,7 @@ const Physics = (() => {
       const tallMrad = GAME.standingM / m * 1000, feetY = toY(-tallMrad / 2);
       // the land behind the target, at a fixed optical size; its floor sits at the VIGIL's feet
       if (ready(scene)) {
-        const iw = T * 46, ih = iw * scene.naturalHeight / scene.naturalWidth;
+        const iw = R * 11, ih = iw * scene.naturalHeight / scene.naturalWidth;   // the size it had in the glass before the bars moved
         ctx.drawImage(scene, toX(0) - iw * 0.5, feetY - ih * 0.62, iw, ih);
         ctx.fillStyle = "rgba(255,240,215,.08)"; ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
       } else { ctx.fillStyle = "#6d5a48"; ctx.fillRect(cx - R, cy - R, R * 2, R * 2); }
@@ -1277,7 +1291,7 @@ const Physics = (() => {
       // where earlier rounds went
       for (const mark of marks) {
         mark.age += dt;
-        const px = toX(mark.x), py = toY(mark.y), size = Math.max(4, GAME.tickMrad * 0.14 * K);
+        const px = toX(mark.x), py = toY(mark.y), size = Math.max(4, gap * 0.18 * K);
         ctx.fillStyle = mark.hit ? "rgba(255,200,120,.95)" : "rgba(240,225,200,.8)";
         ctx.beginPath(); ctx.arc(px, py, size * (mark.hit ? 1 : 0.8), 0, 6.2832); ctx.fill();
         if (mark.age < 0.9 && !calm) {
@@ -1298,14 +1312,14 @@ const Physics = (() => {
         ctx.fillStyle = g; ctx.fillRect(px - size * 5, py - size * 5, size * 10, size * 10);
         if (share >= 1) { settle(shot); shot = null; }
       }
-      // the sight: a diagram of the ladder, one tick to a line
+      // the sight: a diagram of the ladder, its first three bars where the reticle's are; wind marks a bar's gap apart
       ctx.strokeStyle = "rgba(10,14,16,.9)"; ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.moveTo(cx - R, cy); ctx.lineTo(cx + R, cy); ctx.moveTo(cx, cy - R); ctx.lineTo(cx, cy + R); ctx.stroke();
       ctx.font = "600 13px 'B612 Mono', monospace"; ctx.fillStyle = "rgba(10,14,16,.95)"; ctx.textAlign = "left";
       for (let i = 1; i <= 3; i++) {
-        const half = 10 + i * 4;
-        ctx.beginPath(); ctx.moveTo(cx - half, cy + i * T); ctx.lineTo(cx + half, cy + i * T); ctx.stroke();
-        ctx.fillText(String(i), cx + half + 6, cy + i * T + 4);
+        const half = i === 1 ? 20 : 13, y = cy + bar(i) * K;
+        ctx.beginPath(); ctx.moveTo(cx - half, y); ctx.lineTo(cx + half, y); ctx.stroke();
+        ctx.fillText(String(i), cx + half + 6, y + 4);
         ctx.beginPath(); ctx.moveTo(cx + i * T, cy - 5); ctx.lineTo(cx + i * T, cy + 5); ctx.moveTo(cx - i * T, cy - 5); ctx.lineTo(cx - i * T, cy + 5); ctx.stroke();
       }
       ctx.restore();
