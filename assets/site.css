@@ -223,25 +223,20 @@ h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
 /* A 16:9 stage that covers the screen, so every layer sits where the boot screen puts it
    (Assets/Resources/TitleShot/TitleShot_Layout.json). */
 .hero__stage {
-  /* When the screen is narrower than 16:9 the stage is cropped at the sides. The crop centres on 58.4%, midway
-     between the title's left edge (24.4%) and the VIGIL's right edge (92.5%), so both stay in frame down to 5:4,
-     and it never slides past either edge of the sky. */
+  /* When the screen is narrower than 16:9 the stage is cropped at the sides. The crop centres on 55%, midway
+     between the title's left edge (20%) and the VIGIL's right edge (90%, its rocket pod, in the boot screen), so both
+     stay in frame down to 5:4, and it never slides past either edge of the picture. */
   --stage-w: max(100%, max(100svh, 560px) * 16 / 9);
   position: absolute; top: 50%;
-  left: clamp(calc(100% - var(--stage-w)), calc(50% - 0.584 * var(--stage-w)), 0px);
+  left: clamp(calc(100% - var(--stage-w)), calc(50% - 0.55 * var(--stage-w)), 0px);
   width: var(--stage-w); aspect-ratio: 16 / 9;
   transform: translateY(-50%);
 }
 .hero__sky, .hero__sky img { position: absolute; inset: 0; width: 100%; height: 100%; }
 .hero__sky img { object-fit: cover; }
-/* 2026-11-11: the title shot's VIGIL with its shadow behind it and its dust in front, one group that moves as
-   one. The group is the three layers' union rect; each layer sits in it by its own rect, so the group can be placed and
-   scaled on a narrow screen without the shadow and dust leaving the feet. */
-.hero__mech { position: absolute; left: 57.448%; top: 9.607%; width: 42.552%; height: 87.755%; }
-.hero__shadow { position: absolute; left: 6.732%; top: 79.636%; width: 93.268%; height: 20.364%; }
-.hero__vigil { position: absolute; left: 17.075%; top: 0; width: 65.239%; height: 86.6%; object-fit: contain; }
-.hero__dust { position: absolute; left: 0; top: 72.356%; width: 100%; height: 20.259%; }
-.hero__copy { position: absolute; left: 24.39%; top: 55%; width: 40.46%; }
+/* The words run from 20% across to 57%, where the VIGIL's left arm starts in the picture: wide enough for both buttons in
+   one row on a 1280-wide screen. */
+.hero__copy { position: absolute; left: 20%; top: 55%; width: 37%; }
 .hero__title img { width: 100%; filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.6)); }
 /* The trademark sign follows the whole title, so it sits at the top-right of UNKNOWN, whose letters end 79.9% across
    the title image and start 78.7% down; the right-hand rule begins at 83.3%, so the sign fits in the gap before it. */
@@ -300,11 +295,26 @@ h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
 /* Tall and narrow screens: the stage would crop the title, so the layers stack instead. */
 @media (max-aspect-ratio: 5/4) {
   .hero__stage { inset: 0; left: 0; top: 0; width: 100%; height: 100%; aspect-ratio: auto; transform: none; }
-  .hero__sky img { object-position: 58% 50%; }
-  /* The group stands where the VIGIL alone stood (right -4%, feet 17% up, 41% tall): its height is the VIGIL's over 86.6%,
-     and `translate` (which the parallax's `transform` leaves alone) moves it right by the 17.687% of its width past the
-     VIGIL's right edge. The shadow and dust run off the screen's edge. */
-  .hero__mech { left: auto; right: -4%; top: auto; bottom: 10.656%; width: auto; height: 47.344%; aspect-ratio: 0.862042; translate: 17.687% 0; }
+  /* 2026-11-24: the VIGIL is part of the picture now, so the picture itself takes the middle band, cropped round the VIGIL
+     (57-90% across); its night sky fades into the page above, its ground below. The band starts where the countdown ends
+     (the words start at the bar plus 5svh; the title is 1600x455, as wide as the screen up to 560px; the line and the
+     countdown take about 100px more) and stops above the buttons (68px up, about 92px tall), so the VIGIL's antenna
+     clears the countdown and its feet clear the buttons. A band wider than 16:9 (a near-square window) would cut the VIGIL
+     off at the legs, so the band is never wider than 16:9: there it shows the whole picture, centred, its sides faded too;
+     on a phone it is the screen's width and cropped round the VIGIL. `translate`, not `transform`: the parallax owns that. {CC} */
+  .hero__sky {
+    --band-top: calc(var(--top-height) + 5svh + min(100vw - 2 * var(--gutter), 560px) * 0.2844 + 100px);
+    --band-bottom: calc(160px + env(safe-area-inset-bottom, 0px));
+    inset: auto; top: var(--band-top); bottom: var(--band-bottom); left: 50%; translate: -50% 0; height: auto;
+    /* The hero is max(100svh, 560px) tall, so the band is that less its top and foot. */
+    width: min(100%, (max(100svh, 560px) - var(--band-top) - var(--band-bottom)) * 16 / 9);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 90%, transparent),
+                        linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+    -webkit-mask-composite: source-in;
+            mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 90%, transparent),
+                        linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+            mask-composite: intersect; }
+  .hero__sky img { object-position: 88% 50%; }
   .hero__copy { left: var(--gutter); right: var(--gutter); top: calc(var(--top-height) + 5svh); width: auto; }
   .hero__title { max-width: 560px; }
   /* 2026-11-04, from the phone review ("A little cramped", then "Move the button down and center the tag line don't
@@ -1500,8 +1510,6 @@ a.log__frame:hover { box-shadow: 0 0 0 1px var(--accent); }
 }
 @media (max-width: 560px) and (max-aspect-ratio: 5/4) {
   .has-signup .hero__copy { bottom: calc(52px + env(safe-area-inset-bottom, 0px)); }
-  /* The VIGIL's feet at 17% + 36px and its height 41% - 36px, as the group (see .hero__mech above). */
-  .has-signup .hero__mech { bottom: calc(10.656% + 41.57px); height: calc(47.344% - 41.57px); }
 }
 @media (min-width: 1221px) { .has-signup .bar__nav [data-discord] { display: none; } }
 
