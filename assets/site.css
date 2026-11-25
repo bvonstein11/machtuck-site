@@ -295,26 +295,37 @@ h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
 /* Tall and narrow screens: the stage would crop the title, so the layers stack instead. */
 @media (max-aspect-ratio: 5/4) {
   .hero__stage { inset: 0; left: 0; top: 0; width: 100%; height: 100%; aspect-ratio: auto; transform: none; }
-  /* 2026-11-24: the VIGIL is part of the picture now, so the picture itself takes the middle band, cropped round the VIGIL
-     (57-90% across); its night sky fades into the page above, its ground below. The band starts where the countdown ends
-     (the words start at the bar plus 5svh; the title is 1600x455, as wide as the screen up to 560px; the line and the
-     countdown take about 100px more) and stops above the buttons (68px up, about 92px tall), so the VIGIL's antenna
-     clears the countdown and its feet clear the buttons. A band wider than 16:9 (a near-square window) would cut the VIGIL
-     off at the legs, so the band is never wider than 16:9: there it shows the whole picture, centred, its sides faded too;
-     on a phone it is the screen's width and cropped round the VIGIL. `translate`, not `transform`: the parallax owns that. {CC} */
+  /* 2026-11-24: the VIGIL is part of the picture now. On a phone it stands in the room between the countdown and the
+     buttons, as the cut-out VIGIL did, and fills that room: the words end at the bar plus 5svh plus the title (1600x455, as
+     wide as the screen up to 560px) plus about 100px for the line and the countdown; the buttons start 160px up. In the
+     picture the VIGIL runs from 9% to 90% of its height, so the picture is the room / 0.81 tall and starts 11.1% of the room
+     above it; its sky above and its ground below run behind the words and the buttons. It is the screen's full width (a
+     phone in Safari, toolbars and all, had shrunk the first version to a small faded box: his "Doesn't seem like it's
+     mobile optimized"), cropped round the VIGIL, and fades top and bottom into the page. `translate`, not `transform`: the
+     parallax owns that. {CC} */
   .hero__sky {
-    --band-top: calc(var(--top-height) + 5svh + min(100vw - 2 * var(--gutter), 560px) * 0.2844 + 100px);
-    --band-bottom: calc(160px + env(safe-area-inset-bottom, 0px));
-    inset: auto; top: var(--band-top); bottom: var(--band-bottom); left: 50%; translate: -50% 0; height: auto;
-    /* The hero is max(100svh, 560px) tall, so the band is that less its top and foot. */
-    width: min(100%, (max(100svh, 560px) - var(--band-top) - var(--band-bottom)) * 16 / 9);
-    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 90%, transparent),
+    --room-top: calc(var(--top-height) + 5svh + min(100vw - 2 * var(--gutter), 560px) * 0.2844 + 100px);
+    --room-foot: calc(160px + env(safe-area-inset-bottom, 0px));
+    --room: calc(max(100svh, 560px) - var(--room-top) - var(--room-foot));
+    inset: auto; left: 50%; translate: -50% 0; height: auto;
+    top: calc(var(--room-top) - var(--room) * 0.111);
+    bottom: calc(var(--room-foot) - var(--room) * 0.1235);
+    width: min(100%, var(--room) * 2.195);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 90%, transparent);
+            mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 90%, transparent); }
+  .hero__sky img { object-position: 88% 50%; }
+}
+/* A near-square window has a wide, short room: there the picture is narrower than the screen, so its sides fade too. */
+@media (max-aspect-ratio: 5/4) and (min-aspect-ratio: 4/5) {
+  .hero__sky {
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 90%, transparent),
                         linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
     -webkit-mask-composite: source-in;
-            mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 90%, transparent),
+            mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 90%, transparent),
                         linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
             mask-composite: intersect; }
-  .hero__sky img { object-position: 88% 50%; }
+}
+@media (max-aspect-ratio: 5/4) {
   .hero__copy { left: var(--gutter); right: var(--gutter); top: calc(var(--top-height) + 5svh); width: auto; }
   .hero__title { max-width: 560px; }
   /* 2026-11-04, from the phone review ("A little cramped", then "Move the button down and center the tag line don't
