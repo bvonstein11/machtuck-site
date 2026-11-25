@@ -238,11 +238,11 @@ h3 { font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; }
    one row on a 1280-wide screen. */
 .hero__copy { position: absolute; left: 20%; top: 55%; width: 37%; }
 .hero__title img { width: 100%; filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.6)); }
-/* The trademark sign follows the whole title, so it sits at the top-right of UNKNOWN, whose letters end 79.9% across
-   the title image and start 78.7% down; the right-hand rule begins at 83.3%, so the sign fits in the gap before it. */
+/* The trademark sign follows the whole title, so it sits at the top-right of UNKNOWN, whose letters end 84.3% across
+   the title image and start 83.5% down in the locked wordmark (2co·351). */
 .hero__title { position: relative; }
 .hero__title::after {
-  content: "\2122"; position: absolute; left: 80.4%; top: 76.7%;
+  content: "\2122"; position: absolute; left: 84.8%; top: 81.5%;
   font-size: clamp(0.7rem, 1.1vw, 1.15rem); line-height: 1; color: var(--ink); text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
 }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(20px, 2.4vw, 34px); }
