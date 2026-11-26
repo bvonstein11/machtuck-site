@@ -17,7 +17,7 @@
   <meta property="og:image:height" content="628">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://machtuck.com/assets/img/alpha/alpha_share_1200x628.jpg">
-  <link rel="icon" href="/favicon.svg?v=aa54a027" type="image/svg+xml">
+  <link rel="icon" href="/favicon.svg?v=15a123e3" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <style>
     @font-face { font-family: "Barlow Condensed"; src: url("/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf"); font-weight: 600; font-display: swap; }
@@ -29,32 +29,34 @@
     html, body { margin: 0; background: var(--bg); color: var(--ink); }
     body { font: 400 17px/1.45 "Barlow", "Helvetica Neue", Arial, sans-serif; -webkit-text-size-adjust: 100%; }
     .wrap { max-width: 760px; margin: 0 auto; }
-    .hero { position: relative; aspect-ratio: 4 / 3; overflow: hidden; }
-    .hero img.art { width: 100%; height: 100%; object-fit: cover; object-position: 64% 45%; display: block; }
-    .hero .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,9,13,0) 45%, rgba(7,9,13,.85) 92%, var(--bg) 100%); }
+    .hero { position: relative; aspect-ratio: 748 / 896; overflow: hidden; }
+    .hero img.art { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hero img.wide, .hero img.mark { display: none; }
+    .hero .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,9,13,0) 70%, rgba(7,9,13,.7) 94%, var(--bg) 100%); }
     .hero img.mark { position: absolute; left: 5%; bottom: 6%; width: 46%; }
     .card { padding: 6px 20px 40px; text-align: center; border-top: 3px solid var(--accent); }
-    h1 { font: 600 clamp(26px, 7.6vw, 44px)/1.05 "Barlow Condensed", "Arial Narrow", sans-serif; letter-spacing: .14em; color: var(--accent); margin: 26px 0 6px; }
-    .label { font: 400 12px/1 "B612 Mono", Menlo, monospace; letter-spacing: .22em; color: var(--dim); margin: 22px 0 10px; }
+    h1 { font: 600 clamp(26px, 7.6vw, 44px)/1.05 "Barlow Condensed", "Arial Narrow", sans-serif; letter-spacing: .14em; color: var(--accent); margin: 18px 0 4px; }
+    .label { font: 400 12px/1 "B612 Mono", Menlo, monospace; letter-spacing: .22em; color: var(--dim); margin: 16px 0 9px; }
     .key { font: 400 26px/1.2 "B612 Mono", Menlo, monospace; letter-spacing: .04em; background: var(--panel); border: 1px solid #3a414c;
-           border-radius: 6px; padding: 16px 12px; user-select: all; -webkit-user-select: all; word-break: break-all; }
-    .copy { margin-top: 10px; background: none; border: 0; color: var(--dim); font: 600 14px/1 "Barlow", sans-serif; letter-spacing: .08em; padding: 8px; cursor: pointer; }
-    .btn { display: block; text-decoration: none; text-align: center; border-radius: 8px; padding: 17px 16px; margin: 14px 0 0;
+           border-radius: 6px; padding: 13px 12px; user-select: all; -webkit-user-select: all; word-break: break-all; }
+    .copy { margin-top: 4px; background: none; border: 0; color: var(--dim); font: 600 14px/1 "Barlow", sans-serif; letter-spacing: .08em; padding: 8px; cursor: pointer; }
+    .btn { display: block; text-decoration: none; text-align: center; border-radius: 8px; padding: 16px 16px; margin: 12px 0 0;
            font: 600 20px/1 "Barlow Condensed", "Arial Narrow", sans-serif; letter-spacing: .12em; }
-    .btn.primary { background: var(--accent); color: #0b0d11; margin-top: 22px; }
+    .btn.primary { background: var(--accent); color: #0b0d11; margin-top: 12px; }
     .btn.second { border: 1.5px solid var(--accent); color: var(--accent); }
     .how { color: var(--dim); font-size: 15px; margin: 18px 4px 0; }
     .how b { color: var(--ink); font-weight: 600; }
     .foot { font: 400 11px/1 "B612 Mono", Menlo, monospace; letter-spacing: .3em; color: #59606a; margin: 34px 0 0; }
     .nokey .keyblock { display: none; }
     .withkey .nokeyline { display: none; }
-    @media (min-width: 700px) { .hero { aspect-ratio: 16 / 9; } .key { font-size: 34px; } .card { padding: 6px 48px 48px; } }
+    @media (min-width: 700px) { .hero { aspect-ratio: 16 / 9; } .hero img.tall { display: none; } .hero img.wide, .hero img.mark { display: block; } .hero img.wide { object-position: 62% 40%; } .key { font-size: 34px; } .card { padding: 6px 48px 48px; } }
   </style>
 </head>
 <body class="nokey">
   <div class="wrap">
     <div class="hero">
-      <img class="art" src="/assets/img/alpha/keyart_2400.jpg" alt="The VX-21 VIGIL firing a rocket salvo at dusk">
+      <img class="art tall" src="/assets/img/alpha/vertical_748x896.jpg" alt="The Reach: Unknown. The VX-21 VIGIL firing a rocket salvo at dusk">
+      <img class="art wide" src="/assets/img/alpha/keyart_2400.jpg" alt="The VX-21 VIGIL firing a rocket salvo at dusk" loading="lazy">
       <div class="shade"></div>
       <img class="mark" src="/assets/img/alpha/wordmark_white_1280.png" alt="The Reach: Unknown">
     </div>
