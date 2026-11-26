@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Closed Alpha Access · The Reach: Unknown</title>
+  <meta name="description" content="Your key to the closed alpha of The Reach: Unknown, and the pilots' Discord.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#07090d">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Mach Tuck Games">
+  <meta property="og:title" content="The Reach: Unknown · Closed Alpha Access">
+  <meta property="og:description" content="Your key to the closed alpha, and the pilots' Discord.">
+  <meta property="og:url" content="https://machtuck.com/alpha/">
+  <meta property="og:image" content="https://machtuck.com/assets/img/alpha/alpha_share_1200x628.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="628">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://machtuck.com/assets/img/alpha/alpha_share_1200x628.jpg">
+  <link rel="icon" href="/favicon.svg?v=aa54a027" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <style>
+    @font-face { font-family: "Barlow Condensed"; src: url("/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf"); font-weight: 600; font-display: swap; }
+    @font-face { font-family: "Barlow"; src: url("/assets/fonts/Barlow/Barlow-Regular.ttf"); font-weight: 400; font-display: swap; }
+    @font-face { font-family: "Barlow"; src: url("/assets/fonts/Barlow/Barlow-SemiBold.ttf"); font-weight: 600; font-display: swap; }
+    @font-face { font-family: "B612 Mono"; src: url("/assets/fonts/B612Mono/B612Mono-Regular.ttf"); font-display: swap; }
+    :root { --bg: #07090d; --panel: #0d1117; --accent: #e0893e; --ink: #e9ecef; --dim: #8b929b; --line: #232831; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: var(--bg); color: var(--ink); }
+    body { font: 400 17px/1.45 "Barlow", "Helvetica Neue", Arial, sans-serif; -webkit-text-size-adjust: 100%; }
+    .wrap { max-width: 760px; margin: 0 auto; }
+    .hero { position: relative; aspect-ratio: 4 / 3; overflow: hidden; }
+    .hero img.art { width: 100%; height: 100%; object-fit: cover; object-position: 64% 45%; display: block; }
+    .hero .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,9,13,0) 45%, rgba(7,9,13,.85) 92%, var(--bg) 100%); }
+    .hero img.mark { position: absolute; left: 5%; bottom: 6%; width: 46%; }
+    .card { padding: 6px 20px 40px; text-align: center; border-top: 3px solid var(--accent); }
+    h1 { font: 600 clamp(26px, 7.6vw, 44px)/1.05 "Barlow Condensed", "Arial Narrow", sans-serif; letter-spacing: .14em; color: var(--accent); margin: 26px 0 6px; }
+    .label { font: 400 12px/1 "B612 Mono", Menlo, monospace; letter-spacing: .22em; color: var(--dim); margin: 22px 0 10px; }
+    .key { font: 400 26px/1.2 "B612 Mono", Menlo, monospace; letter-spacing: .04em; background: var(--panel); border: 1px solid #3a414c;
+           border-radius: 6px; padding: 16px 12px; user-select: all; -webkit-user-select: all; word-break: break-all; }
+    .copy { margin-top: 10px; background: none; border: 0; color: var(--dim); font: 600 14px/1 "Barlow", sans-serif; letter-spacing: .08em; padding: 8px; cursor: pointer; }
+    .btn { display: block; text-decoration: none; text-align: center; border-radius: 8px; padding: 17px 16px; margin: 14px 0 0;
+           font: 600 20px/1 "Barlow Condensed", "Arial Narrow", sans-serif; letter-spacing: .12em; }
+    .btn.primary { background: var(--accent); color: #0b0d11; margin-top: 22px; }
+    .btn.second { border: 1.5px solid var(--accent); color: var(--accent); }
+    .how { color: var(--dim); font-size: 15px; margin: 18px 4px 0; }
+    .how b { color: var(--ink); font-weight: 600; }
+    .foot { font: 400 11px/1 "B612 Mono", Menlo, monospace; letter-spacing: .3em; color: #59606a; margin: 34px 0 0; }
+    .nokey .keyblock { display: none; }
+    .withkey .nokeyline { display: none; }
+    @media (min-width: 700px) { .hero { aspect-ratio: 16 / 9; } .key { font-size: 34px; } .card { padding: 6px 48px 48px; } }
+  </style>
+</head>
+<body class="nokey">
+  <div class="wrap">
+    <div class="hero">
+      <img class="art" src="/assets/img/alpha/keyart_2400.jpg" alt="The VX-21 VIGIL firing a rocket salvo at dusk">
+      <div class="shade"></div>
+      <img class="mark" src="/assets/img/alpha/wordmark_white_1280.png" alt="The Reach: Unknown">
+    </div>
+    <div class="card">
+      <h1>CLOSED ALPHA ACCESS</h1>
+      <div class="keyblock">
+        <p class="label">YOUR PERSONAL STEAM KEY</p>
+        <div class="key" id="key"></div>
+        <button class="copy" id="copy" type="button">COPY KEY</button>
+      </div>
+      <p class="how nokeyline">Your personal key comes in your invite message.</p>
+      <a class="btn primary" id="redeem" href="https://store.steampowered.com/account/registerkey">REDEEM ON STEAM</a>
+      <a class="btn second" href="https://discord.gg/akCxskKStX">JOIN THE PILOTS ON DISCORD</a>
+      <p class="how">Plays on Windows and Mac. Redeem the key, then install <b>The Reach: Unknown Playtest</b> from your Steam library.</p>
+      <p class="foot">MACH TUCK GAMES</p>
+    </div>
+  </div>
+  <script>
+    // The key rides in the link's #fragment, which a browser never sends to any server. Read it, then clear it from the address bar.
+    (function () {
+      var ok = /^[A-Z0-9]{5}(-[A-Z0-9]{5}){2,4}$/;
+      var raw = decodeURIComponent((location.hash || "").slice(1)).trim().toUpperCase();
+      try { if (ok.test(raw)) sessionStorage.setItem("alphaKey", raw); else raw = sessionStorage.getItem("alphaKey") || ""; } catch (e) {}
+      if (!ok.test(raw)) return;
+      document.body.className = "withkey";
+      document.getElementById("key").textContent = raw;
+      document.getElementById("redeem").href = "https://store.steampowered.com/account/registerkey?key=" + encodeURIComponent(raw);
+      var copy = document.getElementById("copy");
+      copy.addEventListener("click", function () {
+        if (navigator.clipboard) navigator.clipboard.writeText(raw).then(function () { copy.textContent = "COPIED"; });
+      });
+      if (history.replaceState) history.replaceState(null, "", location.pathname);
+    })();
+  </script>
+</body>
+</html>
