@@ -1,4 +1,4 @@
-// Every picture on the site says Pre-Alpha, from this one place. It watches each picture's size rather than a list of pages, so a
+// Every picture on the site says Closed Alpha, from this one place. It watches each picture's size rather than a list of pages, so a
 // picture that appears later (a land's panel, a new page) gets its label too, and a thumbnail or an icon does not.
 (() => {
   if (!("ResizeObserver" in window)) return;
@@ -25,7 +25,7 @@
     if (getComputedStyle(holder).position === "static") holder.style.position = "relative";
     const tag = document.createElement("span");
     tag.className = width < FULL_SIZE ? "prealpha prealpha--small" : "prealpha";
-    tag.textContent = "Pre-Alpha";
+    tag.textContent = "Closed Alpha";
     holder.append(tag);
   }
 

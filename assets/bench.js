@@ -137,7 +137,7 @@
       return { set(text, units) { figure.textContent = text; unit.textContent = units ? ` ${units}` : ""; }, sub };
     };
     const speed = stat("Top speed"), cooling = stat("Cooling"), jets = stat("Jump jets");
-    const source = el("div", "bench__source", "The game's own figures · pre-alpha");
+    const source = el("div", "bench__source", "The game's own figures · closed alpha");
     sheet.append(head, fit, weight, stats, source);
 
     const controls = el("div", "bench__controls");

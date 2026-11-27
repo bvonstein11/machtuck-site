@@ -72,7 +72,7 @@
   };
   const down = step("ranks__step--down", "One rank down", -1);
   const up = step("ranks__step--up", "One rank up", 1);
-  const tag = el("span", "prealpha", "Pre-Alpha");
+  const tag = el("span", "prealpha", "Closed Alpha");
   stage.append(device, caption, down, up, tag);
 
   // ── the rungs of the tier on show ────────────────────────────────────────

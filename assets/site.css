@@ -1509,7 +1509,7 @@ a.log__frame:hover { box-shadow: 0 0 0 1px var(--accent); }
 
 /* the hero and the bar with the request on: the long label takes its own width; the full bar swaps its Discord button for
    the short label, the menu shows both. 2026-11-07, from the phone review ("add the grey join the discord button under the
-   closed beta request"): a phone stacks the request over the grey Discord button. The pair drops 16px nearer the Pre-Alpha
+   closed beta request"): a phone stacks the request over the grey Discord button. The pair drops 16px nearer the Closed Alpha
    label, and the VIGIL and its shadow give up the rest of the second row (36px) at the feet, so neither button covers the
    mech. `{CC}` the sizes. */
 .has-signup .hero__actions .btn { flex: 0 1 auto; }
@@ -1851,7 +1851,7 @@ html.has-frontmap-full, html.has-frontmap-full body { overflow: hidden; }
 }
 @media (prefers-reduced-motion: reduce) { .bench__loadout, .bench__paint, .bench__hint { transition: none; } }
 
-/* Every picture says Pre-Alpha (assets/prealpha.js adds the label). It sits top right unless the picture has something there. */
+/* Every picture says Closed Alpha (assets/prealpha.js adds the label). It sits top right unless the picture has something there. */
 .prealpha {
   position: absolute; z-index: 5; top: 12px; right: 12px; padding: 4px 8px; pointer-events: none;
   font-family: "B612 Mono", ui-monospace, monospace; font-size: 11px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase;

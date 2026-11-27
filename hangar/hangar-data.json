@@ -1,7 +1,7 @@
 {
   "source": "Vigil ▸ Website ▸ Export Hangar Data",
   "build": "net-s299.113",
-  "note": "Pre-alpha. Stock levels, outside Ranked. Weights in pounds (tonnes × 2,000, as the game shows them).",
+  "note": "Closed alpha. Stock levels, outside Ranked. Weights in pounds (tonnes × 2,000, as the game shows them).",
   "mech": {
     "id": "VX21_VIGIL",
     "name": "VX-21 VIGIL",

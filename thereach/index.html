@@ -87,15 +87,15 @@
   }
   </script>
 
-  <link rel="icon" href="/favicon.svg?v=7b758c69" type="image/svg+xml">
-  <link rel="icon" href="/favicon-32.png?v=7b758c69" sizes="32x32" type="image/png">
+  <link rel="icon" href="/favicon.svg?v=16c749f2" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png?v=16c749f2" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
   <link rel="preload" href="/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/assets/img/boot-2560.webp" as="image" media="(min-width: 1281px)">
   <link rel="preload" href="/assets/img/boot-1280.webp" as="image" media="(max-width: 1280px)">
-  <link rel="stylesheet" href="/assets/site.css?v=7b758c69">
-  <link rel="stylesheet" href="/drop/drop.css?v=7b758c69">
+  <link rel="stylesheet" href="/assets/site.css?v=16c749f2">
+  <link rel="stylesheet" href="/drop/drop.css?v=16c749f2">
   <script>
     // Boarding: arriving from another site opens on the shipboard network, which assets/site.js draws. Nothing is
     // stored in the browser (the privacy page promises that): a reload, Back, or a link from this site skips it. This
@@ -110,20 +110,20 @@
       }
     } catch (error) { /* no boarding screen */ }
   </script>
-  <script src="/assets/ship.js?v=7b758c69" defer></script>
-  <script src="/assets/prealpha.js?v=7b758c69" defer></script>
-  <script src="/assets/crossing.js?v=7b758c69" defer></script>
-  <script src="/assets/site.js?v=7b758c69" defer></script>
-  <script src="/drop/drop.js?v=7b758c69" defer></script>
-  <script src="/assets/patch.js?v=7b758c69" defer></script>
-  <script src="/assets/patchmaker.js?v=7b758c69" defer></script>
-  <script src="/assets/front.js?v=7b758c69" defer></script>
-  <script src="/assets/loadouts.js?v=7b758c69" defer></script>
-  <script src="/assets/bench.js?v=7b758c69" defer></script>
-  <script src="/assets/valor.js?v=7b758c69" defer></script>
-  <script src="/assets/ranks.js?v=7b758c69" defer></script>
-  <script src="/assets/story.js?v=7b758c69" defer></script>
-  <script src="/assets/lands.js?v=7b758c69" defer></script>
+  <script src="/assets/ship.js?v=16c749f2" defer></script>
+  <script src="/assets/prealpha.js?v=16c749f2" defer></script>
+  <script src="/assets/crossing.js?v=16c749f2" defer></script>
+  <script src="/assets/site.js?v=16c749f2" defer></script>
+  <script src="/drop/drop.js?v=16c749f2" defer></script>
+  <script src="/assets/patch.js?v=16c749f2" defer></script>
+  <script src="/assets/patchmaker.js?v=16c749f2" defer></script>
+  <script src="/assets/front.js?v=16c749f2" defer></script>
+  <script src="/assets/loadouts.js?v=16c749f2" defer></script>
+  <script src="/assets/bench.js?v=16c749f2" defer></script>
+  <script src="/assets/valor.js?v=16c749f2" defer></script>
+  <script src="/assets/ranks.js?v=16c749f2" defer></script>
+  <script src="/assets/story.js?v=16c749f2" defer></script>
+  <script src="/assets/lands.js?v=16c749f2" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -216,7 +216,7 @@
     </section>
 
     <!-- THE DROP: the game's own opening, played by the scroll: the burn, the touchdown, the cockpit coming up
-         (/drop/drop.js; frames from a pre-alpha player build). It loads only as the visitor scrolls toward it. -->
+         (/drop/drop.js; frames from a player build of the game). It loads only as the visitor scrolls toward it. -->
     <section class="drop drop--home" id="drop" data-section data-drop data-frames="94" data-src="/drop/frames/drop-{n}.webp?v=ckp17" aria-label="The drop">
       <div class="drop__screen">
         <canvas class="drop__canvas" data-drop-canvas role="img" aria-label="The VIGIL's drop, from re-entry to the cockpit"></canvas>
@@ -225,7 +225,7 @@
           <p class="drop__title-word">Dropping in</p>
           <p class="drop__title-sub">Scroll to drop</p>
         </div>
-        <p class="drop__tag">Pre-alpha · the game's own opening</p>
+        <p class="drop__tag">Closed alpha · the game's own opening</p>
         <ol class="drop__phases" aria-hidden="true">
           <li data-from="0" data-to="44">Entry</li>
           <li data-from="45" data-to="66">Touchdown</li>
@@ -713,7 +713,7 @@
           <!-- The Front's war table: the game's map in relief, live (assets/front.js). Without scripts or WebGL2 the picture
                of it stays. -->
           <li data-reveal id="move-the-line">
-            <figure class="pillars__art" data-frontmap><img src="/assets/img/pillars/pillar-front.webp" alt="The Front: the war table, the map raised into relief, each house's ground in its color and a glowing front line where two houses meet" width="960" height="540" loading="lazy"><p class="pillars__tag">Pre-alpha</p></figure>
+            <figure class="pillars__art" data-frontmap><img src="/assets/img/pillars/pillar-front.webp" alt="The Front: the war table, the map raised into relief, each house's ground in its color and a glowing front line where two houses meet" width="960" height="540" loading="lazy"><p class="pillars__tag">Closed alpha</p></figure>
             <span class="pillars__num">01</span>
             <h3>The front</h3>
             <p>Every win and every loss shifts the front line on a map all pilots share.</p>
@@ -722,7 +722,7 @@
           <!-- The loadout bench: the game's VIGIL in its paints, under four loadouts, with the Hangar's own figures
                (assets/bench.js). Without scripts the cockpit picture stays. -->
           <li data-reveal id="feel-the-weight">
-            <figure class="pillars__art" data-bench><img src="/assets/img/pillars/pillar-weight.webp" alt="The VIGIL's cockpit with the HUD up, looking out over red ground" width="960" height="540" loading="lazy"><p class="pillars__tag">Pre-alpha</p></figure>
+            <figure class="pillars__art" data-bench><img src="/assets/img/pillars/pillar-weight.webp" alt="The VIGIL's cockpit with the HUD up, looking out over red ground" width="960" height="540" loading="lazy"><p class="pillars__tag">Closed alpha</p></figure>
             <span class="pillars__num">02</span>
             <h3>Weight</h3>
             <p>The default view is a full first-person cockpit. Every gun you bolt on changes the VIGIL's weight, speed, cooling and jump jets.</p>
