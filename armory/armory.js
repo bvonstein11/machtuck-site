@@ -297,9 +297,11 @@ const Armory = (() => {
     const parts = $$("[data-tray] .part", root);
     const SLOT = { shoulder: { id: "Shoulder", accepts: "shoulder" }, ra: { id: "RA_Upper", accepts: "arm" }, lau: { id: "LA_Upper", accepts: "arm" }, lal: { id: "LA_Lower", accepts: "arm" }, ct: { id: "CT", accepts: "torso" } };
     const ARMS = ["ra", "lau", "lal"];
-    // Each hardpoint on the turning VIGIL: x in the frame's percent = 49.5 + X cos θ + Z sin θ. Measured from the frames at 0, 90,
-    // 180 and 270 degrees and checked against those between. Z also says how far round the back it has gone.
-    const TRACK = { shoulder: [-23, -4, 15.5], ra: [-23, -6.5, 41], lau: [23.5, 5.5, 31], lal: [24.5, 9, 45], ct: [-1, 12, 33] };
+    // Each hardpoint on the turning VIGIL 2.0: x in the frame's percent = 49.75 + X cos θ + Z sin θ. From the lab's projection of the
+    // game's own anchors (HangarCalloutAnchors) every 10 degrees, fitted to within 1.2% (2026-11-26). Z also says how far round the
+    // back it has gone. RA's y is the arm below the pod: its own anchor sits behind the pod in these frames. LAU's Z is brought 1.3
+    // toward the shoulder plate's face (fitted -3.9), or the mark reads as round the far side at 20°, where the plate is in view.
+    const TRACK = { shoulder: [-23, -8.6, 16.1], ra: [-22.9, -4.2, 35], lau: [21.9, -2.6, 27], lal: [24.9, 1.3, 46.4], ct: [-0.1, 4.2, 28.7] };
     const SHOW = { shoulder: 35, ra: 65, lau: 300, lal: 285, ct: 350 };   // the frame that shows a hardpoint best
     const HIRES = new Set([0, 20, 180]);
     const wrap = v => ((Math.round(v) % 360) + 360) % 360;
@@ -312,7 +314,7 @@ const Armory = (() => {
       const t = k * Math.PI / 180, c = Math.cos(t), s = Math.sin(t);
       for (const [key, mark] of marks) {
         const [X, Z, y] = TRACK[key];
-        mark.style.setProperty("--x", `${(49.5 + X * c + Z * s).toFixed(2)}%`);
+        mark.style.setProperty("--x", `${(49.75 + X * c + Z * s).toFixed(2)}%`);
         mark.style.setProperty("--y", `${y}%`);
         mark.classList.toggle("is-far", -X * s + Z * c < -10);   // round the far side
       }
@@ -827,7 +829,8 @@ const Armory = (() => {
     const tiles = new Map($$("[data-bank] li", root).map(li => [li.dataset.part, li]));
     // On the front frame, in its own percent: the rear frame is read as these mirrored, because the VIGIL has turned round,
     // and the arm that was on the left is on the right. The art is never flipped.
-    const FRONT = { RA: [18, 5, 13.5, 47, 74], LA: [67, 8, 14, 45, 68], RT: [31.5, 11, 9.5, 20, 58], LT: [57, 11, 10, 20, 58], CT: [41, 10, 16, 26, 72], PV: [39, 36, 21, 14, 50], RL: [26, 50, 18, 47, 34], LL: [55, 50, 18, 47, 34] };
+    // VIGIL 2.0 (2026-11-26): laid from the zone colliders' boxes on frame 000, trimmed so no two overlap.
+    const FRONT = { RA: [14.5, 9.5, 19, 46, 74], LA: [65, 15, 18, 40, 70], RT: [33.5, 13, 8, 28, 58], LT: [57.5, 13, 7.5, 28, 58], CT: [41.5, 13, 16, 28, 72], PV: [41, 41, 17, 15, 50], RL: [26, 56, 22, 42, 34], LL: [52, 56, 22, 42, 34] };
     const NAME = { RA: "The right arm", LA: "The left arm", RT: "The right side torso", LT: "The left side torso", CT: "The center torso", PV: "The pelvis", RL: "The right leg", LL: "The left leg" };
     const LANDS = { snow: "snow-4", desert: "desert-4", jungle: "jungle-3", volcanic: "badlands-4" };
     const LAND_ALT = { snow: "Snowfields and dark pines below a high range, from the game.", desert: "Red dunes and mesas under an evening sky, from the game.", jungle: "Green jungle under a low gray sky, from the game.", volcanic: "A volcano smoking over black ground, from the game." };

@@ -564,7 +564,7 @@ const Physics = (() => {
     for (let i = first; i <= last; i += stride) {
       const image = new Image();
       image.onload = () => { if (++loaded === count) play(); };
-      image.src = `/drop/frames/drop-${String(i).padStart(3, "0")}.webp`;
+      image.src = `/drop/frames/drop-${String(i).padStart(3, "0")}.webp?v=vigil2`;
       frames.push(image);
     }
     if (replay) replay.addEventListener("click", () => { replay.hidden = true; play(); });
