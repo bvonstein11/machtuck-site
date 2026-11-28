@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#07090d">
 <title>The Front · The Reach: Unknown</title>
-<meta name="description" content="The Front's Season 1 map in 3D: the snow highlands, the jungle, the desert mesas, the volcanic badlands and the settlement, and the river junction every house fights for. Turn it, tilt it, fly to each land.">
+<meta name="description" content="The Front's Season 1 map in 3D: the snow highlands, the jungle, the desert mesas, the volcanic badlands and the settlement, and the river junction every faction fights for. Turn it, tilt it, fly to each land.">
 <link rel="canonical" href="https://machtuck.com/front/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Mach Tuck Games">
@@ -19,8 +19,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@MachTuckGames">
 <meta name="twitter:image:alt" content="The Reach: Unknown title beside the VX-21 VIGIL mech on a ridge at dusk">
-<link rel="icon" href="/favicon.svg?v=c4c7cbabe" type="image/svg+xml">
-<link rel="icon" href="/favicon-32.png?v=c4c7cbabe" sizes="32x32" type="image/png">
+<link rel="icon" href="/favicon.svg?v=20eee2613" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png?v=20eee2613" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <!-- The Front explorer: the game's map plate over the explorer's ridged relief (Tools/front/explorer/bake_explorer_relief.py),
      drawn with the site's war-table engine (Website/assets/front.js). Assembled into one offline file by build_explorer.py:
@@ -44,6 +44,7 @@ body.is-dragging canvas { cursor: grabbing; }
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); pointer-events: none; }
 .card__back { display: inline-block; margin: -2px 0 9px; font-size: 12.5px; color: var(--ink-dim); text-decoration: none; pointer-events: auto; }
 .card__back:hover, .card__back:focus-visible { color: var(--accent); outline: none; }
+.card__legal { margin: 8px 0 0; font-size: 11px; line-height: 1.3; color: var(--ink-dim); opacity: 0.8; }
 .card__eyebrow { font: 600 11px/1 var(--font-display); letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); }
 .card__title { margin: 7px 0 5px; font: 600 26px/1 var(--font-display); letter-spacing: 0.06em; text-transform: uppercase; }
 .card__sub { margin: 0; font-size: 13.5px; line-height: 1.4; color: var(--ink-dim); }
@@ -92,13 +93,14 @@ body.is-dragging canvas { cursor: grabbing; }
   <div class="card__eyebrow">The Front · Season 1</div>
   <h1 class="card__title">The Reach</h1>
   <p class="card__sub">One section of a small planet. Five lands meet at one river junction, and everyone fights for it.</p>
+  <p class="card__legal">© <span data-year>2026</span> Mach Tuck Games LLC</p>
 </div>
 <div class="tools" role="toolbar" aria-label="Map tools">
   <button class="tool compass" id="north" type="button" title="Face north" aria-label="Face north"><svg viewBox="0 0 24 24" aria-hidden="true"><g class="needle"><path class="north" d="M12 3l3.2 9h-6.4z" fill="currentColor"/><path d="M12 21l-3.2-9h6.4z" fill="currentColor" opacity="0.35"/></g></svg></button>
   <button class="tool" id="zin" type="button" title="Zoom in" aria-label="Zoom in"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 5v14M5 12h14"/></svg></button>
   <button class="tool" id="zout" type="button" title="Zoom out" aria-label="Zoom out"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14"/></svg></button>
   <button class="tool" id="tilt" type="button" title="Low view / overhead" aria-label="Switch between a low view and overhead"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 18l6-8 4 5 3-3 5 6z"/><path d="M3 21h18"/></svg></button>
-  <button class="tool" id="front" type="button" title="Show the war: each house's ground" aria-label="Show each house's ground" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l7.8 4.5v9L12 21l-7.8-4.5v-9z"/><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9" opacity="0.45"/></svg></button>
+  <button class="tool" id="front" type="button" title="Show the war: each faction's ground" aria-label="Show each faction's ground" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l7.8 4.5v9L12 21l-7.8-4.5v-9z"/><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9" opacity="0.45"/></svg></button>
   <button class="tool" id="home" type="button" title="The whole map" aria-label="Show the whole map"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
 </div>
 <nav class="lands" id="lands" aria-label="The lands"></nav>
