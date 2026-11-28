@@ -1,31 +1,31 @@
 // machtuck.com — the page's small amount of behaviour: the ship's strip, the bar, the menu, the rail, the reveals,
-// the parallax, the faction pick, the Discord door and the closed beta request. No libraries and no tracking. The one thing
-// this site ever sends anywhere is the closed beta form, when a visitor sends it. The switches below are the only lines to
-// change by hand; the README's "The switches" says when.
+// the parallax, the faction pick, the Discord door, the Closed Alpha's pinned bar and the email form. No libraries and no
+// tracking. The only things this site ever sends anywhere are its forms (the email form, the claim page), when a visitor
+// sends one. The switches below are the only lines to change by hand; the README's "The switches" says when.
 
 /**
- * The Discord invite every "Join the Discord" button opens. Empty until the server exists: the buttons then say
- * so instead of leading nowhere. Paste the invite here (for example "https://discord.gg/abc123") and every button
- * on every page follows.
+ * Where every "Join the Discord" button goes: the studio's own Discord door, /discord/, which forwards to the server's
+ * invite (the invite itself lives in discord/index.html). Empty, the buttons say "Discord opening soon" and lead
+ * nowhere. Every button on every page follows this line.
  */
-const DISCORD_INVITE = "https://discord.gg/akCxskKStX";
+const DISCORD_INVITE = "https://machtuck.com/discord/";
 
 /**
- * The Kit form the closed beta request sends to: the form's number, from its embed code in Kit. While this is empty every
- * part of the request stays hidden (the hero's and the bar's buttons, the phones' pinned bar, the form in JOIN) and nothing
- * can be sent. The privacy page must describe the form, and Kit's own settings must be done, before this is filled in.
+ * The Kit form the email news sign-up in JOIN sends to: the form's number, from its embed code in Kit. While this is empty
+ * the form stays hidden and nothing can be sent. The privacy page must describe the form, and Kit's own settings must be
+ * done, before this is filled in.
  */
 const SIGNUP_FORM = "10158135";
 
 /**
- * 2026-11-12 — the callsign reservation. Before the form goes to Kit, the page reserves the callsign in the game's own
- * registry through our callsign Worker (Tools/cloudflare/callsign-worker.js), which calls Unity Gaming Services as a server.
- * A visitor never becomes a player of the game, and the page keeps nothing: no token, cookie or name is stored in the browser,
- * as the privacy page promises. Empty until the Worker exists, and then the Worker's address.
+ * 2026-11-12 — the callsign registry, through our callsign Worker (Tools/cloudflare/callsign-worker.js), which calls Unity
+ * Gaming Services as a server. From 2026-11-12 to 2026-11-28 the JOIN form reserved callsigns there; now only the claim page
+ * calls it, to move a callsign reserved then into the pilot's career. A visitor never becomes a player of the game, and the
+ * page keeps nothing: no token, cookie or name is stored in the browser, as the privacy page promises.
  */
 const CALLSIGN_API = "https://vigil-callsign.machtuck.workers.dev";
 
-/** Cloudflare Turnstile's site key (public), which tells a person from a script so no one can reserve names in bulk. Away from
+/** Cloudflare Turnstile's site key (public), which tells a person from a script so no one can try names in bulk. Away from
  *  machtuck.com it is Cloudflare's always-pass test key; on machtuck.com, empty until his widget exists. Its script loads only
  *  once a visitor starts a form, never on a plain visit. */
 const TURNSTILE_SITEKEY = /(^|\.)machtuck\.com$/.test(location.hostname) ? "0x4AAAAAAF_wsmBHsGzVD5eB" : "1x00000000000000000000AA";
@@ -48,17 +48,6 @@ async function humanCheck(holder) {
       "error-callback": () => reject(new Error("turnstile")) });
   });
 }
-
-/** The game's Steam page. Empty hides the wishlist button in JOIN; paste the page's address the day it exists. */
-const STEAM_WISHLIST = "";
-
-/**
- * How many pilots have asked for closed beta access: the real total from Kit, typed here by hand. It stays hidden until it
- * passes PILOT_COUNT_SHOWN_ABOVE, and it sits inside the form's block, so it never shows without the form. Real sign-ups
- * only, never an estimate. Kit's API key never goes in this page.
- */
-const PILOT_COUNT = 0;
-const PILOT_COUNT_SHOWN_ABOVE = 100;
 
 /**
  * The latest clips strip in the game's page, newest first; the first LATEST_CLIPS_SHOWN are drawn. While the list is empty
@@ -86,24 +75,13 @@ for (const link of document.querySelectorAll("[data-discord]")) {
   }
 }
 
-// What the page says when the registry refuses a callsign, by the outcome Cloud Code answers (CallsignReservation).
-const RESERVE_REFUSED = {
-  TAKEN: (a) => (a.suggestion ? `${a.name} is taken. ${a.suggestion} is free.` : `${a.name} is taken. Try another.`),
-  MODERATED: (a) => `${a.name} is taken. Try another.`,
-  HAS_ONE: () => "This email has already reserved a callsign. It's one per pilot.",
-  INVALID: () => "That callsign can't be used. Use up to 16 letters, numbers, - or _.",
-  BAD_EMAIL: () => "That email address doesn't look right.",
-};
-const RESERVE_FAILED = "We couldn't reach the callsign registry. Please try again in a minute.";
+// What the claim page says when the callsign Worker can't be reached.
+const REGISTRY_FAILED = "We couldn't reach the callsign registry. Please try again in a minute.";
 
-/** Reserve a callsign for an email in the game's registry (Cloud Code's ReserveCallsign). Answers { outcome, name, suggestion };
- *  throws when Unity can't be reached. The call itself is callsignCall, below. */
-const reserveCallsign = (callsign, email) => callsignCall("ReserveCallsign", { callsign, email }, document.querySelector("[data-signup] [data-turnstile]"));
-
-/** Call the callsign Worker: ReserveCallsign or TakeReservedCallsign. Answers the module's { outcome, name, suggestion };
+/** Call the callsign Worker's TakeReservedCallsign (the claim page's one call). Answers the module's { outcome, name };
  *  throws when it can't be reached. */
 async function callsignCall(fn, params, holder) {
-  const path = { ReserveCallsign: "/reserve", TakeReservedCallsign: "/take" }[fn];
+  const path = { TakeReservedCallsign: "/take" }[fn];
   const turnstile = await humanCheck(holder);
   const call = await fetch(CALLSIGN_API + path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...params, turnstile }) });
   if (!call.ok) throw new Error(`${fn} ${call.status}`);
@@ -135,120 +113,66 @@ if (claimForm) {
     let answer = null;
     try { answer = await callsignCall("TakeReservedCallsign", { callsign: field("callsign").toUpperCase(), email: field("email"), code: field("code") }, claimForm.querySelector("[data-turnstile]")); } catch { answer = null; }
     claimButton.disabled = false;
-    claimStatus.textContent = answer && TAKE_SAYS[answer.outcome] ? TAKE_SAYS[answer.outcome](answer) : RESERVE_FAILED;
+    claimStatus.textContent = answer && TAKE_SAYS[answer.outcome] ? TAKE_SAYS[answer.outcome](answer) : REGISTRY_FAILED;
   });
 }
 
-// The closed beta sign-up: shown only once a Kit form is named above. It is a plain POST to Kit, with no script from Kit on
-// the page, into a hidden frame once the callsign is reserved; Kit then sends that frame on to /welcome/ (a setting on the
-// form in Kit), which tells the page it landed. The one ask takes the lead: the hero's Discord button steps back a rank and "Explore the game" steps aside.
+// The email news sign-up in JOIN: shown only once a Kit form is named above. It is a plain POST to Kit, with no script from
+// Kit on the page, into a hidden frame; Kit then sends that frame on to /welcome/ (a setting on the form in Kit), which tells
+// the page it landed.
 const signup = document.querySelector("[data-signup]");
 if (signup && SIGNUP_FORM) {
   signup.action = `https://app.kit.com/forms/${SIGNUP_FORM}/subscriptions`;
-  document.documentElement.classList.add("has-signup");
-  for (const part of document.querySelectorAll("[data-request], [data-signup-cta], [data-pin]")) part.hidden = false;
-  document.querySelector(".hero__actions [data-discord]")?.classList.add("btn--ghost");
-  document.querySelector(".join__doors [data-discord]")?.classList.add("btn--ghost");
-  const heroExplore = document.querySelector("[data-hero-explore]");
-  if (heroExplore) heroExplore.hidden = true;
-
-  const callsign = signup.elements["fields[requested_callsign]"];
-  const cleanCallsign = () => { callsign.value = callsign.value.trim().toUpperCase(); };
-  callsign.addEventListener("change", cleanCallsign);
-  // Where the visitor came from is read from the address here, as the form goes, and goes nowhere but into the form: nothing
-  // is kept in the browser, as the privacy page promises. A value that is not a plain short word (an address pasted into a
-  // link, say) is dropped, not sent.
-  // The form posts into a hidden frame, not this tab, so the page can stay and hand the pilot their wingman link. Each send
-  // asks the registry first; only once it holds the name for this email does the same form go on to Kit.
-  const email = signup.elements["email_address"];
-  const sendButton = signup.querySelector("[type=submit]");
+  document.querySelector("[data-news]").hidden = false;
   const status = document.querySelector("[data-signup-status]");
-  const done = document.querySelector("[data-signup-done]");
-  const kitStatus = document.querySelector("[data-kit-status]");
+  const done = document.querySelector("[data-news-done]");
   const kitFrame = document.querySelector("iframe[name='kit-post']");
-  let reservedFor = "";   // "CALLSIGN email" the registry has answered RESERVED or YOURS for
   let awaitingKit = false;
-  signup.addEventListener("focusin", () => loadTurnstile().catch(() => {}), { once: true });   // ready before the send
-  signup.addEventListener("submit", async (event) => {
-    cleanCallsign();
+  signup.addEventListener("submit", () => {
+    // Where the visitor came from is read from the address here, as the form goes, and goes nowhere but into the form:
+    // nothing is kept in the browser, as the privacy page promises. A value that is not a plain short word (an address
+    // pasted into a link, say) is dropped, not sent.
     const source = (new URLSearchParams(location.search).get("src") || "").trim().toLowerCase();
     signup.elements["fields[source]"].value = /^[a-z0-9_-]{1,32}$/.test(source) ? source : "";
-    const key = `${callsign.value} ${email.value.trim().toLowerCase()}`;
-    if (reservedFor === key) { awaitingKit = true; return; }   // the registry holds it: this post goes on to Kit
-    event.preventDefault();
-    status.textContent = "Checking your callsign…";
-    sendButton.disabled = true;
-    let answer = null;
-    try { answer = await reserveCallsign(callsign.value, email.value.trim()); } catch { answer = null; }
-    sendButton.disabled = false;
-    const outcome = answer && answer.outcome;
-    if (outcome === "RESERVED" || outcome === "YOURS") {
-      reservedFor = key;
-      status.textContent = "";
-      showReserved(answer.name);
-      signup.requestSubmit();
-    } else {
-      status.textContent = answer && RESERVE_REFUSED[outcome] ? RESERVE_REFUSED[outcome](answer) : RESERVE_FAILED;
-    }
+    awaitingKit = true;
+    status.textContent = "Signing you up…";
   });
 
   // The frame lands on /welcome/ when Kit takes the address. Anywhere else (one of Kit's own pages) can't be read from here,
-  // so the pilot is told it couldn't be confirmed and gets the form back; sending again finds the name already theirs.
+  // so the visitor is told it couldn't be confirmed and keeps the form.
   kitFrame?.addEventListener("load", () => {
     if (!awaitingKit) return;
     awaitingKit = false;
     let landed = "";
     try { landed = kitFrame.contentWindow.location.pathname; } catch { landed = ""; }
     if (landed.startsWith("/welcome")) {
-      kitStatus.textContent = "You're on the closed beta list too. We'll email you when invitations go out.";
+      status.textContent = "";
+      done.textContent = "You're on the list. We'll email you news about The Reach.";
+      signup.hidden = true;
+      done.hidden = false;
     } else {
-      kitStatus.textContent = "Your callsign is reserved, but we couldn't confirm the closed beta list. Send the form again to make sure.";
-      signup.hidden = false;
+      status.textContent = "We couldn't confirm the sign-up. Send the form again to make sure.";
     }
   });
-
-  const showReserved = (name) => {
-    const link = `https://machtuck.com/thereach/?src=r-${name.toLowerCase()}`;
-    done.querySelector("[data-done-name]").textContent = name;
-    done.querySelector("[data-wingman-link]").textContent = link;
-    kitStatus.textContent = "Adding you to the closed beta list…";
-    signup.hidden = true;
-    done.hidden = false;
-    const copy = done.querySelector("[data-copy-link]");
-    copy.onclick = () => navigator.clipboard?.writeText(link).then(() => { copy.textContent = "Copied"; }, () => {});
-  };
-
-  // The pinned bar on phones: up once the hero's own button has scrolled away, and down again from the form on, so it never
-  // covers the form or the footer.
-  const pin = document.querySelector("[data-pin]");
-  const heroAsk = document.querySelector(".hero__actions [data-signup-cta]");
-  const request = document.querySelector("[data-request]");
-  if (pin && heroAsk && request) {
-    let pastHero = false;
-    let atForm = false;
-    const placePin = () => pin.classList.toggle("is-up", pastHero && !atForm);
-    new IntersectionObserver(([entry]) => {
-      pastHero = !entry.isIntersecting && entry.boundingClientRect.top < 0;
-      placePin();
-    }).observe(heroAsk);
-    new IntersectionObserver(([entry]) => {
-      atForm = entry.isIntersecting || entry.boundingClientRect.top < 0;
-      placePin();
-    }).observe(request);
-  }
-
-  const pilots = document.querySelector("[data-pilot-count]");
-  if (pilots && PILOT_COUNT > PILOT_COUNT_SHOWN_ABOVE) {
-    pilots.querySelector("b").textContent = PILOT_COUNT.toLocaleString("en-US");
-    pilots.hidden = false;
-  }
 }
 
-// The Steam wishlist button: hidden until the store page is named above.
-if (STEAM_WISHLIST) {
-  for (const link of document.querySelectorAll("[data-steam]")) {
-    Object.assign(link, { href: STEAM_WISHLIST, target: "_blank", rel: "noopener", hidden: false });
-  }
+// The pinned bar on phones: up once the hero's own Request access button has scrolled away, and down again from the Closed
+// Alpha block in JOIN on, so it never covers that block, the form or the footer.
+const pin = document.querySelector("[data-pin]");
+const heroAsk = document.querySelector(".hero__actions [data-steam]");
+const request = document.querySelector("[data-request]");
+if (pin && heroAsk && request) {
+  let pastHero = false;
+  let atForm = false;
+  const placePin = () => pin.classList.toggle("is-up", pastHero && !atForm);
+  new IntersectionObserver(([entry]) => {
+    pastHero = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+    placePin();
+  }).observe(heroAsk);
+  new IntersectionObserver(([entry]) => {
+    atForm = entry.isIntersecting || entry.boundingClientRect.top < 0;
+    placePin();
+  }).observe(request);
 }
 
 // The latest clips: hidden until the list above has something in it.

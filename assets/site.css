@@ -1446,18 +1446,22 @@ a.log__frame:hover { box-shadow: 0 0 0 1px var(--accent); }
 .join__inner { position: relative; }
 .join h2 { max-width: none; font-size: clamp(2.6rem, 6.4vw, 5.2rem); }
 .join .lead { max-width: 620px; margin: 26px 0 36px; color: var(--ink-dim); }
-.join__doors { display: flex; flex-wrap: wrap; gap: 12px; }
 
-/* the closed beta request: hidden until SIGNUP_FORM in site.js names the form */
+/* the Closed Alpha block in JOIN: the Steam ask, the Discord's first round of keys, and the email form under them (the form
+   hidden until SIGNUP_FORM in site.js names it) */
 .request {
   position: relative; max-width: 640px; margin: 0 0 40px; padding: clamp(20px, 3vw, 32px);
   background: rgba(7, 9, 13, 0.78); box-shadow: inset 0 0 0 1px var(--line);
   scroll-margin-top: calc(var(--top-height) + 16px);
 }
 .request h3 { font-family: var(--font-display); font-size: clamp(1.7rem, 3.2vw, 2.3rem); line-height: 1; letter-spacing: 0.01em; }
-.request__intro { margin: 10px 0 20px; color: var(--ink-dim); font-size: 0.98rem; }
-.request__count { margin: 0 0 14px; color: var(--accent); font: 400 0.72rem/1.4 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; }
-.request__count b { font-weight: 400; color: var(--ink); }
+.request__intro { margin: 10px 0 16px; color: var(--ink-dim); font-size: 0.98rem; }
+.request__door { margin: 0 0 26px; }
+.request__door:last-of-type { margin-bottom: 0; }
+@media (max-width: 560px) { .request__door .btn { width: 100%; padding: 0 12px; } }
+.request__news { margin-top: 30px; padding-top: 26px; border-top: 1px solid var(--line); }
+.request__news h4 { margin: 0 0 16px; color: var(--ink); font: 400 0.78rem/1.3 var(--font-mono); letter-spacing: 0.16em; text-transform: uppercase; }
+.request__done { margin: 0; color: var(--ink); font-size: 0.98rem; }
 .signup__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .signup__field--wide { grid-column: 1 / -1; }
 @media (max-width: 560px) { .signup__grid { grid-template-columns: 1fr; } }
@@ -1469,32 +1473,23 @@ a.log__frame:hover { box-shadow: 0 0 0 1px var(--accent); }
   -webkit-appearance: none; appearance: none;
 }
 .signup__field input:focus, .signup__field select:focus { outline: none; box-shadow: inset 0 0 0 2px var(--accent); }
-#signup-callsign { text-transform: uppercase; }
 .signup__field select {
   padding-right: 36px; background-repeat: no-repeat; background-position: right 14px center; background-size: 12px 8px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23aaa59c' stroke-width='1.6'/%3E%3C/svg%3E");
 }
 .signup__field select option { background: var(--bg-raise); color: var(--ink); }
-.signup__hint { margin: 6px 0 0; color: var(--ink-faint); font-size: 0.78rem; line-height: 1.4; }
 .signup__age { display: flex; align-items: center; gap: 12px; min-height: 44px; margin: 14px 0; color: var(--ink); cursor: pointer; }
 .signup__age input { flex: none; width: 20px; height: 20px; margin: 0; accent-color: var(--accent); }
 .signup .btn { width: 100%; cursor: pointer; border: 0; }
 @media (max-width: 560px) { .signup .btn { min-height: 54px; padding: 0 10px; font-size: 0.8rem; letter-spacing: 0.14em; } }
 .signup__note { margin: 10px 0 0; color: var(--ink-faint); font-size: 0.82rem; line-height: 1.45; }
 .signup__note a { color: var(--ink-dim); }
-/* the callsign reservation's answer, and the reserved panel with the pilot's Bring Your Own Wingman link */
+/* a form's answer (the email form, the claim page) */
 .signup__status { margin: 0 0 12px; color: var(--accent); font-size: 0.9rem; line-height: 1.45; }
 .signup__status:empty { display: none; }
 .signup__check:empty { display: none; }
 .signup__check { margin: 0 0 12px; }
 [data-claim] { margin-top: 28px; }
-.signup__done-name { margin: 0; font-family: var(--font-display); font-size: clamp(1.4rem, 2.6vw, 1.9rem); line-height: 1.1; }
-.signup__done-name b { color: var(--accent); font-weight: inherit; }
-.signup__done-byow { margin: 14px 0 10px; color: var(--ink-dim); font-size: 0.95rem; }
-.signup__done-byow span { display: block; margin-bottom: 4px; color: var(--ink); font: 400 0.72rem/1.3 var(--font-mono); letter-spacing: 0.16em; text-transform: uppercase; }
-.signup__link { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0; }
-.signup__link code { flex: 1 1 240px; min-width: 0; padding: 12px 14px; overflow-wrap: anywhere; box-shadow: inset 0 0 0 1px var(--line); color: var(--ink); font: 400 0.85rem/1.3 var(--font-mono); }
-.signup__link .btn { flex: none; cursor: pointer; border: 0; }
 
 /* the pinned bar: phones only, and only once site.js has raised it */
 .pin {
@@ -1507,22 +1502,25 @@ a.log__frame:hover { box-shadow: 0 0 0 1px var(--accent); }
 .pin .btn { width: 100%; min-height: 46px; padding: 0 8px; font-size: 0.78rem; letter-spacing: 0.14em; white-space: nowrap; }
 @media (min-width: 761px) { .pin { display: none; } }
 
-/* the hero and the bar with the request on: the long label takes its own width; the full bar swaps its Discord button for
-   the short label, the menu shows both. 2026-11-07, from the phone review ("add the grey join the discord button under the
-   closed beta request"): a phone stacks the request over the grey Discord button. The pair drops 16px nearer the Closed Alpha
-   label, and the VIGIL and its shadow give up the rest of the second row (36px) at the feet, so neither button covers the
-   mech. `{CC}` the sizes. */
-.has-signup .hero__actions .btn { flex: 0 1 auto; }
-@media (max-aspect-ratio: 5/4) { .has-signup .hero__actions .btn { flex: 1 1 auto; padding: 0 12px; } }
+/* the hero and the bar with the Closed Alpha's ask (Request access, on Steam): the label takes its own width; the full bar
+   swaps its Discord button for it, the menu shows both. 2026-11-07, from the phone review ("add the grey join the discord
+   button under the closed beta request"): a phone stacks the ask over the grey Discord button. The pair drops 16px nearer
+   the Closed Alpha label, and the VIGIL and its shadow give up the rest of the second row (36px) at the feet, so neither
+   button covers the mech. Under the pair, one line says Discord members get the first keys; a phone leaves it out, because
+   it lifted the pair 27px onto the VIGIL's feet at 390x660, and JOIN says it there. `{CC}` the sizes. */
+.hero__actions .btn { flex: 0 1 auto; }
+@media (max-aspect-ratio: 5/4) { .hero__actions .btn { flex: 1 1 auto; padding: 0 12px; } }
 @media (max-width: 560px) {
-  .has-signup .hero__actions { flex-wrap: wrap; gap: 8px; }
-  .has-signup .hero__actions [data-signup-cta] { flex: 1 1 100%; font-size: 0.78rem; }
-  .has-signup .hero__actions [data-discord] { flex: 1 1 100%; min-height: 44px; }
+  .hero__actions { flex-wrap: wrap; gap: 8px; }
+  .hero__actions [data-steam] { flex: 1 1 100%; font-size: 0.78rem; }
+  .hero__actions [data-discord] { flex: 1 1 100%; min-height: 44px; }
 }
 @media (max-width: 560px) and (max-aspect-ratio: 5/4) {
-  .has-signup .hero__copy { bottom: calc(52px + env(safe-area-inset-bottom, 0px)); }
+  .hero__copy { bottom: calc(52px + env(safe-area-inset-bottom, 0px)); }
+  .hero__keys { display: none; }
 }
-@media (min-width: 1221px) { .has-signup .bar__nav [data-discord] { display: none; } }
+@media (min-width: 1221px) { .bar__nav [data-discord] { display: none; } }
+.hero__keys { margin: 10px 0 0; color: var(--ink-dim); font-size: clamp(0.8rem, 0.9vw, 0.92rem); line-height: 1.35; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9); }
 
 /* the latest clips: a strip, hidden while its list is empty */
 .clips { border-top: 1px solid var(--line); }

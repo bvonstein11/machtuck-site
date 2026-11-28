@@ -37,19 +37,20 @@ will read the same code, so change its format only by adding a version.
 best of three (2–0 +200, 2–1 +100, the same off for a loss), a Cadet's loss halved, the save points as floors, a new
 season back to Rookie. Change them in `assets/valor.js` only when the game's `ValorProgression` changes.
 
-**The Discord buttons** read one line at the top of `assets/site.js`, `DISCORD_INVITE`. While it is empty they say
-"Discord opening soon" and lead nowhere.
+**The Discord buttons** read one line at the top of `assets/site.js`, `DISCORD_INVITE`, which names the studio's own door,
+`/discord/`; that page holds the invite and forwards to it. While the line is empty the buttons say "Discord opening soon" and lead nowhere.
+
+**The Closed Alpha's ask** is the Request access button (the bar, the hero, the pinned bar on phones, JOIN). Each one links to
+the game's Steam page with the site's UTM tags (`utm_campaign=alpha_site`), written in `thereach/index.html`, so it works without scripts.
 
 **The switches** are the lines at the top of `assets/site.js`. All of them start off, and everything they control stays hidden:
 
 | Line | What it does when set |
 |---|---|
-| `SIGNUP_FORM` | The closed beta request appears: the hero's button, the bar's button, the pinned bar on phones and the form in JOIN. A plain POST to Kit, with no script from Kit. See the steps below before setting it |
-| `STEAM_WISHLIST` | The "Wishlist on Steam" button appears in JOIN |
-| `PILOT_COUNT` | The real sign-up total from Kit, by hand. Shown above the form once it passes `PILOT_COUNT_SHOWN_ABOVE` (100). Never an estimate; Kit's API key never goes in the page |
+| `SIGNUP_FORM` | The email form (Get the news by email) appears in JOIN, under the Closed Alpha's buttons. A plain POST to Kit, with no script from Kit. See the steps below before setting it |
 | `LATEST_CLIPS` | The latest clips strip appears above STUDIO, showing the first four. A clip is a poster on this site and a link out; nothing loads from another site |
 
-**Turning on the closed beta request.** The privacy page and the Community Terms go live first. Then, in Kit, on the form: custom fields `requested_callsign`, `faction` and `source` exist; the confirmation email is off until the studio's postal address is in Kit's footer, since Kit must send nothing before then; the after-subscribing action redirects to `https://machtuck.com/welcome/`; Invisible reCAPTCHA is off, because a plain POST carries no token. Send one real test, delete the test subscriber, and only then set `SIGNUP_FORM`. A link may name its source with `?src=tiktok`, which is read as the form goes, cleaned to a short plain word, sent as `source`, and never stored. The form's callsign is a request: nothing on this site reserves one.
+**Turning on the email form.** The privacy page and the Community Terms go live first. Then, in Kit, on the form: custom fields `faction` and `source` exist; the confirmation email is off until the studio's postal address is in Kit's footer, since Kit must send nothing before then; the after-subscribing action redirects to `https://machtuck.com/welcome/`; Invisible reCAPTCHA is off, because a plain POST carries no token. Send one real test, delete the test subscriber, and only then set `SIGNUP_FORM`. A link may name its source with `?src=tiktok`, which is read as the form goes, cleaned to a short plain word, sent as `source`, and never stored. From 2026-11-12 to 2026-11-28 the form also reserved a callsign in the game's registry before Kit; it no longer does, and the claim page (`/claim/`) still moves a callsign reserved then into the game.
 
 **Aboard the Archive.** Arriving from another site opens on the shipboard network for about two seconds (a short script in
 the head of `thereach/index.html` decides, `assets/site.js` draws it; not on a reload, Back, or a link from this site,
