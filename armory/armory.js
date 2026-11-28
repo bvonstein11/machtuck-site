@@ -8,11 +8,11 @@
 /* GAME-BEGIN */
 const GAME = {
   "guns": {
-    "PULSE-50": { "model": "charges", "mount": "arm", "rangeYd": 275, "damage": 15, "heat": 6, "weightLb": 5000, "rounds": 4, "between": 0.2, "recharge": 2 },
+    "PULSE-50": { "model": "charges", "mount": "arm", "rangeYd": 275, "damage": 15, "heat": 1.5, "weightLb": 5000, "rounds": 4, "between": 0.2, "recharge": 2 },
     "CHAIN-30": { "model": "stream", "mount": "arm", "rangeYd": 150, "damage": 0.8, "heat": 0.3, "weightLb": 7600, "rate": 65, "belt": 1174 },
     "SLUG-250": { "model": "single", "mount": "arm", "rangeYd": 200, "damage": 60, "heat": 10, "weightLb": 8400, "rounds": 18, "between": 4 },
-    "DART-20": { "model": "single", "mount": "arm", "rangeYd": 1000, "damage": 45, "heat": 12, "weightLb": 5600, "rounds": 20, "between": 3.5 },
-    "THUMP-82": { "model": "magazine", "mount": "arm", "rangeYd": 175, "damage": 45, "heat": 8, "weightLb": 5200, "rounds": 10, "between": 1.2, "reload": 3, "flight": 1.3 },
+    "DART-20": { "model": "single", "mount": "arm", "rangeYd": 1200, "damage": 45, "heat": 12, "weightLb": 5600, "rounds": 20, "between": 3.5 },
+    "THUMP-82": { "model": "magazine", "mount": "arm", "rangeYd": 175, "damage": 70, "heat": 8, "weightLb": 5200, "rounds": 10, "between": 1.2, "reload": 3, "flight": 1.3 },
     "SPIKE-90": { "model": "single", "mount": "arm", "rangeYd": 650, "damage": 70, "heat": 18, "weightLb": 9000, "rounds": 8, "between": 10.5 },
     "VOLLEY-6": { "model": "salvo", "mount": "shoulder", "rangeYd": 425, "damage": 12, "heat": 12, "weightLb": 4200, "salvo": 6, "tubes": 18, "life": 36, "between": 6, "reload": 12, "ripple": 0.09 },
     "BREACH-275": { "model": "magazine", "mount": "shoulder", "rangeYd": 600, "damage": 80, "heat": 16, "weightLb": 7800, "rounds": 4, "between": 3, "reload": 8, "flight": 3 }
