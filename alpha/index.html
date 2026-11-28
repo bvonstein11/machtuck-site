@@ -17,7 +17,7 @@
   <meta property="og:image:height" content="628">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://machtuck.com/assets/img/alpha/alpha_share_1200x628.jpg">
-  <link rel="icon" href="/favicon.svg?v=20eee2613" type="image/svg+xml">
+  <link rel="icon" href="/favicon.svg?v=da4648e1f" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <style>
     @font-face { font-family: "Barlow Condensed"; src: url("/assets/fonts/BarlowCondensed/BarlowCondensed-SemiBold.ttf"); font-weight: 600; font-display: swap; }
@@ -81,10 +81,11 @@
   </div>
   <script>
     // The key rides in the link's #fragment, which a browser never sends to any server. Read it, then clear it from the address bar.
+    // It lives only in this variable: nothing is stored in the browser, as /privacy/ promises, so a reload shows the page without
+    // the key and the invite link brings it back.
     (function () {
       var ok = /^[A-Z0-9]{5}(-[A-Z0-9]{5}){2,4}$/;
       var raw = decodeURIComponent((location.hash || "").slice(1)).trim().toUpperCase();
-      try { if (ok.test(raw)) sessionStorage.setItem("alphaKey", raw); else raw = sessionStorage.getItem("alphaKey") || ""; } catch (e) {}
       if (!ok.test(raw)) return;
       document.body.className = "withkey";
       document.getElementById("key").textContent = raw;
